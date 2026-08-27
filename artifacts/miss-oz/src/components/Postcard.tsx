@@ -974,9 +974,15 @@ export default function Postcard() {
                             <div className="text-[var(--marionberry)]" style={{ fontFamily: "'Cookie', cursive", fontSize: 'clamp(22px,2.2vw,30px)', lineHeight: 1.1 }}>Fresh-baked favorites</div>
                             <p className="mt-[7px] text-[#6E5A54] italic" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>A few of the housemade sweets you may find at Miss Oz.</p>
                             <div className="mt-[14px] grid grid-cols-3 gap-[8px] sm:gap-[12px]">
-                              <img src="/images/cookie-walnut.jpeg" alt="Housemade cookies" className="h-[88px] sm:h-[118px] w-full rounded-[8px] object-contain" />
-                              <img src="/images/cookie-coffee.jpeg" alt="Housemade cookies with coffee" className="h-[88px] sm:h-[118px] w-full rounded-[8px] object-contain" />
-                              <img src="/images/cookie-stack.jpeg" alt="Stack of housemade cookies" className="h-[88px] sm:h-[118px] w-full rounded-[8px] object-contain" />
+                              <div className="aspect-[4/3] rounded-[8px] p-[5px] flex items-center justify-center" style={{ background: 'rgba(251,244,230,0.72)', border: '1px solid rgba(94,23,53,0.16)' }}>
+                                <img src="/images/cookie-walnut.jpeg" alt="Housemade cookies" className="h-full w-full rounded-[5px] object-contain" />
+                              </div>
+                              <div className="aspect-[4/3] rounded-[8px] p-[5px] flex items-center justify-center" style={{ background: 'rgba(251,244,230,0.72)', border: '1px solid rgba(94,23,53,0.16)' }}>
+                                <img src="/images/cookie-coffee.jpeg" alt="Housemade cookies with coffee" className="h-full w-full rounded-[5px] object-contain" />
+                              </div>
+                              <div className="aspect-[4/3] rounded-[8px] p-[5px] flex items-center justify-center" style={{ background: 'rgba(251,244,230,0.72)', border: '1px solid rgba(94,23,53,0.16)' }}>
+                                <img src="/images/cookie-stack.jpeg" alt="Stack of housemade cookies" className="h-full w-full rounded-[5px] object-contain" />
+                              </div>
                             </div>
                           </div>
                         </div>
