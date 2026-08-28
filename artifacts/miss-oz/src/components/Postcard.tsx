@@ -976,14 +976,14 @@ export default function Postcard() {
                             <div className="text-[var(--marionberry)]" style={{ fontFamily: "'Cookie', cursive", fontSize: 'clamp(22px,2.2vw,30px)', lineHeight: 1.1 }}>Fresh-baked favorites</div>
                             <p className="mt-[7px] text-[#6E5A54] italic" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>A few of the housemade sweets you may find at Miss Oz.</p>
                             <div className="mx-auto mt-[14px] grid max-w-[560px] grid-cols-3 gap-[10px] sm:gap-[18px]">
-                              <div className="aspect-[3/4] overflow-hidden rounded-[8px]">
-                                <img src="/images/cookie-walnut.jpeg" alt="Housemade cookies" className="h-full w-full object-cover" style={{ objectPosition: 'center 56%' }} />
+                              <div className="aspect-[3/4] overflow-hidden rounded-[12px]">
+                                <img src="/images/cookie-walnut.jpeg" alt="Housemade cookies" className="h-full w-full rounded-[12px] object-cover" style={{ objectPosition: 'center 56%' }} />
                               </div>
-                              <div className="aspect-[3/4] overflow-hidden rounded-[8px]">
-                                <img src="/images/cookie-coffee.jpeg" alt="Housemade cookies with coffee" className="h-full w-full object-cover" style={{ objectPosition: 'center center' }} />
+                              <div className="aspect-[3/4] overflow-hidden rounded-[12px]">
+                                <img src="/images/cookie-coffee.jpeg" alt="Housemade cookies with coffee" className="h-full w-full rounded-[12px] object-cover" style={{ objectPosition: 'center center' }} />
                               </div>
-                              <div className="aspect-[3/4] overflow-hidden rounded-[8px]">
-                                <img src="/images/cookie-stack.jpeg" alt="Stack of housemade cookies" className="h-full w-full object-cover" style={{ objectPosition: 'center 48%' }} />
+                              <div className="aspect-[3/4] overflow-hidden rounded-[12px]">
+                                <img src="/images/cookie-stack.jpeg" alt="Stack of housemade cookies" className="h-full w-full rounded-[12px] object-cover" style={{ objectPosition: 'center 48%' }} />
                               </div>
                             </div>
                           </div>
