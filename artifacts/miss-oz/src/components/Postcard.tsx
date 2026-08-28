@@ -239,6 +239,8 @@ export default function Postcard() {
           background: 'var(--cream)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
+          maskImage: 'linear-gradient(to right, transparent 0, black clamp(8px, 1vw, 14px), black calc(100% - clamp(8px, 1vw, 14px)), transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0, black clamp(8px, 1vw, 14px), black calc(100% - clamp(8px, 1vw, 14px)), transparent 100%)',
           boxShadow: isHeaderScrolled ? '0 6px 22px rgba(20,8,12,0.2)' : '0 5px 18px rgba(20,8,12,0.12)',
         }}
       >
