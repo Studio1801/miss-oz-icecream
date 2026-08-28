@@ -232,6 +232,8 @@ export default function Postcard() {
       <header
         className="fixed top-0 left-0 right-0 z-[970] px-[4vw] hidden md:block transition-[padding,background-color,box-shadow] duration-300 ease-out"
         style={{
+          left: 'clamp(14px, 2vw, 26px)',
+          right: 'clamp(14px, 2vw, 26px)',
           paddingTop: isHeaderScrolled ? '7px' : '12px',
           paddingBottom: isHeaderScrolled ? '7px' : '16px',
           background: 'var(--cream)',
@@ -973,15 +975,15 @@ export default function Postcard() {
                           <div className="mt-[clamp(20px,2.4vw,30px)] text-center">
                             <div className="text-[var(--marionberry)]" style={{ fontFamily: "'Cookie', cursive", fontSize: 'clamp(22px,2.2vw,30px)', lineHeight: 1.1 }}>Fresh-baked favorites</div>
                             <p className="mt-[7px] text-[#6E5A54] italic" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>A few of the housemade sweets you may find at Miss Oz.</p>
-                            <div className="mt-[14px] grid grid-cols-3 gap-[8px] sm:gap-[12px]">
-                              <div className="aspect-[4/3] rounded-[8px] p-[5px] flex items-center justify-center" style={{ background: 'rgba(251,244,230,0.72)', border: '1px solid rgba(94,23,53,0.16)' }}>
-                                <img src="/images/cookie-walnut.jpeg" alt="Housemade cookies" className="h-full w-full rounded-[5px] object-contain" />
+                            <div className="mx-auto mt-[14px] grid max-w-[560px] grid-cols-3 gap-[10px] sm:gap-[18px]">
+                              <div className="aspect-[3/4] flex items-center justify-center">
+                                <img src="/images/cookie-walnut.jpeg" alt="Housemade cookies" className="h-full w-full object-contain" />
                               </div>
-                              <div className="aspect-[4/3] rounded-[8px] p-[5px] flex items-center justify-center" style={{ background: 'rgba(251,244,230,0.72)', border: '1px solid rgba(94,23,53,0.16)' }}>
-                                <img src="/images/cookie-coffee.jpeg" alt="Housemade cookies with coffee" className="h-full w-full rounded-[5px] object-contain" />
+                              <div className="aspect-[3/4] flex items-center justify-center">
+                                <img src="/images/cookie-coffee.jpeg" alt="Housemade cookies with coffee" className="h-full w-full object-contain" />
                               </div>
-                              <div className="aspect-[4/3] rounded-[8px] p-[5px] flex items-center justify-center" style={{ background: 'rgba(251,244,230,0.72)', border: '1px solid rgba(94,23,53,0.16)' }}>
-                                <img src="/images/cookie-stack.jpeg" alt="Stack of housemade cookies" className="h-full w-full rounded-[5px] object-contain" />
+                              <div className="aspect-[3/4] flex items-center justify-center">
+                                <img src="/images/cookie-stack.jpeg" alt="Stack of housemade cookies" className="h-full w-full object-contain" />
                               </div>
                             </div>
                           </div>
