@@ -14,3 +14,7 @@ description: Gotchas when deploying a single artifact from the pnpm-workspace mo
 **Connection recovery:** A connected Vercel account can still return `403` with `invalidToken`; this connection is API-key based, so OAuth reauthorization is not available.
 **Why:** Vercel explicitly classifies this response as an invalid credential, not a project or build permission problem.
 **How to apply:** Do not repeatedly retry deployment or request a token in chat. Have the user replace the credential through the secure integration flow, then retry the API once.
+
+**GitHub connector vs. terminal Git:** An active Replit GitHub connector does not repair stale HTTPS credentials used by `git push`. A globally active connector showing no connected app must be attached to the app before API access works.
+**Why:** Terminal pushes can keep returning invalid credentials while the attached GitHub connector has healthy repository write access.
+**How to apply:** Attach GitHub to the app, verify repository access through the connector, then use GitHub's repository API for the production update if terminal Git remains unauthenticated.
