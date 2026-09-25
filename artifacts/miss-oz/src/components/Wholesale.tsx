@@ -1,8 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { Bunting, Starburst } from './Decor';
 import InquireForm from './InquireForm';
 
-const items = [
+type WholesaleItem = {
+  name: string;
+  photoUrl?: string;
+};
+
+const items: WholesaleItem[] = [
   { name: '1.5-Gallon Ice Cream Tubs' },
   { name: '2.5-Gallon Ice Cream Tubs' },
   { name: 'Original Basque Cheesecake (10-inch, serves 12)' },
@@ -11,49 +15,10 @@ const items = [
   { name: 'Pecan Chocolate Chip Cookies' },
 ];
 
-/** Scalloped parlor awning in cream + berry stripes */
-function Awning() {
-  const stripes =
-    'repeating-linear-gradient(90deg, var(--cream-hi) 0 44px, var(--berry-deep) 44px 88px)';
-  return (
-    <div aria-hidden="true" className="relative z-20 -mb-[2px]">
-      {/* awning body */}
-      <div
-        className="h-[34px] md:h-[42px] rounded-t-[10px]"
-        style={{
-          background: stripes,
-          boxShadow: 'inset 0 -8px 14px rgba(28,13,12,0.28), 0 6px 14px rgba(0,0,0,0.35)',
-        }}
-      />
-      {/* scalloped edge */}
-      <div
-        className="h-[16px] md:h-[20px]"
-        style={{
-          background: stripes,
-          WebkitMaskImage: 'radial-gradient(22px at 50% 0, #000 98%, transparent 100%)',
-          maskImage: 'radial-gradient(22px at 50% 0, #000 98%, transparent 100%)',
-          WebkitMaskSize: '44px 100%',
-          maskSize: '44px 100%',
-          WebkitMaskPosition: '0 0',
-          maskPosition: '0 0',
-          WebkitMaskRepeat: 'repeat-x',
-          maskRepeat: 'repeat-x',
-          filter: 'drop-shadow(0 5px 6px rgba(0,0,0,0.3))',
-        }}
-      />
-    </div>
-  );
-}
-
-const chalkboard = {
-  background:
-    'radial-gradient(120% 90% at 30% 20%, rgba(255,255,255,0.045), transparent 60%), radial-gradient(100% 80% at 75% 80%, rgba(255,255,255,0.035), transparent 55%), linear-gradient(160deg, #263229 0%, #1d2622 55%, #222e28 100%)',
-};
-
 export default function Wholesale() {
   const reduce = useReducedMotion();
   const rise = {
-    initial: reduce ? false : { opacity: 0, y: 24 },
+    initial: reduce ? false : { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: '-60px' },
   };
@@ -61,140 +26,82 @@ export default function Wholesale() {
   return (
     <section
       id="wholesale"
-      className="relative overflow-hidden text-center py-[80px] md:py-[130px] px-[6vw] bg-[var(--berry)] text-[var(--cream)]"
+      className="relative overflow-hidden bg-[var(--cream-hi)] px-[6vw] py-[76px] text-[var(--cocoa)] md:py-[112px]"
     >
-      <Bunting className="absolute top-0 left-0 right-0 z-10" />
-      <Starburst size={180} color="var(--gold)" className="pointer-events-none absolute top-[64px] left-[3vw] opacity-[0.12] hidden md:block" />
-      <Starburst size={140} color="var(--gold)" className="pointer-events-none absolute bottom-[64px] right-[4vw] opacity-[0.12] hidden md:block" />
-      {/* diner-table vignette + warm pool of light */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{ background: 'radial-gradient(68% 58% at 50% 44%, rgba(227,180,76,0.13), transparent 72%), radial-gradient(120% 100% at 50% 50%, transparent 54%, rgba(0,0,0,0.38))' }}
-      />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[8px] bg-[var(--berry)]" aria-hidden="true" />
 
-      <div className="relative">
-        <motion.span
-          {...rise}
-          transition={{ duration: 0.7 }}
-          className="block text-[12px] tracking-[5px] uppercase font-bold text-[var(--cream)] opacity-60 mb-6"
-        >
-          Wholesale Program
-        </motion.span>
-
-        {/* ===== Awning + chalkboard trade board ===== */}
-        <motion.div {...rise} transition={{ duration: 0.7, delay: 0.1 }} className="relative mx-auto max-w-[980px]">
-          <Awning />
-
-          {/* wooden frame */}
-          <div
-            className="relative rounded-b-[12px] p-[12px] md:p-[16px]"
-            style={{
-              background: 'linear-gradient(160deg, #6b4a2e, #4b3120 55%, #5d3f27)',
-              boxShadow:
-                '0 34px 80px rgba(0,0,0,0.55), inset 0 0 0 2px rgba(227,180,76,0.5), inset 0 2px 6px rgba(255,255,255,0.12), inset 0 -3px 8px rgba(0,0,0,0.4)',
-            }}
+      <div className="relative mx-auto max-w-[980px]">
+        <motion.div {...rise} transition={{ duration: 0.65 }} className="mb-9 text-center md:mb-12">
+          <span className="mb-3 block text-[11px] font-bold uppercase tracking-[3px] text-[var(--berry)]">
+            Wholesale Program · Est. 2007
+          </span>
+          <h2
+            className="text-[clamp(42px,6vw,70px)] leading-[0.98] text-[var(--berry-deep)]"
+            style={{ fontFamily: 'var(--font-display)' }}
           >
-            <div className="relative grid md:grid-cols-2 rounded-[6px] overflow-hidden" style={{ boxShadow: 'inset 0 0 0 1.5px rgba(28,13,12,0.6)' }}>
-              {/* center wooden rail between the two boards */}
-              <div
-                aria-hidden="true"
-                className="hidden md:block absolute inset-y-0 left-1/2 -translate-x-1/2 w-[10px] z-10"
-                style={{ background: 'linear-gradient(90deg, #3c2717, #6b4a2e 45%, #6b4a2e 55%, #3c2717)' }}
+            Wholesale
+          </h2>
+          <p className="mx-auto mt-4 max-w-[500px] text-[16px] leading-relaxed text-[var(--cocoa)]/75">
+            The same small-batch case, in sizes built for your menu.
+          </p>
+        </motion.div>
+
+        <motion.div
+          {...rise}
+          transition={{ duration: 0.65, delay: 0.08 }}
+          className="grid overflow-hidden rounded-[18px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_18px_50px_rgba(57,22,34,0.09)] md:grid-cols-[0.8fr_1.2fr]"
+        >
+          <div className="flex flex-col justify-center bg-[var(--berry)] px-7 py-9 text-center text-[var(--cream-hi)] md:px-10 md:py-12">
+            <span className="text-[12px] font-bold uppercase tracking-[3px] text-[var(--pink)]">
+              For shops &amp; restaurants
+            </span>
+            <p className="mx-auto mt-5 max-w-[330px] text-[17px] leading-relaxed text-[var(--cream-hi)]/85">
+              Small batches, churned fresh in the Pearl District. Let’s bring Miss Oz to your menu.
+            </p>
+          </div>
+
+          <div className="px-6 py-8 md:px-10 md:py-10">
+            <h3
+              className="text-center text-[25px] text-[var(--berry-deep)] md:text-[29px]"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              Wholesale Offerings
+            </h3>
+
+            <ul className="mt-5 divide-y divide-[rgba(115,32,62,0.14)]">
+              {items.map((item, i) => (
+                <motion.li
+                  key={item.name}
+                  initial={reduce ? false : { opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.4, delay: 0.08 + i * 0.07 }}
+                  className="flex items-center gap-4 py-4"
+                >
+                  {item.photoUrl && (
+                    <img
+                      src={item.photoUrl}
+                      alt=""
+                      loading="lazy"
+                      className="h-14 w-14 shrink-0 rounded-lg object-cover"
+                    />
+                  )}
+                  <span aria-hidden="true" className="text-[var(--berry)]">✦</span>
+                  <span className="min-w-0 text-[16px] leading-relaxed text-[var(--cocoa)] md:text-[17px]" style={{ fontFamily: 'var(--font-sans)' }}>
+                    {item.name}
+                  </span>
+                </motion.li>
+              ))}
+            </ul>
+
+            <div className="mt-2 text-center">
+              <InquireForm
+                type="wholesale"
+                submitLabel="Become our Wholesale Partner"
+                buttonClassName="inline-flex items-center gap-2 rounded-full bg-[var(--berry)] px-7 py-[13px] text-[14px] font-bold tracking-[0.4px] text-[var(--cream-hi)] transition-transform duration-200 mech-btn hover:-translate-y-0.5 hover:bg-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] focus-visible:ring-offset-2"
               />
-
-              {/* LEFT BOARD — title chalkboard */}
-              <div className="flex flex-col items-center justify-center text-center px-[26px] md:px-[42px] py-[42px] md:py-[56px]" style={chalkboard}>
-                <span className="flex items-center gap-2 text-[var(--gold-hi)] text-[11px] tracking-[4px] uppercase font-bold mb-2 opacity-90" style={{ fontFamily: 'var(--font-sans)' }}>
-                  ✦ Est. 2007 ✦
-                </span>
-                <span className="text-[var(--pink)]" style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(21px,2.8vw,29px)', textShadow: '0 0 10px rgba(240,170,190,0.25)' }}>
-                  for shops &amp; restaurants
-                </span>
-                <h2
-                  className="leading-[0.95] my-1 text-[#f3ead6]"
-                  style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(34px,4.6vw,52px)', textShadow: '0 0 14px rgba(243,234,214,0.18), 0 2px 4px rgba(0,0,0,0.45)' }}
-                >
-                  Wholesale
-                </h2>
-                <div className="flex items-center justify-center gap-3 my-3 text-[var(--gold-hi)]" aria-hidden="true">
-                  <span className="h-px w-10" style={{ background: 'currentColor', opacity: 0.55 }} />
-                  <span className="text-[13px]">✦</span>
-                  <span className="h-px w-10" style={{ background: 'currentColor', opacity: 0.55 }} />
-                </div>
-                <p className="italic max-w-[300px] text-[15px] text-[#e9e0cc] opacity-80" style={{ fontFamily: 'var(--font-sans)' }}>
-                  The same small-batch case, in sizes built for your menu.
-                </p>
-
-                {/* trade-counter seal — chalk circle */}
-                <div
-                  className="mt-7 relative flex items-center justify-center rounded-full"
-                  style={{ width: 78, height: 78, boxShadow: 'inset 0 0 0 2px rgba(243,234,214,0.7)' }}
-                >
-                  <svg width="78" height="78" viewBox="0 0 100 100" aria-hidden="true" className="absolute inset-0">
-                    <defs><path id="wholeseal" d="M50,50 m-34,0 a34,34 0 1,1 68,0 a34,34 0 1,1 -68,0" /></defs>
-                    <text style={{ fontFamily: "'EB Garamond', serif", fontSize: 10, letterSpacing: '2px', fontWeight: 600, textTransform: 'uppercase', fill: '#f3ead6' }}>
-                      <textPath href="#wholeseal">· trade counter · est. 2007 ·</textPath>
-                    </text>
-                  </svg>
-                  <img
-                    loading="lazy"
-                    decoding="async"
-                    src="/images/icon-icecream-cone.png"
-                    alt=""
-                    aria-hidden="true"
-                    className="motion-safe:animate-[sealBob_3s_ease-in-out_infinite]"
-                    style={{ width: 38, height: 38, filter: 'drop-shadow(0 0 8px rgba(243,234,214,0.45))' }}
-                  />
-                </div>
-              </div>
-
-              {/* RIGHT BOARD — wholesale offerings */}
-              <div className="text-left px-[26px] md:px-[42px] py-[42px] md:py-[56px]" style={chalkboard}>
-                <div
-                  className="text-center text-[#f3ead6]"
-                  style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,3vw,30px)', textShadow: '0 0 12px rgba(243,234,214,0.16)' }}
-                >
-                  Wholesale Offerings
-                </div>
-
-                <div className="flex items-center justify-center gap-3 mt-4 mb-5 text-[var(--gold-hi)]" aria-hidden="true">
-                  <span className="h-px w-12 md:w-16" style={{ background: 'currentColor', opacity: 0.55 }} />
-                  <span className="text-[13px]">✦</span>
-                  <span className="h-px w-12 md:w-16" style={{ background: 'currentColor', opacity: 0.55 }} />
-                </div>
-
-                <ul>
-                  {items.map((item, i) => (
-                    <motion.li
-                      key={i}
-                      initial={reduce ? false : { opacity: 0, x: -12 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: '-40px' }}
-                      transition={{ duration: 0.5, delay: 0.15 + i * 0.12 }}
-                      className={`flex items-start gap-3 py-[14px] ${i > 0 ? 'border-t border-[rgba(243,234,214,0.18)]' : ''}`}
-                    >
-                      <span aria-hidden="true" className="mt-[5px] text-[var(--gold-hi)]">✦</span>
-                      <div className="min-w-0 text-[18px] md:text-[20px] text-[#f3ead6] leading-tight" style={{ fontFamily: 'var(--font-display)' }}>{item.name}</div>
-                    </motion.li>
-                  ))}
-                </ul>
-
-                <div className="mt-5 pt-4 border-t border-[rgba(243,234,214,0.18)] text-[12px] tracking-[1px] uppercase font-semibold text-[#e9e0cc] opacity-60 text-center" style={{ fontFamily: 'var(--font-sans)' }}>
-                  Small batches · churned fresh in the Pearl District
-                </div>
-
-                <div className="mt-7 text-center">
-                  <InquireForm
-                    type="wholesale"
-                    darkBg
-                    submitLabel="Open a wholesale account"
-                    buttonClassName="inline-flex items-center gap-2 rounded-full px-7 py-[13px] text-[14px] font-bold tracking-[1px] uppercase text-[var(--cocoa)] bg-[var(--cream-hi)] transition-transform duration-200 mech-btn hover:bg-[var(--gold-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold-hi)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1d2622]"
-                  />
-                  <div className="mt-4 text-[12.5px] italic text-[#e9e0cc] opacity-60" style={{ fontFamily: 'var(--font-sans)' }}>
-                    Or say hello at @missozicecreamcafe
-                  </div>
-                </div>
+              <div className="mt-4 text-[13px] text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
+                Or say hello at @missozicecreamcafe
               </div>
             </div>
           </div>

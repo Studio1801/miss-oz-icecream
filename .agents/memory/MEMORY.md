@@ -1,3 +1,4 @@
-- [Miss Oz hero + intro loader](miss-oz-hero-and-loader.md) — screenshot catches the 1.5s splash; logo asset is off-center (header uses -52.18% shift) (toggle Loader useState to false to verify); keep hero a spaced flex column, no negative-margin overlap; gate motion behind reduced-motion.
+- [Miss Oz visual verification](miss-oz-hero-and-loader.md) — instant screenshots often capture the intro splash; wait for it before judging the homepage.
 - [Resend email setup](resend-email-setup.md) — SDK returns {data,error}, never throws; currently in test mode via onboarding@resend.dev until domain verified; user pastes sentences into secret forms — validate.
 - [Vercel external deploy](vercel-external-deploy.md) — artifact vite config must tolerate missing PORT/BASE_PATH; Vercel sets Root Dir to the artifact folder, so vercel.json must live inside it with outputDirectory "dist/public".
+- [Miss Oz one-page staging](miss-oz-one-page-staging.md) — keep the existing one-page site until the final sitemap and real product photos are approved; preserve inquiry, order, and voting flows.

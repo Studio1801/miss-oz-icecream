@@ -11,7 +11,7 @@ const rise = {
 
 export default function Story() {
   return (
-    <section className="parlour-paper relative py-[90px] md:py-[140px] px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section className="parlour-paper relative py-[76px] md:py-[112px] px-[6vw] bg-[var(--cream)] overflow-hidden">
       <Bunting className="absolute top-0 left-0 right-0" />
       {/* Faint decorative laurels in the far corners */}
       <svg aria-hidden="true" className="hidden md:block absolute top-[60px] left-[4vw] opacity-[0.12]" width="120" height="120" viewBox="0 0 100 100">
@@ -20,25 +20,6 @@ export default function Story() {
       <svg aria-hidden="true" className="hidden md:block absolute bottom-[60px] right-[4vw] opacity-[0.12] -scale-x-100" width="120" height="120" viewBox="0 0 100 100">
         <path d="M50 8 C30 20 30 50 50 62 C70 50 70 20 50 8 Z M50 40 C38 48 38 70 50 82 C62 70 62 48 50 40 Z" fill="none" stroke="var(--cocoa)" strokeWidth="1.5" />
       </svg>
-
-      {/* Vintage mascot parade — a still cast of parlor characters strolling across the full width */}
-      <div
-        aria-hidden="true"
-        className="absolute bottom-[8px] left-1/2 -translate-x-1/2 z-20 pointer-events-none flex items-end justify-center gap-[clamp(18px,3vw,44px)] h-[clamp(88px,11vw,170px)] w-max"
-      >
-        {[...Array(4)].map((_, rep) =>
-          ['/images/ice-cream-mascot.webp', '/images/mascot-shake.webp', '/images/mascot-popsicle.webp', '/images/mascot-sundae.webp', '/images/mascot-croffle.webp'].map((src, i) => (
-            <img loading="lazy" decoding="async"
-              key={`${rep}-${i}`}
-              src={src}
-              alt=""
-              aria-hidden="true"
-              className="h-full w-auto shrink-0"
-              style={src.includes('croffle') ? { margin: '0 clamp(-18px,-1.2vw,-9px)' } : undefined}
-            />
-          ))
-        )}
-      </div>
 
       {/* Aged paper panel */}
       <motion.div
@@ -64,7 +45,7 @@ export default function Story() {
             <div className="wax-seal-crack" />
             <svg width="84" height="84" viewBox="0 0 100 100" aria-hidden="true" className="absolute inset-0">
               <defs><path id="storyseal" d="M50,50 m-34,0 a34,34 0 1,1 68,0 a34,34 0 1,1 -68,0" /></defs>
-              <text style={{ fontFamily: "'EB Garamond', serif", fontSize: 10.5, letterSpacing: '2px', fontWeight: 600, textTransform: 'uppercase', fill: 'var(--cream)' }}>
+              <text style={{ fontFamily: 'var(--font-sans)', fontSize: 10.5, letterSpacing: '2px', fontWeight: 600, textTransform: 'uppercase', fill: 'var(--cream)' }}>
                 <textPath href="#storyseal">· est. 2007 · Pearl District ·</textPath>
               </text>
             </svg>

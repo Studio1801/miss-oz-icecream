@@ -12,10 +12,6 @@ import Reels from '../components/Reels';
 import PawTrail from '../components/PawTrail';
 import { MotionConfig } from 'framer-motion';
 
-const CheckerRule = () => (
-  <div className="checker-floor h-[26px] border-y-2 border-[var(--cocoa)]" aria-hidden="true" />
-);
-
 function GlobalMarqueeBorder() {
   const frameWidth = 'clamp(14px, 2vw, 26px)';
   const centerOffset = `calc(3px + (${frameWidth} / 2))`;
@@ -65,14 +61,14 @@ export default function Home() {
       <Postcard />
       <Marquee />
       {/* New Flavor Alert + Vote for Next Flavor — merged below the menu panel */}
-      <div id="menu" style={{ scrollMarginTop: '32px' }}><FlavorStation /></div>
-      <CheckerRule />
+      <FlavorStation />
+      <div className="my-3 mx-[6vw] h-px bg-[var(--pink)] opacity-50" aria-hidden="true" />
       <div id="about" style={{ scrollMarginTop: '32px' }}><Story /></div>
       <div id="oz" style={{ scrollMarginTop: '32px' }}><MeetOz /></div>
       <Reels />
       <div id="wholesale" style={{ scrollMarginTop: '32px' }}><Wholesale /></div>
       <div id="events" style={{ scrollMarginTop: '32px' }}><Events /></div>
-      <CheckerRule />
+      <div className="my-3 mx-[6vw] h-px bg-[var(--pink)] opacity-50" aria-hidden="true" />
       <div id="contact" style={{ scrollMarginTop: '32px' }}><Guestbook /></div>
       <Footer />
     </main>

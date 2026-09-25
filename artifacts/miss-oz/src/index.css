@@ -1,12 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Montserrat:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=EB+Garamond:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
 
-@font-face {
-  font-family: 'Libertinus Math';
-  src: url('/fonts/LibertinusMath-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
 @font-face {
   font-family: 'Higante';
   src: url('/fonts/Higante-Black.otf') format('opentype');
@@ -113,28 +106,24 @@
   --muted: 39 60% 80%;
   --muted-foreground: 3 39% 40%;
   
-  --accent: 41 57% 51%; /* gold */
-  --accent-foreground: 40 70% 93%;
+  --accent: 334 52% 82%; /* pink */
+  --accent-foreground: 335 60% 23%;
   
   --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
   
   --input: 3 39% 8%;
-  --ring: 41 57% 51%;
+  --ring: 334 54% 36%;
 
-  /* Typography (Aug 2026, client-approved stack):
-     Miss Oz headline      = Higante (var(--font-display))
-     Taglines / scripts    = DM Serif Display (var(--font-script)) — replaced Lemongrass per client direction
-     Nav, labels, body     = Montserrat — free Gotham substitute (var(--font-sans))
-     Editorial / display   = DM Serif Display — free Citizen Semibold substitute (var(--font-groovy)) */
+  /* One supporting sans, one serif accent, and Higante only for short display text. */
   --app-font-sans: 'Montserrat', sans-serif;
   --app-font-serif: 'DM Serif Display', serif;
   --app-font-mono: Menlo, monospace;
-  --font-display: 'Higante', 'Shrikhand', cursive;
+  --font-display: 'Higante', 'DM Serif Display', serif;
   --font-script: 'DM Serif Display', serif;
   --font-script-alt: 'DM Serif Display', serif;
   --font-groovy: 'DM Serif Display', serif;
-  --font-accent: 'Higante', 'Shrikhand', cursive;
+  --font-accent: 'Higante', 'DM Serif Display', serif;
 
   --radius: 0.5rem;
 }
@@ -156,12 +145,12 @@
   --secondary-foreground: 335 60% 23%;
   --muted: 39 60% 80%;
   --muted-foreground: 3 39% 40%;
-  --accent: 41 57% 51%;
-  --accent-foreground: 40 70% 93%;
+  --accent: 334 52% 82%;
+  --accent-foreground: 335 60% 23%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
   --input: 3 39% 8%;
-  --ring: 41 57% 51%;
+  --ring: 334 54% 36%;
 }
 
 @layer base {
@@ -191,15 +180,6 @@
     background-size: 58px 46px;
     background-position: 29px 0;
   }
-  /* Gold/cream checkerboard — echoes the seasonal reel footer */
-  .checker-strip {
-    background-color: var(--cream-hi);
-    background-image:
-      linear-gradient(45deg, var(--gold-hi) 25%, transparent 25%, transparent 75%, var(--gold-hi) 75%),
-      linear-gradient(45deg, var(--gold-hi) 25%, transparent 25%, transparent 75%, var(--gold-hi) 75%);
-    background-size: 26px 26px;
-    background-position: 0 0, 13px 13px;
-  }
   /* Aged-paper wash — faint corner stains + edge vignette for a well-loved parlour feel */
   .parlour-paper {
     background-image:
@@ -207,15 +187,6 @@
       radial-gradient(circle at 15% 18%, rgba(120,80,30,0.07), transparent 26%),
       radial-gradient(circle at 85% 84%, rgba(120,80,30,0.07), transparent 26%),
       radial-gradient(circle at 78% 12%, rgba(90,55,20,0.05), transparent 20%);
-  }
-  /* Classic soda-fountain checkerboard floor — cherry-red on cream */
-  .checker-floor {
-    background-color: var(--cream-hi);
-    background-image:
-      linear-gradient(45deg, var(--mint-deep) 25%, transparent 25%, transparent 75%, var(--mint-deep) 75%),
-      linear-gradient(45deg, var(--mint-deep) 25%, transparent 25%, transparent 75%, var(--mint-deep) 75%);
-    background-size: 34px 34px;
-    background-position: 0 0, 17px 17px;
   }
   /* Hanging pennant bunting — a string of triangular parlor flags */
   .bunting {

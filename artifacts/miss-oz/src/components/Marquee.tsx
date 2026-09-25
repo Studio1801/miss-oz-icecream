@@ -2,42 +2,32 @@ export default function Marquee() {
   // Scrolling brand ribbon — Portland roots, handmade, est. 2007.
   const segment = (
     <>
-      <span className="font-script text-[var(--gold-hi)] font-normal text-[28px] md:text-[38px] whitespace-nowrap"
-        style={{ textShadow: '0 0 14px rgba(227,180,76,0.75), 0 0 28px rgba(227,180,76,0.4)' }}>
+      <span className="font-script text-[var(--berry)] font-normal text-[28px] md:text-[38px] whitespace-nowrap">
         Portland's Own
       </span>
-      <span className="text-[var(--gold-hi)] text-[16px] md:text-[20px]"
-        style={{ textShadow: '0 0 8px rgba(227,180,76,0.8)' }}>✦</span>
-      <span className="font-display font-normal uppercase text-[22px] md:text-[30px] text-[var(--cream)] tracking-[3px] whitespace-nowrap"
-        style={{ textShadow: '0 0 12px rgba(242,225,194,0.55), 0 0 26px rgba(242,225,194,0.3)' }}>
+      <span className="text-[var(--pink)] text-[16px] md:text-[20px]">✦</span>
+      <span className="font-display font-normal uppercase text-[22px] md:text-[30px] text-[var(--cocoa)] tracking-[3px] whitespace-nowrap">
         Ice Cream Cafe
-        <span className="ml-2 not-uppercase" style={{ color: 'var(--pink)', textShadow: '0 0 10px rgba(244,169,199,0.7)' }}>♥</span>
+        <span className="ml-2 not-uppercase text-[var(--berry)]">♥</span>
       </span>
-      <span className="text-[var(--gold-hi)] text-[16px] md:text-[20px]"
-        style={{ textShadow: '0 0 8px rgba(227,180,76,0.8)' }}>✦</span>
-      <span className="font-display font-normal uppercase text-[18px] md:text-[24px] text-[var(--cream)] tracking-[4px] whitespace-nowrap"
-        style={{ textShadow: '0 0 10px rgba(242,225,194,0.4)' }}>
+      <span className="text-[var(--pink)] text-[16px] md:text-[20px]">✦</span>
+      <span className="font-display font-normal uppercase text-[18px] md:text-[24px] text-[var(--cocoa)] tracking-[4px] whitespace-nowrap">
         Est. 2007
       </span>
-      <span className="text-[var(--gold-hi)] text-[16px] md:text-[20px]"
-        style={{ textShadow: '0 0 8px rgba(227,180,76,0.8)' }}>✦</span>
+      <span className="text-[var(--pink)] text-[16px] md:text-[20px]">✦</span>
     </>
   );
 
   return (
-    <div aria-hidden="true" className="relative z-10">
-      <div className="checker-floor h-[14px]" />
-      <div className="h-[4px] bg-[var(--gold)] shadow-[inset_0_1px_2px_rgba(255,255,255,0.7),0_2px_4px_rgba(0,0,0,0.5)] relative z-20" />
-      <div className="overflow-hidden py-5 md:py-6 shadow-[inset_0_8px_24px_rgba(0,0,0,0.8),inset_0_-8px_24px_rgba(0,0,0,0.8)]"
-        style={{ background: '#110505' }}>
+    <div aria-hidden="true" className="relative z-10 border-y border-[rgba(113,37,65,0.18)] bg-[var(--cream-hi)]">
+      <div className="overflow-hidden py-5 md:py-6">
         <div className="flex justify-center px-4 pb-4 md:pb-5">
           <div
-            className="inline-flex items-center gap-[10px] md:gap-3 rounded-full border border-[rgba(227,180,76,0.75)] bg-[rgba(227,180,76,0.12)] px-4 md:px-6 py-2.5 text-center font-display font-bold uppercase text-[var(--gold-hi)] tracking-[2px] md:tracking-[3px] text-[16px] md:text-[30px] whitespace-nowrap"
-            style={{ boxShadow: '0 0 18px rgba(227,180,76,0.18), inset 0 0 14px rgba(227,180,76,0.08)', textShadow: '0 0 10px rgba(227,180,76,0.7)' }}
+            className="inline-flex items-center gap-[10px] md:gap-3 rounded-full border border-[rgba(113,37,65,0.22)] bg-[rgba(244,169,199,0.16)] px-4 md:px-6 py-2 text-center font-display font-bold uppercase text-[var(--berry-deep)] tracking-[2px] md:tracking-[3px] text-[16px] md:text-[30px] whitespace-nowrap"
           >
-            <span aria-hidden="true" className="text-[11px] md:text-[17px]">✦</span>
+            <span aria-hidden="true" className="text-[11px] md:text-[17px] text-[var(--pink)]">✦</span>
             Small Batch, Big Heart
-            <span aria-hidden="true" className="text-[11px] md:text-[17px]">✦</span>
+            <span aria-hidden="true" className="text-[11px] md:text-[17px] text-[var(--pink)]">✦</span>
           </div>
         </div>
         <div className="mq-track flex gap-10 w-max items-center animate-[mq_22s_linear_infinite]">
@@ -48,8 +38,6 @@ export default function Marquee() {
           ))}
         </div>
       </div>
-      <div className="h-[4px] bg-[var(--gold)] shadow-[inset_0_1px_2px_rgba(255,255,255,0.7),0_-2px_4px_rgba(0,0,0,0.5)] relative z-20" />
-      <div className="checker-floor h-[14px]" />
     </div>
   );
 }

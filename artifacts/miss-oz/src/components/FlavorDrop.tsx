@@ -125,7 +125,7 @@ export default function FlavorDrop() {
                   <div
                     className="text-center leading-[1.1]"
                     style={{
-                      fontFamily: "'Cookie', cursive",
+                      fontFamily: 'var(--font-script)',
                       fontSize: 'clamp(28px, 8vw, 42px)',
                       color: 'var(--cream-hi)',
                     }}
@@ -247,7 +247,6 @@ export default function FlavorDrop() {
       </div>
 
       {/* Checkerboard parlour-floor strip */}
-      <div className="checker-strip absolute bottom-0 left-0 right-0 h-[22px]" aria-hidden="true" />
     </section>
   );
 }

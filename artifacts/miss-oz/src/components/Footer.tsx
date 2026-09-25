@@ -84,13 +84,13 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email here*"
                 className="w-full py-[12px] px-[14px] bg-[rgba(255,255,255,0.03)] border-2 border-[var(--berry)] text-[var(--cream)] placeholder-[rgba(242,225,194,0.5)] text-[15px] mb-[12px] focus:outline-none focus:border-[var(--gold-hi)] transition-colors rounded-sm"
-                style={{ fontFamily: "'EB Garamond', serif" }}
+                style={{ fontFamily: 'var(--font-sans)' }}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
               />
               <button
                 onClick={handleSubscribe}
                 className="clickable w-full py-[12px] px-[14px] bg-[var(--berry)] text-[var(--cream-hi)] text-[14px] tracking-[2px] uppercase font-semibold mech-btn hover:bg-[var(--berry-deep)] transition-colors rounded-sm"
-                style={{ fontFamily: "'EB Garamond', serif" }}
+                style={{ fontFamily: 'var(--font-sans)' }}
               >
                 Subscribe
               </button>
