@@ -6,7 +6,6 @@ const CARDS = [
   { name: 'Vietnam Coffee', note: 'deep roast with a creamy condensed finish', bg: '#EAD8BE', icon: '/images/icon-vietnam-coffee.svg', img: '/images/vietnam-coffee-vote.jpeg' },
   { name: 'Honey Lavender', note: 'wildflower honey with a soft floral bloom', bg: '#E6DDF4', icon: '/images/icon-honey-lavender.svg', img: '/images/honey-lavender-vote.jpeg' },
 ];
-const SEED_VOTES = [84, 121, 63];
 const VOTE_KEY = 'missoz-flavor-vote-v3';
 
 const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 'italic' as const };
@@ -24,23 +23,31 @@ function CountUp({ to, reduce, suffix = '' }: { to: number; reduce: boolean; suf
 async function fetchResults() {
   const res = await fetch('/api/results');
   if (!res.ok) throw new Error();
-  return ((await res.json()) as { votes: Record<string, number> }).votes;
+  const data = (await res.json()) as { votes: Record<string, number> };
+  return CARDS.map(card => {
+    const count = data.votes?.[card.name];
+    if (!Number.isSafeInteger(count) || count < 0) throw new Error('Invalid vote totals');
+    return count;
+  });
 }
 
 async function postVote(flavor: string) {
-  await fetch('/api/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ flavor }) });
+  const res = await fetch('/api/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ flavor }) });
+  if (!res.ok) throw new Error('Vote not recorded');
 }
 
 export default function FlavorVoting() {
   const reduce = !!useReducedMotion();
-  const [votes, setVotes] = useState<number[]>(SEED_VOTES);
+  const [votes, setVotes] = useState<number[] | null>(null);
+  const [voteError, setVoteError] = useState('');
+  const [pending, setPending] = useState(false);
   const [choice, setChoice] = useState<number | null>(null);
   const [burst, setBurst] = useState<number | null>(null);
   const [expanded, setExpanded] = useState<number | null>(null);
   const burstTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const total = votes.reduce((a, b) => a + b, 0);
-  const leader = votes.indexOf(Math.max(...votes));
+  const total = votes?.reduce((a, b) => a + b, 0) ?? 0;
+  const leader = total > 0 ? votes!.indexOf(Math.max(...votes!)) : -1;
   const revealed = choice !== null;
 
   useEffect(() => () => { if (burstTimer.current) clearTimeout(burstTimer.current); }, []);
@@ -51,23 +58,33 @@ export default function FlavorVoting() {
     } catch { /* ignore */ }
   }, []);
   useEffect(() => {
-    fetchResults().then(api => {
-      const counts = CARDS.map(c => api[c.name] ?? 0);
-      if (counts.some(v => v > 0)) setVotes(counts);
-    }).catch(() => {});
+    fetchResults().then(setVotes).catch(() => setVoteError('Vote totals are unavailable right now.'));
   }, []);
 
-  function handleVote(i: number) {
-    if (revealed) return;
-    setVotes(v => v.map((n, idx) => idx === i ? n + 1 : n));
-    setChoice(i);
-    try { localStorage.setItem(VOTE_KEY, JSON.stringify({ choice: i })); } catch { /* ignore */ }
-    setBurst(i);
-    if (!reduce) {
-      if (burstTimer.current) clearTimeout(burstTimer.current);
-      burstTimer.current = setTimeout(() => setBurst(null), 900);
+  async function handleVote(i: number) {
+    if (revealed || pending || !votes) return;
+    setPending(true);
+    setVoteError('');
+    try {
+      await postVote(CARDS[i].name);
+      setChoice(i);
+      try { localStorage.setItem(VOTE_KEY, JSON.stringify({ choice: i })); } catch { /* ignore */ }
+      setBurst(i);
+      if (!reduce) {
+        if (burstTimer.current) clearTimeout(burstTimer.current);
+        burstTimer.current = setTimeout(() => setBurst(null), 900);
+      }
+      try {
+        setVotes(await fetchResults());
+      } catch {
+        setVotes(null);
+        setVoteError('Your vote was recorded, but totals are unavailable right now.');
+      }
+    } catch {
+      setVoteError('We could not record your vote. Please try again.');
+    } finally {
+      setPending(false);
     }
-    postVote(CARDS[i].name).catch(() => {});
   }
 
   return (
@@ -109,7 +126,7 @@ export default function FlavorVoting() {
           boxShadow: '0 10px 28px rgba(57,22,34,0.08)',
         }}>
         {CARDS.map((card, i) => {
-          const pct = total ? Math.round((votes[i] / total) * 100) : 0;
+          const pct = total && votes ? Math.round((votes[i] / total) * 100) : 0;
           const isChoice = choice === i;
           const isLeader = revealed && i === leader;
           const isOpen = expanded === i;
@@ -222,10 +239,10 @@ export default function FlavorVoting() {
                             )}
 
                             {!revealed ? (
-                              <button onClick={() => handleVote(i)}
-                                className="relative vote-btn clickable font-sans border-none py-[8px] px-[20px] rounded-full text-[12.5px] font-semibold tracking-[0.4px] mech-btn transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] hover:-translate-y-0.5"
+                              <button onClick={() => handleVote(i)} disabled={!votes || pending}
+                                className="relative vote-btn clickable font-sans border-none py-[8px] px-[20px] rounded-full text-[12.5px] font-semibold tracking-[0.4px] mech-btn transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ background: 'var(--cocoa)', color: 'var(--cream-hi)', fontFamily: 'var(--font-sans)' }}>
-                                Vote for this ♥
+                                {pending ? 'Recording vote…' : 'Vote for this ♥'}
                                 {burst === i && !reduce && [...Array(8)].map((_, j) => {
                                   const angle = (j * 45 + Math.random() * 20 - 10) * (Math.PI / 180);
                                   const dist = 34 + Math.random() * 16;
@@ -252,7 +269,7 @@ export default function FlavorVoting() {
                                   </div>
                                   <div className="text-[10.5px] mt-[4px]"
                                     style={{ color: 'var(--cocoa)', opacity: 0.55, fontFamily: 'var(--font-sans)' }}>
-                                    <CountUp to={votes[i]} reduce={reduce} /> votes
+                                    {votes ? <><CountUp to={votes[i]} reduce={reduce} /> votes</> : 'Totals unavailable'}
                                     {isChoice && <span className="ml-1 font-bold" style={{ color: 'var(--berry-deep)', opacity: 1 }}>· your pick ♥</span>}
                                   </div>
                                 </div>
@@ -277,7 +294,7 @@ export default function FlavorVoting() {
       {/* Vote total */}
       <div className="mt-[14px] text-[10.5px] tracking-[3px] uppercase font-semibold"
         style={{ color: 'rgba(115,32,62,0.6)', fontFamily: 'var(--font-sans)' }}>
-        {total.toLocaleString()} neighbors have voted
+        {voteError || (votes ? (total === 0 ? 'No votes yet — be the first.' : `${total.toLocaleString()} neighbors have voted`) : 'Loading vote totals…')}
       </div>
     </motion.div>
   );

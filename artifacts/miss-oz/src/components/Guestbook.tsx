@@ -6,14 +6,8 @@ const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 
 
 type Entry = { id: string; name: string; note: string; when: string };
 
-const SEED: Entry[] = [
-  { id: 'seed-1', name: 'The Alvarez family', note: 'Sunday scoops after the farmers market — a tradition since the twins were tiny.', when: 'May 2026' },
-  { id: 'seed-2', name: 'Dev & Priya', note: 'First date was a shared marionberry cone. Married now. Still share the cone.', when: 'April 2026' },
-  { id: 'seed-3', name: 'Margot from 12th Ave', note: 'The record was playing Ella. I stayed for a second scoop. No regrets.', when: 'March 2026' },
-];
-
-function sanitizeEntries(raw: unknown): Entry[] | null {
-  if (!Array.isArray(raw)) return null;
+function sanitizeEntries(raw: unknown): Entry[] {
+  if (!Array.isArray(raw)) throw new Error('Invalid guestbook response');
   const clean: Entry[] = [];
   for (const item of raw) {
     if (!item || typeof item !== 'object') continue;
@@ -25,12 +19,14 @@ function sanitizeEntries(raw: unknown): Entry[] | null {
     if (!name || !note) continue;
     clean.push({ id, name: name.slice(0, 40), note: note.slice(0, 180), when: when || '—' });
   }
-  return clean.length ? clean : null;
+  return clean;
 }
 
 export default function Guestbook() {
-  const [entries, setEntries] = useState<Entry[]>(SEED);
+  const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [name, setName] = useState('');
   const [note, setNote] = useState('');
   const [justSigned, setJustSigned] = useState(false);
@@ -40,51 +36,49 @@ export default function Guestbook() {
   useEffect(() => {
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     fetch(`${base}/api/guestbook`)
-      .then((r) => r.ok ? r.json() : null)
-      .then((data) => {
-        const fetched = sanitizeEntries(data?.entries);
-        setEntries(fetched && fetched.length > 0 ? fetched : SEED);
+      .then((r) => {
+        if (!r.ok) throw new Error('Could not load guestbook');
+        return r.json();
       })
-      .catch(() => {
-        /* offline / API down — keep seed entries */
-      })
+      .then((data) => setEntries(sanitizeEntries(data?.entries)))
+      .catch(() => setLoadError(true))
       .finally(() => setLoading(false));
   }, []);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const cleanName = name.trim();
     const cleanNote = note.trim();
-    if (!cleanName || !cleanNote) return;
-
-    const when = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    const tempId = `local-${Date.now()}`;
-    const optimistic: Entry = { id: tempId, name: cleanName, note: cleanNote, when };
-
-    // Optimistically prepend
-    setEntries((prev) => [optimistic, ...prev]);
-    setName('');
-    setNote('');
-    setJustSigned(true);
-    if (liveRef.current) liveRef.current.textContent = 'Thank you — your note is in the book.';
-    window.setTimeout(() => setJustSigned(false), 2600);
-
-    // Persist to server (replaces temp entry with the server-assigned one)
+    if (!cleanName || !cleanNote || submitting) return;
+    setSubmitting(true);
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-    fetch(`${base}/api/guestbook`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: cleanName, note: cleanNote }),
-    })
-      .then((r) => r.ok ? r.json() : null)
-      .then((data) => {
-        if (data?.entry) {
-          setEntries((prev) =>
-            prev.map((e) => (e.id === tempId ? (data.entry as Entry) : e))
-          );
-        }
-      })
-      .catch(() => { /* signing still showed — entry may appear after reload */ });
+    try {
+      const posted = await fetch(`${base}/api/guestbook`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: cleanName, note: cleanNote }),
+      });
+      if (!posted.ok) throw new Error('Could not submit guestbook entry');
+      const data = await posted.json();
+      const refreshed = await fetch(`${base}/api/guestbook`);
+      if (!refreshed.ok) throw new Error('Could not confirm guestbook entry');
+      const stored = sanitizeEntries((await refreshed.json())?.entries);
+      setEntries(stored);
+      setLoadError(false);
+      if (!stored.some((entry) => entry.id === data?.entry?.id)) {
+        if (liveRef.current) liveRef.current.textContent = 'Your note was received, but we could not confirm it was saved. Please try again later.';
+        return;
+      }
+      setName('');
+      setNote('');
+      setJustSigned(true);
+      if (liveRef.current) liveRef.current.textContent = 'Thank you — your note is in the book.';
+      window.setTimeout(() => setJustSigned(false), 2600);
+    } catch {
+      if (liveRef.current) liveRef.current.textContent = 'We could not confirm your note was saved. Please try again later.';
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -194,10 +188,10 @@ export default function Guestbook() {
                 <span className="text-[13px] text-[var(--cocoa)] opacity-55 italic" style={{ fontFamily: 'var(--font-sans)' }}>{note.length}/180</span>
                 <button
                   type="submit"
-                  disabled={!name.trim() || !note.trim()}
+                  disabled={!name.trim() || !note.trim() || submitting}
                   className="bg-[var(--cocoa)] text-[var(--cream)] py-[11px] px-[26px] rounded-full text-[14px] font-semibold tracking-[0.5px] mech-btn hover:bg-[var(--berry)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)]"
                 >
-                  {justSigned ? 'Signed ♥' : 'Leave your mark'}
+                  {submitting ? 'Signing…' : justSigned ? 'Signed ♥' : 'Leave your mark'}
                 </button>
               </div>
               <p ref={liveRef} aria-live="polite" className="sr-only" />
@@ -218,6 +212,11 @@ export default function Guestbook() {
                 </span>
               </div>
 
+              {!loading && (loadError || entries.length === 0) && (
+                <p className="py-4 text-[14.5px] italic text-[var(--cocoa)]" role="status">
+                  {loadError ? 'Guestbook entries are unavailable right now.' : 'No entries yet. Be the first to sign the book.'}
+                </p>
+              )}
               <ul className="flex flex-col" role="list">
                 {entries.slice(0, 6).map((entry, i) => (
                   <motion.li
