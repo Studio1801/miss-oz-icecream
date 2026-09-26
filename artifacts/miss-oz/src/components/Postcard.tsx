@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bunting } from './Decor';
 import OrderChooser from './OrderChooser';
-import MenuSection from './MenuSection';
 
 /* Full-width homepage slideshow — real storefront photos */
 const SLIDES: { src: string; alt: string; pos?: string }[] = [
@@ -28,47 +27,32 @@ const SLIDES: { src: string; alt: string; pos?: string }[] = [
 ];
 
 const NAV = [
-  { label: 'Home', target: 'home' },
-  { label: 'About', target: 'about' },
+  { label: 'Home', target: '' },
+  { label: 'Menu', target: 'menu' },
+  { label: 'New Flavor', target: 'new-flavor' },
+  { label: 'About Us', target: 'about' },
   { label: 'Wholesale', target: 'wholesale' },
-  { label: 'Event', target: 'events' },
+  { label: 'Events', target: 'events' },
   { label: 'Contact', target: 'contact' },
 ];
-const MOBILE_NAV = [NAV[0], { label: 'Menu', target: 'menu' }, ...NAV.slice(1)];
-// Desktop header split: NAV.slice(0, 2) → left | NAV.slice(2) → right
+// Desktop header split: three links left of the logo, four to the right.
 
 const UBEREATS_URL = 'https://www.ubereats.com/store/miss-oz-ice-cream-cafe-aka-cool-moon-ice-creams/YEfj7ZgZS2m7Wm2og7PphQ';
 
-const hrefFor = (t: string) => (t === 'ubereats' ? UBEREATS_URL : t === 'home' ? '#home' : `#${t}`);
-
-function scrollToId(target: string, behavior: ScrollBehavior = 'smooth') {
-  if (target === 'home') { window.scrollTo({ top: 0, behavior }); return; }
-  const el = document.getElementById(target);
-  if (!el) return;
-  // Capture position at click-time so mid-scroll layout shifts (framer-motion) can't redirect us
-  const top = Math.round(el.getBoundingClientRect().top + window.scrollY - (window.innerWidth >= 768 ? 94 : 64));
-  window.scrollTo({ top, behavior });
-}
-
-function handleNav(e: React.MouseEvent<HTMLAnchorElement>, target: string) {
-  if (target === 'ubereats') return;
-  e.preventDefault();
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  scrollToId(target, reduce ? 'auto' : 'smooth');
-}
+const hrefFor = (target: string) => `${import.meta.env.BASE_URL}${target}`;
 
 /* Soft ink-on-paper fade on all four edges of the hero scene */
 const HERO_MASK =
   'linear-gradient(to bottom, transparent 0%, black 8%, black 96%, transparent 100%), linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%)';
 
-export default function Postcard() {
+export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   const [slide, setSlide] = useState(0);
   const [paused, setPaused] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
+    const mq = window.matchMedia('(min-width: 1024px)');
     const close = (e: MediaQueryListEvent) => { if (e.matches) setMenuOpen(false); };
     mq.addEventListener('change', close);
     return () => mq.removeEventListener('change', close);
@@ -82,10 +66,10 @@ export default function Postcard() {
   }, []);
 
   useEffect(() => {
-    if (paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!showHero || paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const t = setInterval(() => setSlide((s) => (s + 1) % SLIDES.length), 11000);
     return () => clearInterval(t);
-  }, [paused, slide]);
+  }, [paused, slide, showHero]);
 
   // Prevent page scrolling behind the fixed mobile menu overlay
   useEffect(() => {
@@ -94,12 +78,15 @@ export default function Postcard() {
   }, [menuOpen]);
 
   const current = SLIDES[slide] ?? SLIDES[0];
+  const compactHeader = isHeaderScrolled || !showHero;
 
   return (
     <>
     <section
       id="home"
-      className="relative pt-0 md:pt-[clamp(56px,7.5vw,100px)] pb-[clamp(30px,5vw,60px)] overflow-hidden"
+      className={showHero
+        ? 'relative pt-0 lg:pt-[clamp(56px,7.5vw,100px)] pb-[clamp(30px,5vw,60px)] overflow-hidden'
+        : 'relative pt-[72px] lg:pt-[110px] overflow-hidden'}
       aria-label="Miss Oz Ice Cream & Dessert Cafe"
     >
       {/* Bunting hanging below the global border */}
@@ -112,18 +99,18 @@ export default function Postcard() {
       </div>
 
       {/* MASTHEAD — desktop only; mobile nav overlays the hero photo */}
-      <div aria-hidden="true" className="hidden md:block h-[clamp(130px,13vw,170px)]" />
+      {showHero && <div aria-hidden="true" className="hidden lg:block h-[clamp(130px,13vw,170px)]" />}
       <header
-        className="fixed top-0 left-0 right-0 z-[970] px-[4vw] hidden md:block transition-[padding,background-color,box-shadow] duration-300 ease-out"
+        className="fixed top-0 left-0 right-0 z-[970] px-[3vw] hidden lg:block transition-[padding,background-color,box-shadow] duration-300 ease-out"
         style={{
           left: 'clamp(14px, 2vw, 26px)',
           right: 'clamp(14px, 2vw, 26px)',
-          paddingTop: isHeaderScrolled ? '7px' : '12px',
-          paddingBottom: isHeaderScrolled ? '7px' : '16px',
+          paddingTop: compactHeader ? '7px' : '12px',
+          paddingBottom: compactHeader ? '7px' : '16px',
           background: 'var(--cream)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
-          boxShadow: isHeaderScrolled ? '0 6px 22px rgba(20,8,12,0.2)' : '0 5px 18px rgba(20,8,12,0.12)',
+          boxShadow: compactHeader ? '0 6px 22px rgba(20,8,12,0.2)' : '0 5px 18px rgba(20,8,12,0.12)',
         }}
       >
 
@@ -132,35 +119,33 @@ export default function Postcard() {
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-          className="relative hidden md:grid items-stretch transition-[grid-template-columns,min-height] duration-300 ease-out"
+          className="relative hidden lg:grid items-stretch transition-[grid-template-columns,min-height] duration-300 ease-out"
           style={{
-            gridTemplateColumns: isHeaderScrolled
-              ? 'minmax(0,1fr) clamp(104px,12vw,140px) minmax(0,1fr)'
+            gridTemplateColumns: compactHeader
+              ? 'minmax(0,1fr) clamp(90px,10vw,120px) minmax(0,1fr)'
               : 'minmax(0,1fr) clamp(150px,16vw,190px) minmax(0,1fr)',
-            minHeight: isHeaderScrolled ? '68px' : 'clamp(122px,14vw,160px)',
+            minHeight: compactHeader ? '68px' : 'clamp(122px,14vw,160px)',
             overflow: 'visible',
           }}
         >
           {/* LEFT */}
           <div className="flex flex-col justify-center py-[clamp(10px,1.1vw,14px)]" style={{ borderTop: '1.5px solid var(--marionberry)', borderBottom: '1.5px solid var(--marionberry)' }}>
-            <div className="flex items-center justify-center gap-[clamp(14px,2.6vw,44px)]">
-            <nav aria-label="Primary" className="flex items-center justify-center gap-[clamp(14px,2.6vw,44px)]">
-              {NAV.slice(0, 2).map((n) => (
+            <div className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
+            <nav aria-label="Primary" className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
+              {NAV.slice(0, 3).map((n) => (
                 <a
                   key={n.label}
                   href={hrefFor(n.target)}
-                  onClick={(e) => handleNav(e, n.target)}
                   className="whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
-                  style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10px,0.95vw,12px)', letterSpacing: 'clamp(1.5px,0.2vw,2.5px)' }}
+                  style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
                   {n.label}
                 </a>
               ))}
             </nav>
             <a
-              href="#oz"
-              onClick={(e) => handleNav(e, 'oz')}
-              className="group relative text-center leading-snug hidden md:block cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
+              href={`${hrefFor('about')}#oz`}
+              className="group relative text-center leading-snug hidden xl:block cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
               style={{
                 fontFamily: 'var(--font-sans)',
                 color: '#9A6E0B',
@@ -191,15 +176,13 @@ export default function Postcard() {
 
           {/* RIGHT */}
           <div className="flex flex-col justify-center py-[clamp(10px,1.1vw,14px)]" style={{ borderTop: '1.5px solid var(--marionberry)', borderBottom: '1.5px solid var(--marionberry)' }}>
-            <nav aria-label="Primary continued" className="flex items-center justify-center gap-[clamp(10px,1.8vw,30px)]">
-              {NAV.slice(2).map((n) => (
+            <nav aria-label="Primary continued" className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
+              {NAV.slice(3).map((n) => (
                 <a
                   key={n.label}
                   href={hrefFor(n.target)}
-                  {...(n.target === 'ubereats' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  onClick={(e) => handleNav(e, n.target)}
                   className="whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
-                  style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10px,0.95vw,12px)', letterSpacing: 'clamp(1.5px,0.2vw,2.5px)' }}
+                  style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
                   {n.label}
                 </a>
@@ -220,7 +203,7 @@ export default function Postcard() {
               alt="Miss Oz — Ice Cream Cafe, Portland Oregon"
               className="h-auto transition-[width] duration-300 ease-out"
               style={{
-                width: isHeaderScrolled ? 'clamp(64px,6.2vw,78px)' : 'clamp(240px,22.5vw,285px)',
+                width: compactHeader ? 'clamp(64px,6.2vw,78px)' : 'clamp(240px,22.5vw,285px)',
                 filter: 'drop-shadow(0 2px 10px rgba(93,26,58,0.18))',
               }}
             />
@@ -235,6 +218,7 @@ export default function Postcard() {
         />
       </header>
 
+      {showHero && <>
       {/* HERO SCENE — composite: cone foreground left + rotating café backdrop right.
           z-[955] lifts the photo above the fixed paper (940) / grain (950) overlays so it stays
           bright and natural, while staying below the marquee frame (960). */}
@@ -357,8 +341,7 @@ export default function Postcard() {
               {/* CTA button */}
               <div className="flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
                 <a
-                  href="#menu"
-                  onClick={(e) => handleNav(e, 'menu')}
+                  href={hrefFor('menu')}
                   className="group relative inline-flex items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 hover:scale-[1.06] hover:-translate-y-[2px] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                   style={{
                     fontFamily: 'var(--font-sans)',
@@ -435,6 +418,7 @@ export default function Postcard() {
           </div>
         </div>
       </div>
+      </>}
 
       {/* MOBILE: keep navigation controls outside the masked/overflow-hidden hero layers for reliable taps */}
       <button
@@ -442,14 +426,14 @@ export default function Postcard() {
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={menuOpen}
         onClick={() => setMenuOpen((o) => !o)}
-        className="md:hidden fixed top-4 left-4 z-[970] flex flex-col justify-center items-center gap-[5px] w-[42px] h-[42px] rounded-xl pointer-events-auto touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+        className="lg:hidden fixed top-4 left-4 z-[970] flex flex-col justify-center items-center gap-[5px] w-[42px] h-[42px] rounded-xl pointer-events-auto touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
         style={{ background: 'rgba(242,225,194,0.88)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
       >
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300 origin-center" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300" style={{ opacity: menuOpen ? 0 : 1 }} />
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300 origin-center" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
-      <div aria-hidden={isHeaderScrolled} className={`md:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
+      <div aria-hidden={isHeaderScrolled} className={`lg:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
         <img
           src="/images/logo-official.webp"
           alt="Miss Oz — Ice Cream Cafe, Portland Oregon"
@@ -463,7 +447,7 @@ export default function Postcard() {
         {menuOpen && (
           <motion.div
             key="mobile-menu-overlay"
-            className="md:hidden fixed inset-0 z-[980] flex flex-col"
+            className="lg:hidden fixed inset-0 z-[980] flex flex-col"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -502,17 +486,15 @@ export default function Postcard() {
                 animate={{ opacity: 0.88, scale: 1 }}
                 transition={{ delay: 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               />
-              {MOBILE_NAV.map((n, idx) => (
+              {NAV.map((n, idx) => (
                 <motion.a
                   key={n.label}
                   href={hrefFor(n.target)}
-                  {...(n.target === 'ubereats' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.09 + idx * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
                   onClick={(e) => {
                     document.body.style.overflow = '';
-                    handleNav(e, n.target);
                     setMenuOpen(false);
                   }}
                   className="w-full text-center py-3.5 uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
@@ -522,13 +504,12 @@ export default function Postcard() {
                 </motion.a>
               ))}
               <motion.a
-                href={hrefFor('oz')}
+                href={`${hrefFor('about')}#oz`}
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.09 + MOBILE_NAV.length * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ delay: 0.09 + NAV.length * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
                 onClick={(e) => {
                   document.body.style.overflow = '';
-                  handleNav(e, 'oz');
                   setMenuOpen(false);
                 }}
                 className="w-full text-center py-3.5 font-bold hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
@@ -541,7 +522,7 @@ export default function Postcard() {
                 className="w-12 h-px bg-[var(--marionberry)] opacity-30 my-3"
                 initial={{ opacity: 0, scaleX: 0 }}
                 animate={{ opacity: 0.3, scaleX: 1 }}
-                transition={{ delay: 0.09 + (MOBILE_NAV.length + 1) * 0.045, duration: 0.3 }}
+                transition={{ delay: 0.09 + (NAV.length + 1) * 0.045, duration: 0.3 }}
               />
               <motion.a
                 href={UBEREATS_URL}
@@ -549,7 +530,7 @@ export default function Postcard() {
                 rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.09 + (MOBILE_NAV.length + 2) * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ delay: 0.09 + (NAV.length + 2) * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
                 className="rounded-full bg-[var(--berry-deep)] text-[var(--cream-hi)] font-bold uppercase tracking-[2px] text-[11px] px-7 py-3 transition-colors hover:bg-[var(--berry)]"
                 style={{ fontFamily: 'var(--font-sans)' }}
                 onClick={() => setMenuOpen(false)}
@@ -560,8 +541,6 @@ export default function Postcard() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <MenuSection />
 
     </section>
     </>

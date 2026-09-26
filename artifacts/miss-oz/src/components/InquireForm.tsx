@@ -186,31 +186,6 @@ export default function InquireForm({
                 <p>We've received your inquiry and will review it carefully.</p>
                 <p className="mt-2">We'll contact you within 1–2 business days to discuss pricing, product availability, and the next steps.</p>
               </div>
-            ) : type === 'event' ? (
-              <>
-                <div className="mb-5 grid gap-5 sm:grid-cols-2">
-                  <div>
-                    <label className={labelClass}>Event Date</label>
-                    <input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required className={inputClass} />
-                  </div>
-                  <div>
-                    <label className={labelClass}>Event Time</label>
-                    <input type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} required className={inputClass} />
-                  </div>
-                </div>
-                <div className="mb-5">
-                  <label className={labelClass}>Number of Servings</label>
-                  <input type="number" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="How many guests will you serve?" className={inputClass} />
-                </div>
-                <div className="mb-5">
-                  <label className={labelClass}>Desired Order Quantities</label>
-                  <textarea value={desiredOrderQuantities} onChange={(e) => setDesiredOrderQuantities(e.target.value)} maxLength={600} rows={3} required placeholder="For example: 50 single scoops, 30 double scoops" className={textareaClass} />
-                </div>
-                <div className="mb-6">
-                  <label className={labelClass}>Additional Event Details</label>
-                  <textarea value={additionalEventDetails} onChange={(e) => setAdditionalEventDetails(e.target.value)} maxLength={1200} rows={4} placeholder="Tell us anything else about your event." className={textareaClass} />
-                </div>
-              </>
             ) : (
               <p
                 className="text-[14px] italic mb-4"
@@ -341,6 +316,31 @@ export default function InquireForm({
                   />
                 </div>
               </>
+            ) : type === 'event' ? (
+              <>
+                <div className="mb-5 grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="event-date" className={labelClass}>Event Date</label>
+                    <input id="event-date" type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required className={inputClass} />
+                  </div>
+                  <div>
+                    <label htmlFor="event-time" className={labelClass}>Event Time</label>
+                    <input id="event-time" type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} required className={inputClass} />
+                  </div>
+                </div>
+                <div className="mb-5">
+                  <label htmlFor="event-servings" className={labelClass}>Number of Servings</label>
+                  <input id="event-servings" type="number" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="How many guests will you serve?" className={inputClass} />
+                </div>
+                <div className="mb-5">
+                  <label htmlFor="event-quantities" className={labelClass}>Desired Order Quantities</label>
+                  <textarea id="event-quantities" value={desiredOrderQuantities} onChange={(e) => setDesiredOrderQuantities(e.target.value)} maxLength={600} rows={3} required placeholder="For example: 50 single scoops, 30 double scoops" className={textareaClass} />
+                </div>
+                <div className="mb-6">
+                  <label htmlFor="event-details" className={labelClass}>Additional Event Details</label>
+                  <textarea id="event-details" value={additionalEventDetails} onChange={(e) => setAdditionalEventDetails(e.target.value)} maxLength={1200} rows={4} placeholder="Tell us anything else about your event." className={textareaClass} />
+                </div>
+              </>
             ) : (
               <div className="mb-6">
                 <label className={labelClass}>Tell us more</label>
@@ -350,7 +350,7 @@ export default function InquireForm({
                   maxLength={1200}
                   rows={4}
                   required
-                  placeholder={type === 'event' ? 'Date, number of guests, type of event…' : 'How can we help?'}
+                  placeholder="How can we help?"
                   className={textareaClass}
                 />
               </div>
