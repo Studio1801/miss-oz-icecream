@@ -6,11 +6,9 @@ type WholesaleItem = {
   photoUrl?: string;
 };
 
-// Millie's supplied flavor-to-file mapping. When the exact files are available,
-// place them in public/images/wholesale/ and present them separately from the
-// product offerings below. Do not show broken images or substitute other photos.
-export type WholesaleFlavorPhoto = { name: string; fileName: string };
-export const wholesaleFlavorPhotos: readonly WholesaleFlavorPhoto[] = [
+// Millie's supplied flavor-to-file mapping; the real photos live in public/images/wholesale/.
+type WholesaleFlavorPhoto = { name: string; fileName: string };
+const wholesaleFlavorPhotos: readonly WholesaleFlavorPhoto[] = [
   { name: 'Midnight Sundae', fileName: 'image0.jpeg' },
   { name: 'Matcha', fileName: 'image1.jpeg' },
   { name: 'Birthday Cake', fileName: 'image2.jpeg' },
@@ -125,6 +123,37 @@ export default function Wholesale() {
             </div>
           </div>
         </motion.div>
+
+        <div className="mt-14 md:mt-20" aria-labelledby="wholesale-flavors-heading">
+          <h3
+            id="wholesale-flavors-heading"
+            className="mb-7 text-center text-[clamp(30px,4vw,42px)] text-[var(--berry-deep)] md:mb-9"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            Flavors
+          </h3>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+            {wholesaleFlavorPhotos.map((flavor) => (
+              <figure
+                key={flavor.fileName}
+                className="overflow-hidden rounded-[14px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_6px_18px_rgba(57,22,34,0.06)]"
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/wholesale/${flavor.fileName}`}
+                  alt={flavor.name}
+                  width={960}
+                  height={1280}
+                  loading="lazy"
+                  decoding="async"
+                  className="block aspect-[4/5] w-full object-cover"
+                />
+                <figcaption className="flex min-h-[56px] items-center justify-center px-2 py-3 text-center text-[13px] font-semibold leading-snug text-[var(--berry-deep)] sm:text-[15px]" style={{ fontFamily: 'var(--font-sans)' }}>
+                  {flavor.name}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
