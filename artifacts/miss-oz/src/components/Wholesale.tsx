@@ -6,10 +6,24 @@ type WholesaleItem = {
   photoUrl?: string;
 };
 
-// Millie's ten real flavor photos belong here, separate from the product offerings.
-// Add each supplied image with descriptive alt text; no placeholders or gallery until then.
-export type WholesaleFlavorPhoto = { src: string; alt: string };
-export const wholesaleFlavorPhotos: readonly WholesaleFlavorPhoto[] = [];
+// Millie's supplied flavor-to-file mapping. When the exact files are available,
+// place them in public/images/wholesale/ and present them separately from the
+// product offerings below. Do not show broken images or substitute other photos.
+export type WholesaleFlavorPhoto = { name: string; fileName: string };
+export const wholesaleFlavorPhotos: readonly WholesaleFlavorPhoto[] = [
+  { name: 'Midnight Sundae', fileName: 'image0.jpeg' },
+  { name: 'Matcha', fileName: 'image1.jpeg' },
+  { name: 'Birthday Cake', fileName: 'image2.jpeg' },
+  { name: 'Butter Pecan', fileName: 'image3.jpeg' },
+  { name: 'Kulfi', fileName: 'image4.jpeg' },
+  { name: 'Thai Iced Tea', fileName: 'image5.jpeg' },
+  { name: 'Marionberry', fileName: 'image6.jpeg' },
+  { name: 'Cookie and Cream', fileName: 'image7.jpeg' },
+  { name: 'Belgian Chocolate', fileName: 'image8.jpeg' },
+  { name: 'Coffee Crackle', fileName: 'image9.jpeg' },
+  { name: 'Mint Chocolate Chip', fileName: 'image10.jpeg' },
+  { name: 'Rose City Split', fileName: 'image11.jpeg' },
+];
 
 const items: WholesaleItem[] = [
   { name: '1.5-Gallon Ice Cream Tubs' },
