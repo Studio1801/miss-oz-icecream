@@ -136,7 +136,7 @@ export default function Guestbook() {
           className="relative z-20 mx-auto -mb-[9px] w-fit px-6 py-1.5 rounded-t-[8px] text-[12px] tracking-[4px] uppercase font-bold text-[var(--cream-hi)]"
           style={{ background: 'var(--cocoa)', boxShadow: 'inset 0 0 0 1.5px var(--gold)', fontFamily: 'var(--font-sans)' }}
         >
-          ✦&nbsp;&nbsp;Guestbook&nbsp;&nbsp;✦
+          Guestbook
         </div>
 
         {/* leather-look cover */}

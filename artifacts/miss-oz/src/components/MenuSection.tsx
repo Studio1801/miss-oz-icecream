@@ -647,8 +647,8 @@ export default function MenuSection() {
             className="text-[var(--berry-deep)] text-[11px] sm:text-[12.5px] tracking-[2px] uppercase font-bold"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
-            Locally Owned <span className="text-[var(--pink)] mx-1">★</span>
-            Small Business <span className="text-[var(--pink)] mx-1">★</span>
+            Locally Owned <span className="text-[var(--pink)] mx-1">·</span>
+            Small Business <span className="text-[var(--pink)] mx-1">·</span>
             @missozicecream
           </span>
         </div>

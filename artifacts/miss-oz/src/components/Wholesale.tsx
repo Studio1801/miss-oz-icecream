@@ -6,6 +6,11 @@ type WholesaleItem = {
   photoUrl?: string;
 };
 
+// Millie's ten real flavor photos belong here, separate from the product offerings.
+// Add each supplied image with descriptive alt text; no placeholders or gallery until then.
+export type WholesaleFlavorPhoto = { src: string; alt: string };
+export const wholesaleFlavorPhotos: readonly WholesaleFlavorPhoto[] = [];
+
 const items: WholesaleItem[] = [
   { name: '1.5-Gallon Ice Cream Tubs' },
   { name: '2.5-Gallon Ice Cream Tubs' },
@@ -39,7 +44,7 @@ export default function Wholesale() {
             className="text-[clamp(42px,6vw,70px)] leading-[0.98] text-[var(--berry-deep)]"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            Wholesale
+            Become our Wholesale Partner
           </h2>
           <p className="mx-auto mt-4 max-w-[500px] text-[16px] leading-relaxed text-[var(--cocoa)]/75">
             The same small-batch case, in sizes built for your menu.
@@ -86,7 +91,7 @@ export default function Wholesale() {
                       className="h-14 w-14 shrink-0 rounded-lg object-cover"
                     />
                   )}
-                  <span aria-hidden="true" className="text-[var(--berry)]">✦</span>
+                  <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--berry)]" />
                   <span className="min-w-0 text-[16px] leading-relaxed text-[var(--cocoa)] md:text-[17px]" style={{ fontFamily: 'var(--font-sans)' }}>
                     {item.name}
                   </span>
