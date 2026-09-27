@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import MenuProductList from './MenuProductList';
 import MenuCategoryNavigation from './MenuCategoryNavigation';
 import CheesecakeOrder from './CheesecakeOrder';
+import { FlavorPhotos, SundaePhotos } from './MenuPhotos';
 import { CROFFLES, DESSERTS, DRINKS, FLAVORS, MENU_CATEGORIES, SUNDAES } from './menuCatalog';
 
 const UBEREATS_URL = 'https://www.ubereats.com/store/miss-oz-ice-cream-cafe-aka-cool-moon-ice-creams/YEfj7ZgZS2m7Wm2og7PphQ';
@@ -116,6 +117,7 @@ function FlavorPanel() {
       >
         See full menu on Uber Eats →
       </a>
+      <FlavorPhotos />
     </>
   );
 }
@@ -194,6 +196,7 @@ function SundaesPanel() {
     <div className="flex-1 flex flex-col justify-between">
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col">
         <MenuProductList items={SUNDAES} />
+        <SundaePhotos />
       </div>
       <div>
         <MenuDivider className="mt-[clamp(16px,2vw,22px)]" />

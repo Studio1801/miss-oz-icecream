@@ -2,3 +2,4 @@
 - [Resend email setup](resend-email-setup.md) — SDK returns {data,error}, never throws; currently in test mode via onboarding@resend.dev until domain verified; user pastes sentences into secret forms — validate.
 - [Vercel external deploy](vercel-external-deploy.md) — artifact vite config must tolerate missing PORT/BASE_PATH; Vercel sets Root Dir to the artifact folder, so vercel.json must live inside it with outputDirectory "dist/public".
 - [Miss Oz page structure](miss-oz-page-structure.md) — client explicitly replaced the temporary one-page plan with dedicated navigation pages; preserve the existing flows.
+- [Miss Oz supplied photos](miss-oz-photo-intent.md) — client corrected an earlier misclassification: the 12 supplied photos belong in Menu, not Wholesale or New Flavor.

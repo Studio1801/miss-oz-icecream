@@ -3,25 +3,7 @@ import InquireForm from './InquireForm';
 
 type WholesaleItem = {
   name: string;
-  photoUrl?: string;
 };
-
-// Millie's supplied flavor-to-file mapping; the real photos live in public/images/wholesale/.
-type WholesaleFlavorPhoto = { name: string; fileName: string };
-const wholesaleFlavorPhotos: readonly WholesaleFlavorPhoto[] = [
-  { name: 'Midnight Sundae', fileName: 'image0.jpeg' },
-  { name: 'Matcha', fileName: 'image1.jpeg' },
-  { name: 'Birthday Cake', fileName: 'image2.jpeg' },
-  { name: 'Butter Pecan', fileName: 'image3.jpeg' },
-  { name: 'Kulfi', fileName: 'image4.jpeg' },
-  { name: 'Thai Iced Tea', fileName: 'image5.jpeg' },
-  { name: 'Marionberry', fileName: 'image6.jpeg' },
-  { name: 'Cookie and Cream', fileName: 'image7.jpeg' },
-  { name: 'Belgian Chocolate', fileName: 'image8.jpeg' },
-  { name: 'Coffee Crackle', fileName: 'image9.jpeg' },
-  { name: 'Mint Chocolate Chip', fileName: 'image10.jpeg' },
-  { name: 'Rose City Split', fileName: 'image11.jpeg' },
-];
 
 const items: WholesaleItem[] = [
   { name: '1.5-Gallon Ice Cream Tubs' },
@@ -95,14 +77,6 @@ export default function Wholesale() {
                   transition={{ duration: 0.4, delay: 0.08 + i * 0.07 }}
                   className="flex items-center gap-4 py-4"
                 >
-                  {item.photoUrl && (
-                    <img
-                      src={item.photoUrl}
-                      alt=""
-                      loading="lazy"
-                      className="h-14 w-14 shrink-0 rounded-lg object-cover"
-                    />
-                  )}
                   <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--berry)]" />
                   <span className="min-w-0 text-[16px] leading-relaxed text-[var(--cocoa)] md:text-[17px]" style={{ fontFamily: 'var(--font-sans)' }}>
                     {item.name}
@@ -124,36 +98,6 @@ export default function Wholesale() {
           </div>
         </motion.div>
 
-        <div className="mt-14 md:mt-20" aria-labelledby="wholesale-flavors-heading">
-          <h3
-            id="wholesale-flavors-heading"
-            className="mb-7 text-center text-[clamp(30px,4vw,42px)] text-[var(--berry-deep)] md:mb-9"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
-            Flavors
-          </h3>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
-            {wholesaleFlavorPhotos.map((flavor) => (
-              <figure
-                key={flavor.fileName}
-                className="overflow-hidden rounded-[14px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_6px_18px_rgba(57,22,34,0.06)]"
-              >
-                <img
-                  src={`${import.meta.env.BASE_URL}images/wholesale/${flavor.fileName}`}
-                  alt={flavor.name}
-                  width={960}
-                  height={1280}
-                  loading="lazy"
-                  decoding="async"
-                  className="block aspect-[4/5] w-full object-cover"
-                />
-                <figcaption className="flex min-h-[56px] items-center justify-center px-2 py-3 text-center text-[13px] font-semibold leading-snug text-[var(--berry-deep)] sm:text-[15px]" style={{ fontFamily: 'var(--font-sans)' }}>
-                  {flavor.name}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );

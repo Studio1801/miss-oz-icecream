@@ -7,6 +7,7 @@ import { buildEmail, type FieldRow } from "../lib/emailTemplates";
 const router: IRouter = Router();
 
 const TO_EMAIL = resolveContactEmail(process.env.CONTACT_EMAIL, "hello@missozicecream.com");
+const WHOLESALE_TO_EMAIL = "bluecanvascorp@gmail.com";
 const FROM_EMAIL = process.env.FROM_EMAIL ?? "Miss Oz Website <noreply@missozicecream.com>";
 
 let resend: Resend | null = null;
@@ -170,7 +171,7 @@ router.post("/inquire", async (req, res) => {
   try {
     const notification = await resend.emails.send({
       from: FROM_EMAIL,
-      to: [TO_EMAIL],
+      to: [isWholesale ? WHOLESALE_TO_EMAIL : TO_EMAIL],
       replyTo: payload.email,
       subject: SUBJECT_MAP[inquiryType],
       html: buildEmail({ purpose: inquiryType, rows }),
