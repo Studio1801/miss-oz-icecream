@@ -138,7 +138,7 @@ export default function Guestbook() {
           className="relative rounded-[12px] p-[10px] md:p-[14px]"
           style={{ background: 'linear-gradient(160deg, var(--berry-deep), #3a0e20)', boxShadow: '0 34px 80px rgba(0,0,0,0.5), inset 0 0 0 2px var(--gold), inset 0 0 0 4px var(--berry-deep)' }}
         >
-          <div className="relative grid md:grid-cols-2 rounded-[5px] overflow-hidden stitch-border-light">
+          <div className="relative grid md:grid-cols-2 md:min-h-[570px] rounded-[5px] overflow-hidden stitch-border-light">
             {/* spine crease */}
             <div
               aria-hidden="true"
@@ -178,13 +178,13 @@ export default function Guestbook() {
                 maxLength={180}
                 rows={3}
                 placeholder="A memory, a favorite flavor, a hello…"
-                className="ledger-input w-full bg-transparent border-0 rounded-none px-2 py-1 text-[18px] leading-[34px] text-[#1d0e0d] placeholder:text-[rgba(28,13,12,0.35)] placeholder:italic resize-none focus:outline-none focus:bg-[rgba(255,255,255,0.4)] transition-colors mb-4"
+                className="ledger-input w-full bg-transparent border-0 rounded-none px-2 py-1 text-[18px] leading-[34px] text-[#1d0e0d] placeholder:text-[rgba(28,13,12,0.35)] placeholder:italic resize-none focus:outline-none focus:bg-[rgba(255,255,255,0.4)] transition-colors mb-4 md:min-h-[180px]"
                 style={{
                   backgroundImage: 'repeating-linear-gradient(transparent 0, transparent 32.5px, rgba(28,13,12,0.08) 32.5px, rgba(28,13,12,0.08) 34px)',
                   backgroundAttachment: 'local'
                 }}
               />
-              <div className="flex items-center justify-between gap-4 mt-2 flex-wrap">
+              <div className="flex items-center justify-between gap-4 mt-2 md:mt-7 flex-wrap">
                 <span className="text-[13px] text-[var(--cocoa)] opacity-55 italic" style={{ fontFamily: 'var(--font-sans)' }}>{note.length}/180</span>
                 <button
                   type="submit"
@@ -217,7 +217,7 @@ export default function Guestbook() {
                   {loadError ? 'Guestbook entries are unavailable right now.' : 'No entries yet. Be the first to sign the book.'}
                 </p>
               )}
-              <ul className="flex flex-col" role="list">
+              <ul className="flex flex-col md:flex-1 md:justify-evenly" role="list">
                 {entries.slice(0, 6).map((entry, i) => (
                   <motion.li
                     key={entry.id}
