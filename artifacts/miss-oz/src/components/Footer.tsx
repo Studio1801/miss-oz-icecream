@@ -35,7 +35,7 @@ export default function Footer() {
             className="text-[var(--pink)] mb-[60px] inline-block"
             style={{ fontFamily: 'var(--font-script)', fontSize: 30 }}
           >
-            — Miss Oz &amp; the whole parlor
+            Miss Oz &amp; the whole parlor.
           </span>
         </div>
 
@@ -52,14 +52,14 @@ export default function Footer() {
       {/* Four-column info + mailing list */}
       <div className="flex justify-between flex-wrap gap-[34px] border-t border-[rgba(242,225,194,0.3)] pt-[34px] text-[16px]">
         {/* Address */}
-        <div>
-          <h5 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Address</h5>
+        <div id="visit" style={{ scrollMarginTop: '100px' }}>
+          <h2 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Address</h2>
           <p className="leading-[1.8] text-[#EFE2CE]">1105 NW Johnson St.<br />Portland, OR 97209</p>
         </div>
 
         {/* Contact */}
         <div>
-          <h5 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Contact</h5>
+          <h2 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Contact</h2>
           <p className="leading-[1.8] text-[#EFE2CE]">
             Tel: (503) 224-2021<br />@missozicecreamcafe
           </p>
@@ -67,13 +67,13 @@ export default function Footer() {
 
         {/* Hours */}
         <div>
-          <h5 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Hours</h5>
+          <h2 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Hours</h2>
           <p className="leading-[1.8] text-[#EFE2CE]">OPEN DAILY<br />11AM–10PM</p>
         </div>
 
         {/* Mailing List */}
         <div className="min-w-[260px] flex-1 max-w-[340px] scissor-cut p-[20px] mt-[-20px] rounded-[10px]">
-          <h5 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Mailing List</h5>
+          <h2 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Mailing List</h2>
           {submitted ? (
             <p className="text-[#EFE2CE] text-[15px] mt-2 font-script-alt text-[22px]">Thanks for subscribing!</p>
           ) : (

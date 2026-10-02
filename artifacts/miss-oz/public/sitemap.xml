@@ -5,4 +5,16 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://www.missozicecream.com/events</loc>
+  </url>
+  <url>
+    <loc>https://www.missozicecream.com/wholesale</loc>
+  </url>
+  <url>
+    <loc>https://www.missozicecream.com/about</loc>
+  </url>
+  <url>
+    <loc>https://www.missozicecream.com/contact</loc>
+  </url>
 </urlset>

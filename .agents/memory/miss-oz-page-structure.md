@@ -1,10 +1,10 @@
 ---
 name: Miss Oz page structure
-description: Why the original one-page staging constraint no longer applies.
+description: The current scope for Miss Oz navigation and homepage sections.
 ---
 
-The client explicitly requested that each main navigation item open its own dedicated page. The earlier one-page staging constraint is superseded; do not restore a long homepage when changing site content.
+The latest direction is to keep existing homepage content as scrolling sections, except Events, Wholesale, and About Us, which remain dedicated pages. The five primary navigation items are Home, Events, Wholesale, About Us, and Contact. Do not change the visual design, fonts, colors, or copy.
 
-**Why:** The client approved the structural change after the previous one-page cleanup. They asked to move the existing content rather than redesign it or invent new assets, business claims, or pricing.
+**Why:** The client corrected the earlier route-per-navigation direction and explicitly said only those three sections should be separate pages; this supersedes prior structure guidance.
 
-**How to apply:** Keep the homepage concise and preserve existing menu, voting, ordering, wholesale/event inquiries, contact, and guestbook behavior on their dedicated pages. A real New Flavor product photo should replace its illustration only when the client clearly identifies or provides one.
+**How to apply:** Keep the hero/carousel, menu and cake ordering, flavor voting, guestbook, and visit details on Home. Preserve the existing Events, Wholesale, and About content on their own routes. Route section links to the home anchors, including from dedicated pages. Avoid inventing teasers or changing any existing design or copy.

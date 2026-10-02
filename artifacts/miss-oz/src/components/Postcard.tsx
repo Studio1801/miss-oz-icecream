@@ -12,12 +12,12 @@ const SLIDES: { src: string; alt: string; pos?: string }[] = [
   },
   {
     src: '/images/slide-interior-bar.webp',
-    alt: 'The Miss Oz interior — chalkboard menus, colorful bunting, pendant lights, and a full display case of flavors behind the counter',
+    alt: 'The Miss Oz interior, chalkboard menus, colorful bunting, pendant lights, and a full display case of flavors behind the counter',
     pos: 'center 58%',
   },
   {
     src: '/images/storefront-photo-wide2.webp',
-    alt: "The Miss Oz storefront in Portland's Pearl District — a corner shop with a neon Open sign in the window, lantern lights glowing inside, and a bike parked out front",
+    alt: "The Miss Oz storefront in Portland's Pearl District, a corner shop with a neon Open sign in the window, lantern lights glowing inside, and a bike parked out front",
   },
   {
     src: '/images/slide-corner.webp',
@@ -27,19 +27,19 @@ const SLIDES: { src: string; alt: string; pos?: string }[] = [
 ];
 
 const NAV = [
-  { label: 'Home', target: '' },
-  { label: 'Menu', target: 'menu' },
-  { label: 'New Flavor', target: 'new-flavor' },
-  { label: 'About Us', target: 'about' },
-  { label: 'Wholesale', target: 'wholesale' },
-  { label: 'Events', target: 'events' },
-  { label: 'Contact', target: 'contact' },
+  { label: 'Home', target: '/' },
+  { label: 'Events', target: '/events' },
+  { label: 'Wholesale', target: '/wholesale' },
+  { label: 'About Us', target: '/about' },
+  { label: 'Contact', target: '/contact' },
 ];
-// Desktop header split: three links left of the logo, four to the right.
+// Desktop header split: two links left of the logo, three to the right.
 
 const UBEREATS_URL = 'https://www.ubereats.com/store/miss-oz-ice-cream-cafe-aka-cool-moon-ice-creams/YEfj7ZgZS2m7Wm2og7PphQ';
 
-const hrefFor = (target: string) => `${import.meta.env.BASE_URL}${target}`;
+const APP_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const appHref = (path: string) => `${APP_BASE}${path}`;
+const sectionHref = (id: string, isHome: boolean) => `${isHome ? '' : `${APP_BASE}/`}#${id}`;
 
 /* Soft ink-on-paper fade on all four edges of the hero scene */
 const HERO_MASK =
@@ -79,6 +79,10 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
   const current = SLIDES[slide] ?? SLIDES[0];
   const compactHeader = isHeaderScrolled || !showHero;
+  const navLink = (target: string) => {
+    if (showHero && target === '/contact') return '#visit';
+    return appHref(target);
+  };
 
   return (
     <>
@@ -89,6 +93,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         : 'relative pt-[72px] lg:pt-[110px] overflow-hidden'}
       aria-label="Miss Oz Ice Cream & Dessert Cafe"
     >
+      {showHero && <h1 className="sr-only">Miss Oz Ice Cream &amp; Dessert Cafe, Portland, Oregon</h1>}
       {/* Bunting hanging below the global border */}
       <div
         className="absolute left-0 right-0 z-10 pointer-events-none"
@@ -132,10 +137,10 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           <div className="flex flex-col justify-center py-[clamp(10px,1.1vw,14px)]" style={{ borderTop: '1.5px solid var(--marionberry)', borderBottom: '1.5px solid var(--marionberry)' }}>
             <div className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
             <nav aria-label="Primary" className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
-              {NAV.slice(0, 3).map((n) => (
+              {NAV.slice(0, 2).map((n) => (
                 <a
                   key={n.label}
-                  href={hrefFor(n.target)}
+                  href={navLink(n.target)}
                   className="whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
@@ -144,7 +149,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               ))}
             </nav>
             <a
-              href={`${hrefFor('about')}#oz`}
+              href={`${appHref('/about')}#oz`}
               className="group relative text-center leading-snug hidden xl:block cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
               style={{
                 fontFamily: 'var(--font-sans)',
@@ -177,10 +182,10 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           {/* RIGHT */}
           <div className="flex flex-col justify-center py-[clamp(10px,1.1vw,14px)]" style={{ borderTop: '1.5px solid var(--marionberry)', borderBottom: '1.5px solid var(--marionberry)' }}>
             <nav aria-label="Primary continued" className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
-              {NAV.slice(3).map((n) => (
+              {NAV.slice(2).map((n) => (
                 <a
                   key={n.label}
-                  href={hrefFor(n.target)}
+                  href={navLink(n.target)}
                   className="whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
@@ -200,7 +205,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           >
             <img
               src="/images/logo-official.webp"
-              alt="Miss Oz — Ice Cream Cafe, Portland Oregon"
+              alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
               className="h-auto transition-[width] duration-300 ease-out"
               style={{
                 width: compactHeader ? 'clamp(64px,6.2vw,78px)' : 'clamp(240px,22.5vw,285px)',
@@ -341,7 +346,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               {/* CTA button */}
               <div className="flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
                 <a
-                  href={hrefFor('menu')}
+                  href={sectionHref('menu', showHero)}
                   className="group relative inline-flex items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 hover:scale-[1.06] hover:-translate-y-[2px] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                   style={{
                     fontFamily: 'var(--font-sans)',
@@ -436,7 +441,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
       <div aria-hidden={isHeaderScrolled} className={`lg:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
         <img
           src="/images/logo-official.webp"
-          alt="Miss Oz — Ice Cream Cafe, Portland Oregon"
+          alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
           className="h-auto"
           style={{ width: '88px', filter: 'drop-shadow(0 2px 10px rgba(20,8,12,0.35))' }}
         />
@@ -489,7 +494,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               {NAV.map((n, idx) => (
                 <motion.a
                   key={n.label}
-                  href={hrefFor(n.target)}
+                  href={navLink(n.target)}
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.09 + idx * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
@@ -504,7 +509,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 </motion.a>
               ))}
               <motion.a
-                href={`${hrefFor('about')}#oz`}
+                href={`${appHref('/about')}#oz`}
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.09 + NAV.length * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}

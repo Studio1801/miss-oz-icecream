@@ -73,7 +73,7 @@ export default function Newsletter() {
                   className="font-sans w-full p-[17px_20px] border-[2.5px] border-[var(--cocoa)] bg-white rounded-[12px] text-[17px] mb-[16px] text-[var(--cocoa)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)] cursor-auto disabled:opacity-60"
                 />
                 {status === 'error' && (
-                  <p className="text-[13px] italic text-red-600 mb-3 -mt-2">Something went wrong — please try again.</p>
+                  <p className="text-[13px] italic text-red-600 mb-3 -mt-2">Something went wrong. Please try again.</p>
                 )}
                 <button
                   type="submit"

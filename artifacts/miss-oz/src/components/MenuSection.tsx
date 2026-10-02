@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import MenuProductList from './MenuProductList';
 import MenuCategoryNavigation from './MenuCategoryNavigation';
 import CheesecakeOrder from './CheesecakeOrder';
-import { FlavorPhotos, SundaePhotos } from './MenuPhotos';
+import { FlavorPhotos } from './MenuPhotos';
 import { CROFFLES, DESSERTS, DRINKS, FLAVORS, MENU_CATEGORIES, SUNDAES } from './menuCatalog';
 
 const UBEREATS_URL = 'https://www.ubereats.com/store/miss-oz-ice-cream-cafe-aka-cool-moon-ice-creams/YEfj7ZgZS2m7Wm2og7PphQ';
@@ -101,7 +101,7 @@ function FlavorPanel() {
         className="mt-[clamp(10px,1.2vw,16px)] text-center text-[#6E5A54]"
         style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}
       >
-        We rotate approximately 20 flavors — selection changes with the season.
+        We rotate approximately 20 flavors. Selection changes with the season.
       </p>
       <a
         href={UBEREATS_URL}
@@ -125,11 +125,11 @@ function FlavorPanel() {
 function CroffleDessertsPanel() {
   return (
     <div className="flex-1 flex flex-col justify-between">
-      <div className="mt-[clamp(16px,2vw,24px)] flex flex-col">
-        <h4 className="mb-3 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--marionberry)]">Croffle Menu</h4>
-        <MenuProductList items={CROFFLES} />
-        <h4 className="mt-6 mb-3 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--marionberry)]">Other Desserts</h4>
-        <MenuProductList items={DESSERTS} />
+      <div className="mt-[clamp(16px,2vw,24px)] flex flex-col text-center">
+        <h4 className="mb-3 text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Croffle menu</h4>
+        <MenuProductList items={CROFFLES} align="center" />
+        <h4 className="mt-6 mb-3 text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
+        <MenuProductList items={DESSERTS} align="center" />
         <div className="mt-[clamp(20px,2.4vw,30px)] text-center">
           <div
             className="text-[var(--marionberry)]"
@@ -196,7 +196,6 @@ function SundaesPanel() {
     <div className="flex-1 flex flex-col justify-between">
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col">
         <MenuProductList items={SUNDAES} />
-        <SundaePhotos />
       </div>
       <div>
         <MenuDivider className="mt-[clamp(16px,2vw,22px)]" />
@@ -208,7 +207,7 @@ function SundaesPanel() {
             Make it your own
           </div>
           <p className="mt-[8px] text-[#6E5A54] leading-relaxed" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
-            Add a second scoop, swap the base flavor, or upgrade with house-made hot fudge or berry compote. Ask your scooper — we love a custom order!
+            Add a second scoop, swap the base flavor, or upgrade with house-made hot fudge or berry compote. Ask your scooper. We love a custom order!
           </p>
         </div>
       </div>
@@ -218,12 +217,9 @@ function SundaesPanel() {
 
 function DrinksPanel() {
   return (
-    <div className="flex-1 flex flex-col justify-between">
-      <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col">
-        <MenuProductList items={DRINKS} />
-      </div>
-      <div>
-        <MenuDivider className="mt-[clamp(16px,2vw,22px)]" />
+    <div className="flex flex-col">
+      <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col text-center">
+        <MenuProductList items={DRINKS} align="center" />
         <div
           className="mt-[clamp(14px,1.8vw,20px)] rounded-[8px] px-[clamp(14px,1.8vw,22px)] py-[clamp(13px,1.6vw,19px)] text-center"
           style={{ background: 'rgba(94,23,53,0.05)', border: '1px dashed rgba(94,23,53,0.2)' }}
@@ -232,7 +228,7 @@ function DrinksPanel() {
             Seasonal Specials
           </div>
           <p className="mt-[8px] text-[#6E5A54] leading-relaxed" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
-            Thai Iced Tea · Lychee Soda · House Lemonade — our seasonal drinks rotate, so ask your scooper what's fresh today.
+            Thai Iced Tea, Lychee Soda, and House Lemonade. Our seasonal drinks rotate, so ask your scooper what's fresh today.
           </p>
         </div>
       </div>
@@ -242,7 +238,7 @@ function DrinksPanel() {
 
 function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
   return (
-    <div className="flex-1 flex flex-col justify-between">
+    <div id="cakes" className="flex-1 flex flex-col justify-between" style={{ scrollMarginTop: '100px' }}>
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col gap-[clamp(18px,2vw,26px)]">
         <div className="grid grid-cols-2 gap-[10px]">
           <img src="/images/whole-cheesecake-slice.jpeg" alt="Slice of Original Basque Cheesecake" className="h-[clamp(120px,14vw,190px)] w-full rounded-[10px] object-cover" />
@@ -341,7 +337,7 @@ function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
 
 function WelcomeCard() {
   return (
-    <div className="relative mx-auto w-full max-w-[340px] md:max-w-none hidden md:flex flex-col">
+    <div className="relative mx-auto w-full max-w-[340px] md:max-w-none hidden md:sticky md:top-[110px] md:self-start md:flex flex-col">
       <Awning />
       <div
         className="flex-1 flex flex-col items-center text-center rounded-b-[12px] px-[clamp(18px,1.8vw,26px)] py-[clamp(24px,2.6vw,36px)]"
@@ -369,7 +365,7 @@ function WelcomeCard() {
             className="mt-[clamp(10px,1.1vw,16px)] text-center leading-relaxed text-[#EFD9C9]"
             style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(12px,0.95vw,14px)' }}
           >
-            Churned fresh every week using classic recipes and real ingredients — no shortcuts.
+            Churned fresh every week using classic recipes and real ingredients. No shortcuts.
           </p>
           <CardDivider />
           <p
@@ -441,9 +437,37 @@ function CardDivider() {
 }
 
 export default function MenuSection() {
-  const [activeCategory, setActiveCategory] = useState<string>('Flavors');
+  const [activeCategory, setActiveCategory] = useState<string>(() =>
+    window.location.hash === '#cakes' ? 'Whole Cakes' : 'Flavors',
+  );
   const [cakeOrderOpen, setCakeOrderOpen] = useState(false);
   const closeCakeOrder = useCallback(() => setCakeOrderOpen(false), []);
+  const selectCategory = (category: string) => {
+    const categoryChanged = category !== activeCategory;
+    setActiveCategory(category);
+    if (category === 'Whole Cakes') {
+      history.replaceState(null, '', `${window.location.pathname}${window.location.search}#cakes`);
+    } else if (window.location.hash === '#cakes') {
+      history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    }
+    if (categoryChanged) {
+      requestAnimationFrame(() =>
+        document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+      );
+    }
+  };
+
+  useEffect(() => {
+    const activateCakes = () => {
+      if (window.location.hash !== '#cakes') return;
+      setActiveCategory('Whole Cakes');
+      requestAnimationFrame(() =>
+        document.getElementById('cakes')?.scrollIntoView({ behavior: 'smooth' }),
+      );
+    };
+    window.addEventListener('hashchange', activateCakes);
+    return () => window.removeEventListener('hashchange', activateCakes);
+  }, []);
 
   return (
     <>
@@ -452,6 +476,7 @@ export default function MenuSection() {
         className="relative z-20 mx-auto max-w-none px-0 mt-[clamp(18px,2.4vw,30px)]"
         style={{ scrollMarginTop: '94px' }}
       >
+        <h2 className="sr-only">Menu</h2>
         <div className="flex items-center justify-center gap-3 mb-[clamp(14px,1.8vw,22px)]">
           <span className="w-10 h-px bg-[var(--gold)] opacity-60" aria-hidden="true" />
           <span
@@ -468,7 +493,7 @@ export default function MenuSection() {
           <MenuCategoryNavigation
             variant="mobile"
             activeCategory={activeCategory}
-            onSelect={setActiveCategory}
+            onSelect={selectCategory}
           />
         </div>
 
@@ -482,7 +507,7 @@ export default function MenuSection() {
         >
           <aside
             aria-label="Menu categories"
-            className="relative mx-auto w-full max-w-[320px] md:max-w-none hidden md:flex flex-col"
+            className="relative mx-auto w-full max-w-[320px] md:max-w-none hidden md:sticky md:top-[110px] md:self-start md:flex flex-col"
           >
             <Awning />
             <div
@@ -527,7 +552,7 @@ export default function MenuSection() {
                       <MenuCategoryNavigation
                         variant="desktop"
                         activeCategory={activeCategory}
-                        onSelect={setActiveCategory}
+                        onSelect={selectCategory}
                         onOrderWholeCake={() => setCakeOrderOpen(true)}
                       />
                       <div className="flex flex-col items-center mt-[clamp(14px,1.6vw,22px)]">
@@ -555,14 +580,14 @@ export default function MenuSection() {
 
           <section
             aria-label="Menu"
-            className="relative flex flex-col rounded-t-none rounded-b-[10px] md:rounded-[10px] md:mx-[clamp(12px,2.5vw,32px)] overflow-hidden px-[clamp(18px,2.6vw,42px)] py-[clamp(22px,2.6vw,36px)]"
+            className="relative flex flex-col self-start h-auto min-h-0 rounded-t-none rounded-b-[10px] md:rounded-[10px] md:mx-[clamp(12px,2.5vw,32px)] overflow-hidden px-[clamp(18px,2.6vw,42px)] py-[clamp(22px,2.6vw,36px)]"
             style={{
               background: 'linear-gradient(180deg, #FBF4E6, #F7EDDA)',
               boxShadow: '0 14px 34px rgba(28,13,12,0.18), inset 0 0 0 1px rgba(94,23,53,0.25), inset 0 0 0 5px rgba(251,244,230,1), inset 0 0 0 6px rgba(94,23,53,0.15)',
             }}
           >
             <div
-              className="flex-1 grid"
+              className="grid"
               style={{ gridTemplateColumns: '1fr', gridTemplateRows: 'auto' }}
             >
               {MENU_CATEGORIES.map((category) => {

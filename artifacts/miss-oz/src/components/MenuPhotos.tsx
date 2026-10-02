@@ -15,13 +15,10 @@ const flavorPhotos: MenuPhoto[] = [
   { name: 'Mint Chocolate Chip', fileName: 'image10.jpeg' },
 ];
 
-const sundaePhotos: MenuPhoto[] = [
-  { name: 'Midnight Sundae', fileName: 'image0.jpeg' },
-];
-
-const roseCitySplitPhotos: MenuPhoto[] = [
-  { name: 'Rose City Split', fileName: 'image11.jpeg' },
-];
+export const sundaePhotos: Record<string, MenuPhoto> = {
+  'Midnight Fudge Sundae': { name: 'Midnight Fudge Sundae', fileName: 'image0.jpeg' },
+  'Rose City Banana Split': { name: 'Rose City Banana Split', fileName: 'image11.jpeg' },
+};
 
 function PhotoGroup({ title, photos }: { title: string; photos: MenuPhoto[] }) {
   return (
@@ -29,11 +26,11 @@ function PhotoGroup({ title, photos }: { title: string; photos: MenuPhoto[] }) {
       <h4 className="mb-3 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--marionberry)]">
         {title}
       </h4>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="flex flex-wrap justify-center gap-3">
         {photos.map((photo) => (
           <figure
             key={photo.fileName}
-            className="overflow-hidden rounded-[10px] border border-[rgba(115,32,62,0.16)] bg-white/75"
+            className="w-[calc(50%_-_0.375rem)] overflow-hidden rounded-[10px] border border-[rgba(115,32,62,0.16)] bg-white/75 sm:w-[calc(25%_-_0.5625rem)]"
           >
             <img
               src={`${import.meta.env.BASE_URL}images/wholesale/${photo.fileName}`}
@@ -56,13 +53,4 @@ function PhotoGroup({ title, photos }: { title: string; photos: MenuPhoto[] }) {
 
 export function FlavorPhotos() {
   return <PhotoGroup title="Ice Cream Flavor" photos={flavorPhotos} />;
-}
-
-export function SundaePhotos() {
-  return (
-    <>
-      <PhotoGroup title="Sundae" photos={sundaePhotos} />
-      <PhotoGroup title="Rose City Split" photos={roseCitySplitPhotos} />
-    </>
-  );
 }

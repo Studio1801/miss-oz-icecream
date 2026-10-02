@@ -87,7 +87,7 @@ export default function NewFlavor() {
           <div className="tape-strip tape-peel top-[-6px]  left-[10%] -rotate-6" aria-hidden="true" />
           <div className="rounded-[5px] p-[5px]" style={{ background: 'var(--cream-hi)' }}>
             <img loading="eager" decoding="async" src={FLAVOR.poster}
-              alt={`${FLAVOR.name} seasonal flavor poster — Miss Oz Ice Cream`}
+              alt={`${FLAVOR.name} seasonal flavor poster, Miss Oz Ice Cream`}
               className="block w-full h-auto rounded-[2px]" />
           </div>
         </div>

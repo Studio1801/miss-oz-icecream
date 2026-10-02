@@ -3,17 +3,16 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import Home from '@/pages/home';
-import Menu from '@/pages/menu';
-import NewFlavorPage from '@/pages/new-flavor';
 import About from '@/pages/about';
 import Wholesale from '@/pages/wholesale';
 import Events from '@/pages/events';
 import Contact from '@/pages/contact';
 import SiteLayout from '@/components/SiteLayout';
-import { Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
+import { Redirect, Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
+const localBusinessSchema = document.querySelector<HTMLScriptElement>('#local-business-schema')?.textContent ?? '';
 
 function Router() {
   const [location] = useLocation();
@@ -21,17 +20,29 @@ function Router() {
   useEffect(() => {
     const page = PAGE_META[location] ?? PAGE_META['/'];
     document.title = page.title;
+    const canonicalUrl = new URL(location === '/' ? '' : location.slice(1), 'https://www.missozicecream.com/').href;
     for (const [selector, content] of [
       ['meta[name="description"]', page.description],
       ['meta[property="og:title"]', page.title],
       ['meta[property="og:description"]', page.description],
+      ['meta[property="og:url"]', canonicalUrl],
       ['meta[name="twitter:title"]', page.title],
       ['meta[name="twitter:description"]', page.description],
     ]) {
       document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
     }
     const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (canonical) canonical.href = new URL(location.slice(1), 'https://www.missozicecream.com/').href;
+    if (canonical) canonical.href = canonicalUrl;
+    const schema = document.querySelector<HTMLScriptElement>('#local-business-schema');
+    if (location === '/' && !schema && localBusinessSchema) {
+      const script = document.createElement('script');
+      script.id = 'local-business-schema';
+      script.type = 'application/ld+json';
+      script.textContent = localBusinessSchema;
+      document.head.append(script);
+    } else if (location !== '/') {
+      schema?.remove();
+    }
     const anchor = window.location.hash.slice(1);
     if (anchor) {
       requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView());
@@ -44,8 +55,8 @@ function Router() {
     <SiteLayout showHero={location === '/'}>
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/menu" component={Menu} />
-        <Route path="/new-flavor" component={NewFlavorPage} />
+        <Route path="/menu"><Redirect to="/#menu" /></Route>
+        <Route path="/new-flavor"><Redirect to="/#new-flavor" /></Route>
         <Route path="/about" component={About} />
         <Route path="/wholesale" component={Wholesale} />
         <Route path="/events" component={Events} />
@@ -58,28 +69,20 @@ function Router() {
 
 const PAGE_META: Record<string, { title: string; description: string }> = {
   '/': {
-    title: 'Miss Oz Ice Cream & Dessert Cafe — Portland, Oregon',
+    title: 'Miss Oz Ice Cream & Dessert Cafe, Portland, Oregon',
     description: "Small-batch handmade ice cream & desserts in Portland's Pearl District since 2007.",
-  },
-  '/menu': {
-    title: 'Menu | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Browse Miss Oz ice cream flavors, sundaes, croffles, drinks, and handmade desserts.',
-  },
-  '/new-flavor': {
-    title: 'New Flavor | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'See the new flavor and vote for a future Miss Oz ice cream flavor.',
   },
   '/about': {
     title: 'About Us | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Get to know Miss Oz Ice Cream & Dessert Cafe and meet Oz.',
+    description: 'Read the story of Miss Oz Ice Cream & Dessert Cafe and meet Oz in Portland’s Pearl District.',
   },
   '/wholesale': {
     title: 'Wholesale | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Explore Miss Oz wholesale offerings and flavors, and inquire about becoming a partner.',
+    description: 'Explore Miss Oz ice cream and dessert wholesale offerings, and ask about becoming a partner.',
   },
   '/events': {
     title: 'Events | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Find out about Miss Oz event catering and send an event inquiry.',
+    description: 'Plan an event with Miss Oz Ice Cream & Dessert Cafe in Portland and send an event inquiry.',
   },
   '/contact': {
     title: 'Contact | Miss Oz Ice Cream & Dessert Cafe',

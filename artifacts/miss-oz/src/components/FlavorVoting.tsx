@@ -113,7 +113,7 @@ export default function FlavorVoting() {
         <p className="text-[15px] italic leading-relaxed"
           style={{ color: 'rgba(28,13,12,0.65)' }}>
           {revealed
-            ? 'Tallied — we churn the winner next month. ♥'
+            ? 'Tallied. We churn the winner next month. ♥'
             : 'Every couple of months, the neighborhood picks what we churn next. One vote each.'}
         </p>
       </div>
@@ -294,7 +294,7 @@ export default function FlavorVoting() {
       {/* Vote total */}
       <div className="mt-[14px] text-[10.5px] tracking-[3px] uppercase font-semibold"
         style={{ color: 'rgba(115,32,62,0.6)', fontFamily: 'var(--font-sans)' }}>
-        {voteError || (votes ? (total === 0 ? 'No votes yet — be the first.' : `${total.toLocaleString()} neighbors have voted`) : 'Loading vote totals…')}
+        {voteError || (votes ? (total === 0 ? 'No votes yet. Be the first.' : `${total.toLocaleString()} neighbors have voted`) : 'Loading vote totals…')}
       </div>
     </motion.div>
   );

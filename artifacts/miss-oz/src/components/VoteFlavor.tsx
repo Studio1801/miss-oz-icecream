@@ -137,7 +137,7 @@ export default function VoteFlavor() {
         className="italic text-[18px] text-[#1d0e0d] opacity-80"
       >
         {revealed
-          ? 'Tallied! We churn the winner next month — thanks for the vote.'
+          ? 'Tallied! We churn the winner next month. Thanks for the vote.'
           : 'Every couple of months, the neighborhood picks what we churn next. One vote each.'}
       </motion.p>
 

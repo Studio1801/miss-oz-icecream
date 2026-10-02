@@ -27,7 +27,7 @@ const FLAVORS = [
   {
     title: 'Oreo Croffle Pop',
     kicker: 'fresh from the iron',
-    sub: 'Croissant-waffle, cookies, cream — the neighborhood legend.',
+    sub: 'Croissant-waffle, cookies, cream. The neighborhood legend.',
     bg: '#8C2A54',
     blob: '#EAB8CE',
     photo: '/images/cone-strawberry.webp',
@@ -118,7 +118,7 @@ export default function Hero() {
           style={{ fontSize: 'clamp(40px, 8.2vw, 100px)' }}
         >
           {/* Visually hidden h1 for crawlers — the business name is the true page title */}
-          <h1 className="sr-only">Miss Oz Ice Cream &amp; Dessert Cafe — Portland, Oregon</h1>
+          <h1 className="sr-only">Miss Oz Ice Cream &amp; Dessert Cafe, Portland, Oregon</h1>
           <div
             className="max-w-[94vw]"
             aria-hidden="true"

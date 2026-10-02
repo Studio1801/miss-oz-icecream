@@ -24,10 +24,10 @@ export const FLAVORS: MenuItem[] = [
 ];
 
 export const SUNDAES: MenuItem[] = [
-  { name: 'Miss Oz Cherry Crown Sundae', note: 'Three mini scoops and One single scoop topped with our house-made cherry syrup for a classic old-fashioned sundae.' },
+  { name: 'Miss Oz Cherry Crown Sundae', note: 'Three mini scoops and one single scoop topped with our house-made cherry syrup for a classic old-fashioned sundae.' },
   { name: 'Midnight Fudge Sundae', note: 'Two scoops with our house-made hot fudge, whipped cream, rainbow sprinkles and a cherry on top.' },
   { name: 'Rose City Banana Split', note: 'Vanilla, strawberry, and chocolate ice cream with three different sauces, topped with whipped cream, sprinkles, and cherries.' },
-  { name: 'S’more Sundae', seasonalLabel: 'Seasonal F/W' },
+  { name: 'S’more Sundae', seasonalLabel: 'Seasonal, fall and winter' },
 ];
 
 export const CROFFLES: MenuItem[] = [
@@ -36,7 +36,7 @@ export const CROFFLES: MenuItem[] = [
   { name: 'Nutella', note: 'Nutella paired with fresh whipped cream.' },
   { name: 'Oreo', note: 'Fresh whipped cream topped with Oreo cookies.' },
   { name: 'Tiramisu', note: 'Fresh whipped cream and cocoa powder, creating a tiramisu-inspired flavor that pairs beautifully with the chewy, buttery croffle.' },
-  { name: 'S’more Croffle Pop', seasonalLabel: 'Seasonal F/W' },
+  { name: 'S’more Croffle Pop', seasonalLabel: 'Seasonal, fall and winter' },
 ];
 
 export const DESSERTS: MenuItem[] = [
@@ -48,6 +48,6 @@ export const DESSERTS: MenuItem[] = [
 
 export const DRINKS: MenuItem[] = [
   { name: 'Root Beer Float', note: 'Creamy house vanilla in an icy frosted mug' },
-  { name: 'Coke Float', note: 'Classic cola with a generous scoop — simple perfection' },
+  { name: 'Coke Float', note: 'Classic cola with a generous scoop, simple perfection' },
   { name: 'Milkshakes', note: 'Blended thick & rich in any of our rotating flavors' },
 ];

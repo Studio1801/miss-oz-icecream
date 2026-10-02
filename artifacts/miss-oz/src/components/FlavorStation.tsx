@@ -4,6 +4,7 @@ import FlavorVoting from './FlavorVoting';
 export default function FlavorStation() {
   return (
     <section
+      id="new-flavor"
       className="relative overflow-hidden"
       style={{ background: 'var(--cream-hi)' }}
     >

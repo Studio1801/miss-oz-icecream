@@ -1,5 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "dist/public",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/events", "destination": "/events.html" },
+    { "source": "/wholesale", "destination": "/wholesale.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "redirects": [
+    { "source": "/menu", "destination": "/#menu", "permanent": true },
+    { "source": "/new-flavor", "destination": "/#new-flavor", "permanent": true }
+  ]
 }

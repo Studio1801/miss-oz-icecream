@@ -108,7 +108,7 @@ export default function FlavorDrop() {
                 <img
                   loading="lazy" decoding="async"
                   src={FLAVOR.poster}
-                  alt={`${FLAVOR.name} — seasonal flavor at Miss Oz`}
+                  alt={`${FLAVOR.name}, seasonal flavor at Miss Oz`}
                   className="block w-full h-auto rounded-[2px]"
                   style={{ boxShadow: 'inset 0 0 0 1px rgba(28,13,12,0.12)' }}
                 />

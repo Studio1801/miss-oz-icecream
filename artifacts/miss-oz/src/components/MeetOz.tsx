@@ -133,7 +133,7 @@ export default function MeetOz() {
         {/* Copy */}
         <motion.div {...rise} transition={{ duration: 0.7, delay: 0.25 }} className="max-w-[720px] mx-auto text-center">
           <p className="mb-[16px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d]">
-            The shop is named after Oz — our beloved dog, and the reason we do things the way we do.
+            The shop is named after Oz, our beloved dog, and the reason we do things the way we do.
             Oregon is about as dog-friendly as a place can be, and she made every corner of it hers.
           </p>
           <p className="mb-[16px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d]">

@@ -12,7 +12,7 @@ const CARDS = [
   {
     no: 'II',
     title: 'Croffles',
-    desc: 'Croissant waffles — Oreo pop, brunost, fresh cream, fudge drizzle',
+    desc: 'Croissant waffles, Oreo pop, brunost, fresh cream, fudge drizzle',
     image: 'https://www.missinthekitchen.com/wp-content/uploads/2024/02/Croffles-Croissant-Waffles-Recipe-photo.jpg',
   },
   {
@@ -56,7 +56,7 @@ export default function Menu() {
           initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.2 }}
           className="italic max-w-[520px] mx-auto text-[19px] text-[#1d0e0d] opacity-80"
         >
-          Every flavor made in-house. Ask for a sample — we insist.
+          Every flavor made in-house. Ask for a sample, we insist.
         </motion.p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-[28px] max-w-[1060px] mx-auto mt-[52px]">

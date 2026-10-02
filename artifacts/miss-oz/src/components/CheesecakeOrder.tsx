@@ -132,7 +132,7 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
               <button type="submit" disabled={status === 'sending'} className="mt-4 w-full rounded-full bg-[var(--berry-deep)] px-5 py-3 font-bold uppercase tracking-[1.5px] text-[var(--cream-hi)] transition-transform hover:-translate-y-0.5 disabled:opacity-60" style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}>
                 {status === 'sending' ? 'Sending…' : 'Submit Pre-Order'}
               </button>
-              {status === 'sent' && <p className="mt-3 text-center text-[#3B1E2B]">Thank you — your pre-order request has been sent.</p>}
+              {status === 'sent' && <p className="mt-3 text-center text-[#3B1E2B]">Thank you. Your pre-order request has been sent.</p>}
               {status === 'error' && <p className="mt-3 text-center text-[var(--berry-deep)]">We couldn’t send your request. Please try again.</p>}
             </form>
           </div>

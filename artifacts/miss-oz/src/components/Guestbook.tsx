@@ -17,7 +17,7 @@ function sanitizeEntries(raw: unknown): Entry[] {
     const when = typeof rec.when === 'string' ? rec.when.trim() : '';
     const id = typeof rec.id === 'string' && rec.id ? rec.id : `gb-${Math.random().toString(36).slice(2)}`;
     if (!name || !note) continue;
-    clean.push({ id, name: name.slice(0, 40), note: note.slice(0, 180), when: when || '—' });
+    clean.push({ id, name: name.slice(0, 40), note: note.slice(0, 180), when: when || 'No date.' });
   }
   return clean;
 }
@@ -72,7 +72,7 @@ export default function Guestbook() {
       setName('');
       setNote('');
       setJustSigned(true);
-      if (liveRef.current) liveRef.current.textContent = 'Thank you — your note is in the book.';
+      if (liveRef.current) liveRef.current.textContent = 'Thank you. Your note is in the book.';
       window.setTimeout(() => setJustSigned(false), 2600);
     } catch {
       if (liveRef.current) liveRef.current.textContent = 'We could not confirm your note was saved. Please try again later.';
@@ -82,7 +82,7 @@ export default function Guestbook() {
   }
 
   return (
-    <section className="parlour-paper relative py-[80px] md:py-[120px] px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section id="guestbook" className="parlour-paper relative py-[80px] md:py-[120px] px-[6vw] bg-[var(--cream)] overflow-hidden">
       <Starburst size={160} color="var(--gold)" className="pointer-events-none absolute top-[50px] left-[3vw] opacity-[0.10] hidden md:block" />
       <Starburst size={130} color="var(--berry)" className="pointer-events-none absolute bottom-[60px] right-[4vw] opacity-[0.09] hidden md:block" />
       {/* diner-table vignette */}
@@ -197,7 +197,7 @@ export default function Guestbook() {
               <p ref={liveRef} aria-live="polite" className="sr-only" />
 
               <div className="mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
-                — one —
+                Page one.
               </div>
             </form>
 
@@ -235,7 +235,7 @@ export default function Guestbook() {
               </ul>
 
               <div className="mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
-                — two —
+                Page two.
               </div>
             </div>
           </div>

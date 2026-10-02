@@ -87,7 +87,7 @@ export default function Story() {
           >
             F
           </span>
-          or 17 years we served this neighborhood as Cool Moon Ice Cream, scooping beside the Jamison Square fountain — made on-site, in small batches, with all natural ingredients.
+          or 17 years we served this neighborhood as Cool Moon Ice Cream, scooping beside the Jamison Square fountain, made on-site in small batches with all natural ingredients.
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.3 }}
           className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
@@ -95,7 +95,7 @@ export default function Story() {
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.35 }}
           className="leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          Push open the door and it's the same as it's always been — cones hand-dipped to order, a record turning in the corner, and a stool with your name on it. No rush here. Stay as long as you like.
+          Push open the door and it's the same as it's always been. Cones are hand-dipped to order, a record turns in the corner, and there's a stool with your name on it. No rush here. Stay as long as you like.
         </motion.p>
 
         {/* Then → Now chapter strip */}
@@ -130,7 +130,7 @@ export default function Story() {
             The old music's already playing.
           </p>
           <span className="mt-3 inline-block text-[12px] tracking-[4px] uppercase font-bold text-[var(--cocoa)] opacity-50">
-            — the Miss Oz family
+            The Miss Oz family.
           </span>
         </motion.div>
       </motion.div>
