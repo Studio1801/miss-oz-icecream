@@ -15,11 +15,6 @@ const flavorPhotos: MenuPhoto[] = [
   { name: 'Mint Chocolate Chip', fileName: 'image10.jpeg' },
 ];
 
-export const sundaePhotos: Record<string, MenuPhoto> = {
-  'Midnight Fudge Sundae': { name: 'Midnight Fudge Sundae', fileName: 'image0.jpeg' },
-  'Rose City Banana Split': { name: 'Rose City Banana Split', fileName: 'image11.jpeg' },
-};
-
 function PhotoGroup({ title, photos }: { title: string; photos: MenuPhoto[] }) {
   return (
     <div className="mt-7">

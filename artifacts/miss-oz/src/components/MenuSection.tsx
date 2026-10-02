@@ -1,12 +1,60 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import MenuProductList from './MenuProductList';
+import MenuPhotoGrid from './MenuPhotoGrid';
 import MenuCategoryNavigation from './MenuCategoryNavigation';
 import CheesecakeOrder from './CheesecakeOrder';
 import { FlavorPhotos } from './MenuPhotos';
 import { CROFFLES, DESSERTS, DRINKS, FLAVORS, MENU_CATEGORIES, SUNDAES } from './menuCatalog';
 
 const UBEREATS_URL = 'https://www.ubereats.com/store/miss-oz-ice-cream-cafe-aka-cool-moon-ice-creams/YEfj7ZgZS2m7Wm2og7PphQ';
+
+const sundaePhotos = [
+  {
+    src: 'images/wholesale/image0.jpeg',
+    alt: 'Midnight Fudge Sundae with whipped cream, sprinkles, and a cherry',
+    caption: 'Midnight Fudge Sundae',
+    objectPosition: 'center top',
+  },
+  {
+    src: 'images/wholesale/image11.jpeg',
+    alt: 'Rose City Banana Split',
+    caption: 'Rose City Banana Split',
+  },
+];
+
+const dessertPhotos = [
+  {
+    src: 'images/cookie-walnut.jpeg',
+    alt: 'Walnut chocolate chip cookies',
+    caption: 'Walnut Chocolate Chip Cookie',
+    objectPosition: 'center 56%',
+  },
+  {
+    src: 'images/cookie-coffee.jpeg',
+    alt: 'Two housemade cookies served with coffee',
+    caption: 'Butter Pecan Cookie',
+  },
+  {
+    src: 'images/cookie-stack.jpeg',
+    alt: 'A stack of housemade cookies on a plate',
+    caption: 'Traditional Chocolate Chip Cookie',
+    objectPosition: 'center 48%',
+  },
+];
+
+const cakePhotos = [
+  {
+    src: 'images/whole-cheesecake-slice.jpeg',
+    alt: 'A slice of Original Basque Cheesecake',
+    caption: 'Basque Cheesecake Slice',
+  },
+  {
+    src: 'images/whole-basque-cheesecake.jpeg',
+    alt: 'A whole Original Basque Cheesecake',
+    caption: 'Whole Basque Cheesecake',
+  },
+];
 
 const awningStyle = {
   background: 'repeating-linear-gradient(90deg, var(--cream-hi) 0 22px, var(--berry-deep) 22px 44px)',
@@ -125,11 +173,17 @@ function FlavorPanel() {
 function CroffleDessertsPanel() {
   return (
     <div className="flex-1 flex flex-col justify-between">
-      <div className="mt-[clamp(16px,2vw,24px)] flex flex-col text-center">
-        <h4 className="mb-3 text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Croffle menu</h4>
-        <MenuProductList items={CROFFLES} align="center" />
-        <h4 className="mt-6 mb-3 text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
-        <MenuProductList items={DESSERTS} align="center" />
+      <div className="mt-[clamp(16px,2vw,24px)]">
+        <div className="grid grid-cols-1 gap-x-[clamp(24px,3vw,40px)] gap-y-6 md:grid-cols-2">
+          <section className="min-w-0">
+            <h4 className="mb-3 text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Croffle menu</h4>
+            <MenuProductList items={CROFFLES} descriptionSize="large" />
+          </section>
+          <section className="min-w-0">
+            <h4 className="mb-3 text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
+            <MenuProductList items={DESSERTS} descriptionSize="large" />
+          </section>
+        </div>
         <div className="mt-[clamp(20px,2.4vw,30px)] text-center">
           <div
             className="text-[var(--marionberry)]"
@@ -143,16 +197,8 @@ function CroffleDessertsPanel() {
           >
             A few of the housemade sweets you may find at Miss Oz.
           </p>
-          <div className="mx-auto mt-[14px] grid max-w-[560px] grid-cols-3 gap-[10px] sm:gap-[18px]">
-            <div className="aspect-[3/4] overflow-hidden rounded-[12px]">
-              <img src="/images/cookie-walnut.jpeg" alt="Housemade cookies" className="h-full w-full rounded-[12px] object-cover" style={{ objectPosition: 'center 56%' }} />
-            </div>
-            <div className="aspect-[3/4] overflow-hidden rounded-[12px]">
-              <img src="/images/cookie-coffee.jpeg" alt="Housemade cookies with coffee" className="h-full w-full rounded-[12px] object-cover" style={{ objectPosition: 'center center' }} />
-            </div>
-            <div className="aspect-[3/4] overflow-hidden rounded-[12px]">
-              <img src="/images/cookie-stack.jpeg" alt="Stack of housemade cookies" className="h-full w-full rounded-[12px] object-cover" style={{ objectPosition: 'center 48%' }} />
-            </div>
+          <div className="mt-[14px]">
+            <MenuPhotoGrid photos={dessertPhotos} />
           </div>
         </div>
       </div>
@@ -195,7 +241,10 @@ function SundaesPanel() {
   return (
     <div className="flex-1 flex flex-col justify-between">
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col">
-        <MenuProductList items={SUNDAES} />
+        <MenuProductList items={SUNDAES} descriptionSize="large" />
+        <div className="mt-[clamp(18px,2vw,24px)]">
+          <MenuPhotoGrid photos={sundaePhotos} />
+        </div>
       </div>
       <div>
         <MenuDivider className="mt-[clamp(16px,2vw,22px)]" />
@@ -240,10 +289,6 @@ function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
   return (
     <div id="cakes" className="flex-1 flex flex-col justify-between" style={{ scrollMarginTop: '100px' }}>
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col gap-[clamp(18px,2vw,26px)]">
-        <div className="grid grid-cols-2 gap-[10px]">
-          <img src="/images/whole-cheesecake-slice.jpeg" alt="Slice of Original Basque Cheesecake" className="h-[clamp(120px,14vw,190px)] w-full rounded-[10px] object-cover" />
-          <img src="/images/whole-basque-cheesecake.jpeg" alt="Whole Original Basque Cheesecake" className="h-[clamp(120px,14vw,190px)] w-full rounded-[10px] object-cover" />
-        </div>
         <div
           className="relative overflow-hidden rounded-[12px] p-[clamp(17px,2.2vw,28px)] text-[#6E5A54] leading-relaxed"
           style={{
@@ -258,7 +303,7 @@ function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           <div className="relative text-[var(--berry-deep)]" style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(25px,2.6vw,36px)', lineHeight: 1 }}>
             Original Basque Cheesecake
           </div>
-          <p className="relative mt-[12px] rounded-[7px] px-3 py-2.5 text-[#4D3538]" style={{ background: 'rgba(255,255,255,0.38)' }}>
+          <p className="relative mt-[12px] rounded-[7px] px-3 py-2.5 text-[15px] text-[#4D3538]" style={{ background: 'rgba(255,255,255,0.38)' }}>
             <strong className="text-[var(--berry-deep)]">Crafted fresh for every order.</strong> To ensure the highest quality and texture, our Basque Cheesecakes are available by pre-order only.
           </p>
           <div className="relative mt-[18px] font-bold text-[#3B1E2B]" style={{ fontSize: 'clamp(14px,1.1vw,17px)' }}>
@@ -275,7 +320,7 @@ function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
               <div className="font-semibold text-[#3B1E2B]">10-inch</div><strong className="text-[var(--berry-deep)]">$85</strong><div className="text-[10px]">(12 slices)</div>
             </div>
           </div>
-          <p className="relative mt-[14px] rounded-[7px] px-3 py-2.5 text-[#4D3538]" style={{ background: 'rgba(94,23,53,0.06)' }}>
+          <p className="relative mt-[14px] rounded-[7px] px-3 py-2.5 text-[15px] text-[#4D3538]" style={{ background: 'rgba(94,23,53,0.06)' }}>
             The reason the 8&quot; and 10&quot; cakes are the same price is that they use the{' '}
             <strong className="text-[var(--berry-deep)]">same amount of ingredients.</strong>{' '}
             The 8-inch version is taller and yields 8 larger slices, while the 10-inch version is
@@ -298,12 +343,13 @@ function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           <div className="relative mt-[9px] font-bold text-[var(--berry-deep)]" style={{ fontFamily: "'DM Serif Display', serif", fontStyle: 'italic', fontSize: 'clamp(20px,2vw,28px)', lineHeight: 1.12 }}>
             Handcrafted in Limited Weekly Batches
           </div>
-          <p className="relative mt-[11px] text-[#4D3538]">
+          <p className="relative mt-[11px] text-[15px] text-[#4D3538]">
             Our whole Basque cheesecakes are made from scratch using 100% premium cream cheese and
             zero flour. Each cake is slow-baked, cooled at room temperature, and refrigerated
             overnight to develop its signature rich and creamy texture.
           </p>
         </div>
+        <MenuPhotoGrid photos={cakePhotos} />
         <button
           type="button"
           onClick={onOrder}
