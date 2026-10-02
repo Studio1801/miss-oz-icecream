@@ -9,6 +9,12 @@ interface Props {
   submitLabel?: string;
   /** Tailwind/CSS classes for the trigger button */
   buttonClassName?: string;
+  /** Render the form inline instead of behind a trigger button */
+  inline?: boolean;
+  /** Render field labels in sentence case */
+  sentenceCaseLabels?: boolean;
+  /** Label for the form's submit button */
+  submitButtonLabel?: string;
   /** When true, renders form fields with light text/borders for dark backgrounds */
   darkBg?: boolean;
 }
@@ -28,6 +34,9 @@ export default function InquireForm({
   type,
   submitLabel = 'Send inquiry',
   buttonClassName = '',
+  inline = false,
+  sentenceCaseLabels = false,
+  submitButtonLabel = 'Send message',
   darkBg = false,
 }: Props) {
   const [name, setName] = useState('');
@@ -45,7 +54,7 @@ export default function InquireForm({
   const [desiredOrderQuantities, setDesiredOrderQuantities] = useState('');
   const [additionalEventDetails, setAdditionalEventDetails] = useState('');
   const [status, setStatus] = useState<Status>('idle');
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(inline);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -120,7 +129,7 @@ export default function InquireForm({
 
   function reset() {
     setStatus('idle');
-    setOpen(false);
+    setOpen(inline);
   }
 
   // Light-on-dark vs dark-on-light field styles
@@ -128,9 +137,16 @@ export default function InquireForm({
     ? 'w-full bg-transparent border-b-2 border-[rgba(243,234,214,0.35)] pb-[5px] text-[17px] text-[#f3ead6] placeholder:text-[rgba(243,234,214,0.4)] placeholder:italic focus:outline-none focus:border-[var(--gold-hi)] transition-colors px-1 py-1 rounded-sm'
     : 'w-full bg-transparent border-b-2 border-[rgba(28,13,12,0.25)] pb-[5px] text-[17px] text-[var(--cocoa)] placeholder:text-[rgba(28,13,12,0.35)] placeholder:italic focus:outline-none focus:border-[var(--berry)] transition-colors px-1 py-1 rounded-sm';
 
+  const labelCaseClass = sentenceCaseLabels ? 'tracking-[1px] normal-case' : 'tracking-[3px] uppercase';
   const labelClass = darkBg
-    ? 'block text-[11px] tracking-[3px] uppercase font-bold text-[#f3ead6] opacity-70 mb-1'
-    : 'block text-[11px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1';
+    ? `block text-[11px] ${labelCaseClass} font-bold text-[#f3ead6] opacity-70 mb-1`
+    : `block text-[11px] ${labelCaseClass} font-bold text-[var(--cocoa)] opacity-60 mb-1`;
+
+  const labelText = (text: string) =>
+    sentenceCaseLabels ? `${text.charAt(0).toUpperCase()}${text.slice(1).toLowerCase()}` : text;
+  const fieldSpacing = inline ? 'mb-3' : 'mb-5';
+  const finalFieldSpacing = inline ? 'mb-4' : 'mb-6';
+  const dateTimeGap = inline ? 'gap-3' : 'gap-5';
 
   const textareaClass = darkBg
     ? 'w-full bg-transparent border border-[rgba(243,234,214,0.28)] rounded-[6px] px-3 py-2 text-[16px] leading-[1.6] text-[#f3ead6] placeholder:text-[rgba(243,234,214,0.4)] placeholder:italic focus:outline-none focus:border-[var(--gold-hi)] transition-colors resize-none'
@@ -141,9 +157,9 @@ export default function InquireForm({
     : 'text-[12px] tracking-[2px] uppercase underline opacity-50 hover:opacity-90 transition-opacity';
 
   return (
-    <div className="mt-6">
+    <div className={inline ? 'w-full' : 'mt-6'}>
       <AnimatePresence mode="wait">
-        {!open ? (
+        {!open && !inline ? (
           <motion.button
             key="trigger"
             initial={{ opacity: 0 }}
@@ -229,8 +245,8 @@ export default function InquireForm({
                 />
               </div>
             )}
-            <div className="mb-5">
-              <label className={labelClass}>{type === 'wholesale' ? 'Contact Person' : 'Your name'}</label>
+            <div className={fieldSpacing}>
+              <label className={labelClass}>{labelText(type === 'wholesale' ? 'Contact Person' : 'Your name')}</label>
               <input
                 type="text"
                 value={name}
@@ -241,8 +257,8 @@ export default function InquireForm({
                 className={inputClass}
               />
             </div>
-            <div className="mb-5">
-              <label className={labelClass}>{type === 'wholesale' ? 'Email Address' : 'Email'}</label>
+            <div className={fieldSpacing}>
+              <label className={labelClass}>{labelText(type === 'wholesale' ? 'Email Address' : 'Email')}</label>
               <input
                 type="email"
                 value={email}
@@ -253,9 +269,9 @@ export default function InquireForm({
                 className={inputClass}
               />
             </div>
-            <div className="mb-5">
+            <div className={fieldSpacing}>
               <label className={labelClass}>
-                {type === 'wholesale' ? 'Phone Number' : <>Phone <span className="normal-case font-normal" style={{ opacity: 0.6 }}>(optional)</span></>}
+                {type === 'wholesale' ? labelText('Phone Number') : <>{labelText('Phone')} <span className="normal-case font-normal" style={{ opacity: 0.6 }}>(optional)</span></>}
               </label>
               <input
                 type="tel"
@@ -269,15 +285,15 @@ export default function InquireForm({
             </div>
             {type === 'wholesale' ? (
               <>
-                <div className="mb-5">
-                  <label className={labelClass}>Business Type</label>
+                <div className={fieldSpacing}>
+                  <label className={labelClass}>{labelText('Business Type')}</label>
                   <select value={businessType} onChange={(e) => setBusinessType(e.target.value)} required className={inputClass}>
                     <option value="">Choose a business type</option>
                     {BUSINESS_TYPES.map((option) => <option key={option} value={option}>{option}</option>)}
                   </select>
                 </div>
-                <fieldset className="mb-5">
-                  <legend className={labelClass}>Products of Interest</legend>
+                <fieldset className={fieldSpacing}>
+                  <legend className={labelClass}>{labelText('Products of Interest')}</legend>
                   <div className="grid gap-2 sm:grid-cols-2">
                     {WHOLESALE_PRODUCTS.map((product) => (
                       <label key={product} className="flex items-center gap-2 text-[15px]" style={{ color: darkBg ? '#f3ead6' : 'var(--cocoa)', fontFamily: 'var(--font-sans)' }}>
@@ -292,8 +308,8 @@ export default function InquireForm({
                     ))}
                   </div>
                 </fieldset>
-                <div className="mb-5">
-                  <label className={labelClass}>Estimated Order Volume</label>
+                <div className={fieldSpacing}>
+                  <label className={labelClass}>{labelText('Estimated Order Volume')}</label>
                   <input
                     type="text"
                     value={estimatedOrderVolume}
@@ -304,8 +320,8 @@ export default function InquireForm({
                     className={inputClass}
                   />
                 </div>
-                <div className="mb-6">
-                  <label className={labelClass}>Additional Information</label>
+                <div className={finalFieldSpacing}>
+                  <label className={labelClass}>{labelText('Additional Information')}</label>
                   <textarea
                     value={additionalInformation}
                     onChange={(e) => setAdditionalInformation(e.target.value)}
@@ -318,32 +334,32 @@ export default function InquireForm({
               </>
             ) : type === 'event' ? (
               <>
-                <div className="mb-5 grid gap-5 sm:grid-cols-2">
+                <div className={`${fieldSpacing} grid ${dateTimeGap} sm:grid-cols-2`}>
                   <div>
-                    <label htmlFor="event-date" className={labelClass}>Event Date</label>
+                    <label htmlFor="event-date" className={labelClass}>{labelText('Event Date')}</label>
                     <input id="event-date" type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required className={inputClass} />
                   </div>
                   <div>
-                    <label htmlFor="event-time" className={labelClass}>Event Time</label>
+                    <label htmlFor="event-time" className={labelClass}>{labelText('Event Time')}</label>
                     <input id="event-time" type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} required className={inputClass} />
                   </div>
                 </div>
-                <div className="mb-5">
-                  <label htmlFor="event-servings" className={labelClass}>Number of Servings</label>
+                <div className={fieldSpacing}>
+                  <label htmlFor="event-servings" className={labelClass}>{labelText('Number of Servings')}</label>
                   <input id="event-servings" type="number" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="How many guests will you serve?" className={inputClass} />
                 </div>
-                <div className="mb-5">
-                  <label htmlFor="event-quantities" className={labelClass}>Desired Order Quantities</label>
-                  <textarea id="event-quantities" value={desiredOrderQuantities} onChange={(e) => setDesiredOrderQuantities(e.target.value)} maxLength={600} rows={3} required placeholder="For example: 50 single scoops, 30 double scoops" className={textareaClass} />
+                <div className={fieldSpacing}>
+                  <label htmlFor="event-quantities" className={labelClass}>{labelText('Desired Order Quantities')}</label>
+                  <textarea id="event-quantities" value={desiredOrderQuantities} onChange={(e) => setDesiredOrderQuantities(e.target.value)} maxLength={600} rows={inline ? 2 : 3} required placeholder="For example: 50 single scoops, 30 double scoops" className={textareaClass} />
                 </div>
-                <div className="mb-6">
-                  <label htmlFor="event-details" className={labelClass}>Additional Event Details</label>
-                  <textarea id="event-details" value={additionalEventDetails} onChange={(e) => setAdditionalEventDetails(e.target.value)} maxLength={1200} rows={4} placeholder="Tell us anything else about your event." className={textareaClass} />
+                <div className={finalFieldSpacing}>
+                  <label htmlFor="event-details" className={labelClass}>{labelText('Additional Event Details')}</label>
+                  <textarea id="event-details" value={additionalEventDetails} onChange={(e) => setAdditionalEventDetails(e.target.value)} maxLength={1200} rows={inline ? 2 : 4} placeholder="Tell us anything else about your event." className={textareaClass} />
                 </div>
               </>
             ) : (
-              <div className="mb-6">
-                <label className={labelClass}>Tell us more</label>
+              <div className={finalFieldSpacing}>
+                <label className={labelClass}>{labelText('Tell us more')}</label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
@@ -377,16 +393,18 @@ export default function InquireForm({
                 }
                 className="bg-[var(--cocoa)] text-[var(--cream)] py-[11px] px-[26px] rounded-full text-[14px] font-semibold tracking-[0.5px] mech-btn hover:bg-[var(--berry)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)]"
               >
-                {status === 'sending' ? 'Sending…' : 'Send message'}
+                {status === 'sending' ? 'Sending…' : submitButtonLabel}
               </button>
-              <button
-                type="button"
-                onClick={reset}
-                className={cancelClass}
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
-                Cancel
-              </button>
+              {!inline && (
+                <button
+                  type="button"
+                  onClick={reset}
+                  className={cancelClass}
+                  style={{ fontFamily: 'var(--font-sans)' }}
+                >
+                  Cancel
+                </button>
+              )}
             </div>
           </motion.form>
         )}

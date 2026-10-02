@@ -20,7 +20,7 @@ const EVENT_POLAROIDS = [
 function EventPolaroid({ photo, className }: { photo: (typeof EVENT_POLAROIDS)[number]; className: string }) {
   return (
     <figure
-      className={`pointer-events-none relative hidden w-[clamp(96px,10vw,132px)] self-center rounded-[3px] bg-[var(--cream-hi)] p-[8px] pb-[10px] lg:block ${className}`}
+      className={`pointer-events-none absolute top-[8px] w-[clamp(130px,13vw,180px)] rounded-[3px] bg-[var(--cream-hi)] p-[8px] pb-[10px] ${className}`}
       style={{ boxShadow: '0 10px 28px rgba(28,13,12,0.18)' }}
     >
       <span
@@ -44,59 +44,94 @@ function EventPolaroid({ photo, className }: { photo: (typeof EVENT_POLAROIDS)[n
 
 export default function Events() {
   return (
-    <section id="events" className="parlour-paper relative overflow-hidden text-center py-[54px] md:py-[86px] px-[6vw] bg-[var(--pink)]">
+    <section
+      id="events"
+      className="parlour-paper relative overflow-hidden bg-[var(--pink)] px-[6vw] py-[26px] md:py-[38px] lg:flex lg:min-h-[calc(100svh-110px)] lg:items-center"
+    >
       <Bunting className="absolute top-0 left-0 right-0" />
       <Starburst size={150} color="var(--berry)" className="pointer-events-none absolute -bottom-8 -left-8 opacity-[0.10] hidden md:block" />
       <Starburst size={120} color="var(--berry)" className="pointer-events-none absolute top-[86px] right-[4vw] opacity-[0.10] hidden md:block" />
-      <div className="mx-auto grid max-w-[1120px] grid-cols-1 items-center lg:grid-cols-[minmax(0,1fr)_minmax(0,640px)_minmax(0,1fr)]">
-        <EventPolaroid photo={EVENT_POLAROIDS[0]} className="lg:col-start-1 lg:row-start-1 lg:justify-self-start lg:-rotate-[6deg]" />
-        <div className="mx-auto w-full max-w-[760px] lg:col-start-2 lg:row-start-1">
-          <motion.span
-            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
-            className="mb-2 block font-script text-[clamp(30px,3.5vw,42px)] text-[var(--berry-deep)]"
+      <div className="relative z-10 mx-auto grid w-full max-w-[1240px] grid-cols-1 items-start gap-x-[clamp(28px,4vw,58px)] gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.96fr)] lg:items-center">
+        <div className="text-left lg:col-start-1 lg:row-start-1">
+          <div
+            className="ticket-notch ticket-shine relative mb-[14px] inline-block -rotate-[3deg] overflow-hidden rounded-[6px] p-[5px] motion-safe:animate-[ticketFloat_4s_ease-in-out_infinite]"
+            style={{
+              background: 'linear-gradient(180deg, #F7EDDD 0%, #F2E4CC 100%)',
+              boxShadow: '0 4px 10px rgba(28,13,12,0.16)',
+              WebkitMaskImage: 'radial-gradient(circle 8px at 0 50%, transparent 96%, #000 100%), radial-gradient(circle 8px at 100% 50%, transparent 96%, #000 100%)',
+              maskImage: 'radial-gradient(circle 8px at 0 50%, transparent 96%, #000 100%), radial-gradient(circle 8px at 100% 50%, transparent 96%, #000 100%)',
+              WebkitMaskComposite: 'source-in',
+              maskComposite: 'intersect',
+            }}
           >
-            coming soon
-          </motion.span>
+            <span
+              className="block whitespace-nowrap rounded-[4px] border border-dashed px-[18px] py-[7px] font-script text-[19px] leading-none text-[var(--berry-deep)]"
+              style={{ borderColor: 'rgba(59,16,32,0.45)' }}
+            >
+              coming soon
+            </span>
+          </div>
           <motion.h2
             initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.15 }}
-            className="mb-5 text-[clamp(42px,6vw,80px)] leading-[0.98] text-[var(--cocoa)]"
+            className="mb-[10px] text-[clamp(46px,5.6vw,76px)] leading-[0.98] text-[var(--cocoa)]"
             style={macklin}
           >
-            Ice cream for your celebration
+            Event Catering
           </motion.h2>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto mt-[28px] max-w-[720px] text-[20px] leading-relaxed text-[var(--cocoa)] md:text-[24px]"
-          >
-            Event Catering will launch in Summer 2027.
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.23 }}
-            className="mx-auto mt-[12px] max-w-[620px] text-[16px] font-semibold text-[var(--cocoa)] md:text-[18px]"
+            className="mt-[4px] text-[16px] font-semibold text-[var(--cocoa)] md:text-[18px]"
           >
             Private parties and weddings
           </motion.p>
           <motion.p
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.25 }}
-            className="mx-auto mt-[12px] max-w-[620px] text-[16px] italic leading-relaxed text-[var(--cocoa)] opacity-75 md:text-[18px]"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.23 }}
+            className="mt-[12px] max-w-[600px] text-[18px] leading-relaxed text-[var(--cocoa)] md:text-[20px]"
           >
-            We’re preparing a new way to bring Miss Oz treats to your celebrations. In the meantime, tell us about your event so we can start planning.
+            Event Catering will launch in Summer 2027.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.25 }}
+            className="mt-[10px] max-w-[600px] text-[16px] italic leading-relaxed text-[var(--cocoa)] opacity-75 md:text-[18px]"
+          >
+            We're preparing a new way to bring Miss Oz treats to your celebrations. In the meantime, tell us about your event so we can start planning.
           </motion.p>
         </div>
-        <EventPolaroid photo={EVENT_POLAROIDS[1]} className="lg:col-start-3 lg:row-start-1 lg:justify-self-end lg:rotate-[5deg]" />
-      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
-        className="mt-[48px] text-center"
-      >
-        <InquireForm
-          type="event"
-          submitLabel="Tell us about your event"
-          buttonClassName="inline-flex items-center gap-2 rounded-full px-7 py-[13px] text-[14px] font-bold tracking-[1px] !normal-case [&>span]:hidden text-[var(--cream-hi)] bg-[var(--cocoa)] transition-transform duration-200 mech-btn hover:bg-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--pink)]"
-        />
-      </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.25 }}
+          className="relative w-full max-w-[560px] justify-self-center rounded-[10px] px-[20px] pb-[20px] pt-[32px] sm:px-[28px] sm:pb-[24px] sm:pt-[36px] lg:col-start-2 lg:row-span-2 lg:row-start-1"
+          style={{
+            backgroundColor: 'var(--cream-hi)',
+            backgroundImage: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, rgba(28,13,12,0.07) 32px, transparent 33px)',
+            boxShadow: '0 18px 42px rgba(28,13,12,0.16), inset 0 0 0 1px rgba(28,13,12,0.08)',
+          }}
+        >
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-[10px] left-1/2 h-[20px] w-[76px] -translate-x-1/2 rotate-[-3deg]"
+            style={{ background: 'rgba(214,193,150,0.75)', boxShadow: '0 1px 3px rgba(28,13,12,0.15)' }}
+          />
+          <h3
+            className="mb-[10px] text-[clamp(26px,2.4vw,32px)] leading-tight text-[var(--berry-deep)]"
+            style={{ fontFamily: 'var(--font-script)', fontStyle: 'italic', fontWeight: 400 }}
+          >
+            Tell us about your event
+          </h3>
+          <InquireForm
+            type="event"
+            inline
+            sentenceCaseLabels
+            submitButtonLabel="Send my event details"
+          />
+        </motion.div>
+
+        <div className="relative mx-auto mt-1 h-[220px] w-full max-w-[430px] lg:col-start-1 lg:row-start-2 lg:mt-0">
+          <EventPolaroid photo={EVENT_POLAROIDS[0]} className="left-[6%] z-10 -rotate-[6deg]" />
+          <EventPolaroid photo={EVENT_POLAROIDS[1]} className="left-[40%] z-20 rotate-[5deg] md:left-[34%] lg:left-[44%]" />
+        </div>
+      </div>
     </section>
   );
 }
