@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import MenuProductList from './MenuProductList';
 import MenuCategoryNavigation from './MenuCategoryNavigation';
@@ -440,22 +440,31 @@ export default function MenuSection() {
   const [activeCategory, setActiveCategory] = useState<string>(() =>
     window.location.hash === '#cakes' ? 'Whole Cakes' : 'Flavors',
   );
+  const scrollMenuAfterSelection = useRef(false);
   const [cakeOrderOpen, setCakeOrderOpen] = useState(false);
   const closeCakeOrder = useCallback(() => setCakeOrderOpen(false), []);
   const selectCategory = (category: string) => {
     const categoryChanged = category !== activeCategory;
+    scrollMenuAfterSelection.current = categoryChanged;
     setActiveCategory(category);
     if (category === 'Whole Cakes') {
       history.replaceState(null, '', `${window.location.pathname}${window.location.search}#cakes`);
     } else if (window.location.hash === '#cakes') {
       history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
     }
-    if (categoryChanged) {
-      requestAnimationFrame(() =>
-        document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
-      );
-    }
   };
+
+  useLayoutEffect(() => {
+    if (!scrollMenuAfterSelection.current) return;
+    scrollMenuAfterSelection.current = false;
+
+    const menu = document.getElementById('menu');
+    if (!menu) return;
+
+    const marginTop = Number.parseFloat(window.getComputedStyle(menu).scrollMarginTop) || 0;
+    const top = Math.max(0, window.scrollY + menu.getBoundingClientRect().top - marginTop);
+    window.scrollTo({ top, behavior: 'smooth' });
+  }, [activeCategory]);
 
   useEffect(() => {
     const activateCakes = () => {
@@ -474,7 +483,7 @@ export default function MenuSection() {
       <section
         id="menu"
         className="relative z-20 mx-auto max-w-none px-0 mt-[clamp(18px,2.4vw,30px)]"
-        style={{ scrollMarginTop: '94px' }}
+        style={{ scrollMarginTop: '94px', overflowAnchor: 'none' }}
       >
         <h2 className="sr-only">Menu</h2>
         <div className="flex items-center justify-center gap-3 mb-[clamp(14px,1.8vw,22px)]">
