@@ -1,5 +1,6 @@
 - [Miss Oz visual verification](miss-oz-hero-and-loader.md) — instant screenshots often capture the intro splash; wait for it before judging the homepage.
 - [Resend email setup](resend-email-setup.md) — SDK returns {data,error}, never throws; currently in test mode via onboarding@resend.dev until domain verified; user pastes sentences into secret forms — validate.
 - [Vercel external deploy](vercel-external-deploy.md) — artifact vite config must tolerate missing PORT/BASE_PATH; Vercel sets Root Dir to the artifact folder, so vercel.json must live inside it with outputDirectory "dist/public".
+- [GitHub push credentials](github-git-transport.md) — an installed GitHub App does not necessarily authenticate local HTTPS Git pushes.
 - [Miss Oz page structure](miss-oz-page-structure.md) — keep only Events, Wholesale, and About Us on dedicated pages; the remaining existing sections stay on Home.
 - [Miss Oz supplied photos](miss-oz-photo-intent.md) — client corrected an earlier misclassification: the 12 supplied photos belong in Menu, not Wholesale or New Flavor.

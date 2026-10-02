@@ -21,11 +21,13 @@ function PhotoGroup({ title, photos }: { title: string; photos: MenuPhoto[] }) {
       <h4 className="mb-3 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--marionberry)]">
         {title}
       </h4>
-      <div className="flex flex-wrap justify-center gap-3">
-        {photos.map((photo) => (
+      <div className="mx-auto grid w-full max-w-[760px] grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {photos.map((photo, index) => (
           <figure
             key={photo.fileName}
-            className="w-[calc(50%_-_0.375rem)] overflow-hidden rounded-[10px] border border-[rgba(115,32,62,0.16)] bg-white/75 sm:w-[calc(25%_-_0.5625rem)]"
+            className={`mx-auto w-full max-w-[240px] overflow-hidden rounded-[10px] border border-[rgba(115,32,62,0.16)] bg-white/75 justify-self-center ${
+              photos.length % 3 === 1 && index === photos.length - 1 ? 'xl:col-span-3' : ''
+            }`}
           >
             <img
               src={`${import.meta.env.BASE_URL}images/wholesale/${photo.fileName}`}

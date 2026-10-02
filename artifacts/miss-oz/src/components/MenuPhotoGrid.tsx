@@ -14,25 +14,27 @@ type MenuPhotoGridProps = {
 export default function MenuPhotoGrid({
   photos,
   layout = 'standard',
-  aspectRatio = 'square',
+  aspectRatio = 'portrait',
 }: MenuPhotoGridProps) {
-  const gridColumns = layout === 'sundaes'
-    ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-    : 'grid-cols-2';
+  const desktopColumns = layout === 'sundaes' ? 3 : Math.max(1, Math.min(3, photos.length));
+  const desktopGridColumns = desktopColumns === 3
+    ? 'xl:grid-cols-3'
+    : desktopColumns === 2
+      ? 'xl:grid-cols-2'
+      : 'xl:grid-cols-1';
+  const gridColumns = `grid-cols-1 md:grid-cols-2 ${desktopGridColumns}`;
   const imageAspect = aspectRatio === 'portrait' ? 'aspect-[4/5]' : 'aspect-square';
+  const unpairedPhotoClass = 'md:col-span-2 md:w-1/2 md:justify-self-center xl:col-span-1 xl:w-full';
 
   return (
-    <div className={`mx-auto grid w-full max-w-[560px] ${gridColumns} gap-[10px] sm:gap-[18px]`}>
+    <div className={`mx-auto grid w-full max-w-[760px] ${gridColumns} gap-[20px]`}>
       {photos.map((photo, index) => {
         const isUnpairedLastPhoto = photos.length % 2 === 1 && index === photos.length - 1;
-        const unpairedPhotoClass = layout === 'sundaes'
-          ? 'md:col-span-2 md:w-1/2 md:justify-self-center lg:col-span-1 lg:w-full'
-          : 'col-span-2 w-1/2 justify-self-center';
 
         return (
           <figure
             key={photo.src}
-            className={`overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 ${
+            className={`w-full max-w-[240px] justify-self-center overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 ${
               isUnpairedLastPhoto ? unpairedPhotoClass : ''
             }`}
           >
