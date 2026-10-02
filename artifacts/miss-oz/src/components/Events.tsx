@@ -66,7 +66,7 @@ export default function Events() {
               }}
             >
               <span
-                className="block whitespace-nowrap rounded-[4px] border border-dashed px-[18px] py-[7px] font-script text-[19px] leading-none text-[var(--berry-deep)]"
+                className="block whitespace-nowrap rounded-[4px] border border-dashed px-[18px] py-[7px] font-script text-[22px] leading-none text-[var(--berry-deep)]"
                 style={{ borderColor: 'rgba(59,16,32,0.45)' }}
               >
                 coming soon
@@ -82,19 +82,19 @@ export default function Events() {
 
             <motion.p
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-[4px] text-[16px] font-semibold text-[var(--cocoa)] md:text-[18px]"
+              className="mt-[4px] text-[18px] font-semibold text-[var(--cocoa)] md:text-[20px]"
             >
               Private parties and weddings
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.23 }}
-              className="mt-[12px] max-w-[600px] text-[18px] leading-relaxed text-[var(--cocoa)] md:text-[20px]"
+              className="mt-[12px] max-w-[600px] text-[20px] leading-relaxed text-[var(--cocoa)] md:text-[22px]"
             >
               Event Catering will launch in Summer 2027.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.25 }}
-              className="mt-[10px] max-w-[600px] text-[16px] italic leading-relaxed text-[var(--cocoa)] opacity-75 md:text-[18px]"
+              className="mt-[10px] max-w-[600px] text-[18px] italic leading-relaxed text-[var(--cocoa)] opacity-75 md:text-[20px]"
             >
               We're preparing a new way to bring Miss Oz treats to your celebrations. In the meantime, tell us about your event so we can start planning.
             </motion.p>
