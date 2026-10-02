@@ -21,6 +21,12 @@ const sundaePhotos = [
     alt: 'Rose City Banana Split',
     caption: 'Rose City Banana Split',
   },
+  {
+    src: 'images/wholesale/image12.webp',
+    alt: "S'more sundae with a toasted marshmallow, graham crackers, whipped cream and chocolate drizzle",
+    caption: "S'more Sundae",
+    objectPosition: 'center top',
+  },
 ];
 
 const dessertPhotos = [
@@ -243,7 +249,7 @@ function SundaesPanel() {
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col">
         <MenuProductList items={SUNDAES} descriptionSize="large" />
         <div className="mt-[clamp(18px,2vw,24px)]">
-          <MenuPhotoGrid photos={sundaePhotos} />
+          <MenuPhotoGrid photos={sundaePhotos} layout="sundaes" aspectRatio="portrait" />
         </div>
       </div>
       <div>
