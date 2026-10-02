@@ -138,15 +138,22 @@ export default function InquireForm({
     : 'w-full bg-transparent border-b-2 border-[rgba(28,13,12,0.25)] pb-[5px] text-[17px] text-[var(--cocoa)] placeholder:text-[rgba(28,13,12,0.35)] placeholder:italic focus:outline-none focus:border-[var(--berry)] transition-colors px-1 py-1 rounded-sm';
 
   const labelCaseClass = sentenceCaseLabels ? 'tracking-[1px] normal-case' : 'tracking-[3px] uppercase';
+  const labelSizeClass = type === 'event' && inline ? 'text-[12px]' : 'text-[11px]';
   const labelClass = darkBg
-    ? `block text-[11px] ${labelCaseClass} font-bold text-[#f3ead6] opacity-70 mb-1`
-    : `block text-[11px] ${labelCaseClass} font-bold text-[var(--cocoa)] opacity-60 mb-1`;
+    ? `block ${labelSizeClass} ${labelCaseClass} font-bold text-[#f3ead6] opacity-70 mb-1`
+    : `block ${labelSizeClass} ${labelCaseClass} font-bold text-[var(--cocoa)] opacity-60 mb-1`;
 
   const labelText = (text: string) =>
     sentenceCaseLabels ? `${text.charAt(0).toUpperCase()}${text.slice(1).toLowerCase()}` : text;
-  const fieldSpacing = inline ? 'mb-3' : 'mb-5';
-  const finalFieldSpacing = inline ? 'mb-4' : 'mb-6';
-  const dateTimeGap = inline ? 'gap-3' : 'gap-5';
+  const fieldSpacing = inline
+    ? type === 'event' ? 'mb-3 lg:mb-2' : 'mb-3'
+    : 'mb-5';
+  const finalFieldSpacing = inline
+    ? type === 'event' ? 'mb-4 lg:mb-3' : 'mb-4'
+    : 'mb-6';
+  const dateTimeGap = inline
+    ? type === 'event' ? 'gap-3 lg:gap-2' : 'gap-3'
+    : 'gap-5';
 
   const textareaClass = darkBg
     ? 'w-full bg-transparent border border-[rgba(243,234,214,0.28)] rounded-[6px] px-3 py-2 text-[16px] leading-[1.6] text-[#f3ead6] placeholder:text-[rgba(243,234,214,0.4)] placeholder:italic focus:outline-none focus:border-[var(--gold-hi)] transition-colors resize-none'
@@ -229,7 +236,7 @@ export default function InquireForm({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             onSubmit={handleSubmit}
-            className="max-w-[460px] mx-auto text-left"
+            className={`mx-auto max-w-[460px] text-left ${type === 'event' && inline ? 'lg:max-w-none' : ''}`}
           >
             {type === 'wholesale' && (
               <div className="mb-5">
@@ -257,31 +264,33 @@ export default function InquireForm({
                 className={inputClass}
               />
             </div>
-            <div className={fieldSpacing}>
-              <label className={labelClass}>{labelText(type === 'wholesale' ? 'Email Address' : 'Email')}</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                maxLength={120}
-                required
-                placeholder="you@example.com"
-                className={inputClass}
-              />
-            </div>
-            <div className={fieldSpacing}>
-              <label className={labelClass}>
-                {type === 'wholesale' ? labelText('Phone Number') : <>{labelText('Phone')} <span className="normal-case font-normal" style={{ opacity: 0.6 }}>(optional)</span></>}
-              </label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                maxLength={30}
-                required={type === 'wholesale'}
-                placeholder="503-555-0100"
-                className={inputClass}
-              />
+              <div className={type === 'event' && inline ? `${fieldSpacing} grid gap-y-3 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-2` : ''}>
+              <div className={type === 'event' && inline ? '' : fieldSpacing}>
+                <label className={labelClass}>{labelText(type === 'wholesale' ? 'Email Address' : 'Email')}</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  maxLength={120}
+                  required
+                  placeholder="you@example.com"
+                  className={inputClass}
+                />
+              </div>
+              <div className={type === 'event' && inline ? '' : fieldSpacing}>
+                <label className={labelClass}>
+                  {type === 'wholesale' ? labelText('Phone Number') : <>{labelText('Phone')} <span className="normal-case font-normal" style={{ opacity: 0.6 }}>(optional)</span></>}
+                </label>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  maxLength={30}
+                  required={type === 'wholesale'}
+                  placeholder="503-555-0100"
+                  className={inputClass}
+                />
+              </div>
             </div>
             {type === 'wholesale' ? (
               <>
@@ -334,7 +343,7 @@ export default function InquireForm({
               </>
             ) : type === 'event' ? (
               <>
-                <div className={`${fieldSpacing} grid ${dateTimeGap} sm:grid-cols-2`}>
+                <div className={`${fieldSpacing} grid ${dateTimeGap} sm:grid-cols-2 ${inline ? 'lg:grid-cols-3' : ''}`}>
                   <div>
                     <label htmlFor="event-date" className={labelClass}>{labelText('Event Date')}</label>
                     <input id="event-date" type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required className={inputClass} />
@@ -343,10 +352,10 @@ export default function InquireForm({
                     <label htmlFor="event-time" className={labelClass}>{labelText('Event Time')}</label>
                     <input id="event-time" type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} required className={inputClass} />
                   </div>
-                </div>
-                <div className={fieldSpacing}>
-                  <label htmlFor="event-servings" className={labelClass}>{labelText('Number of Servings')}</label>
-                  <input id="event-servings" type="number" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="How many guests will you serve?" className={inputClass} />
+                  <div className={inline ? 'sm:col-span-2 lg:col-span-1' : 'sm:col-span-2'}>
+                    <label htmlFor="event-servings" className={labelClass}>{labelText('Number of Servings')}</label>
+                    <input id="event-servings" type="number" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="How many guests will you serve?" className={inputClass} />
+                  </div>
                 </div>
                 <div className={fieldSpacing}>
                   <label htmlFor="event-quantities" className={labelClass}>{labelText('Desired Order Quantities')}</label>
