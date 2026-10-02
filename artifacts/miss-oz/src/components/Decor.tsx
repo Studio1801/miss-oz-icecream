@@ -16,7 +16,7 @@ export function Bunting({ className = '', count = 40 }: { className?: string; co
         <span
           key={i}
           className="pennant"
-          style={{ color: BUNTING_COLORS[i % BUNTING_COLORS.length], animationDelay: `${(i % 5) * 0.14}s` }}
+          style={{ color: BUNTING_COLORS[i % BUNTING_COLORS.length] }}
         />
       ))}
     </div>

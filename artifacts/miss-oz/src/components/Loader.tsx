@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
-export default function Loader() {
-  const [loading, setLoading] = useState(true);
+export default function Loader({ enabled }: { enabled: boolean }) {
+  const [loading, setLoading] = useState(enabled);
   const reduce = useReducedMotion();
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), reduce ? 1100 : 2200);
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
+
+    const timer = setTimeout(() => setLoading(false), reduce ? 150 : 250);
     return () => clearTimeout(timer);
-  }, [reduce]);
+  }, [enabled, reduce]);
 
   return (
     <AnimatePresence>
-      {loading && (
+      {enabled && loading && (
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, visibility: 'hidden' }}
-          transition={{ duration: 0.7, ease: 'easeInOut' }}
+          transition={{ duration: reduce ? 0.2 : 0.4, ease: 'easeInOut' }}
           className="fixed inset-0 bg-[var(--berry-deep)] flex flex-col items-center justify-center z-[999] overflow-hidden"
         >
           {/* warm glow behind the mark */}

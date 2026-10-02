@@ -1,9 +1,24 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { MotionConfig } from 'framer-motion';
 import Footer from './Footer';
 import Loader from './Loader';
 import PawTrail from './PawTrail';
 import Postcard from './Postcard';
+
+const INTRO_SESSION_KEY = 'miss-oz-intro-seen';
+let cachedIntroDecision: boolean | undefined;
+
+function shouldShowIntroForSession(isHome: boolean) {
+  if (cachedIntroDecision !== undefined) return cachedIntroDecision;
+  try {
+    const hasSeenIntro = window.sessionStorage.getItem(INTRO_SESSION_KEY) === '1';
+    window.sessionStorage.setItem(INTRO_SESSION_KEY, '1');
+    cachedIntroDecision = isHome && !hasSeenIntro;
+  } catch {
+    cachedIntroDecision = false;
+  }
+  return cachedIntroDecision;
+}
 
 function GlobalMarqueeBorder() {
   const frameWidth = 'clamp(14px, 2vw, 26px)';
@@ -33,10 +48,12 @@ function GlobalMarqueeBorder() {
 }
 
 export default function SiteLayout({ children, showHero }: { children: ReactNode; showHero: boolean }) {
+  const [showIntro] = useState(() => shouldShowIntroForSession(showHero));
+
   return (
     <MotionConfig reducedMotion="user">
       <main className="relative min-h-screen bg-[var(--cream)]">
-        {showHero && <Loader />}
+        <Loader enabled={showHero && showIntro} />
         <div className="paper-overlay" aria-hidden="true" />
         <div className="grain-overlay" aria-hidden="true" />
         <GlobalMarqueeBorder />

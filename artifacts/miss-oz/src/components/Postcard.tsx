@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Link } from 'wouter';
 import { Bunting } from './Decor';
 import OrderChooser from './OrderChooser';
 
@@ -38,8 +39,23 @@ const NAV = [
 const UBEREATS_URL = 'https://www.ubereats.com/store/miss-oz-ice-cream-cafe-aka-cool-moon-ice-creams/YEfj7ZgZS2m7Wm2og7PphQ';
 
 const APP_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-const appHref = (path: string) => `${APP_BASE}${path}`;
-const sectionHref = (id: string, isHome: boolean) => `${isHome ? '' : `${APP_BASE}/`}#${id}`;
+const sectionTarget = (id: string, isHome: boolean) => `${isHome ? '' : '/'}#${id}`;
+
+const handleSameRouteNavigation = (target: string, event: MouseEvent<Element>) => {
+  if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+
+  const browserTarget = target.startsWith('#') ? target : `${APP_BASE}${target}`;
+  const url = new URL(browserTarget, window.location.href);
+  if (url.origin !== window.location.origin || url.pathname !== window.location.pathname) return;
+
+  if (!url.hash) {
+    window.requestAnimationFrame(() => window.scrollTo(0, 0));
+    return;
+  }
+
+  const anchorId = decodeURIComponent(url.hash.slice(1));
+  window.requestAnimationFrame(() => document.getElementById(anchorId)?.scrollIntoView());
+};
 
 /* Soft ink-on-paper fade on all four edges of the hero scene */
 const HERO_MASK =
@@ -79,10 +95,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
   const current = SLIDES[slide] ?? SLIDES[0];
   const compactHeader = isHeaderScrolled || !showHero;
-  const navLink = (target: string) => {
-    if (showHero && target === '/contact') return '#visit';
-    return appHref(target);
-  };
+  const navTarget = (target: string) => showHero && target === '/contact' ? '#visit' : target;
 
   return (
     <>
@@ -138,18 +151,20 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
             <div className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
             <nav aria-label="Primary" className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
               {NAV.slice(0, 2).map((n) => (
-                <a
+                <Link
                   key={n.label}
-                  href={navLink(n.target)}
+                  to={navTarget(n.target)}
+                  onClick={(event) => handleSameRouteNavigation(navTarget(n.target), event)}
                   className="whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
                   {n.label}
-                </a>
+                </Link>
               ))}
             </nav>
-            <a
-              href={`${appHref('/about')}#oz`}
+            <Link
+              to="/about#oz"
+              onClick={(event) => handleSameRouteNavigation('/about#oz', event)}
               className="group relative text-center leading-snug hidden xl:block cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
               style={{
                 fontFamily: 'var(--font-sans)',
@@ -172,7 +187,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   <span aria-hidden="true" className="inline-block ml-[3px] meet-oz-arrow">→</span>
                 </span>
               </span>
-            </a>
+            </Link>
             </div>
           </div>
 
@@ -183,14 +198,15 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           <div className="flex flex-col justify-center py-[clamp(10px,1.1vw,14px)]" style={{ borderTop: '1.5px solid var(--marionberry)', borderBottom: '1.5px solid var(--marionberry)' }}>
             <nav aria-label="Primary continued" className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
               {NAV.slice(2).map((n) => (
-                <a
+                <Link
                   key={n.label}
-                  href={navLink(n.target)}
+                  to={navTarget(n.target)}
+                  onClick={(event) => handleSameRouteNavigation(navTarget(n.target), event)}
                   className="whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
                   {n.label}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
@@ -345,8 +361,9 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               <div aria-hidden="true" style={{ color: '#F4A9C7', fontSize: 'clamp(11px,1vw,15px)', marginTop: 'clamp(6px,0.7vw,10px)', textShadow: '0 1px 6px rgba(20,8,12,0.6)' }}>♥</div>
               {/* CTA button */}
               <div className="flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
-                <a
-                  href={sectionHref('menu', showHero)}
+                <Link
+                  to={sectionTarget('menu', showHero)}
+                  onClick={(event) => handleSameRouteNavigation(sectionTarget('menu', showHero), event)}
                   className="group relative inline-flex items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 hover:scale-[1.06] hover:-translate-y-[2px] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                   style={{
                     fontFamily: 'var(--font-sans)',
@@ -369,7 +386,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                     className="inline-block not-italic transition-transform duration-200 group-hover:translate-x-[3px]"
                     style={{ color: 'var(--gold-hi)', fontSize: '0.88em', marginLeft: '-2px' }}
                   >→</span>
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -492,36 +509,46 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 transition={{ delay: 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               />
               {NAV.map((n, idx) => (
-                <motion.a
+                <Link
                   key={n.label}
-                  href={navLink(n.target)}
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.09 + idx * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                  asChild
+                  to={navTarget(n.target)}
                   onClick={(e) => {
+                    handleSameRouteNavigation(navTarget(n.target), e);
                     document.body.style.overflow = '';
                     setMenuOpen(false);
                   }}
-                  className="w-full text-center py-3.5 uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
-                  style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', letterSpacing: '2.5px' }}
                 >
-                  {n.label}
-                </motion.a>
+                  <motion.a
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.09 + idx * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full text-center py-3.5 uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
+                    style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', letterSpacing: '2.5px' }}
+                  >
+                    {n.label}
+                  </motion.a>
+                </Link>
               ))}
-              <motion.a
-                href={`${appHref('/about')}#oz`}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.09 + NAV.length * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-                onClick={(e) => {
+              <Link
+                asChild
+                to="/about#oz"
+                onClick={(event) => {
+                  handleSameRouteNavigation('/about#oz', event);
                   document.body.style.overflow = '';
                   setMenuOpen(false);
                 }}
-                className="w-full text-center py-3.5 font-bold hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
-                style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--berry)', letterSpacing: '1.5px' }}
               >
-                ♥ Meet Oz!
-              </motion.a>
+                <motion.a
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.09 + NAV.length * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full text-center py-3.5 font-bold hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
+                  style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--berry)', letterSpacing: '1.5px' }}
+                >
+                  ♥ Meet Oz!
+                </motion.a>
+              </Link>
               <motion.div
                 aria-hidden="true"
                 className="w-12 h-px bg-[var(--marionberry)] opacity-30 my-3"
