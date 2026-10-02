@@ -79,6 +79,7 @@ const scallopStyle = {
 const dividerStyle = {
   backgroundImage: 'repeating-linear-gradient(90deg, rgba(94,23,53,0.35) 0 4px, transparent 4px 9px)',
 };
+const sidePanelHeightClass = 'md:h-[calc(100vh-134px)] md:min-h-[600px]';
 
 function Awning() {
   return (
@@ -389,7 +390,7 @@ function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
 
 function WelcomeCard() {
   return (
-    <div className="relative mx-auto w-full max-w-[340px] md:max-w-none hidden md:sticky md:top-[110px] md:self-start md:flex flex-col">
+    <div className={`relative mx-auto w-full max-w-[340px] md:max-w-none hidden md:sticky md:top-[110px] md:self-start md:flex flex-col ${sidePanelHeightClass}`}>
       <Awning />
       <div
         className="flex-1 flex flex-col items-center text-center rounded-b-[12px] px-[clamp(18px,1.8vw,26px)] py-[clamp(24px,2.6vw,36px)]"
@@ -399,7 +400,7 @@ function WelcomeCard() {
         }}
       >
         <div
-          className="flex-1 w-full flex flex-col items-center justify-center rounded-[6px] px-[clamp(14px,1.6vw,22px)] py-[clamp(22px,2.4vw,32px)]"
+          className="flex-1 w-full flex flex-col items-center justify-evenly rounded-[6px] px-[clamp(14px,1.6vw,22px)] py-[clamp(22px,2.4vw,32px)]"
           style={{ boxShadow: 'inset 0 0 0 1.5px rgba(242,225,194,0.4)' }}
         >
           <div
@@ -568,7 +569,7 @@ export default function MenuSection() {
         >
           <aside
             aria-label="Menu categories"
-            className="relative mx-auto w-full max-w-[320px] md:max-w-none hidden md:sticky md:top-[110px] md:self-start md:flex flex-col"
+            className={`relative mx-auto w-full max-w-[320px] md:max-w-none hidden md:sticky md:top-[110px] md:self-start md:flex flex-col ${sidePanelHeightClass}`}
           >
             <Awning />
             <div
@@ -603,7 +604,7 @@ export default function MenuSection() {
                     }}
                   >
                     <div
-                      className="flex-1 w-full flex flex-col items-center justify-center px-4 py-[clamp(18px,2vw,28px)]"
+                      className="flex-1 w-full flex flex-col items-center justify-evenly px-4 py-[clamp(18px,2vw,28px)]"
                       style={{
                         background: 'var(--berry-deep)',
                         clipPath: 'polygon(17px 0, calc(100% - 17px) 0, 100% 17px, 100% calc(100% - 17px), calc(100% - 17px) 100%, 17px 100%, 0 calc(100% - 17px), 0 17px)',
