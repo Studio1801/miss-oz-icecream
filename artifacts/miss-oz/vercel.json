@@ -2,10 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "dist/public",
   "rewrites": [
-    { "source": "/events", "destination": "/events.html" },
-    { "source": "/wholesale", "destination": "/wholesale.html" },
-    { "source": "/about", "destination": "/about.html" },
-    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/about", "destination": "/about/index.html" },
+    { "source": "/wholesale", "destination": "/wholesale/index.html" },
+    { "source": "/events", "destination": "/events/index.html" },
+    { "source": "/contact", "destination": "/contact/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "redirects": [

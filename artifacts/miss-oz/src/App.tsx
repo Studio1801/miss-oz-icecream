@@ -10,6 +10,7 @@ import Contact from '@/pages/contact';
 import SiteLayout from '@/components/SiteLayout';
 import { Redirect, Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { useEffect } from 'react';
+import { PAGE_META, PUBLIC_ORIGIN } from './pageMeta';
 
 const queryClient = new QueryClient();
 const localBusinessSchema = document.querySelector<HTMLScriptElement>('#local-business-schema')?.textContent ?? '';
@@ -20,7 +21,7 @@ function Router() {
   useEffect(() => {
     const page = PAGE_META[location] ?? PAGE_META['/'];
     document.title = page.title;
-    const canonicalUrl = new URL(location === '/' ? '' : location.slice(1), 'https://www.missozicecream.com/').href;
+    const canonicalUrl = new URL(location === '/' ? '' : location.slice(1), `${PUBLIC_ORIGIN}/`).href;
     for (const [selector, content] of [
       ['meta[name="description"]', page.description],
       ['meta[property="og:title"]', page.title],
@@ -66,29 +67,6 @@ function Router() {
     </SiteLayout>
   );
 }
-
-const PAGE_META: Record<string, { title: string; description: string }> = {
-  '/': {
-    title: 'Miss Oz Ice Cream & Dessert Cafe, Portland, Oregon',
-    description: "Small-batch handmade ice cream & desserts in Portland's Pearl District since 2007.",
-  },
-  '/about': {
-    title: 'About Us | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Read the story of Miss Oz Ice Cream & Dessert Cafe and meet Oz in Portland’s Pearl District.',
-  },
-  '/wholesale': {
-    title: 'Wholesale | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Explore Miss Oz ice cream and dessert wholesale offerings, and ask about becoming a partner.',
-  },
-  '/events': {
-    title: 'Events | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Plan an event with Miss Oz Ice Cream & Dessert Cafe in Portland and send an event inquiry.',
-  },
-  '/contact': {
-    title: 'Contact | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Find Miss Oz contact details and leave a note in the guestbook.',
-  },
-};
 
 function App() {
   return (

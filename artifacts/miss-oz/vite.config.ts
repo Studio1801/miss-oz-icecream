@@ -1,10 +1,11 @@
 import path from 'path';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
+import { PAGE_META, PUBLIC_ORIGIN, SEO_ROUTES } from './src/pageMeta';
 
 // During a production build (e.g. on Vercel), Replit-injected env vars are
 // absent. The dev server still needs real values, which Replit always provides.
@@ -26,33 +27,90 @@ if (Number.isNaN(port) || port <= 0) {
 
 const basePath = process.env.BASE_PATH ?? '/';
 
-const publicOrigin = 'https://www.missozicecream.com';
-const seoRoutePages = [
-  {
-    path: 'events',
-    title: 'Events | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Plan an event with Miss Oz Ice Cream & Dessert Cafe in Portland and send an event inquiry.',
-    heading: 'Events',
-  },
-  {
-    path: 'wholesale',
-    title: 'Wholesale | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Explore Miss Oz ice cream and dessert wholesale offerings, and ask about becoming a partner.',
-    heading: 'Wholesale',
-  },
-  {
-    path: 'about',
-    title: 'About Us | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Read the story of Miss Oz Ice Cream & Dessert Cafe and meet Oz in Portland’s Pearl District.',
-    heading: 'About Us',
-  },
-  {
-    path: 'contact',
-    title: 'Contact | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Find Miss Oz contact details and leave a note in the guestbook.',
-    heading: 'Contact',
-  },
-];
+const escapeHtmlText = (value: string) =>
+  value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+const escapeHtmlAttribute = (value: string) =>
+  escapeHtmlText(value).replaceAll('"', '&quot;');
+
+function replaceExactlyOneHeadTag(
+  head: string,
+  pattern: RegExp,
+  replacement: string,
+  name: string,
+) {
+  let count = 0;
+  const updatedHead = head.replace(pattern, () => {
+    count += 1;
+    return replacement;
+  });
+
+  if (count !== 1) {
+    throw new Error(`Expected exactly one ${name} tag in the built HTML head; found ${count}.`);
+  }
+
+  return updatedHead;
+}
+
+function applyPageMeta(html: string, route: string) {
+  const page = PAGE_META[route];
+  if (!page) {
+    throw new Error(`Missing PAGE_META entry for SEO route "${route}".`);
+  }
+
+  const headMatch = html.match(/<head\b[^>]*>[\s\S]*?<\/head>/i);
+  if (!headMatch) {
+    throw new Error('Could not find the built HTML <head>.');
+  }
+
+  const canonicalUrl = new URL(route === '/' ? '' : route.slice(1), `${PUBLIC_ORIGIN}/`).href;
+  const title = escapeHtmlText(page.title);
+  const description = escapeHtmlAttribute(page.description);
+  const headReplacements: Array<[RegExp, string, string]> = [
+    [/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`, 'title'],
+    [
+      /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="description" content="${description}" />`,
+      'description',
+    ],
+    [
+      /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
+      `<link rel="canonical" href="${escapeHtmlAttribute(canonicalUrl)}" />`,
+      'canonical',
+    ],
+    [
+      /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i,
+      `<meta property="og:title" content="${escapeHtmlAttribute(page.title)}" />`,
+      'Open Graph title',
+    ],
+    [
+      /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i,
+      `<meta property="og:description" content="${description}" />`,
+      'Open Graph description',
+    ],
+    [
+      /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i,
+      `<meta property="og:url" content="${escapeHtmlAttribute(canonicalUrl)}" />`,
+      'Open Graph URL',
+    ],
+    [
+      /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="twitter:title" content="${escapeHtmlAttribute(page.title)}" />`,
+      'Twitter title',
+    ],
+    [
+      /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="twitter:description" content="${description}" />`,
+      'Twitter description',
+    ],
+  ];
+
+  let updatedHead = headMatch[0];
+  for (const [pattern, replacement, name] of headReplacements) {
+    updatedHead = replaceExactlyOneHeadTag(updatedHead, pattern, replacement, name);
+  }
+
+  return html.replace(headMatch[0], updatedHead);
+}
 
 const routeSeoShells = {
   name: 'miss-oz-route-seo-shells',
@@ -60,36 +118,16 @@ const routeSeoShells = {
   closeBundle() {
     const outputDir = path.resolve(import.meta.dirname, 'dist/public');
     const indexPath = path.join(outputDir, 'index.html');
-    const indexHtml = readFileSync(indexPath, 'utf8');
-    const escapeAttribute = (value: string) =>
-      value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
+    const builtIndex = readFileSync(indexPath, 'utf8');
+    const homeHtml = applyPageMeta(builtIndex, '/');
+    writeFileSync(indexPath, homeHtml, 'utf8');
 
-    for (const page of seoRoutePages) {
-      const url = `${publicOrigin}/${page.path}`;
-      const title = escapeAttribute(page.title);
-      const description = escapeAttribute(page.description);
-      const html = indexHtml
-        .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
-        .replace(
-          /<meta name="description" content="[^"]*" \/>/,
-          `<meta name="description" content="${description}" />`,
-        )
-        .replace(
-          /<link rel="canonical" href="[^"]*" \/>/,
-          `<link rel="canonical" href="${url}" />`,
-        )
-        .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${title}" />`)
-        .replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${description}" />`)
-        .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${url}" />`)
-        .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${title}" />`)
-        .replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${description}" />`)
-        .replace(/<script id="local-business-schema" type="application\/ld\+json">[\s\S]*?<\/script>\s*/, '')
-        .replace(
-          '<div id="root"></div>',
-          `<div id="root"><h1 class="sr-only">${page.heading}</h1></div>`,
-        );
+    for (const route of SEO_ROUTES) {
+      if (route === '/') continue;
 
-      writeFileSync(path.join(outputDir, `${page.path}.html`), html);
+      const routeIndexPath = path.join(outputDir, route.slice(1), 'index.html');
+      mkdirSync(path.dirname(routeIndexPath), { recursive: true });
+      writeFileSync(routeIndexPath, applyPageMeta(homeHtml, route), 'utf8');
     }
   },
 };
