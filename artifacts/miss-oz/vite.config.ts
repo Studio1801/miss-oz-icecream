@@ -4,12 +4,17 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
 import { PAGE_META, PUBLIC_ORIGIN, SEO_ROUTES } from './src/pageMeta';
 
 // During a production build (e.g. on Vercel), Replit-injected env vars are
 // absent. The dev server still needs real values, which Replit always provides.
 const isBuild = process.argv.includes('build');
+const isPreview = process.argv.includes('preview');
+const loadReplitDevPlugins =
+  !isBuild &&
+  !isPreview &&
+  process.env.NODE_ENV !== 'production' &&
+  process.env.REPL_ID !== undefined;
 
 const rawPort = process.env.PORT;
 
@@ -137,10 +142,15 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    runtimeErrorOverlay(),
+    ...(loadReplitDevPlugins
+      ? [
+          await import('@replit/vite-plugin-runtime-error-modal').then((m) =>
+            m.default(),
+          ),
+        ]
+      : []),
     routeSeoShells,
-    ...(process.env.NODE_ENV !== 'production' &&
-    process.env.REPL_ID !== undefined
+    ...(loadReplitDevPlugins
       ? [
           await import('@replit/vite-plugin-cartographer').then((m) =>
             m.cartographer({
@@ -156,12 +166,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, 'src'),
-      '@assets': path.resolve(
-        import.meta.dirname,
-        '..',
-        '..',
-        'attached_assets',
-      ),
     },
     dedupe: ['react', 'react-dom'],
   },

@@ -47,3 +47,10 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Large local-only uploads and screenshots
+/attached_assets/
+/screenshots/
+
+# Vercel build metadata
+.vercel/
