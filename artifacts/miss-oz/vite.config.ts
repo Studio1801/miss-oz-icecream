@@ -166,6 +166,8 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
   },
   root: path.resolve(import.meta.dirname),
+  // Copy only artifact-owned public files; repo-root unused-assets stays out of dist.
+  publicDir: path.resolve(import.meta.dirname, 'public'),
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
