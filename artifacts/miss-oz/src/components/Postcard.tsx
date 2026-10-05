@@ -106,7 +106,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         : 'relative pt-[72px] lg:pt-[110px] overflow-hidden'}
       aria-label="Miss Oz Ice Cream & Dessert Cafe"
     >
-      {showHero && <h1 className="sr-only">Miss Oz Ice Cream &amp; Dessert Cafe, Portland, Oregon</h1>}
+      {showHero && <h1 className="sr-only">Miss Oz Ice Cream &amp; Dessert Cafe in the Pearl District, Portland, Oregon</h1>}
       {/* Bunting hanging below the global border */}
       <div
         className="absolute left-0 right-0 z-10 pointer-events-none"

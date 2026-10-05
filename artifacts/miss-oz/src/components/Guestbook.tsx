@@ -248,7 +248,7 @@ export default function Guestbook() {
           style={{ boxShadow: '0 10px 28px rgba(28,13,12,0.18)' }}
         >
           <span aria-hidden="true" className="absolute -top-[11px] left-1/2 -translate-x-1/2 w-[64px] h-[20px] rotate-[-4deg]" style={{ background: 'rgba(214,193,150,0.75)', boxShadow: '0 1px 3px rgba(28,13,12,0.15)' }} />
-          <img loading="lazy" decoding="async" src="/images/oz-couch.webp" alt="Oz the dog resting with her chin down, watching the room" className="w-full aspect-square object-cover rounded-[2px] sepia-[10%] saturate-[0.94]" />
+          <img loading="lazy" decoding="async" src="/images/oz-couch.webp" alt="Oz the dog resting with her chin down, watching the room" width={640} height={640} className="w-full aspect-square object-cover rounded-[2px] sepia-[10%] saturate-[0.94]" />
           <figcaption className="font-script-alt text-[16px] text-[var(--berry-deep)] text-center mt-[6px] leading-tight">she reads every entry</figcaption>
         </motion.figure>
       </motion.div>

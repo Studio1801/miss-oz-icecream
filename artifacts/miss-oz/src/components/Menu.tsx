@@ -6,24 +6,28 @@ const CARDS = [
   {
     no: 'I',
     title: 'Small-Batch Scoops',
+    imageAlt: 'Small-batch ice cream scoops served in waffle cones',
     desc: 'Marionberry, Thai iced tea, kulfi, coffee crackle, summer rose & friends',
     image: 'https://homesweetcone.com/wp-content/uploads/2023/12/HSC_photo23-600x400.jpg',
   },
   {
     no: 'II',
     title: 'Croffles',
+    imageAlt: 'Golden croffles, or croissant waffles, served with toppings',
     desc: 'Croissant waffles, Oreo pop, brunost, fresh cream, fudge drizzle',
     image: 'https://www.missinthekitchen.com/wp-content/uploads/2024/02/Croffles-Croissant-Waffles-Recipe-photo.jpg',
   },
   {
     no: 'III',
     title: 'Coffee & Drinks',
+    imageAlt: 'A cup of coffee served at a cafe',
     desc: 'Espresso drinks, floats, and something warm for the rainy days',
     image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80',
   },
   {
     no: 'IV',
     title: 'Cookies & Cakes',
+    imageAlt: 'A slice of Basque cheesecake with a browned top',
     desc: 'Basque cheesecake, fresh cookies, and seasonal bakes',
     image: 'https://dishnthekitchen.com/wp-content/uploads/2022/03/vertbasquecheesecakesliceright.jpg',
   }
@@ -86,7 +90,9 @@ export default function Menu() {
                     <div className="absolute inset-0 card-front">
                       <img loading="lazy" decoding="async"
                         src={card.image}
-                        alt={card.title}
+                        alt={card.imageAlt}
+                        width={600}
+                        height={400}
                         className="w-full h-full object-cover"
                         style={{ filter: 'sepia(0.22) saturate(1.05) contrast(0.98)' }}
                        

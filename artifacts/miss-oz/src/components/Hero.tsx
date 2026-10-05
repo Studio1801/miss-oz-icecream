@@ -118,7 +118,7 @@ export default function Hero() {
           style={{ fontSize: 'clamp(40px, 8.2vw, 100px)' }}
         >
           {/* Visually hidden h1 for crawlers — the business name is the true page title */}
-          <h1 className="sr-only">Miss Oz Ice Cream &amp; Dessert Cafe, Portland, Oregon</h1>
+          <h1 className="sr-only">Miss Oz Ice Cream &amp; Dessert Cafe in the Pearl District, Portland, Oregon</h1>
           <div
             className="max-w-[94vw]"
             aria-hidden="true"
@@ -189,7 +189,7 @@ export default function Hero() {
           {/* Ice cream cone photo — LCP candidate, load with high priority */}
           <img
             src={f.photo}
-            alt={f.title}
+            alt="A scoop of ice cream served in a waffle cone"
             fetchPriority="high"
             className="absolute z-20"
             style={{

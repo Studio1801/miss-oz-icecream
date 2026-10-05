@@ -31,7 +31,9 @@ function PhotoGroup({ title, photos }: { title: string; photos: MenuPhoto[] }) {
           >
             <img
               src={`${import.meta.env.BASE_URL}images/wholesale/${photo.fileName}`}
-              alt={photo.name}
+              alt={photo.name === 'Thai Iced Tea'
+                ? 'A pale golden scoop of ice cream in a silver dessert dish'
+                : `A scoop of ${photo.name} ice cream in a dessert dish`}
               width={960}
               height={1280}
               loading="lazy"

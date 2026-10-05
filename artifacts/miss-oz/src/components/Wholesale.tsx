@@ -23,21 +23,21 @@ const itemGroups = [
 const polaroidPhotos = [
   {
     src: 'images/whole-basque-cheesecake.jpeg',
-    alt: 'A whole Original Basque Cheesecake',
+    alt: 'A whole Original Basque cheesecake ready to serve',
     position: 'left-[-16px] top-[16px]',
     rotation: '-9deg',
     layer: 'z-10',
   },
   {
     src: 'images/cone-marionberry.webp',
-    alt: 'A scoop of ice cream in a cone',
+    alt: 'Marionberry ice cream scoop in a waffle cone',
     position: 'left-[25%] top-[2px]',
     rotation: '3deg',
     layer: 'z-20',
   },
   {
     src: 'images/cookie-stack.jpeg',
-    alt: 'A stack of chocolate chip cookies',
+    alt: 'A stack of chocolate chip cookies ready to serve',
     position: 'left-[50%] top-[14px]',
     rotation: '10deg',
     layer: 'z-30',
@@ -85,6 +85,8 @@ function PolaroidStack() {
           <img
             src={`${import.meta.env.BASE_URL}${photo.src}`}
             alt={photo.alt}
+            width={960}
+            height={720}
             loading="lazy"
             decoding="async"
             className="block aspect-[4/3] w-full object-cover"
@@ -213,6 +215,9 @@ export default function Wholesale() {
                                 src={`${import.meta.env.BASE_URL}images/icon-icecream-cone.png`}
                                 alt=""
                                 aria-hidden="true"
+                                width={25}
+                                height={25}
+                                loading="lazy"
                                 className="h-[25px] w-[25px] shrink-0 object-contain"
                               />
                             ) : (

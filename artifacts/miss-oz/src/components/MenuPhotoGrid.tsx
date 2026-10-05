@@ -41,6 +41,8 @@ export default function MenuPhotoGrid({
             <img
               src={`${import.meta.env.BASE_URL}${photo.src}`}
               alt={photo.alt}
+              width={960}
+              height={aspectRatio === 'portrait' ? 1200 : 960}
               loading="lazy"
               decoding="async"
               className={`block ${imageAspect} w-full object-cover`}

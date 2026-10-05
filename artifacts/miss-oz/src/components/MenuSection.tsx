@@ -18,7 +18,7 @@ const sundaePhotos = [
   },
   {
     src: 'images/wholesale/image11.jpeg',
-    alt: 'Rose City Banana Split',
+    alt: 'Rose City Banana Split with vanilla, strawberry, and chocolate scoops, sauces, whipped cream, sprinkles, and cherries',
     caption: 'Rose City Banana Split',
   },
   {
@@ -622,6 +622,9 @@ export default function MenuSection() {
                           src="/images/icon-icecream-cone.png"
                           alt=""
                           aria-hidden="true"
+                          width={128}
+                          height={128}
+                          loading="lazy"
                           style={{ width: 'clamp(46px,5vw,66px)', height: 'auto' }}
                         />
                         <div
@@ -700,6 +703,9 @@ export default function MenuSection() {
             src="/images/icon-icecream-cup.png"
             alt=""
             aria-hidden="true"
+            width={128}
+            height={128}
+            loading="lazy"
             className="shrink-0"
             style={{ width: 'clamp(34px,3vw,42px)', height: 'auto' }}
           />
@@ -721,6 +727,9 @@ export default function MenuSection() {
             src="/images/icon-icecream-cart.png"
             alt=""
             aria-hidden="true"
+            width={128}
+            height={128}
+            loading="lazy"
             className="shrink-0"
             style={{ width: 'clamp(34px,3vw,42px)', height: 'auto' }}
           />

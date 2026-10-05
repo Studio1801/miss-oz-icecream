@@ -50,7 +50,7 @@ export default function Story() {
               </text>
             </svg>
             {/* little cone glyph */}
-            <img loading="lazy" decoding="async" src="/images/icon-icecream-outline.png" alt="" aria-hidden="true" className="relative z-10" style={{ width: 30, height: 30, filter: 'brightness(0) invert(0.93) sepia(0.25)' }} />
+            <img loading="lazy" decoding="async" src="/images/icon-icecream-outline.png" alt="" aria-hidden="true" width={128} height={128} className="relative z-10" style={{ width: 30, height: 30, filter: 'brightness(0) invert(0.93) sepia(0.25)' }} />
           </div>
         </div>
 

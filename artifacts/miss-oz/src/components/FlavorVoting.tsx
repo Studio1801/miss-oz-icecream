@@ -144,7 +144,7 @@ export default function FlavorVoting() {
                 {/* Thumbnail in warm bg */}
                 <div className="shrink-0 w-[40px] h-[40px] rounded-[8px] flex items-center justify-center overflow-hidden"
                   style={{ background: card.bg }}>
-                  <img loading="lazy" src={card.icon} alt="" aria-hidden="true"
+                  <img loading="lazy" src={card.icon} alt="" aria-hidden="true" width={34} height={34}
                     className="w-[34px] h-[34px] object-contain"
                     style={{ filter: 'drop-shadow(0 1px 3px rgba(28,13,12,0.25))' }} />
                 </div>
@@ -204,7 +204,7 @@ export default function FlavorVoting() {
                           {/* Larger image */}
                           <div className="shrink-0 w-[132px] h-[132px] rounded-[10px] flex items-center justify-center overflow-hidden"
                             style={{ background: card.bg }}>
-                            <img loading="lazy" src={card.img} alt={card.name}
+                            <img loading="lazy" src={card.img} alt={`A serving of ${card.name} ice cream`} width={132} height={132}
                               className="w-full h-full object-cover"
                               style={{ filter: 'drop-shadow(0 3px 7px rgba(28,13,12,0.28))' }} />
                           </div>

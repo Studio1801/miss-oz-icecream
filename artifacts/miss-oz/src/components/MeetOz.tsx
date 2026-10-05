@@ -49,7 +49,8 @@ function Snapshot({
           <img loading="lazy" decoding="async"
             src={src}
             alt={alt}
-           
+            width={640}
+            height={800}
             className="w-full h-full object-cover sepia-[10%] saturate-[0.94] contrast-[1.03]"
           />
         ) : (

@@ -12,7 +12,7 @@ const EVENT_POLAROIDS = [
   },
   {
     src: `${import.meta.env.BASE_URL}images/wholesale/image11.jpeg`,
-    alt: 'Rose City Banana Split',
+    alt: 'Rose City Banana Split with vanilla, strawberry, and chocolate scoops, sauces, whipped cream, sprinkles, and cherries',
     caption: 'Rose City Banana Split',
   },
 ];
@@ -31,6 +31,8 @@ function EventPolaroid({ photo, className }: { photo: (typeof EVENT_POLAROIDS)[n
       <img
         src={photo.src}
         alt={photo.alt}
+        width={960}
+        height={960}
         loading="eager"
         decoding="async"
         className="aspect-square w-full rounded-[2px] object-cover"
