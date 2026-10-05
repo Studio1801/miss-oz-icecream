@@ -1,0 +1,115 @@
+file (before cleanup),size_bytes (before cleanup),referenced from src/index.html
+card-delivery.png,2140586,UNREFERENCED
+card-delivery.webp,258896,UNREFERENCED
+card-handmade.png,2114700,UNREFERENCED
+card-handmade.webp,231064,UNREFERENCED
+card-parlor.png,2076803,UNREFERENCED
+card-parlor.webp,254386,UNREFERENCED
+card-sundae.png,2141764,UNREFERENCED
+card-sundae.webp,238276,UNREFERENCED
+card-vote.png,2260545,UNREFERENCED
+card-vote.webp,265696,UNREFERENCED
+coconut-sorbet-clean.png,1719986,UNREFERENCED
+coconut-sorbet-fresh-scoop.png,2726857,UNREFERENCED
+coconut-sorbet-poster.jpg,199781,UNREFERENCED
+coconut-sorbet-poster_2.jpg,333457,src/components/FlavorDrop.tsx:27
+coconut-sorbet-selected.png,1693775,src/components/NewFlavor.tsx:4
+coconut-sorbet-tropical.png,2727766,UNREFERENCED
+cone-marionberry.png,1412585,UNREFERENCED
+cone-marionberry.webp,188608,src/components/Hero.tsx:11; src/components/Wholesale.tsx:32
+cone-orange.png,1100853,UNREFERENCED
+cone-orange.webp,157304,src/components/Hero.tsx:22
+cone-strawberry.png,205818,UNREFERENCED
+cone-strawberry.webp,28982,src/components/Hero.tsx:33
+cookie-coffee.jpeg,1555415,src/components/MenuSection.tsx:40
+cookie-stack.jpeg,2231784,src/components/MenuSection.tsx:45; src/components/Wholesale.tsx:39
+cookie-walnut.jpeg,1403534,src/components/MenuSection.tsx:34
+croffle.png,2107577,UNREFERENCED
+croffle.webp,276562,UNREFERENCED
+flavor-croffle.png,1710167,UNREFERENCED
+flavor-croffle.webp,216436,src/components/VoteFlavor.tsx:10
+flavor-rose.png,1275007,UNREFERENCED
+flavor-rose.webp,145392,src/components/VoteFlavor.tsx:9
+flavor-ube.png,1327460,UNREFERENCED
+flavor-ube.webp,166860,src/components/VoteFlavor.tsx:8
+hero-parlor-v2.png,2272993,UNREFERENCED
+hero-parlor-v2.webp,312076,index.html:18; index.html:29; index.html:57
+hero-parlor-v4.webp,339930,UNREFERENCED
+hero-parlor-v6.webp,242050,UNREFERENCED
+honey-lavender-vote.jpeg,265986,src/components/FlavorVoting.tsx:7
+ice-cream-mascot.webp,43356,UNREFERENCED
+icon-cafe-shop.png,6329,UNREFERENCED
+icon-honey-lavender.svg,1039,src/components/FlavorVoting.tsx:7
+icon-icecream-cart.png,8550,src/components/MenuSection.tsx:727
+icon-icecream-cone.png,6493,src/components/MenuSection.tsx:622; src/components/Wholesale.tsx:215
+icon-icecream-cup.png,8407,src/components/MenuSection.tsx:703
+icon-icecream-outline.png,5288,src/components/Story.tsx:53
+icon-licorice.svg,772,src/components/FlavorVoting.tsx:5
+icon-milk.png,5914,UNREFERENCED
+icon-seasons.png,9303,UNREFERENCED
+icon-vietnam-coffee.svg,992,src/components/FlavorVoting.tsx:6
+kulfi.png,2194564,UNREFERENCED
+kulfi.webp,304442,UNREFERENCED
+licorice-vote.jpeg,340103,src/components/FlavorVoting.tsx:5
+logo-badge.jpg,80060,UNREFERENCED
+logo-icon.png,313749,UNREFERENCED
+logo-icon.webp,37318,src/components/Loader.tsx:70; src/components/Nav.tsx:18
+logo-official.png,473268,UNREFERENCED
+logo-official.webp,84872,index.html:58; src/components/Postcard.tsx:223; src/components/Postcard.tsx:460; src/components/Postcard.tsx:502
+logo-text.png,257669,UNREFERENCED
+logo-text.webp,72566,UNREFERENCED
+marionberry.png,2127620,UNREFERENCED
+marionberry.webp,284290,UNREFERENCED
+mascot-croffle.webp,32542,UNREFERENCED
+mascot-popsicle.webp,25638,UNREFERENCED
+mascot-shake.webp,27204,UNREFERENCED
+mascot-sundae.webp,26032,UNREFERENCED
+oz-boots.webp,113132,src/components/MeetOz.tsx:133
+oz-couch.webp,40526,src/components/Guestbook.tsx:251
+oz-dog.png,2379893,UNREFERENCED
+oz-dog.webp,209626,UNREFERENCED
+oz-flowers.webp,80782,src/components/MeetOz.tsx:134
+oz-goggles.webp,60728,src/components/Footer.tsx:47
+oz-taster.webp,51650,src/components/MeetOz.tsx:135
+panel-delivery.png,1058215,UNREFERENCED
+panel-delivery.webp,94376,UNREFERENCED
+panel-icecream.png,1338863,UNREFERENCED
+panel-icecream.webp,131044,UNREFERENCED
+panel-vibes.png,1283555,UNREFERENCED
+panel-vibes.webp,121142,UNREFERENCED
+panel-vote.png,1292146,UNREFERENCED
+panel-vote.webp,122430,UNREFERENCED
+panelbg-cream.webp,12374,UNREFERENCED
+panelbg-gold.webp,24638,UNREFERENCED
+panelbg-pink.webp,31134,UNREFERENCED
+panelbg-teal.webp,14880,UNREFERENCED
+paper-texture.webp,63360,src/index.css:372
+seasonal-pumpkin-poster.webp,189224,UNREFERENCED
+seasonbg-autumn.webp,57878,src/components/FlavorDrop.tsx:72
+slide-cones.webp,150736,index.html:44; src/components/Postcard.tsx:10
+slide-corner.webp,387688,src/components/Postcard.tsx:24
+slide-counter.webp,184026,UNREFERENCED
+slide-interior-bar.webp,300696,src/components/Postcard.tsx:15
+slide-interior.jpg,5430929,UNREFERENCED
+slide-sidewalk.webp,531322,UNREFERENCED
+storefront-photo-wide2.webp,164688,src/components/Postcard.tsx:20
+sundae-banana-split.png,1959357,UNREFERENCED
+sundae-midnight-fudge.png,2000676,UNREFERENCED
+thai-tea.png,2083325,UNREFERENCED
+thai-tea.webp,272890,UNREFERENCED
+vietnam-coffee-vote.jpeg,278741,src/components/FlavorVoting.tsx:6
+whole-basque-cheesecake.jpeg,3991341,src/components/MenuSection.tsx:59; src/components/Wholesale.tsx:25
+whole-cheesecake-slice.jpeg,2806815,src/components/MenuSection.tsx:54
+wholesale/image0.jpeg,172351,src/components/Events.tsx:9; src/components/MenuSection.tsx:14
+wholesale/image1.jpeg,91176,src/components/MenuPhotos.tsx:6 (dynamic fileName)
+wholesale/image10.jpeg,94901,src/components/MenuPhotos.tsx:15 (dynamic fileName)
+wholesale/image11.jpeg,168177,src/components/Events.tsx:14; src/components/MenuSection.tsx:20
+wholesale/image12.webp,53998,src/components/MenuSection.tsx:25
+wholesale/image2.jpeg,83617,src/components/MenuPhotos.tsx:7 (dynamic fileName)
+wholesale/image3.jpeg,96354,src/components/MenuPhotos.tsx:8 (dynamic fileName)
+wholesale/image4.jpeg,103748,src/components/MenuPhotos.tsx:9 (dynamic fileName)
+wholesale/image5.jpeg,100245,src/components/MenuPhotos.tsx:10 (dynamic fileName)
+wholesale/image6.jpeg,115425,src/components/MenuPhotos.tsx:11 (dynamic fileName)
+wholesale/image7.jpeg,100335,src/components/MenuPhotos.tsx:12 (dynamic fileName)
+wholesale/image8.jpeg,127357,src/components/MenuPhotos.tsx:13 (dynamic fileName)
+wholesale/image9.jpeg,100023,src/components/MenuPhotos.tsx:14 (dynamic fileName)

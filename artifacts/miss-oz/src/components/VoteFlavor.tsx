@@ -190,8 +190,8 @@ export default function VoteFlavor() {
                 <img loading="lazy" decoding="async"
                   src={card.img}
                   alt={`Illustration of ${card.name} ice cream`}
-                  width={1024}
-                  height={1024}
+                  width={296}
+                  height={296}
                   className="mx-auto w-[clamp(118px,58%,148px)] h-auto object-contain mb-[6px]"
                   style={{ filter: 'drop-shadow(0 4px 6px rgba(28,13,12,0.3))' }}
                 />

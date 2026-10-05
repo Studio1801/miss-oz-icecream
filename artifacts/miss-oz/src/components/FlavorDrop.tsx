@@ -24,7 +24,7 @@ const FLAVOR = {
     { label: 'Dairy-free' },
     { label: 'Coconut milk & cream' },
   ],
-  poster:      '/images/coconut-sorbet-poster_2.jpg',
+  poster:      '/images/coconut-sorbet-poster_2.webp',
   accent:      '#2B8A84',
   badgeFrom:   '#6ECBC4',
   badgeTo:     '#1A6460',
@@ -109,8 +109,8 @@ export default function FlavorDrop() {
                   loading="lazy" decoding="async"
                   src={FLAVOR.poster}
                   alt={`${FLAVOR.name} seasonal flavor poster with a scoop of coconut sorbet and a split coconut`}
-                  width={1024}
-                  height={1024}
+                  width={620}
+                  height={620}
                   className="block w-full h-auto rounded-[2px]"
                   style={{ boxShadow: 'inset 0 0 0 1px rgba(28,13,12,0.12)' }}
                 />

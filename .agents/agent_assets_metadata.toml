@@ -7,6 +7,7 @@ uri = "file://artifacts/miss-oz/public/images/seasonal-pumpkin-poster.webp"
 type = "image"
 title = "Seasonal Pumpkin Poster"
 description = "The pumpkin flavor poster used in the FlavorDrop section"
+logical_id = "9a6315bf-4661-4ba1-8054-747694089c8e"
 
 [[outputs]]
 id = "z0YttmesZtnV1HLft8MOy"
@@ -14,6 +15,7 @@ uri = "file://artifacts/miss-oz/public/images/coconut-sorbet-poster_2.jpg"
 type = "image"
 title = "Previous Coconut Sorbet Image"
 description = "The earlier vintage Coconut Sorbet poster image."
+logical_id = "a9649e6b-cf72-477d-bd9e-e2cbdf3be466"
 
 [[outputs]]
 id = "z0Sd-xw0K8GPwxUcglh_F"
@@ -21,6 +23,7 @@ uri = "file://artifacts/miss-oz/public/images/coconut-sorbet-poster.jpg"
 type = "image"
 title = "Earlier Coconut Sorbet Image"
 description = "The earlier teal tropical Coconut Sorbet scoop image."
+logical_id = "94bf9e3a-d5e0-48a9-b85f-80fc76ec12d0"
 
 [[outputs]]
 id = "mKJpmZ-lR9CciU9UEwDde"
@@ -28,6 +31,7 @@ uri = "file://artifacts/miss-oz/public/images/coconut-sorbet-tropical.png"
 type = "image"
 title = "Other Coconut Sorbet Image"
 description = "The other vintage Miss Oz Coconut Sorbet poster."
+logical_id = "055595ae-9d95-470e-9b8d-c503c451d75c"
 
 [[outputs]]
 id = "Y2_dZrIv77XFjZ0zyXlTZ"
@@ -35,3 +39,18 @@ uri = "file://artifacts/miss-oz/public/images/coconut-sorbet-clean.png"
 type = "image"
 title = "Coconut Sorbet Image"
 description = "The earlier Coconut Sorbet poster image."
+logical_id = "c7074ed8-7426-4d75-a1ed-dab656369f07"
+
+[[outputs]]
+id = "UpADYSqAwGU6UWmB1y35p"
+uri = "file://artifacts/miss-oz/image-inventory-before-cleanup.csv"
+type = "table"
+title = "Miss Oz image inventory before cleanup"
+description = "Complete 114-file inventory with original byte sizes and source references; unreferenced files are labeled."
+logical_id = "24dcb9d3-b654-4cdf-88d8-8effc769286a"
+content_hash = "sha256:e8f131723d6ba0bd42447f13b5c1935c25ba31b4b80a795ad33409574d1b1b06"
+size = 6132
+mtime_ms = 1791212505463
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/24dcb9d3-b654-4cdf-88d8-8effc769286a/fb5380b7-81a0-44fa-85f1-f1fb353b02cc"
+storage_version_token = "1791212564487749"
+content_type = "text/csv"

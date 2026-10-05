@@ -3,16 +3,16 @@ type MenuPhoto = { name: string; fileName: string };
 // Millie's supplied product-to-photo mapping. Keep these as photos of menu items,
 // not as additional menu products or wholesale offerings.
 const flavorPhotos: MenuPhoto[] = [
-  { name: 'Matcha', fileName: 'image1.jpeg' },
-  { name: 'Birthday Cake', fileName: 'image2.jpeg' },
-  { name: 'Butter Pecan', fileName: 'image3.jpeg' },
-  { name: 'Kulfi', fileName: 'image4.jpeg' },
-  { name: 'Thai Iced Tea', fileName: 'image5.jpeg' },
-  { name: 'Marionberry', fileName: 'image6.jpeg' },
-  { name: 'Cookie and Cream', fileName: 'image7.jpeg' },
-  { name: 'Belgian Chocolate', fileName: 'image8.jpeg' },
-  { name: 'Coffee Crackle', fileName: 'image9.jpeg' },
-  { name: 'Mint Chocolate Chip', fileName: 'image10.jpeg' },
+  { name: 'Matcha', fileName: 'image1.webp' },
+  { name: 'Birthday Cake', fileName: 'image2.webp' },
+  { name: 'Butter Pecan', fileName: 'image3.webp' },
+  { name: 'Kulfi', fileName: 'image4.webp' },
+  { name: 'Thai Iced Tea', fileName: 'image5.webp' },
+  { name: 'Marionberry', fileName: 'image6.webp' },
+  { name: 'Cookie and Cream', fileName: 'image7.webp' },
+  { name: 'Belgian Chocolate', fileName: 'image8.webp' },
+  { name: 'Coffee Crackle', fileName: 'image9.webp' },
+  { name: 'Mint Chocolate Chip', fileName: 'image10.webp' },
 ];
 
 function PhotoGroup({ title, photos }: { title: string; photos: MenuPhoto[] }) {
@@ -34,8 +34,8 @@ function PhotoGroup({ title, photos }: { title: string; photos: MenuPhoto[] }) {
               alt={photo.name === 'Thai Iced Tea'
                 ? 'A pale golden scoop of ice cream in a silver dessert dish'
                 : `A scoop of ${photo.name} ice cream in a dessert dish`}
-              width={960}
-              height={1280}
+              width={450}
+              height={600}
               loading="lazy"
               decoding="async"
               className="block aspect-[4/5] w-full object-cover"

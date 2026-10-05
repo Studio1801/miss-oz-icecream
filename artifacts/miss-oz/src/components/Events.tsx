@@ -6,12 +6,12 @@ const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 
 
 const EVENT_POLAROIDS = [
   {
-    src: `${import.meta.env.BASE_URL}images/wholesale/image0.jpeg`,
+    src: `${import.meta.env.BASE_URL}images/wholesale/image0.webp`,
     alt: 'Midnight Fudge Sundae with whipped cream, sprinkles, and a cherry',
     caption: 'Midnight Fudge Sundae',
   },
   {
-    src: `${import.meta.env.BASE_URL}images/wholesale/image11.jpeg`,
+    src: `${import.meta.env.BASE_URL}images/wholesale/image11.webp`,
     alt: 'Rose City Banana Split with vanilla, strawberry, and chocolate scoops, sauces, whipped cream, sprinkles, and cherries',
     caption: 'Rose City Banana Split',
   },

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 // Keep the current artwork in one obvious place for a future real asset swap.
-const FLAVOR_POSTER_ASSET = '/images/coconut-sorbet-selected.png';
+const FLAVOR_POSTER_ASSET = '/images/coconut-sorbet-selected.webp';
 
 const FLAVOR = {
   name: 'Coconut Sorbet',
@@ -88,8 +88,8 @@ export default function NewFlavor() {
           <div className="rounded-[5px] p-[5px]" style={{ background: 'var(--cream-hi)' }}>
             <img loading="lazy" decoding="async" src={FLAVOR.poster}
               alt={`Illustration of a scoop of ${FLAVOR.name} in a waffle cone, topped with coconut shavings and surrounded by coconuts`}
-              width={1024}
-              height={1024}
+              width={580}
+              height={580}
               className="block w-full h-auto rounded-[2px]" />
           </div>
         </div>

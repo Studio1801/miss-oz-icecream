@@ -11,13 +11,13 @@ const UBEREATS_URL = 'https://www.ubereats.com/store/miss-oz-ice-cream-cafe-aka-
 
 const sundaePhotos = [
   {
-    src: 'images/wholesale/image0.jpeg',
+    src: 'images/wholesale/image0.webp',
     alt: 'Midnight Fudge Sundae with whipped cream, sprinkles, and a cherry',
     caption: 'Midnight Fudge Sundae',
     objectPosition: 'center top',
   },
   {
-    src: 'images/wholesale/image11.jpeg',
+    src: 'images/wholesale/image11.webp',
     alt: 'Rose City Banana Split with vanilla, strawberry, and chocolate scoops, sauces, whipped cream, sprinkles, and cherries',
     caption: 'Rose City Banana Split',
   },
@@ -31,18 +31,18 @@ const sundaePhotos = [
 
 const dessertPhotos = [
   {
-    src: 'images/cookie-walnut.jpeg',
+    src: 'images/cookie-walnut.webp',
     alt: 'Walnut chocolate chip cookies',
     caption: 'Walnut Chocolate Chip Cookie',
     objectPosition: 'center 56%',
   },
   {
-    src: 'images/cookie-coffee.jpeg',
+    src: 'images/cookie-coffee.webp',
     alt: 'Two housemade cookies served with coffee',
     caption: 'Butter Pecan Cookie',
   },
   {
-    src: 'images/cookie-stack.jpeg',
+    src: 'images/cookie-stack.webp',
     alt: 'A stack of housemade cookies on a plate',
     caption: 'Traditional Chocolate Chip Cookie',
     objectPosition: 'center 48%',
@@ -51,12 +51,12 @@ const dessertPhotos = [
 
 const cakePhotos = [
   {
-    src: 'images/whole-cheesecake-slice.jpeg',
+    src: 'images/whole-cheesecake-slice.webp',
     alt: 'A slice of Original Basque Cheesecake',
     caption: 'Basque Cheesecake Slice',
   },
   {
-    src: 'images/whole-basque-cheesecake.jpeg',
+    src: 'images/whole-basque-cheesecake.webp',
     alt: 'A whole Original Basque Cheesecake',
     caption: 'Whole Basque Cheesecake',
   },
@@ -619,7 +619,7 @@ export default function MenuSection() {
                       />
                       <div className="flex flex-col items-center mt-[clamp(14px,1.6vw,22px)]">
                         <img
-                          src="/images/icon-icecream-cone.png"
+                          src="/images/icon-icecream-cone.webp"
                           alt=""
                           aria-hidden="true"
                           width={128}
@@ -700,11 +700,11 @@ export default function MenuSection() {
 
         <div className="mt-[clamp(18px,2.2vw,28px)] flex items-center justify-center gap-4 text-center">
           <img
-            src="/images/icon-icecream-cup.png"
+            src="/images/icon-icecream-cup.webp"
             alt=""
             aria-hidden="true"
-            width={128}
-            height={128}
+            width={84}
+            height={84}
             loading="lazy"
             className="shrink-0"
             style={{ width: 'clamp(34px,3vw,42px)', height: 'auto' }}
@@ -724,11 +724,11 @@ export default function MenuSection() {
             </div>
           </div>
           <img
-            src="/images/icon-icecream-cart.png"
+            src="/images/icon-icecream-cart.webp"
             alt=""
             aria-hidden="true"
-            width={128}
-            height={128}
+            width={84}
+            height={84}
             loading="lazy"
             className="shrink-0"
             style={{ width: 'clamp(34px,3vw,42px)', height: 'auto' }}

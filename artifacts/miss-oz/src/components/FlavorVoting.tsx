@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, animate, motion, useReducedMotion } from 'framer-motion';
 
 const CARDS = [
-  { name: 'Licorice', note: 'dark, bold, beautifully old-school', bg: '#E9E3E5', icon: '/images/icon-licorice.svg', img: '/images/licorice-vote.jpeg' },
-  { name: 'Vietnam Coffee', note: 'deep roast with a creamy condensed finish', bg: '#EAD8BE', icon: '/images/icon-vietnam-coffee.svg', img: '/images/vietnam-coffee-vote.jpeg' },
-  { name: 'Honey Lavender', note: 'wildflower honey with a soft floral bloom', bg: '#E6DDF4', icon: '/images/icon-honey-lavender.svg', img: '/images/honey-lavender-vote.jpeg' },
+  { name: 'Licorice', note: 'dark, bold, beautifully old-school', bg: '#E9E3E5', icon: '/images/icon-licorice.svg', img: '/images/licorice-vote.webp' },
+  { name: 'Vietnam Coffee', note: 'deep roast with a creamy condensed finish', bg: '#EAD8BE', icon: '/images/icon-vietnam-coffee.svg', img: '/images/vietnam-coffee-vote.webp' },
+  { name: 'Honey Lavender', note: 'wildflower honey with a soft floral bloom', bg: '#E6DDF4', icon: '/images/icon-honey-lavender.svg', img: '/images/honey-lavender-vote.webp' },
 ];
 const VOTE_KEY = 'missoz-flavor-vote-v3';
 

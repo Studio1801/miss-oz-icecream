@@ -22,7 +22,7 @@ const itemGroups = [
 
 const polaroidPhotos = [
   {
-    src: 'images/whole-basque-cheesecake.jpeg',
+    src: 'images/whole-basque-cheesecake.webp',
     alt: 'A whole Original Basque cheesecake ready to serve',
     position: 'left-[-16px] top-[16px]',
     rotation: '-9deg',
@@ -36,7 +36,7 @@ const polaroidPhotos = [
     layer: 'z-20',
   },
   {
-    src: 'images/cookie-stack.jpeg',
+    src: 'images/cookie-stack.webp',
     alt: 'A stack of chocolate chip cookies ready to serve',
     position: 'left-[50%] top-[14px]',
     rotation: '10deg',
@@ -212,7 +212,7 @@ export default function Wholesale() {
                           >
                             {group.icon === 'cone' ? (
                               <img
-                                src={`${import.meta.env.BASE_URL}images/icon-icecream-cone.png`}
+                                src={`${import.meta.env.BASE_URL}images/icon-icecream-cone.webp`}
                                 alt=""
                                 aria-hidden="true"
                                 width={25}

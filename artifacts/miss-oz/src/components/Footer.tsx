@@ -44,7 +44,7 @@ export default function Footer() {
           style={{ boxShadow: '0 12px 32px rgba(0,0,0,0.4)' }}
         >
           <span aria-hidden="true" className="absolute -top-[11px] left-1/2 -translate-x-1/2 w-[64px] h-[20px] rotate-[3deg]" style={{ background: 'rgba(214,193,150,0.75)', boxShadow: '0 1px 3px rgba(28,13,12,0.2)' }} />
-          <img loading="lazy" decoding="async" src="/images/oz-goggles.webp" alt="Oz the dog wearing driving goggles in the front seat of a car" width={640} height={800} className="w-full aspect-[4/5] object-cover rounded-[2px] sepia-[10%] saturate-[0.94]" />
+          <img loading="lazy" decoding="async" src="/images/oz-goggles.webp" alt="Oz the dog wearing driving goggles in the front seat of a car" width={388} height={486} className="w-full aspect-[4/5] object-cover rounded-[2px] sepia-[10%] saturate-[0.94]" />
           <figcaption className="font-script-alt text-[16px] text-[var(--berry-deep)] text-center mt-[6px] leading-tight">off to find the next flavor</figcaption>
         </figure>
       </div>
