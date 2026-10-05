@@ -11,6 +11,14 @@ description: Gotchas when deploying a single artifact from the pnpm-workspace mo
 **Vercel Root Directory vs. repo-root `vercel.json`.** On import, Vercel often sets the project's **Root Directory** to the artifact folder (e.g. `artifacts/miss-oz`). When it does, Vercel reads `vercel.json` from *inside that folder* — a repo-root `vercel.json` is ignored, and the default output dir `public` is looked for relative to the root dir, so the build "succeeds" then fails with `No Output Directory named "public" found`.
 **How to apply:** Put a `vercel.json` **inside the artifact dir** with `outputDirectory: "dist/public"` (relative to that dir) plus the SPA rewrite `[{ "source": "/(.*)", "destination": "/index.html" }]`. pnpm workspace install still runs from repo root automatically. The tell-tale sign the root dir is set: build logs run in `/vercel/path0/artifacts/<name>`.
 
+## Local route verification
+
+Vite preview does not apply `vercel.json` rewrites or redirects. It can return the root `index.html` for a deep path such as `/about` even when the build contains `dist/public/about/index.html`. Do not treat a plain Vite preview curl as a Vercel route test.
+
+**Why:** Local Miss Oz production-preview curls showed the SPA fallback while the route-specific HTML files existed; only the Vercel rules map those paths to the pre-rendered shells and redirect legacy paths.
+
+**How to apply:** Check generated route files and their exact `vercel.json` destinations. A temporary local handler driven by that JSON can smoke-test the mapping, but label it as a config simulation rather than a live Vercel request.
+
 **Connection recovery:** A connected Vercel account can still return `403` with `invalidToken`; this connection is API-key based, so OAuth reauthorization is not available.
 **Why:** Vercel explicitly classifies this response as an invalid credential, not a project or build permission problem.
 **How to apply:** Do not repeatedly retry deployment or request a token in chat. Have the user replace the credential through the secure integration flow, then retry the API once.
