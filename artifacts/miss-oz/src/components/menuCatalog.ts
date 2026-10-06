@@ -8,6 +8,68 @@ export type MenuItem = {
 
 export const MENU_CATEGORIES = ['Flavors', 'Sundaes', 'Croffles & Desserts', 'Drinks', 'Whole Cakes'] as const;
 
+export const UBEREATS_URL = 'https://www.ubereats.com/store/miss-oz-ice-cream-cafe-aka-cool-moon-ice-creams/YEfj7ZgZS2m7Wm2og7PphQ';
+
+export type MenuPhoto = {
+  src: string;
+  alt: string;
+  caption: string;
+  objectPosition?: string;
+};
+
+export const SUNDAE_PHOTOS: MenuPhoto[] = [
+  {
+    src: 'images/wholesale/image0.webp',
+    alt: 'Midnight Fudge Sundae with whipped cream, sprinkles, and a cherry',
+    caption: 'Midnight Fudge Sundae',
+    objectPosition: 'center top',
+  },
+  {
+    src: 'images/wholesale/image11.webp',
+    alt: 'Rose City Banana Split with vanilla, strawberry, and chocolate scoops, sauces, whipped cream, sprinkles, and cherries',
+    caption: 'Rose City Banana Split',
+  },
+  {
+    src: 'images/wholesale/image12.webp',
+    alt: "S'more sundae with a toasted marshmallow, graham crackers, whipped cream and chocolate drizzle",
+    caption: "S'more Sundae",
+    objectPosition: 'center top',
+  },
+];
+
+export const DESSERT_PHOTOS: MenuPhoto[] = [
+  {
+    src: 'images/cookie-walnut.webp',
+    alt: 'Walnut chocolate chip cookies',
+    caption: 'Walnut Chocolate Chip Cookie',
+    objectPosition: 'center 56%',
+  },
+  {
+    src: 'images/cookie-coffee.webp',
+    alt: 'Two housemade cookies served with coffee',
+    caption: 'Butter Pecan Cookie',
+  },
+  {
+    src: 'images/cookie-stack.webp',
+    alt: 'A stack of housemade cookies on a plate',
+    caption: 'Traditional Chocolate Chip Cookie',
+    objectPosition: 'center 48%',
+  },
+];
+
+export const CAKE_PHOTOS: MenuPhoto[] = [
+  {
+    src: 'images/whole-cheesecake-slice.webp',
+    alt: 'A slice of Original Basque Cheesecake',
+    caption: 'Basque Cheesecake Slice',
+  },
+  {
+    src: 'images/whole-basque-cheesecake.webp',
+    alt: 'A whole Original Basque Cheesecake',
+    caption: 'Whole Basque Cheesecake',
+  },
+];
+
 export const FLAVORS: MenuItem[] = [
   { name: 'Mexican Vanilla', note: 'Extra rich vanilla flavor from 4-fold vanilla extract.' },
   { name: 'Matcha', note: 'Ceremonial-grade matcha with an earthy, smooth flavor.' },
