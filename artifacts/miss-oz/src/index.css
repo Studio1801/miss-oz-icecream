@@ -1,3 +1,4 @@
+/* ── Fonts and framework imports ── */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
 
 @font-face {
@@ -13,6 +14,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ── Tokens ── */
 @theme inline {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -153,6 +155,7 @@
   --ring: 334 54% 36%;
 }
 
+/* ── Base ── */
 @layer base {
   * {
     @apply border-border;
@@ -169,7 +172,9 @@
   }
 }
 
+/* ── Utilities ── */
 @layer utilities {
+  /* Scalloped trim and paper textures */
   .clip-scallop {
     background: radial-gradient(circle at 50% 0, transparent 23px, var(--cream) 24px);
     background-size: 58px 46px;
@@ -188,7 +193,7 @@
       radial-gradient(circle at 85% 84%, rgba(120,80,30,0.07), transparent 26%),
       radial-gradient(circle at 78% 12%, rgba(90,55,20,0.05), transparent 20%);
   }
-  /* Hanging pennant bunting — a string of triangular parlor flags */
+  /* ── Bunting ── */
   .bunting {
     display: flex;
     justify-content: center;
@@ -220,7 +225,7 @@
     border-top: 21px solid currentColor;
   }
 
-  /* NEW VINTAGE UTILITIES */
+  /* Print, ticket, and photo details */
   .ticket-notch {
     -webkit-mask-image: radial-gradient(circle at 0% 50%, transparent 16px, black 17px), radial-gradient(circle at 100% 50%, transparent 16px, black 17px);
     -webkit-mask-size: 100% 100%;
@@ -264,21 +269,7 @@
   .tape-strip::before { left: 0; border-left: 2px dotted rgba(28,13,12,0.15); }
   .tape-strip::after { right: 0; border-right: 2px dotted rgba(28,13,12,0.15); border-left: none; }
 
-  .photo-corner {
-    position: absolute;
-    width: clamp(24px, 4vw, 36px);
-    height: clamp(24px, 4vw, 36px);
-    border: clamp(3px, 0.6vw, 5px) solid var(--cocoa);
-    z-index: 5;
-    box-shadow: 2px 2px 6px rgba(28,13,12,0.35), inset 2px 2px 6px rgba(28,13,12,0.2);
-    opacity: 0.95;
-    background: transparent;
-  }
-  .photo-corner-tl { top: -2px; left: -2px; border-right: none; border-bottom: none; border-top-left-radius: 3px; }
-  .photo-corner-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; border-top-right-radius: 3px; }
-  .photo-corner-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; border-bottom-left-radius: 3px; }
-  .photo-corner-br { bottom: -2px; right: -2px; border-left: none; border-top: none; border-bottom-right-radius: 3px; }
-
+  /* Pressable controls */
   .mech-btn {
     box-shadow: 0 6px 0 var(--cocoa), 0 10px 20px rgba(28,13,12,0.4), inset 0 2px 0 rgba(255,255,255,0.2);
     transform: translateY(0);
@@ -295,6 +286,7 @@
     }
   }
 
+  /* ── Marquee ── */
   .mq-track:hover {
     animation-play-state: paused;
   }
@@ -306,50 +298,14 @@
     border: 2px dashed rgba(255,244,214,0.35);
   }
 
-  .punch-holes {
-    background-image: radial-gradient(circle, rgba(28,13,12,0.25) 2px, transparent 2.5px);
-    background-size: 14px 14px;
-    background-position: center top;
-    background-repeat: repeat-y;
-  }
 }
 
-@keyframes blobmorph { 
-  0%, 100% { border-radius: 47% 53% 58% 42% / 48% 44% 56% 52%; } 
-  50% { border-radius: 54% 46% 44% 56% / 42% 56% 44% 58%; } 
-}
-@keyframes bob { 
-  0%, 100% { transform: translateY(0) rotate(-4deg); } 
-  50% { transform: translateY(-8px) rotate(-3deg); } 
-}
-@keyframes spinbadge { 
-  from { transform: rotate(0deg); } 
-  to { transform: rotate(360deg); } 
-}
-@keyframes twinkle { 
-  0%, 100% { opacity: 1; transform: scale(1); } 
-  50% { opacity: 0.35; transform: scale(0.75); } 
-}
-@keyframes mq { 
-  from { transform: translateX(0); } 
-  to { transform: translateX(-50%); } 
-}
-@keyframes flicker { 
-  0%, 100% { opacity: 1; box-shadow: 0 0 20px 6px rgba(227,180,76,0.6); } 
-  50% { opacity: 0.5; box-shadow: 0 0 10px 2px rgba(227,180,76,0.3); } 
-}
-@keyframes eq {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1); }
-}
-@keyframes bunting-sway {
-  0%, 100% { transform: rotate(-0.45deg); }
-  50% { transform: rotate(0.45deg); }
-}
+/* ── Bunting motion preference ── */
 @media (prefers-reduced-motion: reduce) {
   .bunting { animation: none; transform: none; }
 }
 
+/* ── Layout and surfaces ── */
 /* Tactile film-grain overlay — warms the whole page and kills the flat digital sheen */
 .grain-overlay {
   position: fixed;
@@ -374,16 +330,7 @@
   background-position: center;
 }
 
-/* ===== Vintage single-screen poster board ===== */
-.poster-frame {
-  position: relative;
-  background:
-    repeating-linear-gradient(45deg, rgba(0,0,0,0.14) 0 2px, transparent 2px 9px),
-    radial-gradient(140% 120% at 50% 50%, var(--teal) 0%, var(--teal-deep) 75%);
-  padding: clamp(22px, 3.4vw, 44px);
-}
-
-/* Chasing marquee light bulbs, set into the frame band */
+/* ── Marquee border lights ── */
 .bulbstrip { position: absolute; overflow: hidden; z-index: 3; pointer-events: none; }
 .bulbstrip .bulbs { position: absolute; inset: 0; }
 .bulbstrip-h { left: 8px; right: 8px; height: 14px; }
@@ -403,128 +350,10 @@
 }
 .bulbstrip-h .bulbs-b { background-position: 15.5px center; }
 .bulbstrip-v .bulbs-b { background-position: center 15.5px; }
-@keyframes bulbblink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0.18; } }
 .bulbs-a { animation: bulbblink 1.15s steps(1, end) infinite; }
 .bulbs-b { animation: bulbblink 1.15s steps(1, end) infinite; animation-delay: 0.575s; }
 
-.poster-stage {
-  position: relative; z-index: 2;
-  border: 3px solid var(--teal-deep);
-  border-radius: 6px;
-  box-shadow: 0 0 0 3px var(--gold), 0 0 0 6px var(--teal-deep);
-  background:
-    radial-gradient(130% 95% at 50% 50%, transparent 55%, rgba(60,40,20,0.28) 100%),
-    radial-gradient(120% 80% at 50% -8%, rgba(234,184,206,0.28), transparent 55%),
-    var(--paper);
-  padding: clamp(18px, 2.4vw, 36px) clamp(16px, 2.8vw, 40px);
-  display: flex; flex-direction: column;
-  gap: clamp(9px, 1.15vw, 16px);
-  overflow: hidden;
-}
-/* Aged-paper mottle + fibre grain layered over the whole board */
-.poster-stage::before {
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(120,80,30,0.10), transparent 22%),
-    radial-gradient(circle at 88% 76%, rgba(120,80,30,0.10), transparent 22%),
-    radial-gradient(circle at 68% 12%, rgba(90,55,20,0.08), transparent 18%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: auto, auto, auto, 220px 220px;
-  opacity: 0.5;
-  mix-blend-mode: multiply;
-}
-.poster-stage > * { position: relative; z-index: 1; }
-
-/* Vintage bordered panel used for left scene / right column / cards */
-.vpanel {
-  border: 2px solid var(--teal-deep);
-  border-radius: 6px;
-  box-shadow: inset 0 0 0 2px rgba(255,244,214,0.5), 0 4px 10px rgba(28,13,12,0.2);
-}
-
-/* Bulb-lit ballot frame for the "vote for the next flavor" cards */
-.bulbframe { position: relative; }
-.bulbframe::after {
-  content: ""; position: absolute; inset: 7px; border-radius: 11px; pointer-events: none; z-index: 2;
-  background:
-    radial-gradient(circle, #FFF3CE 0 2.4px, transparent 3.2px) 0 0 / 15px 15px repeat-x,
-    radial-gradient(circle, #FFF3CE 0 2.4px, transparent 3.2px) 0 100% / 15px 15px repeat-x,
-    radial-gradient(circle, #FFF3CE 0 2.4px, transparent 3.2px) 0 0 / 15px 15px repeat-y,
-    radial-gradient(circle, #FFF3CE 0 2.4px, transparent 3.2px) 100% 0 / 15px 15px repeat-y;
-  filter: drop-shadow(0 0 3px rgba(255,244,214,0.85));
-  animation: bulbblink 1.2s steps(1, end) infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .bulbframe::after { animation: none; }
-}
-
-/* Vertical "ICE CREAM" marquee arrow sign with bulbs on every edge */
-.marquee-sign {
-  position: relative;
-  background: linear-gradient(180deg, var(--brick) 0%, var(--brick-deep) 100%);
-  border: 2px solid var(--gold-hi);
-  border-radius: 9px;
-  box-shadow: 0 6px 16px rgba(28,13,12,0.35);
-}
-.marquee-sign::before {
-  content: ""; position: absolute; inset: 5px; border-radius: 5px; pointer-events: none;
-  background:
-    radial-gradient(circle, #FFF3CE 0 2.2px, transparent 3px) 0 0 / 13px 13px repeat-x,
-    radial-gradient(circle, #FFF3CE 0 2.2px, transparent 3px) 0 100% / 13px 13px repeat-x,
-    radial-gradient(circle, #FFF3CE 0 2.2px, transparent 3px) 0 0 / 13px 13px repeat-y,
-    radial-gradient(circle, #FFF3CE 0 2.2px, transparent 3px) 100% 0 / 13px 13px repeat-y;
-  filter: drop-shadow(0 0 3px rgba(255,244,214,0.9));
-  animation: bulbblink 1.15s steps(1, end) infinite;
-}
-
-/* Round distressed stamp (Made in Portland / Meet Oz) */
-.vstamp {
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  box-shadow: inset 0 0 0 2px currentColor;
-}
-
-/* Heavy film-grain + faded wash for the hero image — genuine old-photo feel */
-.filmgrain {
-  position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 190px 190px;
-  opacity: 0.36;
-  mix-blend-mode: multiply;
-}
-/* ===== Single-photo vintage postcard hero ===== */
-.postcard {
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-  border: clamp(8px, 1.1vw, 14px) solid var(--cream);
-  box-shadow: 0 20px 55px rgba(28,13,12,0.45), inset 0 0 0 2px rgba(140,42,84,0.22);
-}
-
-/* ===== Vintage diner menu book ===== */
-.menu-page {
-  position: relative;
-  background:
-    radial-gradient(130% 100% at 50% 0%, transparent 58%, rgba(120,80,30,0.12) 100%),
-    radial-gradient(circle at 16% 18%, rgba(120,80,30,0.09), transparent 24%),
-    radial-gradient(circle at 84% 86%, rgba(120,80,30,0.09), transparent 24%),
-    linear-gradient(180deg, var(--cream-hi), var(--cream));
-}
-.menu-page::after {
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  opacity: 0.42; mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-}
-.menu-page > * { position: relative; z-index: 1; }
-.menu-page-l { box-shadow: inset -24px 0 32px -24px rgba(28,13,12,0.42); }
-.menu-page-r { box-shadow: inset 24px 0 32px -24px rgba(28,13,12,0.42); }
-@media (max-width: 767px) {
-  .menu-page-l, .menu-page-r { box-shadow: none; }
-}
-
-/* ===== Vintage guest ledger / phone-book pages ===== */
+/* ── Guest ledger layout ── */
 .ledger-page {
   position: relative;
   background:
@@ -552,44 +381,17 @@
   .ledger-page-l, .ledger-page-r { box-shadow: none; }
 }
 
-/* Vertical "ICE CREAM" blade sign */
-.blade-text {
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  letter-spacing: 2px;
-}
-
-/* Big MISS OZ wordmark with a berry outline */
-.wordmark-oz {
-  color: var(--cream-hi);
-  -webkit-text-stroke: 2px var(--berry-deep);
-  paint-order: stroke fill;
-  text-shadow: 4px 5px 0 rgba(28,13,12,0.28);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .grain-overlay { display: none; }
-  /* Quiet all decorative motion (sunburst, seal, blob, bob, twinkle, marquee, bulbs) */
+  /* Pause decorative motion for reduced-motion preferences. */
   #hero *,
   .bulbs-a, .bulbs-b,
-  .marquee-sign::before,
-  .animate-\[mq_32s_linear_infinite\],
-  .nav-link::after,
   .tape-peel,
-  .flicker-hover:hover,
   .wax-seal,
   .sprinkle,
-  .menu-card-img-inner,
-  .menu-book,
-  .ticket-lift,
   .poster-lift {
     animation: none !important;
     transition: none !important;
-  }
-  /* Neutralize transforms too — the flip is decorative (card text is duplicated below the image) */
-  .group:hover .menu-card-img-inner,
-  .group:focus-within .menu-card-img-inner {
-    transform: none !important;
   }
   .ledger-input,
   .ledger-input:focus {
@@ -602,41 +404,16 @@
     transform: none !important;
     transition: none !important;
   }
-  .nav-link::after,
   .tape-peel,
   .wax-seal,
   .sprinkle,
-  .menu-book,
-  .ticket-lift,
   .poster-lift {
     transform: none !important;
   }
-  .group:hover .tape-peel, .group:focus-visible .tape-peel, .focus-within .tape-peel { transform: none !important; }
-  .menu-book:hover { transform: none !important; box-shadow: 0 34px 80px rgba(0,0,0,0.55), inset 0 0 0 2px var(--gold), inset 0 0 0 4px var(--berry-deep) !important; }
+  .group:hover .tape-peel, .group:focus-visible .tape-peel { transform: none !important; }
   .poster-lift:hover { transform: none !important; box-shadow: 0 24px 54px rgba(28,13,12,0.4), inset 0 0 0 1px rgba(255,244,214,0.14) !important; }
   .wax-seal:hover { transform: none !important; filter: drop-shadow(0 8px 24px rgba(28,13,12,0.3)); }
   .bulbs-b { opacity: 0.55; }
-}
-
-/* Nav Bulb Underline */
-.nav-link {
-  position: relative;
-}
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: -4px; height: 5px;
-  background-image: radial-gradient(circle at center, var(--gold-hi) 0 2px, transparent 2.5px);
-  background-size: 10px 5px;
-  background-repeat: repeat-x;
-  opacity: 0;
-  transform: translateY(2px);
-  transition: opacity 0.2s, transform 0.2s;
-  filter: drop-shadow(0 0 3px rgba(227,180,76,0.6));
-}
-.nav-link:hover::after, .nav-link:focus-visible::after {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Tape Peel Interaction */
@@ -644,7 +421,7 @@
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
   transform-origin: top center;
 }
-.group:hover .tape-peel, .group:focus-visible .tape-peel, a:hover .tape-peel, a:focus-visible .tape-peel, button:hover .tape-peel, button:focus-visible .tape-peel, .hover-target:hover .tape-peel {
+.group:hover .tape-peel, .group:focus-visible .tape-peel, a:hover .tape-peel, a:focus-visible .tape-peel, button:hover .tape-peel, button:focus-visible .tape-peel {
   transform: scaleY(0.7) rotate(-2deg) translateY(-2px);
   filter: drop-shadow(0 4px 2px rgba(28,13,12,0.3));
 }
@@ -658,37 +435,6 @@
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(28,13,12,0.05);
   border-bottom-style: solid;
-}
-
-/* Flicker effect on hover */
-.flicker-hover {
-  transition: filter 0.2s ease;
-}
-.flicker-hover:hover, .flicker-hover:focus-visible {
-  animation: lights-flicker 0.2s infinite alternate;
-}
-@keyframes lights-flicker {
-  0% { filter: brightness(1); }
-  30% { filter: brightness(1.2) drop-shadow(0 0 8px rgba(255,244,214,0.6)); }
-  70% { filter: brightness(0.9); }
-  100% { filter: brightness(1.3) drop-shadow(0 0 12px rgba(227,180,76,0.8)); }
-}
-
-/* Menu Flip Cards */
-.perspective-1000 { perspective: 1000px; }
-.menu-card-img-inner {
-  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
-  transform-style: preserve-3d;
-}
-.group:hover .menu-card-img-inner, .group:focus-within .menu-card-img-inner {
-  transform: rotateY(180deg);
-}
-.card-front, .card-back {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.card-back {
-  transform: rotateY(180deg);
 }
 
 /* Wax Seal Interaction */
