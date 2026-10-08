@@ -54,3 +54,87 @@ mtime_ms = 1791212505463
 storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/24dcb9d3-b654-4cdf-88d8-8effc769286a/fb5380b7-81a0-44fa-85f1-f1fb353b02cc"
 storage_version_token = "1791212564487749"
 content_type = "text/csv"
+
+[[outputs]]
+id = "t1XDKlnJvVlMnN1daPIqS"
+uri = "file://screenshots/miss-oz-comparison-home-desktop.jpg"
+type = "image"
+title = "Home — Desktop Before/After"
+description = "1440×1000 captures; before is left, after is right."
+logical_id = "32b8aa0d-8c0c-432f-abf0-722b3646eadd"
+content_hash = "sha256:92d39d9d3e0b718ad69d3f9c93fd02e61d196b961ee9f7a97b8863edc4d6525f"
+size = 659817
+mtime_ms = 1791491906035
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/32b8aa0d-8c0c-432f-abf0-722b3646eadd/08558aa0-e890-474f-82fd-e3c7875adf68"
+storage_version_token = "1791491929338393"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "HEVObStjD_xEZWizfimPS"
+uri = "file://screenshots/miss-oz-comparison-home-mobile.jpg"
+type = "image"
+title = "Home — Mobile Before/After"
+description = "390×844 captures; before is left, after is right."
+logical_id = "7482349f-da25-4d30-ae0e-6da7747283db"
+content_hash = "sha256:b71e05a63a1d75c385ef1943c51b4525b5e18ee6afbc0f21106fabf112de2d9b"
+size = 268669
+mtime_ms = 1791491906107
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/7482349f-da25-4d30-ae0e-6da7747283db/2dc9a932-e325-45c7-9641-036bbb59b017"
+storage_version_token = "1791491930627291"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "GcbDPyVS2q7YiZuY3v-4o"
+uri = "file://screenshots/miss-oz-comparison-menu-desktop.jpg"
+type = "image"
+title = "Flavors menu — Desktop Before/After"
+description = "1440×1000 captures; before is left, after is right."
+logical_id = "6c67a80f-deff-4c27-b43e-bb5804a42238"
+content_hash = "sha256:28b1b0ed1f790d8c1a1067d5b42c14cac7230800e0ae011b560c5c0b4298e352"
+size = 739694
+mtime_ms = 1791491906395
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/6c67a80f-deff-4c27-b43e-bb5804a42238/e9e1ff13-78e7-4e93-9679-f77a930de274"
+storage_version_token = "1791491931839324"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "gW6cK2XN64Hyuxet9J6-l"
+uri = "file://screenshots/miss-oz-comparison-menu-mobile.jpg"
+type = "image"
+title = "Flavors menu — Mobile Before/After"
+description = "390×844 captures; before is left, after is right."
+logical_id = "c0d6cd3c-766a-4037-9c25-7f2b16a71937"
+content_hash = "sha256:4848b34f1bd8ae5959c1919d109591f5a8c5d794fbadb7561204cedc033c0d86"
+size = 247491
+mtime_ms = 1791491906467
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/c0d6cd3c-766a-4037-9c25-7f2b16a71937/847d19fa-261a-4067-bed3-09679b18f6a8"
+storage_version_token = "1791491933071355"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "YpQtM0xWxaKwoLWNwQSw5"
+uri = "file://screenshots/miss-oz-comparison-sundaes-desktop.jpg"
+type = "image"
+title = "Sundaes — Desktop Before/After"
+description = "1440×1000 captures; before is left, after is right."
+logical_id = "89a0d60b-902e-4baf-9f81-302f933620a6"
+content_hash = "sha256:987d6c298196fb94ea118e1342d4b3bea27f64f929d22e350a07b58a353c6b6d"
+size = 768387
+mtime_ms = 1791491906707
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/89a0d60b-902e-4baf-9f81-302f933620a6/23fc0869-b67e-48ac-9489-f320dba6413e"
+storage_version_token = "1791491934275356"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "7MhHGLXGWAGlUEr1L5Qnu"
+uri = "file://screenshots/miss-oz-comparison-sundaes-mobile.jpg"
+type = "image"
+title = "Sundaes — Mobile Before/After"
+description = "390×844 captures; before is left, after is right."
+logical_id = "0f6cd989-f7b4-43e4-916e-974dc8603707"
+content_hash = "sha256:0b7fee42a0bea2c275c62ce5b93ae30be662aea8b17cf1ba324de17189ccf0d8"
+size = 258314
+mtime_ms = 1791491906779
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/0f6cd989-f7b4-43e4-916e-974dc8603707/5ea75561-1ea2-4ac8-92bc-03d02de90180"
+storage_version_token = "1791491935536516"
+content_type = "image/jpeg"
