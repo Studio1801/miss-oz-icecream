@@ -14,7 +14,7 @@ export default function DrinksPanel() {
             Seasonal Specials
           </div>
           <p className="mt-[8px] text-[#6E5A54] leading-relaxed" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
-            Thai Iced Tea, Lychee Soda, and House Lemonade. Our seasonal drinks rotate, so ask your scooper what's fresh today.
+            S&apos;mores Sundae, S&apos;more Hot Chocolate, Chai Latte, Pumpkin Spice Latte
           </p>
         </div>
       </div>

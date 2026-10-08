@@ -1,3 +1,5 @@
+import PawMark from './PawMark';
+
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bunting } from './Decor';
@@ -326,7 +328,24 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 Since 2007
                 <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'rgba(251,242,223,0.6)' }} />
               </div>
-              <div aria-hidden="true" style={{ color: '#F4A9C7', fontSize: 'clamp(11px,1vw,15px)', marginTop: 'clamp(6px,0.7vw,10px)', textShadow: '0 1px 6px rgba(20,8,12,0.6)' }}>♥</div>
+              <div
+                className="flex items-center justify-center gap-[7px]"
+                style={{ color: '#F4A9C7', marginTop: 'clamp(6px,0.7vw,10px)', textShadow: '0 1px 6px rgba(20,8,12,0.6)' }}
+              >
+                <span aria-hidden="true" style={{ fontSize: 'clamp(11px,1vw,15px)' }}>♥</span>
+                <PawMark size={14} className="text-[#F4A9C7]" />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 'clamp(7px,0.65vw,9px)',
+                    fontWeight: 700,
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Dogs welcome
+                </span>
+              </div>
               {/* CTA button */}
               <div className="flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
                 <SiteNavigationLink

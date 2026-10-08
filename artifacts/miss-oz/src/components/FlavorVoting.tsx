@@ -1,12 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, animate, motion, useReducedMotion } from 'framer-motion';
 
-const CARDS = [
-  { name: 'Licorice', note: 'dark, bold, beautifully old-school', bg: '#E9E3E5', icon: '/images/icon-licorice.svg', img: '/images/licorice-vote.webp' },
+type FlavorCard = {
+  name: string;
+  note: string;
+  bg: string;
+  icon?: string;
+  img?: string;
+};
+
+const CARDS: FlavorCard[] = [
+  { name: 'Earl Grey', note: 'black tea with fragrant bergamot', bg: '#E9E3E5' },
   { name: 'Vietnam Coffee', note: 'deep roast with a creamy condensed finish', bg: '#EAD8BE', icon: '/images/icon-vietnam-coffee.svg', img: '/images/vietnam-coffee-vote.webp' },
   { name: 'Honey Lavender', note: 'wildflower honey with a soft floral bloom', bg: '#E6DDF4', icon: '/images/icon-honey-lavender.svg', img: '/images/honey-lavender-vote.webp' },
 ];
-const VOTE_KEY = 'missoz-flavor-vote-v3';
+const VOTE_KEY = 'missoz-flavor-vote-v4';
 
 const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 'italic' as const };
 
@@ -144,9 +152,11 @@ export default function FlavorVoting() {
                 {/* Thumbnail in warm bg */}
                 <div className="shrink-0 w-[40px] h-[40px] rounded-[8px] flex items-center justify-center overflow-hidden"
                   style={{ background: card.bg }}>
-                  <img loading="lazy" src={card.icon} alt="" aria-hidden="true" width={34} height={34}
-                    className="w-[34px] h-[34px] object-contain"
-                    style={{ filter: 'drop-shadow(0 1px 3px rgba(28,13,12,0.25))' }} />
+                  {card.icon && (
+                    <img loading="lazy" src={card.icon} alt="" aria-hidden="true" width={34} height={34}
+                      className="w-[34px] h-[34px] object-contain"
+                      style={{ filter: 'drop-shadow(0 1px 3px rgba(28,13,12,0.25))' }} />
+                  )}
                 </div>
 
                 {/* Name + note */}
@@ -204,9 +214,11 @@ export default function FlavorVoting() {
                           {/* Larger image */}
                           <div className="shrink-0 w-[132px] h-[132px] rounded-[10px] flex items-center justify-center overflow-hidden"
                             style={{ background: card.bg }}>
-                            <img loading="lazy" src={card.img} alt={`A serving of ${card.name} ice cream`} width={132} height={132}
-                              className="w-full h-full object-cover"
-                              style={{ filter: 'drop-shadow(0 3px 7px rgba(28,13,12,0.28))' }} />
+                            {card.img && (
+                              <img loading="lazy" src={card.img} alt={`A serving of ${card.name} ice cream`} width={132} height={132}
+                                className="w-full h-full object-cover"
+                                style={{ filter: 'drop-shadow(0 3px 7px rgba(28,13,12,0.28))' }} />
+                            )}
                           </div>
 
                           {/* Details + CTA */}

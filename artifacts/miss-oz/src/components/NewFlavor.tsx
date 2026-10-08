@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
 
 // Keep the current artwork in one obvious place for a future real asset swap.
-const FLAVOR_POSTER_ASSET = '/images/coconut-sorbet-selected.webp';
+const FLAVOR_POSTER_ASSET = '/images/licorice-vote.webp';
 
 const FLAVOR = {
-  name: 'Coconut Sorbet',
+  name: 'Licorice',
   status: 'coming-soon' as 'new' | 'coming-soon',
-  headline: 'Pure Coconut',
+  headline: 'Pure Licorice',
   script: 'something fresh is coming',
-  description: 'Smooth and creamy dairy-free sorbet, made with real coconut milk and cream. No shortcuts.',
-  tags: ['Dairy-free', 'Coconut milk & cream'],
+  description: 'Dark, bold, beautifully old-school.',
+  tags: ['Dark & bold', 'Old-school'],
   poster: FLAVOR_POSTER_ASSET,
 };
 
@@ -45,6 +45,14 @@ export default function NewFlavor() {
             boxShadow: '0 4px 14px rgba(115,32,62,0.12)',
           }}
         >
+          <img
+            src="/images/icon-licorice.svg"
+            alt=""
+            aria-hidden="true"
+            width={18}
+            height={18}
+            className="h-[18px] w-[18px] object-contain"
+          />
           <span className="text-[11px] tracking-[3px] uppercase font-bold"
             style={{ color: 'var(--berry-deep)', fontFamily: 'var(--font-sans)' }}>
             ★ New Flavor Alert ★
@@ -87,7 +95,7 @@ export default function NewFlavor() {
           <div className="tape-strip tape-peel top-[-6px]  left-[10%] -rotate-6" aria-hidden="true" />
           <div className="rounded-[5px] p-[5px]" style={{ background: 'var(--cream-hi)' }}>
             <img loading="lazy" decoding="async" src={FLAVOR.poster}
-              alt={`Illustration of a scoop of ${FLAVOR.name} in a waffle cone, topped with coconut shavings and surrounded by coconuts`}
+              alt={`A serving of ${FLAVOR.name} ice cream`}
               width={580}
               height={580}
               className="block w-full h-auto rounded-[2px]" />

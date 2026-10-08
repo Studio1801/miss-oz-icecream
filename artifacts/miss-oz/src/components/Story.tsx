@@ -56,17 +56,9 @@ export default function Story() {
 
         {/* Header */}
         <div className="text-center">
-          <motion.span {...rise} transition={{ duration: 0.7, delay: 0.05 }}
-            className="block text-[12px] tracking-[5px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-3">
-            Pull up a stool
-          </motion.span>
-          <motion.span {...rise} transition={{ duration: 0.7, delay: 0.1 }}
-            className="block font-script text-[var(--berry-deep)] text-[clamp(30px,3.6vw,44px)] mb-1">
-            a Pearl District story
-          </motion.span>
           <motion.h2 {...rise} transition={{ duration: 0.7, delay: 0.15 }}
             className="text-[clamp(36px,5.4vw,72px)] leading-[1.02] text-[var(--cocoa)]" style={macklin}>
-            Seventeen years by the fountain
+            About Miss Oz Ice Cream &amp; Dessert
           </motion.h2>
         </div>
 
@@ -78,60 +70,49 @@ export default function Story() {
           <span className="h-px w-16 md:w-24" style={{ background: 'currentColor', opacity: 0.5 }} />
         </motion.div>
 
-        {/* Narrative with a vintage drop cap */}
+        {/* Story copy */}
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.25 }}
           className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
           <span
             className="float-left mr-3 mt-1 leading-[0.72] text-[var(--berry)]"
             style={{ ...macklin, fontSize: '68px', textShadow: '1px 2px 0 rgba(28,13,12,0.15), -1px -1px 0 rgba(255,255,255,0.4)' }}
           >
-            F
+            A
           </span>
-          or 17 years we served this neighborhood as Cool Moon Ice Cream, scooping beside the Jamison Square fountain, made on-site in small batches with all natural ingredients.
+          t Miss Oz Ice Cream &amp; Dessert, our mission is simple: people come first. Our shop exists because of the people who walk through our doors, our customers, our team, and our community. Great ice cream brings people in, but genuine hospitality is what keeps them coming back.
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.3 }}
           className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          Now we're Miss Oz, named after our beloved dog and everything she stood for: nature, animals, and slowing down for the sweet parts. Same hands, same traditions, new chapter.
+          Our story began in 2007 as Cool Moon, a small shop devoted entirely to ice cream. In 2022, I took it over and gave it a new name: Miss Oz. I wanted to build something more than an ice cream shop, a place people could enjoy in every season of the year.
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.35 }}
-          className="leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          Push open the door and it's the same as it's always been. Cones are hand-dipped to order, a record turns in the corner, and there's a stool with your name on it. No rush here. Stay as long as you like.
+          className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          The name comes from Oz, my dog. This shop is my first business on my own, and Oz is my first dog on my own. I named the shop after her because these two are the most precious things I am responsible for, all by myself.
         </motion.p>
-
-        {/* Then → Now chapter strip */}
-        <motion.div {...rise} transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-12 grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-4">
-          <div className="text-center sm:text-right">
-            <div className="text-[13px] tracking-[3px] uppercase font-bold text-[var(--gold)] mb-1">2007</div>
-            <div className="text-[22px] text-[var(--cocoa)]" style={macklin}>Cool Moon Ice Cream</div>
-            <div className="text-[15px] italic text-[#1d0e0d] opacity-70">scooping by the fountain</div>
-          </div>
-
-          <div aria-hidden="true" className="flex sm:flex-col items-center justify-center gap-2 text-[var(--berry)]">
-            <span className="hidden sm:block h-8 w-px" style={{ background: 'currentColor', opacity: 0.35 }} />
-            <span className="text-[20px]">❧</span>
-            <span className="hidden sm:block h-8 w-px" style={{ background: 'currentColor', opacity: 0.35 }} />
-            <span className="sm:hidden h-px w-10" style={{ background: 'currentColor', opacity: 0.35 }} />
-          </div>
-
-          <div className="text-center sm:text-left">
-            <div className="text-[13px] tracking-[3px] uppercase font-bold text-[var(--gold)] mb-1">Today</div>
-            <div className="text-[22px] text-[var(--cocoa)]" style={macklin}>Miss Oz Ice Cream</div>
-            <div className="text-[15px] italic text-[#1d0e0d] opacity-70">same hands, new name</div>
-          </div>
-        </motion.div>
-
-        {/* Signed closing */}
-        <motion.div {...rise} transition={{ duration: 0.7, delay: 0.5 }} className="mt-12 text-center">
-          <p className="font-script text-[clamp(26px,3.2vw,38px)] text-[var(--berry)] leading-snug">
-            Come slow down with us.
-          </p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.4 }}
+          className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          Since 2007, we have been crafting small-batch ice cream from scratch with premium ingredients and traditional methods. Alongside timeless classics, you will find globally inspired flavors like Kulfi, Thai Iced Tea, Horchata, and Mexican Vanilla, creations that celebrate diversity through flavor.
+        </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.45 }}
+          className="mb-1 leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          Our philosophy is simple:
+        </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.5 }}
+          className="mb-[18px] text-center font-script text-[clamp(26px,3.2vw,38px)] text-[var(--berry)] leading-snug">
+          Small Batch. Big Heart.
+        </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.55 }}
+          className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          We look back to the 1950s, when ice cream was served as a fine dessert. These days everything is fast, high-tech, and convenient. We go the other way. We insist on the classic methods, even if they take a little more time and trouble. We make our ice cream and our sauces the old-fashioned way and keep those flavors just as they were. And we play music from that era, so that while you are here, time slows down a little and you can feel the past.
+        </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.6 }}
+          className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          We are not just serving dessert. We are creating a place where families gather, friends celebrate, and neighbors connect. Whether you are here for a favorite classic or something completely new, we hope you leave with a smile and a reason to come back.
+        </motion.p>
+        <motion.div {...rise} transition={{ duration: 0.7, delay: 0.65 }} className="mt-12 text-center">
           <p className="font-script text-[clamp(26px,3.2vw,38px)] text-[var(--berry-deep)] leading-snug">
-            The old music's already playing.
+            Welcome to Miss Oz, where sweet memories begin.
           </p>
-          <span className="mt-3 inline-block text-[12px] tracking-[4px] uppercase font-bold text-[var(--cocoa)] opacity-50">
-            The Miss Oz family.
-          </span>
         </motion.div>
       </motion.div>
     </section>

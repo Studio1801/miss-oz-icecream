@@ -22,7 +22,7 @@ function sanitizeEntries(raw: unknown): Entry[] {
   return clean;
 }
 
-export default function Guestbook() {
+export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
@@ -82,7 +82,7 @@ export default function Guestbook() {
   }
 
   return (
-    <section id="guestbook" className="parlour-paper relative py-[80px] md:py-[120px] px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section id={id} className="parlour-paper relative py-[80px] md:py-[120px] px-[6vw] bg-[var(--cream)] overflow-hidden">
       <Starburst size={160} color="var(--gold)" className="pointer-events-none absolute top-[50px] left-[3vw] opacity-[0.10] hidden md:block" />
       <Starburst size={130} color="var(--berry)" className="pointer-events-none absolute bottom-[60px] right-[4vw] opacity-[0.09] hidden md:block" />
       {/* diner-table vignette */}

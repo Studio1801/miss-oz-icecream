@@ -102,14 +102,14 @@ export const CROFFLES: MenuItem[] = [
 ];
 
 export const DESSERTS: MenuItem[] = [
-  { name: 'Walnut Chocolate Chip Cookie', note: "Inspired by Levain Bakery's famous chunky cookies with a crisp exterior and soft, chewy center." },
-  { name: 'Butter Pecan Cookie', note: "Inspired by Levain Bakery's chunky cookies with a crisp exterior and soft, chewy center." },
+  { name: 'Walnut Chocolate Chip Cookie', note: 'New York-style thick and chunky cookie, crispy edges with a gooey center.' },
+  { name: 'Butter Pecan Cookie', note: 'New York-style thick and chunky cookie, crispy edges with a gooey center.' },
   { name: 'Traditional Chocolate Chip Cookie', note: 'A classic chocolate chip cookie with a crisp exterior and soft, chewy center.' },
   { name: 'Seasonal Dessert', note: 'See our Instagram or website for seasonal offerings.' },
 ];
 
 export const DRINKS: MenuItem[] = [
-  { name: 'Root Beer Float', note: 'Creamy house vanilla in an icy frosted mug' },
-  { name: 'Coke Float', note: 'Classic cola with a generous scoop, simple perfection' },
+  { name: 'Root Beer Float', note: "Dad's Root Beer with one scoop of vanilla ice cream." },
+  { name: 'Coke Float', note: 'Mexican Coke with a generous scoop of vanilla ice cream.' },
   { name: 'Milkshakes', note: 'Blended thick & rich in any of our rotating flavors' },
 ];

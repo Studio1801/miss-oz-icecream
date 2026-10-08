@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Bunting } from './Decor';
+import PawMark from './PawMark';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -55,6 +56,10 @@ export default function Footer() {
         <div id="visit" style={{ scrollMarginTop: '100px' }}>
           <h2 className="text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Address</h2>
           <p className="leading-[1.8] text-[#EFE2CE]">1105 NW Johnson St.<br />Portland, OR 97209</p>
+          <p className="mt-[10px] flex max-w-[230px] items-center gap-[7px] text-[13px] leading-snug text-[#EFE2CE]">
+            <PawMark size={18} className="shrink-0 text-[var(--gold-hi)]" />
+            <span>Well-behaved pups welcome inside!</span>
+          </p>
         </div>
 
         {/* Contact */}

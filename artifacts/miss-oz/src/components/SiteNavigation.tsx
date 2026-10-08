@@ -1,5 +1,7 @@
-import type { AnchorHTMLAttributes, MouseEvent, ReactElement, ReactNode } from 'react';
+import { cloneElement } from 'react';
+import type { AnchorHTMLAttributes, FocusEvent, MouseEvent, ReactElement, ReactNode, TouchEvent } from 'react';
 import { Link } from 'wouter';
+import { prefetchPageChunk } from '../pageChunks';
 
 export const SITE_NAV_LINKS = [
   { label: 'Home', target: '/' },
@@ -39,15 +41,48 @@ type SiteNavigationLinkProps = SiteNavigationLinkBaseProps & (
 );
 
 export function SiteNavigationLink(props: SiteNavigationLinkProps) {
-  const { to, onClick } = props;
+  const { to, onClick, onMouseEnter, onTouchStart, onFocus } = props;
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     handleSameRouteNavigation(to, event);
     onClick?.(event);
   };
+  const handleMouseEnter = (event: MouseEvent<HTMLAnchorElement>) => {
+    prefetchPageChunk(to);
+    onMouseEnter?.(event);
+  };
+  const handleTouchStart = (event: TouchEvent<HTMLAnchorElement>) => {
+    prefetchPageChunk(to);
+    onTouchStart?.(event);
+  };
+  const handleFocus = (event: FocusEvent<HTMLAnchorElement>) => {
+    prefetchPageChunk(to);
+    onFocus?.(event);
+  };
 
   if (props.asChild) {
-    return <Link {...props} to={to} onClick={handleClick} />;
+    return (
+      <Link
+        {...props}
+        to={to}
+        onClick={handleClick}
+      >
+        {cloneElement(props.children as ReactElement<AnchorHTMLAttributes<HTMLAnchorElement>>, {
+          onMouseEnter: handleMouseEnter,
+          onTouchStart: handleTouchStart,
+          onFocus: handleFocus,
+        })}
+      </Link>
+    );
   }
 
-  return <Link {...props} to={to} onClick={handleClick} />;
+  return (
+    <Link
+      {...props}
+      to={to}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onTouchStart={handleTouchStart}
+      onFocus={handleFocus}
+    />
+  );
 }

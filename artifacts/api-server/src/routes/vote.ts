@@ -4,7 +4,7 @@ import { logger } from "../lib/logger";
 
 const router: IRouter = Router();
 
-const FLAVOR_NAMES = ["Licorice", "Vietnam Coffee", "Honey Lavender"];
+const FLAVOR_NAMES = ["Earl Grey", "Vietnam Coffee", "Honey Lavender"];
 
 /* Normalise a flavor name so minor casing/spacing differences still match */
 function normalizeFlavor(name: string): string {
