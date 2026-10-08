@@ -6,8 +6,8 @@ const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 
 
 const EVENT_POLAROIDS = [
   {
-    src: `${import.meta.env.BASE_URL}images/wholesale/image0.webp`,
-    alt: 'Midnight Fudge Sundae with whipped cream, sprinkles, and a cherry',
+    src: `${import.meta.env.BASE_URL}images/midnight-fudge-sundae.webp`,
+    alt: 'Midnight Fudge Sundae topped with whipped cream, rainbow sprinkles, and a cherry in a Miss Oz cup.',
     caption: 'Midnight Fudge Sundae',
   },
   {

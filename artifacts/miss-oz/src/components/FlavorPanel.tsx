@@ -51,15 +51,16 @@ export default function FlavorPanel() {
           >
             {flavor.photo ? (
               <img
-                src={`${import.meta.env.BASE_URL}images/wholesale/${flavor.photo.fileName}`}
-                alt={flavor.photo.name === 'Thai Iced Tea'
+                src={`${import.meta.env.BASE_URL}${flavor.photo.src}`}
+                alt={flavor.photo.alt ?? (flavor.photo.name === 'Thai Iced Tea'
                   ? 'A pale golden scoop of ice cream in a silver dessert dish'
-                  : `A scoop of ${flavor.photo.name} ice cream in a dessert dish`}
+                  : `A scoop of ${flavor.photo.name} ice cream in a dessert dish`)}
                 width={450}
                 height={600}
                 loading="lazy"
                 decoding="async"
                 className="block aspect-[4/5] w-full object-cover"
+                style={{ objectPosition: flavor.photo.objectPosition }}
               />
             ) : (
               <div

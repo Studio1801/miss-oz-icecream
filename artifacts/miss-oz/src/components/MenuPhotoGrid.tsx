@@ -9,12 +9,14 @@ type MenuPhotoGridProps = {
   photos: MenuPhotoGridItem[];
   layout?: 'standard' | 'sundaes';
   aspectRatio?: 'square' | 'portrait';
+  showCaptions?: boolean;
 };
 
 export default function MenuPhotoGrid({
   photos,
   layout = 'standard',
   aspectRatio = 'portrait',
+  showCaptions = true,
 }: MenuPhotoGridProps) {
   const desktopColumns = layout === 'sundaes' ? 3 : Math.max(1, Math.min(3, photos.length));
   const desktopGridColumns = desktopColumns === 3
@@ -48,12 +50,14 @@ export default function MenuPhotoGrid({
               className={`block ${imageAspect} w-full object-cover`}
               style={{ objectPosition: photo.objectPosition }}
             />
-            <figcaption
-              className="bg-[var(--berry-deep)] px-2 py-2.5 text-center text-[12px] font-semibold leading-snug text-[var(--cream-hi)]"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
-              {photo.caption}
-            </figcaption>
+            {showCaptions && (
+              <figcaption
+                className="bg-[var(--berry-deep)] px-2 py-2.5 text-center text-[12px] font-semibold leading-snug text-[var(--cream-hi)]"
+                style={{ fontFamily: 'var(--font-sans)' }}
+              >
+                {photo.caption}
+              </figcaption>
+            )}
           </figure>
         );
       })}

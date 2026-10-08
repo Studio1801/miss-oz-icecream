@@ -19,10 +19,16 @@ export type MenuPhoto = {
 
 export const SUNDAE_PHOTOS: MenuPhoto[] = [
   {
-    src: 'images/wholesale/image0.webp',
-    alt: 'Midnight Fudge Sundae with whipped cream, sprinkles, and a cherry',
+    src: 'images/cherry-crown-sundae.webp',
+    alt: 'Miss Oz Cherry Crown Sundae with scoops of ice cream, cherries, and cherry syrup in a glass dish.',
+    caption: 'Miss Oz Cherry Crown Sundae',
+    objectPosition: 'center 52%',
+  },
+  {
+    src: 'images/midnight-fudge-sundae.webp',
+    alt: 'Midnight Fudge Sundae topped with whipped cream, rainbow sprinkles, and a cherry in a Miss Oz cup.',
     caption: 'Midnight Fudge Sundae',
-    objectPosition: 'center top',
+    objectPosition: 'center 52%',
   },
   {
     src: 'images/wholesale/image11.webp',
@@ -50,8 +56,8 @@ export const DESSERT_PHOTOS: MenuPhoto[] = [
     caption: 'Butter Pecan Cookie',
   },
   {
-    src: 'images/cookie-stack.webp',
-    alt: 'A stack of housemade cookies on a plate',
+    src: 'images/chunky-cookie-stack.webp',
+    alt: 'A stack of chunky chocolate chip cookies beside Miss Oz packaging on a checked table.',
     caption: 'Traditional Chocolate Chip Cookie',
     objectPosition: 'center 48%',
   },
@@ -72,6 +78,7 @@ export const CAKE_PHOTOS: MenuPhoto[] = [
 
 export const FLAVORS: MenuItem[] = [
   { name: 'Mexican Vanilla', note: 'Extra rich vanilla flavor from 4-fold vanilla extract.' },
+  { name: 'Salted Caramel', note: 'Rich caramel with a lightly salted finish.' },
   { name: 'Matcha', note: 'Ceremonial-grade matcha with an earthy, smooth flavor.' },
   { name: 'Kulfi', note: 'Traditional Indian cardamom & pistachio' },
   { name: 'Birthday Cake', note: 'Sweet yellow cake with confetti sprinkles.' },
@@ -99,6 +106,27 @@ export const CROFFLES: MenuItem[] = [
   { name: 'Oreo', note: 'Fresh whipped cream topped with Oreo cookies.' },
   { name: 'Tiramisu', note: 'Fresh whipped cream and cocoa powder, creating a tiramisu-inspired flavor that pairs beautifully with the chewy, buttery croffle.' },
   { name: 'S’more Croffle Pop', seasonalLabel: 'Seasonal, fall and winter' },
+];
+
+export const CROFFLE_PHOTOS: MenuPhoto[] = [
+  {
+    src: 'images/banana-croffle-pop.webp',
+    alt: 'Fresh Banana croffle pop topped with banana slices, whipped cream, and chocolate sauce.',
+    caption: 'Fresh Banana',
+    objectPosition: 'center 46%',
+  },
+  {
+    src: 'images/strawberry-croffle-pop.webp',
+    alt: 'Strawberry croffle pop topped with fresh strawberries, whipped cream, and chocolate drizzle.',
+    caption: 'Strawberry',
+    objectPosition: 'center 42%',
+  },
+  {
+    src: 'images/nutella-croffle.webp',
+    alt: 'Nutella croffle topped with chocolate hazelnut spread, whipped cream, and powdered sugar.',
+    caption: 'Nutella',
+    objectPosition: 'center 52%',
+  },
 ];
 
 export const DESSERTS: MenuItem[] = [

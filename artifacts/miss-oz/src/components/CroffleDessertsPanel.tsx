@@ -1,6 +1,6 @@
 import MenuPhotoGrid from './MenuPhotoGrid';
 import MenuProductList from './MenuProductList';
-import { DESSERTS, DESSERT_PHOTOS, CROFFLES, UBEREATS_URL } from './menuCatalog';
+import { CROFFLE_PHOTOS, DESSERTS, DESSERT_PHOTOS, CROFFLES, UBEREATS_URL } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 
 export default function CroffleDessertsPanel() {
@@ -16,6 +16,9 @@ export default function CroffleDessertsPanel() {
             <h4 className="mb-3 text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
             <MenuProductList items={DESSERTS} descriptionSize="large" />
           </section>
+        </div>
+        <div className="mt-[clamp(18px,2.2vw,28px)]">
+          <MenuPhotoGrid photos={CROFFLE_PHOTOS} showCaptions={false} />
         </div>
         <div className="mt-[clamp(20px,2.4vw,30px)] text-center">
           <div
