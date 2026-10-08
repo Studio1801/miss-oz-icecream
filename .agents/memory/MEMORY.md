@@ -4,3 +4,4 @@
 - [GitHub push credentials](github-git-transport.md) — an installed GitHub App does not necessarily authenticate local HTTPS Git pushes.
 - [Miss Oz page structure](miss-oz-page-structure.md) — keep only Events, Wholesale, and About Us on dedicated pages; the remaining existing sections stay on Home.
 - [Miss Oz supplied photos](miss-oz-photo-intent.md) — client corrected an earlier misclassification: the 12 supplied photos belong in Menu, not Wholesale or New Flavor.
+- [Miss Oz menu copy](miss-oz-menu-copy-confirmations.md) — the Thai Iced Tea taste note was explicitly approved by the client.
