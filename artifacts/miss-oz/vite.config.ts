@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-import { PAGE_META, PUBLIC_ORIGIN, SEO_ROUTES } from './src/pageMeta';
+import { NOT_FOUND_META, PAGE_META, PUBLIC_ORIGIN, SEO_ROUTES } from './src/pageMeta';
 
 // During a production build (e.g. on Vercel), Replit-injected env vars are
 // absent. The dev server still needs real values, which Replit always provides.
@@ -117,6 +117,68 @@ function applyPageMeta(html: string, route: string) {
   return html.replace(headMatch[0], updatedHead);
 }
 
+function applyNotFoundMeta(html: string) {
+  const headMatch = html.match(/<head\b[^>]*>[\s\S]*?<\/head>/i);
+  if (!headMatch) {
+    throw new Error('Could not find the built HTML <head> for the 404 page.');
+  }
+
+  const description = escapeHtmlAttribute(NOT_FOUND_META.description);
+  const title = escapeHtmlText(NOT_FOUND_META.title);
+  const replacements: Array<[RegExp, string, string]> = [
+    [/<title>[\s\S]*?<\/title>/i, `<title>${title}</title>`, '404 title'],
+    [
+      /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="description" content="${description}" />`,
+      '404 description',
+    ],
+    [
+      /<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i,
+      '<meta name="robots" content="noindex" />',
+      '404 robots directive',
+    ],
+    [
+      /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i,
+      `<meta property="og:title" content="${escapeHtmlAttribute(NOT_FOUND_META.title)}" />`,
+      '404 Open Graph title',
+    ],
+    [
+      /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i,
+      `<meta property="og:description" content="${description}" />`,
+      '404 Open Graph description',
+    ],
+    [
+      /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="twitter:title" content="${escapeHtmlAttribute(NOT_FOUND_META.title)}" />`,
+      '404 Twitter title',
+    ],
+    [
+      /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="twitter:description" content="${description}" />`,
+      '404 Twitter description',
+    ],
+  ];
+
+  let updatedHead = headMatch[0];
+  for (const [pattern, replacement, name] of replacements) {
+    updatedHead = replaceExactlyOneHeadTag(updatedHead, pattern, replacement, name);
+  }
+  updatedHead = replaceExactlyOneHeadTag(
+    updatedHead,
+    /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
+    '',
+    '404 canonical',
+  );
+  updatedHead = replaceExactlyOneHeadTag(
+    updatedHead,
+    /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i,
+    '',
+    '404 Open Graph URL',
+  );
+
+  return html.replace(headMatch[0], updatedHead);
+}
+
 const routeSeoShells = {
   name: 'miss-oz-route-seo-shells',
   apply: 'build' as const,
@@ -134,6 +196,12 @@ const routeSeoShells = {
       mkdirSync(path.dirname(routeIndexPath), { recursive: true });
       writeFileSync(routeIndexPath, applyPageMeta(homeHtml, route), 'utf8');
     }
+
+    writeFileSync(
+      path.join(outputDir, '404.html'),
+      applyNotFoundMeta(homeHtml),
+      'utf8',
+    );
   },
 };
 

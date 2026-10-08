@@ -3,6 +3,11 @@ export type PageMeta = {
   description: string;
 };
 
+export const NOT_FOUND_META: PageMeta = {
+  title: 'Page Not Found | Miss Oz Ice Cream & Dessert Cafe',
+  description: "We couldn't find that page. Return home or browse the Miss Oz menu.",
+};
+
 export const PUBLIC_ORIGIN = 'https://www.missozicecream.com';
 
 export const PAGE_META: Record<string, PageMeta> = {

@@ -6,7 +6,7 @@ import NotFound from '@/pages/not-found';
 import Home from '@/pages/home';
 import SiteLayout from '@/components/SiteLayout';
 import { Redirect, Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
-import { PAGE_META, PUBLIC_ORIGIN } from './pageMeta';
+import { NOT_FOUND_META, PAGE_META, PUBLIC_ORIGIN } from './pageMeta';
 import { AboutPage, ContactPage, EventsPage, WholesalePage } from './pageChunks';
 
 const queryClient = new QueryClient();
@@ -50,21 +50,53 @@ function Router() {
   const [location] = useLocation();
 
   useEffect(() => {
-    const page = PAGE_META[location] ?? PAGE_META['/'];
-    document.title = page.title;
-    const canonicalUrl = new URL(location === '/' ? '' : location.slice(1), `${PUBLIC_ORIGIN}/`).href;
-    for (const [selector, content] of [
-      ['meta[name="description"]', page.description],
-      ['meta[property="og:title"]', page.title],
-      ['meta[property="og:description"]', page.description],
-      ['meta[property="og:url"]', canonicalUrl],
-      ['meta[name="twitter:title"]', page.title],
-      ['meta[name="twitter:description"]', page.description],
-    ]) {
+    const page = PAGE_META[location];
+    const title = page?.title ?? NOT_FOUND_META.title;
+    const description = page?.description ?? NOT_FOUND_META.description;
+    document.title = title;
+
+    const routeUrl = new URL(
+      location === '/' ? '' : location.slice(1),
+      `${PUBLIC_ORIGIN}/`,
+    ).href;
+    const metadata: Array<[string, string]> = [
+      ['meta[name="description"]', description],
+      ['meta[property="og:title"]', title],
+      ['meta[property="og:description"]', description],
+      ['meta[name="twitter:title"]', title],
+      ['meta[name="twitter:description"]', description],
+    ];
+    for (const [selector, content] of metadata) {
       document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
     }
+
+    const openGraphUrl = document.querySelector<HTMLMetaElement>('meta[property="og:url"]');
+    if (openGraphUrl) {
+      openGraphUrl.content = routeUrl;
+    } else {
+      const newOpenGraphUrl = document.createElement('meta');
+      newOpenGraphUrl.setAttribute('property', 'og:url');
+      newOpenGraphUrl.content = routeUrl;
+      document.head.append(newOpenGraphUrl);
+    }
+
+    const canonicalUrl = page ? routeUrl : undefined;
+    const robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    robots?.setAttribute('content', page ? 'index, follow' : 'noindex');
     const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (canonical) canonical.href = canonicalUrl;
+    if (canonicalUrl) {
+      if (canonical) {
+        canonical.href = canonicalUrl;
+      } else {
+        const newCanonical = document.createElement('link');
+        newCanonical.rel = 'canonical';
+        newCanonical.href = canonicalUrl;
+        document.head.append(newCanonical);
+      }
+    } else {
+      canonical?.remove();
+    }
+
     const schema = document.querySelector<HTMLScriptElement>('#local-business-schema');
     if (location === '/' && !schema && localBusinessSchema) {
       const script = document.createElement('script');
