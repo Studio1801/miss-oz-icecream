@@ -14,7 +14,7 @@ export const FLAVOR_PHOTOS: FlavorPhoto[] = [
     objectPosition: 'center 56%',
   },
   {
-    name: 'Salted Caramel',
+    name: 'Salty Caramel',
     src: 'images/salted-caramel.webp',
     alt: 'A scoop of salted caramel ice cream in a silver dessert bowl against a pink backdrop.',
     objectPosition: 'center 56%',

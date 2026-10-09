@@ -78,7 +78,6 @@ export const CAKE_PHOTOS: MenuPhoto[] = [
 
 export const FLAVORS: MenuItem[] = [
   { name: 'Mexican Vanilla', note: 'Extra rich vanilla flavor from 4-fold vanilla extract.' },
-  { name: 'Salted Caramel', note: 'Rich caramel with a lightly salted finish.' },
   { name: 'Matcha', note: 'Ceremonial-grade matcha with an earthy, smooth flavor.' },
   { name: 'Kulfi', note: 'Traditional Indian cardamom & pistachio' },
   { name: 'Birthday Cake', note: 'Sweet yellow cake with confetti sprinkles.' },
