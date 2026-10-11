@@ -78,14 +78,14 @@ export const CAKE_PHOTOS: MenuPhoto[] = [
 
 export const FLAVORS: MenuItem[] = [
   { name: 'Mexican Vanilla', note: 'Extra rich vanilla flavor from 4-fold vanilla extract.' },
-  { name: 'Thai Iced Tea', note: 'Sweet black tea with a creamy, gently spiced finish.' },
-  { name: 'Kulfi', note: 'Traditional Indian cardamom & pistachio' },
+  { name: 'Thai Iced Tea', note: 'Made with Cha Thai tea leaves we steep ourselves, bringing the distinctive aroma and rich, creamy flavor of Thai iced tea to every scoop.' },
+  { name: 'Kulfi', note: 'Our ice cream interpretation of kulfi, a traditional Indian frozen dairy dessert, with fragrant cardamom and pistachios.' },
   { name: 'Matcha', note: 'Ceremonial-grade matcha with an earthy, smooth flavor.' },
   { name: 'Birthday Cake', note: 'Sweet yellow cake with confetti sprinkles.' },
   { name: 'Oregon Marionberry', note: 'Oregon marionberries in creamy goodness' },
   { name: 'Butter Pecan', note: 'Toasted pecans in our house-made Scotch sauce.' },
   { name: 'Coffee Crackle', note: 'Coffee ice cream with chocolate crackle' },
-  { name: 'Fresh Banana', note: 'Real banana. Naturally sweet' },
+  { name: 'Fresh Banana', note: 'We ripen fresh bananas in our kitchen until they reach their sweetest, then turn them into ice cream full of naturally rich banana flavor.' },
   { name: 'Belgian Chocolate', note: 'House-made chocolate base with premium Sudan cocoa powder.' },
   { name: 'Mint Chocolate Chip', note: 'Fresh mint steeped with loose-leaf tea and mixed with semi-sweet chocolate chips.' },
   { name: 'Cookies & Cream', note: 'Oreo cookies folded into sweet cream.' },
