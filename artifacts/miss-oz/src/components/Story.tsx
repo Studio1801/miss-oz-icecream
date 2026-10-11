@@ -77,43 +77,26 @@ export default function Story() {
             className="float-left mr-3 mt-1 leading-[0.72] text-[var(--berry)]"
             style={{ ...macklin, fontSize: '68px', textShadow: '1px 2px 0 rgba(28,13,12,0.15), -1px -1px 0 rgba(255,255,255,0.4)' }}
           >
-            A
+            O
           </span>
-          t Miss Oz Ice Cream &amp; Dessert, our mission is simple: people come first. Our shop exists because of the people who walk through our doors, our customers, our team, and our community. Great ice cream brings people in, but genuine hospitality is what keeps them coming back.
+          ur story began in 2007 as Cool Moon Ice Cream, a neighborhood ice cream shop in Portland's Pearl District. When I took over in 2022, I wanted to honor what people already loved while bringing my own vision to life: a welcoming place to enjoy something sweet in every season.
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.3 }}
           className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          Our story began in 2007 as Cool Moon, a small shop devoted entirely to ice cream. In 2022, I took it over and gave it a new name: Miss Oz. I wanted to build something more than an ice cream shop, a place people could enjoy in every season of the year.
+          Over time, that vision became Miss Oz Ice Cream &amp; Dessert. Alongside our ice cream, made in small batches, we added coffee and homemade desserts, giving people more reasons to stop in, settle down, and enjoy a little time together.
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.35 }}
           className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          The name comes from Oz, my dog. This shop is my first business on my own, and Oz is my first dog on my own. I named the shop after her because these two are the most precious things I am responsible for, all by myself.
+          The name comes from my dog, Oz. This shop is the first business I've owned on my own, and Oz is the first dog I've raised as my own. Both hold a special place in my heart, and naming the shop after her felt like a natural way to bring that love into everything we do.
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.4 }}
           className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          Since 2007, we have been crafting small-batch ice cream from scratch with premium ingredients and traditional methods. Alongside timeless classics, you will find globally inspired flavors like Kulfi, Thai Iced Tea, Horchata, and Mexican Vanilla, creations that celebrate diversity through flavor.
+          Today, we carry on the tradition of making ice cream that began here in 2007, crafting our ice cream from scratch in small batches. Our flavors range from familiar favorites to Kulfi, Thai Iced Tea, and Horchata, offering a taste of home for some and a little discovery for others.
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.45 }}
-          className="mb-1 leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          Our philosophy is simple:
-        </motion.p>
-        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.5 }}
-          className="mb-[18px] text-center font-script text-[clamp(26px,3.2vw,38px)] text-[var(--berry)] leading-snug">
-          Small Batch. Big Heart.
-        </motion.p>
-        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.55 }}
           className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          We look back to the 1950s, when ice cream was served as a fine dessert. These days everything is fast, high-tech, and convenient. We go the other way. We insist on the classic methods, even if they take a little more time and trouble. We make our ice cream and our sauces the old-fashioned way and keep those flavors just as they were. And we play music from that era, so that while you are here, time slows down a little and you can feel the past.
+          At the heart of Miss Oz are the people who make it what it is: our customers, our team, and our neighbors. Whether you've been visiting since the Cool Moon days or are walking in for the first time, we're glad you're here. We hope you'll find a favorite flavor, a warm welcome, and a place that feels like part of your neighborhood.
         </motion.p>
-        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.6 }}
-          className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
-          We are not just serving dessert. We are creating a place where families gather, friends celebrate, and neighbors connect. Whether you are here for a favorite classic or something completely new, we hope you leave with a smile and a reason to come back.
-        </motion.p>
-        <motion.div {...rise} transition={{ duration: 0.7, delay: 0.65 }} className="mt-12 text-center">
-          <p className="font-script text-[clamp(26px,3.2vw,38px)] text-[var(--berry-deep)] leading-snug">
-            Welcome to Miss Oz, where sweet memories begin.
-          </p>
-        </motion.div>
       </motion.div>
     </section>
   );
