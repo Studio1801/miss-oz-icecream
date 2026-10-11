@@ -97,6 +97,26 @@ export default function Story() {
           className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
           At the heart of Miss Oz are the people who make it what it is: our customers, our team, and our neighbors. Whether you've been visiting since the Cool Moon days or are walking in for the first time, we're glad you're here. We hope you'll find a favorite flavor, a warm welcome, and a place that feels like part of your neighborhood.
         </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.5 }}
+          className="mb-1 leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          Our philosophy is simple:
+        </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.55 }}
+          className="mb-[18px] text-center font-script text-[clamp(26px,3.2vw,38px)] text-[var(--berry)] leading-snug">
+          Small Batch. Big Heart.
+        </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.6 }}
+          className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          We make our ice cream in small batches and our sauces from scratch, giving each the time and care it deserves. To us, that extra effort is part of the pleasure: a familiar flavor that makes you smile, or a new favorite you can't wait to share.
+        </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.65 }}
+          className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          Inspired by the charm of 1950s ice cream parlors, we've created a place where you can slow down and enjoy the moment. The music, the atmosphere, and a scoop served with care are all invitations to stay a little longer.
+        </motion.p>
+        <motion.p {...rise} transition={{ duration: 0.7, delay: 0.7 }}
+          className="mb-[18px] leading-[1.9] text-[18px] md:text-[19px] text-[#1d0e0d] text-left">
+          And the heart of it all is the people who walk through our door. Whether you're catching up with a friend, making memories with family, or simply treating yourself, we want you to feel welcome. At Miss Oz, we hope a little sweetness becomes a lovely part of your day.
+        </motion.p>
       </motion.div>
     </section>
   );
