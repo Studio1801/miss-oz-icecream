@@ -15,7 +15,10 @@ export default function MenuProductList({
   return (
     <ul className="divide-y divide-[rgba(94,23,53,0.12)]">
       {items.map((item) => (
-        <li key={item.name} className="py-3.5 first:pt-0">
+        <li
+          key={item.name}
+          className={`py-3.5 first:pt-0 ${item.name === 'S’more Croffle Pop' ? 'max-[430px]:py-2' : ''}`}
+        >
           <div className={`min-w-0 ${centered ? 'text-center' : ''}`}>
             <div className={`flex flex-wrap items-baseline gap-x-2 gap-y-1 ${centered ? 'justify-center' : ''}`}>
               <span className="text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
