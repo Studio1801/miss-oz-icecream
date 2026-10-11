@@ -7,13 +7,13 @@ export default function CroffleDessertsPanel() {
   return (
     <div className="flex-1 flex flex-col justify-between">
       <div className="mt-[clamp(16px,2vw,24px)]">
-        <div className="grid grid-cols-1 gap-x-[clamp(24px,3vw,40px)] gap-y-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-x-[clamp(24px,3vw,40px)] gap-y-6 max-[430px]:gap-y-5 md:grid-cols-2">
           <section className="min-w-0">
-            <h4 className="mb-3 text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Croffle menu</h4>
+            <h4 className="mb-3 max-[430px]:mb-[7px] text-left text-[12px] max-[430px]:text-[11px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Croffle menu</h4>
             <MenuProductList items={CROFFLES} descriptionSize="large" />
           </section>
           <section className="min-w-0">
-            <h4 className="mb-3 text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
+            <h4 className="mb-3 max-[430px]:mb-[7px] text-left text-[12px] max-[430px]:text-[11px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
             <MenuProductList items={DESSERTS} descriptionSize="large" />
           </section>
         </div>

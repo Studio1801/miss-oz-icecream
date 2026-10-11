@@ -11,7 +11,7 @@ export default function Footer() {
   };
 
   return (
-    <footer id="contact" className="bg-[var(--cocoa)] text-[var(--cream)] pt-[120px] pb-[64px] px-[6vw] relative mt-[80px]">
+    <footer id="contact" className="bg-[var(--cocoa)] text-[var(--cream)] pt-[120px] pb-[64px] px-[6vw] max-[430px]:px-[28px] relative mt-[80px]">
       <div className="clip-scallop-top absolute top-[-1px] left-0 right-0 h-[46px]" aria-hidden="true" />
       <Bunting className="absolute top-[54px] left-0 right-0" />
 

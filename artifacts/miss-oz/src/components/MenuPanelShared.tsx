@@ -12,8 +12,8 @@ export function MenuPanelHeading({ category }: { category: string }) {
       <div className="flex items-center justify-center gap-2">
         <span aria-hidden="true" className="text-[10px] text-[var(--pink)]">✦</span>
         <h3
-          className="uppercase font-bold tracking-[4px] text-[#3B1E2B]"
-          style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(17px,1.9vw,26px)' }}
+          className="uppercase font-bold tracking-[4px] text-[#3B1E2B] text-[clamp(17px,1.9vw,26px)] max-[430px]:text-[16px]"
+          style={{ fontFamily: 'var(--font-sans)' }}
         >
           {category === 'Flavors' ? 'Ice Cream Flavors' : category}
         </h3>

@@ -19,7 +19,7 @@ const SUNDAES_WITHOUT_PHOTOS = SUNDAES.filter(
 export default function SundaesPanel() {
   return (
     <div className="flex-1 flex flex-col">
-      <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col gap-[clamp(18px,2vw,26px)]">
+      <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col gap-[clamp(18px,2vw,26px)] max-[430px]:gap-5">
         {SUNDAES_WITHOUT_PHOTOS.length > 0 && (
           <MenuProductList items={SUNDAES_WITHOUT_PHOTOS} descriptionSize="large" />
         )}
@@ -30,7 +30,7 @@ export default function SundaesPanel() {
           return (
             <article
               key={photo.src}
-              className="grid grid-cols-1 items-center gap-[clamp(14px,2vw,24px)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]"
+              className="grid grid-cols-1 items-center gap-[clamp(14px,2vw,24px)] max-[430px]:gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]"
             >
               <img
                 src={`${import.meta.env.BASE_URL}${photo.src}`}
@@ -43,16 +43,16 @@ export default function SundaesPanel() {
                 style={{ objectPosition: photo.objectPosition, boxShadow: '0 12px 28px rgba(28,13,12,0.17)' }}
               />
               <div className={`min-w-0 ${descriptionOrder}`}>
-                <h3 className="text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
+                <h3 className="text-[13px] sm:text-[14px] max-[430px]:text-[11.75px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
                   {item.name}
                 </h3>
                 {item.seasonalLabel && (
-                  <p className="mt-1 text-[10px] font-semibold text-[var(--marionberry)]">
+                  <p className="mt-1 text-[10px] max-[430px]:text-[9px] font-semibold text-[var(--marionberry)]">
                     {item.seasonalLabel}
                   </p>
                 )}
                 {item.note && (
-                  <p className="mt-2 leading-relaxed text-[15px] text-[#604C4F]">
+                  <p className="mt-2 max-[430px]:mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[15px] max-[430px]:text-[13.25px] text-[#604C4F]">
                     {item.note}
                   </p>
                 )}

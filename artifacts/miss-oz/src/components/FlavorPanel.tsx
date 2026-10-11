@@ -39,7 +39,7 @@ const FLAVOR_CARDS: FlavorCard[] = [
 export default function FlavorPanel() {
   return (
     <>
-      <div className="mt-[clamp(18px,2.2vw,28px)] grid w-full grid-cols-2 gap-[clamp(10px,1.25vw,16px)] xl:grid-cols-3">
+      <div className="mt-[clamp(18px,2.2vw,28px)] grid w-full grid-cols-2 gap-[clamp(10px,1.25vw,16px)] max-[430px]:gap-3 xl:grid-cols-3">
         {FLAVOR_CARDS.map((flavor, index) => {
           const isUnpairedLastCard = index === FLAVOR_CARDS.length - 1;
           const alignmentClasses = [
@@ -79,8 +79,8 @@ export default function FlavorPanel() {
                 style={{ background: 'linear-gradient(145deg, rgba(232,177,190,0.76), #FBF4E6)' }}
               >
                 <h3
-                  className="leading-[1.05] text-[var(--berry-deep)]"
-                  style={{ fontFamily: 'var(--font-groovy)', fontSize: 'clamp(22px,2vw,30px)', fontStyle: 'italic' }}
+                  className="leading-[1.05] text-[var(--berry-deep)] text-[clamp(22px,2vw,30px)] max-[430px]:text-[20px]"
+                  style={{ fontFamily: 'var(--font-groovy)', fontStyle: 'italic' }}
                 >
                   {flavor.name}
                 </h3>
@@ -89,15 +89,15 @@ export default function FlavorPanel() {
             <div className="px-[clamp(9px,1vw,14px)] py-[clamp(10px,1vw,14px)]">
               {flavor.photo && (
                 <h3
-                  className="leading-tight text-[var(--berry-deep)]"
-                  style={{ fontFamily: 'var(--font-groovy)', fontSize: 'clamp(16px,1.25vw,19px)', fontStyle: 'italic' }}
+                  className="leading-tight text-[var(--berry-deep)] text-[clamp(16px,1.25vw,19px)] max-[430px]:text-[14.5px]"
+                  style={{ fontFamily: 'var(--font-groovy)', fontStyle: 'italic' }}
                 >
                   {flavor.name}
                 </h3>
               )}
               <p
-                className={flavor.photo ? 'mt-1 leading-relaxed text-[#604C4F]' : 'leading-relaxed text-[#604C4F]'}
-                style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(11.5px,0.9vw,13px)' }}
+                className={`text-[clamp(11.5px,0.9vw,13px)] max-[430px]:text-[10.25px] leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] ${flavor.photo ? 'mt-1' : ''}`}
+                style={{ fontFamily: 'var(--font-sans)' }}
               >
                 {flavor.note}
               </p>
