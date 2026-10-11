@@ -51,8 +51,8 @@ export const DESSERT_PHOTOS: MenuPhoto[] = [
     objectPosition: 'center 56%',
   },
   {
-    src: 'images/cookie-coffee.webp',
-    alt: 'Two housemade cookies served with coffee',
+    src: 'images/cookie-walnut.webp',
+    alt: 'A butter pecan cookie.',
     caption: 'Butter Pecan Cookie',
   },
   {
