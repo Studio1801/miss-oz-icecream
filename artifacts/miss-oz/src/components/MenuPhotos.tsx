@@ -27,8 +27,8 @@ export const FLAVOR_PHOTOS: FlavorPhoto[] = [
   { name: 'Marionberry', src: 'images/wholesale/image6.webp' },
   {
     name: 'Cookies & Cream',
-    src: 'images/cookies-and-cream-pint.webp',
-    alt: 'Cookies and cream ice cream with chocolate cookie pieces in a Miss Oz paper cup.',
+    src: 'images/cookies-and-cream.webp',
+    alt: 'A scoop of cookies and cream ice cream in a silver dessert bowl',
   },
   { name: 'Belgian Chocolate', src: 'images/wholesale/image8.webp' },
   { name: 'Coffee Crackle', src: 'images/wholesale/image9.webp' },
