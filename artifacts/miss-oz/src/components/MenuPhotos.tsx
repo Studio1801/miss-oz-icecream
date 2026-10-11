@@ -27,4 +27,10 @@ export const FLAVOR_PHOTOS: FlavorPhoto[] = [
   { name: 'Belgian Chocolate', src: 'images/wholesale/image8.webp' },
   { name: 'Coffee Crackle', src: 'images/wholesale/image9.webp' },
   { name: 'Mint Chocolate Chip', src: 'images/wholesale/image10.webp' },
+  {
+    name: 'Fresh Banana',
+    src: 'images/fresh-banana.webp',
+    alt: 'A scoop of fresh banana ice cream in a silver dessert bowl',
+    objectPosition: 'center',
+  },
 ];
