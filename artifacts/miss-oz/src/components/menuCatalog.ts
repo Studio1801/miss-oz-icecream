@@ -78,17 +78,17 @@ export const CAKE_PHOTOS: MenuPhoto[] = [
 
 export const FLAVORS: MenuItem[] = [
   { name: 'Mexican Vanilla', note: 'Extra rich vanilla flavor from 4-fold vanilla extract.' },
-  { name: 'Matcha', note: 'Ceremonial-grade matcha with an earthy, smooth flavor.' },
+  { name: 'Thai Iced Tea', note: 'Sweet black tea with a creamy, gently spiced finish.' },
   { name: 'Kulfi', note: 'Traditional Indian cardamom & pistachio' },
+  { name: 'Matcha', note: 'Ceremonial-grade matcha with an earthy, smooth flavor.' },
   { name: 'Birthday Cake', note: 'Sweet yellow cake with confetti sprinkles.' },
+  { name: 'Oregon Marionberry', note: 'Oregon marionberries in creamy goodness' },
   { name: 'Butter Pecan', note: 'Toasted pecans in our house-made Scotch sauce.' },
-  { name: 'Salty Caramel', note: 'Buttery caramel with sea salt' },
-  { name: 'Mint Chip', note: 'Fresh mint steeped with loose-leaf tea and mixed with semi-sweet chocolate chips.' },
   { name: 'Coffee Crackle', note: 'Coffee ice cream with chocolate crackle' },
   { name: 'Fresh Banana', note: 'Real banana. Naturally sweet' },
   { name: 'Belgian Chocolate', note: 'House-made chocolate base with premium Sudan cocoa powder.' },
+  { name: 'Mint Chocolate Chip', note: 'Fresh mint steeped with loose-leaf tea and mixed with semi-sweet chocolate chips.' },
   { name: 'Cookies & Cream', note: 'Oreo cookies folded into sweet cream.' },
-  { name: 'Marionberry', note: 'Oregon marionberries in creamy goodness' },
 ];
 
 export const SUNDAES: MenuItem[] = [

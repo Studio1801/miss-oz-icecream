@@ -14,7 +14,7 @@ const EXTRA_FLAVOR_TASTE_NOTES: Record<string, string> = {
 
 function canonicalPhotoName(name: string) {
   if (name === 'Cookie and Cream') return 'Cookies & Cream';
-  if (name === 'Mint Chocolate Chip') return 'Mint Chip';
+  if (name === 'Marionberry') return 'Oregon Marionberry';
   return name;
 }
 

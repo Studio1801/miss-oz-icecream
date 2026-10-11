@@ -13,12 +13,6 @@ export const FLAVOR_PHOTOS: FlavorPhoto[] = [
     alt: 'A scoop of Mexican vanilla ice cream in a silver dessert bowl against a pink backdrop.',
     objectPosition: 'center 56%',
   },
-  {
-    name: 'Salty Caramel',
-    src: 'images/salted-caramel.webp',
-    alt: 'A scoop of salted caramel ice cream in a silver dessert bowl against a pink backdrop.',
-    objectPosition: 'center 56%',
-  },
   { name: 'Matcha', src: 'images/wholesale/image1.webp' },
   { name: 'Birthday Cake', src: 'images/wholesale/image2.webp' },
   { name: 'Butter Pecan', src: 'images/wholesale/image3.webp' },
