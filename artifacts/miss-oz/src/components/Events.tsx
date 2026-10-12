@@ -102,7 +102,7 @@ export default function Events() {
             </motion.p>
           </div>
 
-          <div className="relative order-3 mx-auto mt-1 h-[220px] w-full max-w-[430px] lg:order-none lg:mx-0 lg:mt-auto lg:h-[clamp(232px,18.2vw,262px)] lg:max-w-none">
+          <div className="relative order-3 mx-auto mt-5 h-[220px] w-full max-w-[430px] lg:order-none lg:mx-0 lg:mt-auto lg:h-[clamp(232px,18.2vw,262px)] lg:max-w-none">
             <EventPolaroid photo={EVENT_POLAROIDS[0]} className="left-[6%] z-10 -rotate-[6deg] lg:left-[12px]" />
             <EventPolaroid photo={EVENT_POLAROIDS[1]} className="left-[40%] z-20 rotate-[5deg] md:left-[34%] lg:left-[35%]" />
           </div>
