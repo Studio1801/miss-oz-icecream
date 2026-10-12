@@ -22,24 +22,30 @@ const itemGroups = [
 
 const polaroidPhotos = [
   {
-    src: 'images/whole-basque-cheesecake.webp',
-    alt: 'A whole Original Basque cheesecake ready to serve',
-    position: 'left-0 top-[16px]',
-    rotation: '-9deg',
+    src: 'images/wholesale/image6.webp',
+    alt: 'A scoop of Oregon Marionberry ice cream in a silver dessert dish, with the full dish visible.',
+    caption: 'Ice cream',
+    objectPosition: 'center 50%',
+    rotation: '-4deg',
+    offset: '-6px',
     layer: 'z-10',
   },
   {
-    src: 'images/cone-marionberry.webp',
-    alt: 'Marionberry ice cream scoop in a waffle cone',
-    position: 'left-[27%] md:left-[19%] lg:left-[27%] top-[2px]',
-    rotation: '3deg',
+    src: 'images/whole-basque-cheesecake.webp',
+    alt: 'A whole golden-brown Original Basque cheesecake with its baked top clearly visible.',
+    caption: 'Bakes',
+    objectPosition: 'center 54%',
+    rotation: '1deg',
+    offset: '0px',
     layer: 'z-20',
   },
   {
-    src: 'images/cookie-stack.webp',
-    alt: 'A stack of chocolate chip cookies ready to serve',
-    position: 'left-[54%] md:left-[38%] lg:left-[54%] top-[14px]',
-    rotation: '10deg',
+    src: 'images/cookie-chocolate-chip-new.webp',
+    alt: 'A stack of chocolate chip cookies on a green-checkered plate.',
+    caption: 'Cookies',
+    objectPosition: 'center 50%',
+    rotation: '4deg',
+    offset: '6px',
     layer: 'z-30',
   },
 ];
@@ -71,12 +77,12 @@ function WholesaleAwning() {
 
 function PolaroidStack() {
   return (
-    <div className="relative mx-auto mb-6 h-[164px] w-[calc(100%-40px)] max-w-[364px]">
-      {polaroidPhotos.map((photo) => (
+    <div className="relative mx-auto mb-6 flex h-[230px] w-[calc(100%+56px)] max-w-[400px] items-center justify-center md:w-[calc(100%+64px)]">
+      {polaroidPhotos.map((photo, index) => (
         <figure
           key={photo.src}
-          className={`absolute ${photo.position} ${photo.layer} w-[clamp(112px,9vw,128px)] bg-[#fffdf6] p-[5px] pb-[18px] shadow-[0_8px_18px_rgba(20,7,13,0.32)]`}
-          style={{ transform: `rotate(${photo.rotation})` }}
+          className={`relative flex-none ${index < 2 ? '-mr-[30px] lg:-mr-[60px]' : ''} ${photo.layer} w-[clamp(120px,30vw,129px)] max-[380px]:w-[116px] bg-[#fffdf6] p-[6px] pb-[12px] shadow-[0_8px_18px_rgba(20,7,13,0.32)] sm:w-[110px] lg:w-[clamp(144px,10.5vw,152px)]`}
+          style={{ transform: `translateY(${photo.offset}) rotate(${photo.rotation})` }}
         >
           <span
             aria-hidden="true"
@@ -85,12 +91,16 @@ function PolaroidStack() {
           <img
             src={`${import.meta.env.BASE_URL}${photo.src}`}
             alt={photo.alt}
-            width={960}
-            height={720}
+            width={768}
+            height={960}
             loading="lazy"
             decoding="async"
-            className="block aspect-[4/3] w-full object-cover"
+            className="block aspect-[4/5] w-full object-cover"
+            style={{ objectPosition: photo.objectPosition }}
           />
+          <figcaption className="mt-[4px] break-words text-center font-script-alt text-[12px] leading-tight text-[var(--berry-deep)] lg:text-[14px]">
+            {photo.caption}
+          </figcaption>
         </figure>
       ))}
     </div>
