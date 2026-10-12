@@ -16,7 +16,7 @@ export default function DrinksPanel() {
                   {milkshake.name}
                 </div>
                 {milkshake.note && (
-                  <p className="mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] text-[12px] sm:text-[13px] max-[430px]:text-[10.75px]">
+                  <p className="mt-1 w-full min-w-0 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] text-[12px] sm:text-[13px] max-[430px]:text-[10.75px] min-[431px]:max-[800px]:max-w-[280px]">
                     {milkshake.note}
                   </p>
                 )}
