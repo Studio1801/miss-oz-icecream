@@ -24,21 +24,21 @@ const polaroidPhotos = [
   {
     src: 'images/whole-basque-cheesecake.webp',
     alt: 'A whole Original Basque cheesecake ready to serve',
-    position: 'left-[-16px] top-[16px]',
+    position: 'left-0 top-[16px]',
     rotation: '-9deg',
     layer: 'z-10',
   },
   {
     src: 'images/cone-marionberry.webp',
     alt: 'Marionberry ice cream scoop in a waffle cone',
-    position: 'left-[25%] top-[2px]',
+    position: 'left-[27%] md:left-[19%] lg:left-[27%] top-[2px]',
     rotation: '3deg',
     layer: 'z-20',
   },
   {
     src: 'images/cookie-stack.webp',
     alt: 'A stack of chocolate chip cookies ready to serve',
-    position: 'left-[50%] top-[14px]',
+    position: 'left-[54%] md:left-[38%] lg:left-[54%] top-[14px]',
     rotation: '10deg',
     layer: 'z-30',
   },
@@ -71,11 +71,11 @@ function WholesaleAwning() {
 
 function PolaroidStack() {
   return (
-    <div className="relative left-1/2 mb-5 h-[148px] w-[calc(100%+52px)] max-w-[364px] -translate-x-1/2">
+    <div className="relative mx-auto mb-6 h-[164px] w-[calc(100%-40px)] max-w-[364px]">
       {polaroidPhotos.map((photo) => (
         <figure
           key={photo.src}
-          className={`absolute ${photo.position} ${photo.layer} w-[clamp(104px,9vw,116px)] bg-[#fffdf6] p-[5px] pb-[18px] shadow-[0_8px_18px_rgba(20,7,13,0.32)]`}
+          className={`absolute ${photo.position} ${photo.layer} w-[clamp(112px,9vw,128px)] bg-[#fffdf6] p-[5px] pb-[18px] shadow-[0_8px_18px_rgba(20,7,13,0.32)]`}
           style={{ transform: `rotate(${photo.rotation})` }}
         >
           <span
@@ -136,7 +136,7 @@ export default function Wholesale() {
   return (
     <section
       id="wholesale"
-      className="relative overflow-hidden bg-[var(--cream-hi)] px-[6vw] py-[76px] text-[var(--cocoa)] md:py-[112px]"
+      className="relative overflow-hidden bg-[var(--cream-hi)] px-[6vw] pt-[100px] pb-[76px] text-[var(--cocoa)] md:pt-[136px] md:pb-[112px]"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[8px] bg-[var(--berry)]" aria-hidden="true" />
       <Starburst
@@ -149,17 +149,17 @@ export default function Wholesale() {
       <PawPrintMark className="pointer-events-none absolute bottom-[10%] right-[4vw] z-0 hidden h-8 w-8 rotate-[16deg] text-[var(--berry)] opacity-[0.10] md:block" />
 
       <div className="relative z-10 mx-auto max-w-[980px]">
-        <motion.div {...rise} transition={{ duration: 0.65 }} className="mb-9 text-center md:mb-12">
-          <span className="mb-3 block text-[11px] font-bold tracking-[3px] text-[var(--berry)]">
+        <motion.div {...rise} transition={{ duration: 0.65 }} className="mb-6 text-center">
+          <span className="mb-4 block text-[11px] font-bold tracking-[3px] text-[var(--berry-deep)]">
             Wholesale program · Est. 2007
           </span>
           <h2
-            className="text-[clamp(42px,6vw,70px)] leading-[0.98] text-[var(--berry-deep)]"
+            className="mb-4 text-[clamp(42px,6vw,70px)] leading-[0.98] text-[var(--berry-deep)]"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Become our Wholesale Partner
           </h2>
-          <p className="mx-auto mt-4 max-w-[500px] text-[16px] leading-relaxed text-[var(--cocoa)]/75">
+          <p className="mx-auto max-w-[500px] text-[18px] leading-relaxed text-[var(--cocoa)] md:text-[19px]">
             The same small-batch case, in sizes built for your menu.
           </p>
         </motion.div>
@@ -171,17 +171,17 @@ export default function Wholesale() {
         >
           <WholesaleAwning />
           <div className="grid md:grid-cols-[0.8fr_1.2fr]">
-            <div className="flex flex-col items-center bg-[var(--berry)] px-7 py-9 text-center text-[var(--cream-hi)] md:px-10 md:py-12">
+            <div className="flex flex-col items-center justify-center bg-[var(--berry)] px-7 py-9 text-center text-[var(--cream-hi)] md:px-8 md:py-10">
               <PolaroidStack />
-              <span className="text-[12px] font-bold tracking-[3px] text-[var(--pink)]">
+              <span className="text-[12px] font-bold tracking-[3px] text-[var(--cream-hi)]">
                 For shops &amp; restaurants
               </span>
-              <p className="mx-auto mt-5 max-w-[330px] text-[17px] leading-relaxed text-[var(--cream-hi)]/85">
+              <p className="mx-auto mt-5 max-w-[330px] text-[18px] leading-relaxed text-[var(--cream-hi)] md:text-[19px]">
                 Small batches, churned fresh in the Pearl District. Let’s bring Miss Oz to your menu.
               </p>
             </div>
 
-            <div className="px-6 py-8 md:px-10 md:py-10">
+            <div className="flex flex-col justify-center px-6 py-8 md:px-10 md:py-10">
               <h3
                 className="text-center text-[25px] text-[var(--berry-deep)] md:text-[29px]"
                 style={{ fontFamily: 'var(--font-display)' }}
