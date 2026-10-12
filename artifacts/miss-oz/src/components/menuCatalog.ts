@@ -25,8 +25,8 @@ export const SUNDAE_PHOTOS: MenuPhoto[] = [
     objectPosition: 'center 52%',
   },
   {
-    src: 'images/midnight-fudge-sundae.webp',
-    alt: 'Midnight Fudge Sundae topped with whipped cream, rainbow sprinkles, and a cherry in a Miss Oz cup.',
+    src: 'images/midnight-fudge-sundae-v2.webp',
+    alt: 'Midnight Fudge Sundae in a glass dish with ice cream, chocolate fudge, whipped cream, rainbow sprinkles and a cherry on a doily-lined plate',
     caption: 'Midnight Fudge Sundae',
     objectPosition: 'center 52%',
   },
