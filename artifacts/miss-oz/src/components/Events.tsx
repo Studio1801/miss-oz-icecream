@@ -6,7 +6,7 @@ const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 
 
 const EVENT_POLAROIDS = [
   {
-    src: `${import.meta.env.BASE_URL}images/midnight-fudge-sundae.webp`,
+    src: `${import.meta.env.BASE_URL}images/midnight-fudge-sundae-v2.webp`,
     alt: 'Midnight Fudge Sundae topped with whipped cream, rainbow sprinkles, and a cherry in a Miss Oz cup.',
     caption: 'Midnight Fudge Sundae',
   },
@@ -37,7 +37,7 @@ function EventPolaroid({ photo, className }: { photo: (typeof EVENT_POLAROIDS)[n
         decoding="async"
         className="aspect-square w-full rounded-[2px] object-cover"
       />
-      <figcaption className="mt-[6px] text-center font-script-alt text-[16px] leading-tight text-[var(--berry-deep)]">
+      <figcaption className="mt-[6px] break-words text-center font-script-alt text-[12px] leading-tight text-[var(--berry-deep)] md:text-[14px]">
         {photo.caption}
       </figcaption>
     </figure>
@@ -48,16 +48,16 @@ export default function Events() {
   return (
     <section
       id="events"
-      className="parlour-paper relative overflow-hidden bg-[var(--pink)] px-[6vw] py-[26px] md:py-[38px] lg:flex lg:min-h-[calc(100svh-110px)] lg:items-center"
+      className="parlour-paper relative overflow-hidden bg-[var(--pink)] px-[6vw] pt-[26px] pb-[48px] md:pt-[38px] md:pb-[56px] lg:flex lg:min-h-[calc(100svh-110px)] lg:items-center"
     >
       <Bunting className="absolute top-0 left-0 right-0" />
       <Starburst size={150} color="var(--berry)" className="pointer-events-none absolute -bottom-8 -left-8 opacity-[0.10] hidden md:block" />
       <Starburst size={120} color="var(--berry)" className="pointer-events-none absolute top-[86px] right-[4vw] opacity-[0.10] hidden md:block" />
       <div className="relative z-10 mx-auto grid w-full max-w-[1240px] grid-cols-1 items-start gap-x-[clamp(28px,4vw,58px)] gap-y-6 lg:grid-cols-2 lg:items-stretch lg:gap-x-16">
-        <div className="contents lg:col-start-1 lg:row-start-1 lg:flex lg:min-w-0 lg:flex-col">
-          <div className="order-1 text-left lg:order-none">
+        <div className="order-1 min-w-0 w-full text-left lg:col-start-1 lg:row-start-1 lg:flex lg:min-h-full lg:flex-col">
+          <div className="min-w-0 w-full">
             <div
-              className="ticket-notch ticket-shine relative mb-[14px] inline-block -rotate-[3deg] overflow-hidden rounded-[6px] p-[5px] motion-safe:animate-[ticketFloat_4s_ease-in-out_infinite]"
+              className="ticket-notch ticket-shine relative mb-[20px] inline-block -rotate-[3deg] overflow-hidden rounded-[6px] p-[5px] motion-safe:animate-[ticketFloat_4s_ease-in-out_infinite]"
               style={{
                 background: 'linear-gradient(180deg, #F7EDDD 0%, #F2E4CC 100%)',
                 boxShadow: '0 4px 10px rgba(28,13,12,0.16)',
@@ -76,7 +76,7 @@ export default function Events() {
             </div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.15 }}
-              className="mb-[10px] text-[clamp(46px,5.6vw,76px)] leading-[0.98] text-[var(--cocoa)]"
+              className="mb-[14px] max-w-full break-words text-[clamp(46px,5.6vw,76px)] leading-[0.98] text-[var(--cocoa)]"
               style={macklin}
             >
               Event Catering
@@ -84,33 +84,33 @@ export default function Events() {
 
             <motion.p
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-[4px] text-[18px] font-semibold text-[var(--cocoa)] md:text-[20px]"
+              className="mt-0 max-w-full break-words text-[18px] font-semibold text-[var(--cocoa)] md:text-[20px]"
             >
               Private parties and weddings
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.23 }}
-              className="mt-[12px] max-w-[600px] text-[20px] leading-relaxed text-[var(--cocoa)] md:text-[22px]"
+              className="mt-[14px] max-w-[600px] break-words text-[20px] leading-relaxed text-[var(--cocoa)] md:text-[22px]"
             >
               Event Catering will launch in Summer 2027.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.25 }}
-              className="mt-[10px] max-w-[600px] text-[18px] italic leading-relaxed text-[var(--cocoa)] opacity-75 md:text-[20px]"
+              className="mt-[18px] w-full min-w-0 max-w-[600px] break-words text-[18px] italic leading-[1.55] text-[var(--cocoa)] opacity-75 md:text-[20px]"
             >
               We're preparing a new way to bring Miss Oz treats to your celebrations. In the meantime, tell us about your event so we can start planning.
             </motion.p>
           </div>
 
-          <div className="relative order-3 mx-auto mt-5 h-[220px] w-full max-w-[430px] lg:order-none lg:mx-0 lg:mt-auto lg:h-[clamp(232px,18.2vw,262px)] lg:max-w-none">
-            <EventPolaroid photo={EVENT_POLAROIDS[0]} className="left-[6%] z-10 -rotate-[6deg] lg:left-[12px]" />
-            <EventPolaroid photo={EVENT_POLAROIDS[1]} className="left-[40%] z-20 rotate-[5deg] md:left-[34%] lg:left-[35%]" />
+          <div className="relative mx-auto mt-[44px] h-[220px] w-full max-w-[430px] lg:mx-0 lg:h-[clamp(232px,18.2vw,262px)] lg:max-w-none">
+            <EventPolaroid photo={EVENT_POLAROIDS[0]} className="left-[calc(50%_-_124px)] z-10 -rotate-[6deg] lg:left-[calc(50%_-_clamp(174px,14.2vw,204px))]" />
+            <EventPolaroid photo={EVENT_POLAROIDS[1]} className="left-[calc(50%_-_6px)] z-20 rotate-[5deg]" />
           </div>
         </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.25 }}
-          className="relative order-2 w-full max-w-[560px] justify-self-center rounded-[10px] px-[20px] pb-[20px] pt-[32px] sm:px-[28px] sm:pb-[24px] sm:pt-[36px] lg:order-none lg:col-start-2 lg:row-start-1 lg:max-w-none lg:justify-self-stretch"
+          className="relative order-2 w-full min-w-0 max-w-[560px] justify-self-center rounded-[10px] px-[20px] pb-[20px] pt-[32px] sm:px-[28px] sm:pb-[24px] sm:pt-[36px] lg:col-start-2 lg:row-start-1 lg:max-w-none lg:justify-self-stretch"
           style={{
             backgroundColor: 'var(--cream-hi)',
             backgroundImage: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, rgba(28,13,12,0.07) 32px, transparent 33px)',
