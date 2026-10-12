@@ -61,21 +61,25 @@ export default function FlavorPanel() {
               }}
             >
             {flavor.photo ? (
-              <img
-                src={`${import.meta.env.BASE_URL}${flavor.photo.src}`}
-                alt={flavor.photo.alt ?? (flavor.photo.name === 'Thai Iced Tea'
-                  ? 'A pale golden scoop of ice cream in a silver dessert dish'
-                  : `A scoop of ${flavor.photo.name} ice cream in a dessert dish`)}
-                width={450}
-                height={600}
-                loading="lazy"
-                decoding="async"
-                className={`block aspect-[4/5] w-full object-cover ${flavor.photo.name === 'Fresh Banana' ? 'scale-[1.4]' : ''}`}
-                style={{
-                  objectPosition: flavor.photo.objectPosition,
-                  ...(flavor.photo.name === 'Fresh Banana' ? { transformOrigin: '50% 57%' } : {}),
-                }}
-              />
+              <div className="aspect-[4/5] w-full overflow-hidden rounded-t-[10px]">
+                <img
+                  src={`${import.meta.env.BASE_URL}${flavor.photo.src}`}
+                  alt={flavor.photo.alt ?? (flavor.photo.name === 'Thai Iced Tea'
+                    ? 'A pale golden scoop of ice cream in a silver dessert dish'
+                    : `A scoop of ${flavor.photo.name} ice cream in a dessert dish`)}
+                  width={450}
+                  height={600}
+                  loading="lazy"
+                  decoding="async"
+                  className="block h-full w-full object-cover"
+                  style={{
+                    objectPosition: flavor.photo.name === 'Fresh Banana' ? 'center top' : flavor.photo.objectPosition,
+                    ...(flavor.photo.name === 'Fresh Banana'
+                      ? { transform: 'translateX(-6%) scale(1.38)', transformOrigin: '55% 70%' }
+                      : {}),
+                  }}
+                />
+              </div>
             ) : (
               <div
                 className="flex aspect-[4/5] items-center justify-center px-3 text-center"
