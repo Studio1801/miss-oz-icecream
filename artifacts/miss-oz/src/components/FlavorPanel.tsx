@@ -70,8 +70,11 @@ export default function FlavorPanel() {
                 height={600}
                 loading="lazy"
                 decoding="async"
-                className="block aspect-[4/5] w-full object-cover"
-                style={{ objectPosition: flavor.photo.objectPosition }}
+                className={`block aspect-[4/5] w-full object-cover ${flavor.photo.name === 'Fresh Banana' ? 'scale-[1.4]' : ''}`}
+                style={{
+                  objectPosition: flavor.photo.objectPosition,
+                  ...(flavor.photo.name === 'Fresh Banana' ? { transformOrigin: '50% 57%' } : {}),
+                }}
               />
             ) : (
               <div
