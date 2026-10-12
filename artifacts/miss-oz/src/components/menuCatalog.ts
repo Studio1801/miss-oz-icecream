@@ -45,19 +45,19 @@ export const SUNDAE_PHOTOS: MenuPhoto[] = [
 
 export const DESSERT_PHOTOS: MenuPhoto[] = [
   {
-    src: 'images/cookie-walnut.webp',
-    alt: 'Walnut chocolate chip cookies',
+    src: 'images/cookie-walnut-chocolate-chip-new.webp',
+    alt: 'Walnut chocolate chip cookies, thick and chunky, stacked on a green checkered paper-lined plate',
     caption: 'Walnut Chocolate Chip Cookie',
     objectPosition: 'center 56%',
   },
   {
-    src: 'images/cookie-walnut.webp',
-    alt: 'A butter pecan cookie.',
+    src: 'images/cookie-butter-pecan-new.webp',
+    alt: 'A butter pecan cookie, thick and chunky with pecan pieces and chocolate chips, on a green checkered paper-lined plate',
     caption: 'Butter Pecan Cookie',
   },
   {
-    src: 'images/chunky-cookie-stack.webp',
-    alt: 'A stack of chunky chocolate chip cookies beside Miss Oz packaging on a checked table.',
+    src: 'images/cookie-chocolate-chip-new.webp',
+    alt: 'A stack of chocolate chip cookies with crisp golden edges on a green checkered paper-lined plate',
     caption: 'Traditional Chocolate Chip Cookie',
     objectPosition: 'center 48%',
   },
