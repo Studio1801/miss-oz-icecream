@@ -5,7 +5,39 @@ export default function DrinksPanel() {
   return (
     <div className="flex flex-col">
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col text-center">
-        <MenuProductList items={DRINKS} align="center" />
+        <MenuProductList items={DRINKS.filter((item) => item.name !== 'Milkshakes')} align="center" />
+        <div className="mt-4 border-t border-[rgba(94,23,53,0.12)] pt-4">
+          <div className="grid grid-cols-1 items-center gap-4 lg:grid-cols-[minmax(0,1fr)_220px]">
+            <MenuProductList items={DRINKS.filter((item) => item.name === 'Milkshakes')} align="center" />
+            <figure
+              className="relative mx-auto w-full max-w-[220px] overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_12px_28px_rgba(28,13,12,0.17)]"
+              style={{ position: 'relative' }}
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/peanut-butter-fudge-milkshake.webp`}
+                alt="Peanut Butter Fudge milkshake in a clear cup with chocolate fudge swirls and a green straw, with a pink Miss Oz sticker"
+                width={960}
+                height={1200}
+                loading="lazy"
+                decoding="async"
+                className="block aspect-[4/5] w-full object-cover"
+              />
+              <div
+                className="z-10 w-full px-2 py-2 text-center text-[15px] max-[430px]:text-[13px] leading-tight text-[var(--berry-deep)]"
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'rgba(242,225,194,0.94)',
+                  fontFamily: 'var(--font-display)',
+                }}
+              >
+                Peanut Butter Fudge
+              </div>
+            </figure>
+          </div>
+        </div>
         <div
           className="mt-[clamp(14px,1.8vw,20px)] rounded-[8px] px-[clamp(14px,1.8vw,22px)] py-[clamp(13px,1.6vw,19px)] text-center"
           style={{ background: 'rgba(94,23,53,0.05)', border: '1px dashed rgba(94,23,53,0.2)' }}
