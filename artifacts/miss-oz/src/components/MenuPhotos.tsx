@@ -39,4 +39,10 @@ export const FLAVOR_PHOTOS: FlavorPhoto[] = [
     alt: 'Scoop of Horchata ice cream in a metal dish on a pink background.',
     objectPosition: 'center',
   },
+  {
+    name: 'Salted Caramel',
+    src: 'images/salted-caramel.webp',
+    alt: 'Scoop of Salted Caramel ice cream in a metal dish on a pink background.',
+    objectPosition: 'center',
+  },
 ];

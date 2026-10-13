@@ -23,7 +23,7 @@ export default function DrinksPanel() {
               </>
             )}
             <figure
-              className="relative mx-auto mt-[24px] w-4/5 max-w-[380px] overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_12px_28px_rgba(28,13,12,0.17)] min-[431px]:w-[clamp(340px,34vw,380px)] min-[431px]:max-w-full"
+              className="relative mx-auto mt-[24px] w-full max-w-[170px] overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_12px_28px_rgba(28,13,12,0.17)] min-[431px]:max-w-[190px]"
               style={{ position: 'relative' }}
             >
               <img
@@ -35,19 +35,15 @@ export default function DrinksPanel() {
                 decoding="async"
                 className="block aspect-[4/5] w-full object-cover"
               />
-              <div
-                className="z-10 w-full px-2 py-2 text-center text-[15px] max-[430px]:text-[13px] leading-tight text-[var(--berry-deep)]"
+              <figcaption
+                className="w-full px-2 py-2 text-center text-[15px] max-[430px]:text-[13px] leading-tight text-[var(--berry-deep)]"
                 style={{
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
                   background: 'rgba(242,225,194,0.94)',
                   fontFamily: 'var(--font-display)',
                 }}
               >
                 Peanut Butter Fudge
-              </div>
+              </figcaption>
             </figure>
           </div>
         </div>
