@@ -26,18 +26,34 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           <div className="relative mt-[18px] font-bold text-[#3B1E2B]" style={{ fontSize: 'clamp(14px,1.1vw,17px)' }}>
             Pricing
           </div>
-          <div className="relative mt-[9px] grid gap-[7px] sm:grid-cols-3">
-            <div className="rounded-[8px] px-2 py-2.5 text-center" style={{ background: 'rgba(255,255,255,0.58)', border: '1px solid rgba(227,180,76,0.85)' }}>
-              <div className="font-semibold text-[#3B1E2B]">6-inch</div><strong className="text-[var(--berry-deep)]">$55</strong>
-            </div>
-            <div className="rounded-[8px] px-2 py-2.5 text-center" style={{ background: 'rgba(255,255,255,0.58)', border: '1px solid rgba(227,180,76,0.85)' }}>
-              <div className="font-semibold text-[#3B1E2B]">8-inch</div><strong className="text-[var(--berry-deep)]">$85</strong><div className="text-[10px]">(8 slices)</div>
-            </div>
-            <div className="rounded-[8px] px-2 py-2.5 text-center" style={{ background: 'rgba(255,255,255,0.58)', border: '1px solid rgba(227,180,76,0.85)' }}>
-              <div className="font-semibold text-[#3B1E2B]">10-inch</div><strong className="text-[var(--berry-deep)]">$85</strong><div className="text-[10px]">(12 slices)</div>
-            </div>
+          <div className="relative mt-[9px] grid grid-cols-3">
+            {[
+              { size: '6-inch', price: '$55', slices: '' },
+              { size: '8-inch', price: '$85', slices: '8 slices' },
+              { size: '10-inch', price: '$85', slices: '12 slices' },
+            ].map((option, index) => (
+              <div
+                key={option.size}
+                className={`flex min-w-0 flex-col items-center justify-center px-1 py-5 text-center ${
+                  index < 2 ? 'md:border-r md:border-[rgba(94,23,53,0.24)]' : ''
+                }`}
+              >
+                <div className="whitespace-nowrap text-[14px] font-normal text-[#4D3538]">
+                  {option.size}
+                </div>
+                <div
+                  className="whitespace-nowrap text-[26px] leading-none text-[var(--berry-deep)] md:text-[32px]"
+                  style={{ fontFamily: "'DM Serif Display', serif" }}
+                >
+                  {option.price}
+                </div>
+                <div className="mt-1 min-h-[1.25rem] whitespace-nowrap text-[13px] text-[#4D3538]/80">
+                  {option.slices}
+                </div>
+              </div>
+            ))}
           </div>
-          <p className="relative mt-[14px] rounded-[7px] px-3 py-2.5 text-[15px] max-[430px]:text-[13.25px] text-[#4D3538]" style={{ background: 'rgba(94,23,53,0.06)' }}>
+          <p className="relative mt-[14px] rounded-[7px] px-3 py-2.5 text-[15px] max-[430px]:text-[13.25px] text-[#3B1E2B]" style={{ background: 'rgba(94,23,53,0.06)' }}>
             The reason the 8&quot; and 10&quot; cakes are the same price is that they use the{' '}
             <strong className="text-[var(--berry-deep)]">same amount of ingredients.</strong>{' '}
             The 8-inch version is taller and yields 8 larger slices, while the 10-inch version is

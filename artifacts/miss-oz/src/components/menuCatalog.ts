@@ -90,6 +90,7 @@ export const FLAVORS: MenuItem[] = [
   { name: 'Mint Chocolate Chip', note: 'Fresh mint steeped with loose-leaf tea and mixed with semi-sweet chocolate chips.' },
   { name: 'Cookies & Cream', note: 'Oreo cookies folded into sweet cream.' },
   { name: 'Horchata', note: "Mexico's beloved national drink, churned into ice cream. Made from scratch with Miss Oz's handmade recipe." },
+  { name: 'Salted Caramel', note: 'Slow-cooked caramel with a touch of sea salt, churned into sweet cream.' },
 ];
 
 export const SUNDAES: MenuItem[] = [
