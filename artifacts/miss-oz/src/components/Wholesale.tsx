@@ -12,7 +12,7 @@ const items: WholesaleItem[] = [
   { name: 'Original Basque Cheesecake (10-inch, serves 12)' },
   { name: 'Chocolate Chip Cookies' },
   { name: 'Walnut Chocolate Chip Cookies' },
-  { name: 'Pecan Chocolate Chip Cookies' },
+  { name: 'Butter Pecan Cookies' },
 ];
 
 const itemGroups = [
@@ -241,6 +241,10 @@ export default function Wholesale() {
                   </section>
                 ))}
               </div>
+
+              <p className="mt-4 text-[13px] leading-relaxed text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
+                Wholesale minimums: $300 minimum total order. One dozen (12 cookies) minimum per cookie order.
+              </p>
 
               <div className="mt-2 text-center">
                 <InquireForm

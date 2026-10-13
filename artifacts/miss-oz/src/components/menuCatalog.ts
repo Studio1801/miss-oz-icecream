@@ -89,6 +89,7 @@ export const FLAVORS: MenuItem[] = [
   { name: 'Belgian Chocolate', note: 'House-made chocolate base with premium Sudan cocoa powder.' },
   { name: 'Mint Chocolate Chip', note: 'Fresh mint steeped with loose-leaf tea and mixed with semi-sweet chocolate chips.' },
   { name: 'Cookies & Cream', note: 'Oreo cookies folded into sweet cream.' },
+  { name: 'Horchata', note: "Mexico's beloved national drink, churned into ice cream. Made from scratch with Miss Oz's handmade recipe." },
 ];
 
 export const SUNDAES: MenuItem[] = [

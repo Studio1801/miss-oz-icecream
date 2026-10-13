@@ -40,21 +40,11 @@ export default function FlavorPanel() {
   return (
     <>
       <div className="mt-[clamp(18px,2.2vw,28px)] grid w-full grid-cols-2 gap-[clamp(10px,1.25vw,16px)] max-[430px]:gap-3 xl:grid-cols-3">
-        {FLAVOR_CARDS.map((flavor, index) => {
-          const isUnpairedLastCard = index === FLAVOR_CARDS.length - 1;
-          const alignmentClasses = [
-            isUnpairedLastCard && FLAVOR_CARDS.length % 2 === 1
-              ? 'col-span-2 w-[calc(50%_-_clamp(5px,0.625vw,8px))] justify-self-center'
-              : '',
-            isUnpairedLastCard && FLAVOR_CARDS.length % 3 === 1
-              ? 'xl:col-span-1 xl:col-start-2 xl:w-full'
-              : '',
-          ].filter(Boolean).join(' ');
-
+        {FLAVOR_CARDS.map((flavor) => {
           return (
             <article
               key={flavor.name}
-              className={`min-w-0 overflow-hidden rounded-[10px] ${alignmentClasses}`}
+              className="min-w-0 overflow-hidden rounded-[10px]"
               style={{
                 background: 'var(--cream-hi)',
                 boxShadow: '0 9px 22px rgba(28,13,12,0.12)',
