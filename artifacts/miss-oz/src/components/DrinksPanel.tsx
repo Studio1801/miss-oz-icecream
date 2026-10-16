@@ -40,11 +40,11 @@ export default function DrinksPanel() {
                 )}
               </>
             )}
-            <div className="mx-auto mt-[24px] flex w-full flex-wrap justify-center gap-5">
+            <div className="mx-auto mt-[24px] flex w-full max-w-[702px] flex-wrap justify-center gap-6">
               {MILKSHAKE_PHOTOS.map((photo) => (
                 <figure
                   key={photo.caption}
-                  className="relative mx-auto w-full min-w-0 max-w-[180px] flex-[1_1_30%] overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_12px_28px_rgba(28,13,12,0.17)]"
+                  className="relative w-[210px] flex-[0_0_210px] overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_12px_28px_rgba(28,13,12,0.17)] max-[639px]:w-[44%] max-[639px]:flex-[0_0_44%]"
                   style={{ position: 'relative' }}
                 >
                   <img
@@ -54,10 +54,11 @@ export default function DrinksPanel() {
                     height={1250}
                     loading="lazy"
                     decoding="async"
-                    className="block aspect-[4/5] w-full object-cover object-center"
+                    className="block aspect-[4/5] w-full object-cover"
+                    style={{ objectPosition: 'center 55%' }}
                   />
                   <figcaption
-                    className="w-full px-2 py-2 text-center text-[15px] max-[430px]:text-[13px] leading-tight text-[var(--berry-deep)]"
+                    className="w-full whitespace-nowrap px-2 py-[10px] text-center text-[13px] leading-tight text-[var(--berry-deep)] max-[639px]:min-h-[58px] max-[639px]:whitespace-normal max-[639px]:flex max-[639px]:items-center max-[639px]:justify-center"
                     style={{
                       background: 'rgba(242,225,194,0.94)',
                       fontFamily: 'var(--font-display)',
