@@ -1,6 +1,24 @@
 import MenuProductList from './MenuProductList';
 import { DRINKS } from './menuCatalog';
 
+const MILKSHAKE_PHOTOS = [
+  {
+    src: 'images/root-beer-float.webp',
+    alt: "Root beer float in a Miss Oz cup next to a bottle of Dad's Root Beer",
+    caption: 'Root Beer Float',
+  },
+  {
+    src: 'images/coke-float.webp',
+    alt: 'Coke float in a Miss Oz cup next to a bottle of Mexican Coke',
+    caption: 'Coke Float',
+  },
+  {
+    src: 'images/peanut-butter-fudge-milkshake.webp',
+    alt: 'Peanut Butter Fudge milkshake in a Miss Oz cup',
+    caption: 'Peanut Butter Fudge',
+  },
+];
+
 export default function DrinksPanel() {
   const milkshake = DRINKS.find((item) => item.name === 'Milkshakes');
 
@@ -22,29 +40,34 @@ export default function DrinksPanel() {
                 )}
               </>
             )}
-            <figure
-              className="relative mx-auto mt-[24px] w-full max-w-[170px] overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_12px_28px_rgba(28,13,12,0.17)] min-[431px]:max-w-[190px]"
-              style={{ position: 'relative' }}
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}images/peanut-butter-fudge-milkshake.webp`}
-                alt="Peanut Butter Fudge milkshake in a clear cup with chocolate fudge swirls and a green straw, with a pink Miss Oz sticker"
-                width={960}
-                height={1200}
-                loading="lazy"
-                decoding="async"
-                className="block aspect-[4/5] w-full object-cover"
-              />
-              <figcaption
-                className="w-full px-2 py-2 text-center text-[15px] max-[430px]:text-[13px] leading-tight text-[var(--berry-deep)]"
-                style={{
-                  background: 'rgba(242,225,194,0.94)',
-                  fontFamily: 'var(--font-display)',
-                }}
-              >
-                Peanut Butter Fudge
-              </figcaption>
-            </figure>
+            <div className="mx-auto mt-[24px] flex w-full flex-wrap justify-center gap-5">
+              {MILKSHAKE_PHOTOS.map((photo) => (
+                <figure
+                  key={photo.caption}
+                  className="relative mx-auto w-full min-w-0 max-w-[180px] flex-[1_1_30%] overflow-hidden rounded-[12px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_12px_28px_rgba(28,13,12,0.17)]"
+                  style={{ position: 'relative' }}
+                >
+                  <img
+                    src={`${import.meta.env.BASE_URL}${photo.src}`}
+                    alt={photo.alt}
+                    width={1000}
+                    height={1250}
+                    loading="lazy"
+                    decoding="async"
+                    className="block aspect-[4/5] w-full object-cover object-center"
+                  />
+                  <figcaption
+                    className="w-full px-2 py-2 text-center text-[15px] max-[430px]:text-[13px] leading-tight text-[var(--berry-deep)]"
+                    style={{
+                      background: 'rgba(242,225,194,0.94)',
+                      fontFamily: 'var(--font-display)',
+                    }}
+                  >
+                    {photo.caption}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </div>
         <div
