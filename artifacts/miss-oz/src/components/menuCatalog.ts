@@ -91,6 +91,7 @@ export const FLAVORS: MenuItem[] = [
   { name: 'Cookies & Cream', note: 'Oreo cookies folded into sweet cream.' },
   { name: 'Horchata', note: "Mexico's beloved national drink, churned into ice cream. Made from scratch with Miss Oz's handmade recipe." },
   { name: 'Salted Caramel', note: 'Slow-cooked caramel with a touch of sea salt, churned into sweet cream.' },
+  { name: 'Peanut Butter Fudge', note: 'Rich, creamy peanut butter ice cream swirled with our house-made chocolate fudge for the perfect balance of nutty sweetness and chocolatey indulgence.' },
 ];
 
 export const SUNDAES: MenuItem[] = [

@@ -45,4 +45,10 @@ export const FLAVOR_PHOTOS: FlavorPhoto[] = [
     alt: 'Scoop of Salted Caramel ice cream in a metal dish on a pink background.',
     objectPosition: 'center',
   },
+  {
+    name: 'Peanut Butter Fudge',
+    src: 'images/peanut-butter-fudge.webp',
+    alt: 'Scoop of Peanut Butter Fudge ice cream with chocolate fudge swirls in a metal dish on a pink background.',
+    objectPosition: 'center',
+  },
 ];
