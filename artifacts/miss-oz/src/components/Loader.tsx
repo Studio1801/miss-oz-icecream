@@ -22,7 +22,7 @@ export default function Loader({ enabled }: { enabled: boolean }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, visibility: 'hidden' }}
           transition={{ duration: reduce ? 0.2 : 0.4, ease: 'easeInOut' }}
-          className="fixed inset-0 bg-[var(--berry-deep)] flex flex-col items-center justify-center z-[999] overflow-hidden"
+          className="hero-intro-loader fixed inset-0 bg-[var(--berry-deep)] flex flex-col items-center justify-center z-[999] overflow-hidden"
         >
           {/* warm glow behind the mark */}
           <div

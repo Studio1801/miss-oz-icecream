@@ -7,7 +7,7 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
     <div id="cakes" className="flex-1 flex flex-col justify-between" style={{ scrollMarginTop: '100px' }}>
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col gap-[clamp(18px,2vw,26px)] max-[430px]:gap-5">
         <div
-          className="relative overflow-hidden rounded-[12px] p-[clamp(17px,2.2vw,28px)] text-[#6E5A54] leading-relaxed max-[639px]:text-[14px]"
+          className="cake-copy-card relative overflow-hidden rounded-[12px] p-[clamp(17px,2.2vw,28px)] text-[#6E5A54] leading-relaxed max-[639px]:text-[14px]"
           style={{
             background: 'linear-gradient(145deg, rgba(255,248,229,0.96), rgba(245,220,199,0.72))',
             border: '2px solid rgba(94,23,53,0.55)',
@@ -88,7 +88,7 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           onClick={onOrder}
           className="
             w-full rounded-full bg-[var(--berry-deep)] px-5 py-3 font-bold uppercase tracking-[1.5px]
-            text-[var(--cream-hi)] transition-transform hover:-translate-y-0.5
+            interaction-primary text-[var(--cream-hi)]
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold-hi)]
           "
           style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}

@@ -1,7 +1,7 @@
 import Marquee from '../components/Marquee';
 import MenuSection from '../components/MenuSection';
 import FlavorStation from '../components/FlavorStation';
-import DeferredGuestbook from '../components/DeferredGuestbook';
+import Guestbook from '../components/Guestbook';
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <Marquee />
       <MenuSection />
       <FlavorStation />
-      <DeferredGuestbook />
+      <Guestbook id={undefined} />
     </>
   );
 }

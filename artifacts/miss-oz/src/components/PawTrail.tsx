@@ -61,16 +61,16 @@ export default function PawTrail() {
   return (
     <div
       aria-hidden="true"
-      className="absolute inset-0 pointer-events-none overflow-hidden"
+      className="paw-trail absolute inset-0 pointer-events-none overflow-hidden"
       style={{ zIndex: 5 }}
     >
       {PAWS.map((p, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, scale: p.scale * 0.7 }}
+          initial={false}
           whileInView={{ opacity: p.opacity, scale: p.scale }}
           transition={{ duration: 0.6, delay: 0.05, ease: 'easeOut' }}
-          viewport={{ once: true, margin: '0px 0px -80px 0px' }}
+          viewport={{ once: true, amount: 0.1 }}
           style={{
             position: 'absolute',
             top: p.top,

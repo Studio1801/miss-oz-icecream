@@ -61,13 +61,7 @@ export default function FlavorPanel() {
                   height={600}
                   loading="lazy"
                   decoding="async"
-                  className={`block h-full w-full object-cover ${
-                    flavor.photo.name === 'Salted Caramel'
-                      ? 'flavor-photo-zoom-salted-caramel'
-                      : flavor.photo.name === 'Peanut Butter Fudge'
-                        ? 'flavor-photo-zoom-peanut-butter'
-                        : ''
-                  }`}
+                  className="block h-full w-full object-cover"
                   style={{
                     objectPosition: flavor.photo.name === 'Fresh Banana' ? 'center top' : flavor.photo.objectPosition,
                     ...(flavor.photo.name === 'Fresh Banana'

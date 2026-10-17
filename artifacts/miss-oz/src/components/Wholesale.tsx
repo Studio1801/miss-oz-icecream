@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import InquireForm from './InquireForm';
 import { Starburst } from './Decor';
 
@@ -134,17 +134,16 @@ function BakesMark() {
 }
 
 export default function Wholesale() {
-  const reduce = useReducedMotion();
   const rise = {
-    initial: reduce ? false : { opacity: 0, y: 20 },
+    initial: false,
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: '-60px' },
+    viewport: { once: true, amount: 0.1 },
   };
 
   return (
     <section
       id="wholesale"
-      className="relative overflow-hidden bg-[var(--cream-hi)] px-[6vw] pt-[100px] pb-[76px] text-[var(--cocoa)] md:pt-[136px] md:pb-[112px]"
+      className="relative overflow-hidden bg-[var(--cream-hi)] px-[var(--edge)] md:px-[6vw] pt-[100px] pb-[76px] text-[var(--cocoa)] md:pt-[136px] md:pb-[112px]"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[8px] bg-[var(--berry)]" aria-hidden="true" />
       <Starburst
@@ -212,9 +211,9 @@ export default function Wholesale() {
                         return (
                           <motion.li
                             key={item.name}
-                            initial={reduce ? false : { opacity: 0, x: -10 }}
+                            initial={false}
                             whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true, margin: '-40px' }}
+                            viewport={{ once: true, amount: 0.1 }}
                             transition={{ duration: 0.4, delay: 0.08 + animationIndex * 0.07 }}
                             className="flex items-center gap-4 py-3.5"
                           >
@@ -242,7 +241,7 @@ export default function Wholesale() {
                 ))}
               </div>
 
-              <p className="mt-4 text-[13px] leading-relaxed text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
+              <p className="mt-4 text-[13px] leading-relaxed max-[639px]:text-[13px] max-[639px]:leading-[1.5] text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
                 Wholesale minimums: $300 minimum total order. One dozen (12 cookies) minimum per cookie order.
               </p>
 
@@ -250,7 +249,7 @@ export default function Wholesale() {
                 <InquireForm
                   type="wholesale"
                   submitLabel="Become our Wholesale Partner"
-                  buttonClassName="inline-flex items-center gap-2 rounded-full bg-[var(--berry)] px-7 py-[13px] text-[14px] font-bold tracking-[0.4px] text-[var(--cream-hi)] transition-transform duration-200 mech-btn hover:-translate-y-0.5 hover:bg-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] focus-visible:ring-offset-2"
+                  buttonClassName="inline-flex items-center gap-2 rounded-full bg-[var(--berry)] px-7 py-[13px] text-[14px] font-bold tracking-[0.4px] text-[var(--cream-hi)] mech-btn hover:bg-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] focus-visible:ring-offset-2"
                 />
                 <div className="mt-4 text-[13px] text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
                   Or say hello at @missozicecreamcafe

@@ -41,7 +41,8 @@ type SiteNavigationLinkProps = SiteNavigationLinkBaseProps & (
 );
 
 export function SiteNavigationLink(props: SiteNavigationLinkProps) {
-  const { to, onClick, onMouseEnter, onTouchStart, onFocus } = props;
+  const { to, onClick, onMouseEnter, onTouchStart, onFocus, className: suppliedClassName } = props;
+  const interactionClassName = ['interaction-link', suppliedClassName].filter(Boolean).join(' ');
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     handleSameRouteNavigation(to, event);
     onClick?.(event);
@@ -60,13 +61,15 @@ export function SiteNavigationLink(props: SiteNavigationLinkProps) {
   };
 
   if (props.asChild) {
+    const child = props.children as ReactElement<AnchorHTMLAttributes<HTMLAnchorElement>>;
     return (
       <Link
-        {...props}
         to={to}
+        asChild
         onClick={handleClick}
       >
-        {cloneElement(props.children as ReactElement<AnchorHTMLAttributes<HTMLAnchorElement>>, {
+        {cloneElement(child, {
+          className: interactionClassName,
           onMouseEnter: handleMouseEnter,
           onTouchStart: handleTouchStart,
           onFocus: handleFocus,
@@ -79,6 +82,7 @@ export function SiteNavigationLink(props: SiteNavigationLinkProps) {
     <Link
       {...props}
       to={to}
+      className={interactionClassName}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onTouchStart={handleTouchStart}

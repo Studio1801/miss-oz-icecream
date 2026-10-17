@@ -29,15 +29,15 @@ export default function NewFlavor() {
     <div className="flex flex-col gap-0 items-center text-center">
       {/* Eyebrow + script + headline */}
       <motion.div
-        initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        initial={false} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="w-full"
       >
         {/* Eyebrow — heboh edition */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={false}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5, type: 'spring', stiffness: 280, damping: 18 }}
           className="inline-flex items-center gap-[10px] mb-[20px] px-[18px] py-[8px] rounded-full relative"
           style={{
@@ -74,9 +74,9 @@ export default function NewFlavor() {
 
       {/* Poster — centered below the headline */}
       <motion.div
-        initial={{ opacity: 0, y: 36, rotate: -5 }}
+        initial={false}
         whileInView={{ opacity: 1, y: 0, rotate: -2 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
         className="relative mb-[28px] w-full max-w-[320px]"
       >
@@ -134,8 +134,8 @@ export default function NewFlavor() {
 
       {/* Description + tags — centered below the poster */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+        initial={false} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
         className="w-full"
       >
         <p className="text-[15px] italic leading-relaxed mb-[16px] mx-auto max-w-[380px]"

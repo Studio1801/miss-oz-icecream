@@ -15,16 +15,16 @@ export default function Marquee() {
   );
 
   return (
-    <div aria-hidden="true" className="relative z-10 border-y border-[rgba(113,37,65,0.18)] bg-[var(--cream-hi)]">
-      <div className="overflow-hidden py-5 md:py-6">
+    <div data-hscroll className="marquee-shell relative z-10 border-y border-[rgba(113,37,65,0.18)] bg-[var(--cream-hi)] pointer-events-none" aria-hidden="true">
+      <div data-hscroll className="overflow-hidden py-5 md:py-6">
         <div className="flex justify-center px-4 pb-4 md:pb-5">
           <div
-            className="inline-flex items-center gap-[10px] md:gap-3 rounded-full border border-[rgba(113,37,65,0.22)] bg-[rgba(244,169,199,0.16)] px-4 md:px-6 py-2 text-center font-display font-bold uppercase text-[var(--berry-deep)] tracking-[2px] md:tracking-[3px] text-[16px] md:text-[30px] whitespace-nowrap"
+            className="mobile-marquee-pill inline-flex items-center gap-[10px] md:gap-3 rounded-full border border-[rgba(113,37,65,0.22)] bg-[rgba(244,169,199,0.16)] px-4 md:px-6 py-2 text-center font-display font-bold uppercase text-[var(--berry-deep)] tracking-[2px] md:tracking-[3px] text-[16px] md:text-[30px] whitespace-nowrap"
           >
             Small Batch, Big Heart
           </div>
         </div>
-        <div className="mq-track flex gap-10 w-max items-center animate-[mq_22s_linear_infinite]">
+        <div data-hscroll className="mq-track flex gap-10 w-max items-center animate-[mq_22s_linear_infinite]">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="flex gap-10 items-center">
               {segment}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export type InquiryType = 'wholesale' | 'event' | 'general';
@@ -53,8 +53,23 @@ export default function InquireForm({
   const [numberOfServings, setNumberOfServings] = useState('');
   const [desiredOrderQuantities, setDesiredOrderQuantities] = useState('');
   const [additionalEventDetails, setAdditionalEventDetails] = useState('');
+  const [validationMessage, setValidationMessage] = useState('');
+  const [isMobileViewport, setIsMobileViewport] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches,
+  );
   const [status, setStatus] = useState<Status>('idle');
   const [open, setOpen] = useState(inline);
+  const [showSuccessCheck, setShowSuccessCheck] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 639px)');
+    const update = () => setIsMobileViewport(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  const mobileEventForm = type === 'event' && inline && isMobileViewport;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -73,7 +88,11 @@ export default function InquireForm({
         eventTime.trim() &&
         numberOfServings.trim() &&
         desiredOrderQuantities.trim());
-    if (!name.trim() || !email.trim() || (!message.trim() && type !== 'wholesale' && type !== 'event') || !wholesaleComplete || !eventComplete) return;
+    if (!name.trim() || !email.trim() || (!message.trim() && type !== 'wholesale' && type !== 'event') || !wholesaleComplete || !eventComplete) {
+      if (type === 'event' && inline) setValidationMessage('Please complete the required event fields before sending.');
+      return;
+    }
+    setValidationMessage('');
     setStatus('sending');
     try {
       // Use BASE_URL so the path is correct in both Replit dev and Vercel deploy
@@ -119,6 +138,8 @@ export default function InquireForm({
       });
       if (!res.ok) throw new Error('server error');
       setStatus('success');
+      setShowSuccessCheck(true);
+      window.setTimeout(() => setShowSuccessCheck(false), 2000);
       setName(''); setBusinessName(''); setEmail(''); setPhone(''); setMessage('');
       setBusinessType(''); setProductsOfInterest([]); setEstimatedOrderVolume(''); setAdditionalInformation('');
       setEventDate(''); setEventTime(''); setNumberOfServings(''); setDesiredOrderQuantities(''); setAdditionalEventDetails('');
@@ -129,16 +150,20 @@ export default function InquireForm({
 
   function reset() {
     setStatus('idle');
+    setShowSuccessCheck(false);
     setOpen(inline);
   }
 
   // Light-on-dark vs dark-on-light field styles
+  const mobileEventInputClass = type === 'event' && inline
+    ? 'max-[639px]:h-12 max-[639px]:box-border max-[639px]:text-base'
+    : '';
   const inputClass = darkBg
-    ? 'w-full bg-transparent border-b-2 border-[rgba(243,234,214,0.35)] pb-[5px] text-[17px] text-[#f3ead6] placeholder:text-[rgba(243,234,214,0.4)] placeholder:italic focus:outline-none focus:border-[var(--gold-hi)] transition-colors px-1 py-1 rounded-sm'
-    : 'w-full bg-transparent border-b-2 border-[rgba(28,13,12,0.25)] pb-[5px] text-[17px] text-[var(--cocoa)] placeholder:text-[rgba(28,13,12,0.35)] placeholder:italic focus:outline-none focus:border-[var(--berry)] transition-colors px-1 py-1 rounded-sm';
+    ? `w-full bg-transparent border-b-2 border-[rgba(243,234,214,0.35)] pb-[5px] text-[17px] text-[#f3ead6] placeholder:text-[rgba(243,234,214,0.4)] placeholder:italic focus:outline-none focus:border-[var(--gold-hi)] transition-colors px-1 py-1 rounded-sm ${mobileEventInputClass}`
+    : `w-full bg-transparent border-b-2 border-[rgba(28,13,12,0.25)] pb-[5px] text-[17px] text-[var(--cocoa)] placeholder:text-[rgba(28,13,12,0.35)] placeholder:italic focus:outline-none focus:border-[var(--berry)] transition-colors px-1 py-1 rounded-sm ${mobileEventInputClass}`;
 
   const labelCaseClass = sentenceCaseLabels ? 'tracking-[1px] normal-case' : 'tracking-[3px] uppercase';
-  const labelSizeClass = type === 'event' && inline ? 'text-[12px]' : 'text-[11px] max-[639px]:text-[12px]';
+  const labelSizeClass = type === 'event' && inline ? 'text-[12px] max-[639px]:text-[14px]' : 'text-[11px] max-[639px]:text-[12px]';
   const labelClass = darkBg
     ? `block ${labelSizeClass} ${labelCaseClass} font-bold text-[#f3ead6] opacity-70 mb-1`
     : `block ${labelSizeClass} ${labelCaseClass} font-bold text-[var(--cocoa)] opacity-60 mb-1`;
@@ -174,7 +199,7 @@ export default function InquireForm({
             exit={{ opacity: 0 }}
             type="button"
             onClick={() => setOpen(true)}
-            className={buttonClassName}
+            className={`interaction-primary ${buttonClassName}`}
           >
             {submitLabel}
             <span aria-hidden="true"> →</span>
@@ -186,6 +211,18 @@ export default function InquireForm({
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
+            <AnimatePresence>
+              {showSuccessCheck && (
+                <motion.span
+                  aria-hidden="true"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="mb-2 block text-[28px] text-[var(--berry)]"
+                >✓</motion.span>
+              )}
+            </AnimatePresence>
             <div
               className="text-[22px] mb-2"
               aria-live="polite"
@@ -354,7 +391,7 @@ export default function InquireForm({
                   </div>
                   <div className={inline ? 'sm:col-span-2 lg:col-span-1' : 'sm:col-span-2'}>
                     <label htmlFor="event-servings" className={labelClass}>{labelText('Number of Servings')}</label>
-                    <input id="event-servings" type="number" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="How many guests will you serve?" className={inputClass} />
+                    <input id="event-servings" type="number" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="Guest count" className={inputClass} />
                   </div>
                 </div>
                 <div className={fieldSpacing}>
@@ -381,6 +418,11 @@ export default function InquireForm({
               </div>
             )}
 
+            {validationMessage && (
+              <p className="text-[13px] text-red-700 mb-4 italic" role="alert">
+                {validationMessage}
+              </p>
+            )}
             {status === 'error' && (
               <p className="text-[13px] text-red-400 mb-4 italic" role="alert">
                 Something went wrong. Please try again or email us directly.
@@ -392,17 +434,20 @@ export default function InquireForm({
                 type="submit"
                 disabled={
                   status === 'sending' ||
-                  !name.trim() ||
-                  !email.trim() ||
-                  (type === 'wholesale'
-                    ? !businessName.trim() || !phone.trim() || !businessType || productsOfInterest.length === 0 || !estimatedOrderVolume.trim()
-                    : type === 'event'
-                    ? !eventDate.trim() || !eventTime.trim() || !numberOfServings.trim() || !desiredOrderQuantities.trim()
-                    : !message.trim())
+                  (!mobileEventForm && (
+                    !name.trim() ||
+                    !email.trim() ||
+                    (type === 'wholesale'
+                      ? !businessName.trim() || !phone.trim() || !businessType || productsOfInterest.length === 0 || !estimatedOrderVolume.trim()
+                      : type === 'event'
+                      ? !eventDate.trim() || !eventTime.trim() || !numberOfServings.trim() || !desiredOrderQuantities.trim()
+                      : !message.trim())
+                  ))
                 }
-                className="bg-[var(--cocoa)] text-[var(--cream)] py-[11px] px-[26px] rounded-full text-[14px] font-semibold tracking-[0.5px] mech-btn hover:bg-[var(--berry)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)]"
+                className={`interaction-primary relative bg-[var(--cocoa)] text-[var(--cream)] py-[11px] px-[26px] rounded-full text-[14px] font-semibold tracking-[0.5px] mech-btn hover:bg-[var(--berry)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)] ${type === 'event' && inline ? 'max-[639px]:w-full max-[639px]:h-[52px] max-[639px]:py-0 max-[639px]:bg-[var(--berry)] max-[639px]:text-[var(--cream-hi)]' : ''}`}
               >
-                {status === 'sending' ? 'Sending…' : submitButtonLabel}
+                <span className={`transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${status === 'sending' ? 'opacity-0' : 'opacity-100'}`}>{submitButtonLabel}</span>
+                {status === 'sending' && <span role="status" aria-label="Sending" className="interaction-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
               </button>
               {!inline && (
                 <button

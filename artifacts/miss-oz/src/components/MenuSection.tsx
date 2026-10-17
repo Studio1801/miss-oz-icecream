@@ -24,7 +24,7 @@ const scallopStyle = {
   maskRepeat: 'repeat-x',
   filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.18))',
 };
-const sidePanelHeightClass = 'md:h-[calc(100vh-134px)] md:min-h-[600px]';
+const sidePanelHeightClass = 'md:h-[calc(100svh-134px)] md:min-h-[600px]';
 
 function Awning() {
   return (
@@ -85,7 +85,7 @@ function WelcomeCard() {
             href={UBEREATS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group mt-[clamp(16px,1.8vw,24px)] w-full block transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.03] active:scale-[0.98]"
+            className="interaction-primary group mt-[clamp(16px,1.8vw,24px)] w-full block"
             style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.3))' }}
           >
             <span
@@ -115,7 +115,7 @@ function WelcomeCard() {
                   style={{ fontFamily: "'DM Serif Display', serif", fontSize: 'clamp(11px,0.85vw,13px)', letterSpacing: '1.5px', color: '#3B1020', lineHeight: 1.3 }}
                 >
                   Place an Order
-                  <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
+                  <span aria-hidden="true">→</span>
                 </span>
               </span>
             </span>

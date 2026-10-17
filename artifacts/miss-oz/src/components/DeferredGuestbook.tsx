@@ -7,7 +7,7 @@ function GuestbookPlaceholder() {
   return (
     <div
       aria-hidden="true"
-      className="parlour-paper relative bg-[var(--cream)] px-[6vw] py-[80px] md:py-[120px] overflow-hidden"
+      className="parlour-paper relative bg-[var(--cream)] px-[var(--edge)] md:px-[6vw] py-[56px] md:py-[120px] overflow-hidden"
       style={{ minHeight: 'inherit' }}
     />
   );

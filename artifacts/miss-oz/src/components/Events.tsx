@@ -48,7 +48,7 @@ export default function Events() {
   return (
     <section
       id="events"
-      className="parlour-paper relative overflow-hidden bg-[var(--pink)] px-[6vw] pt-[26px] pb-[48px] md:pt-[38px] md:pb-[56px] lg:flex lg:min-h-[calc(100svh-110px)] lg:items-center"
+      className="parlour-paper relative overflow-hidden bg-[var(--pink)] px-[var(--edge)] md:px-[6vw] pt-[26px] pb-[48px] md:pt-[38px] md:pb-[56px] lg:flex lg:min-h-[calc(100svh-110px)] lg:items-center"
     >
       <Bunting className="absolute top-0 left-0 right-0" />
       <Starburst size={150} color="var(--berry)" className="pointer-events-none absolute -bottom-8 -left-8 opacity-[0.10] hidden md:block" />
@@ -75,7 +75,7 @@ export default function Events() {
               </span>
             </div>
             <motion.h2
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.15 }}
+              initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.15 }}
               className="mb-[14px] max-w-full break-words text-[clamp(46px,5.6vw,76px)] leading-[0.98] text-[var(--cocoa)]"
               style={macklin}
             >
@@ -83,33 +83,33 @@ export default function Events() {
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
+              initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-0 max-w-full break-words text-[18px] font-semibold text-[var(--cocoa)] md:text-[20px]"
             >
               Private parties and weddings
             </motion.p>
             <motion.p
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.23 }}
+              initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.23 }}
               className="mt-[14px] max-w-[600px] break-words text-[20px] leading-relaxed text-[var(--cocoa)] md:text-[22px]"
             >
               Event Catering will launch in Summer 2027.
             </motion.p>
             <motion.p
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.25 }}
+              initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.25 }}
               className="mt-[18px] w-full min-w-0 max-w-[600px] break-words text-[18px] italic leading-[1.55] text-[var(--cocoa)] opacity-75 md:text-[20px]"
             >
               We're preparing a new way to bring Miss Oz treats to your celebrations. In the meantime, tell us about your event so we can start planning.
             </motion.p>
           </div>
 
-          <div className="relative mx-auto mt-[44px] h-[220px] w-full max-w-[430px] lg:mx-0 lg:h-[clamp(232px,18.2vw,262px)] lg:max-w-none">
+          <div className="event-polaroid-stage relative mx-auto mt-[44px] h-[220px] w-full max-w-[430px] lg:mx-0 lg:h-[clamp(232px,18.2vw,262px)] lg:max-w-none">
             <EventPolaroid photo={EVENT_POLAROIDS[0]} className="left-[calc(50%_-_124px)] z-10 -rotate-[6deg] lg:left-[calc(50%_-_clamp(174px,14.2vw,204px))]" />
             <EventPolaroid photo={EVENT_POLAROIDS[1]} className="left-[calc(50%_-_6px)] z-20 rotate-[5deg]" />
           </div>
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.25 }}
+          initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.25 }}
           className="relative order-2 w-full min-w-0 max-w-[560px] justify-self-center rounded-[10px] px-[20px] pb-[20px] pt-[32px] sm:px-[28px] sm:pb-[24px] sm:pt-[36px] lg:col-start-2 lg:row-start-1 lg:max-w-none lg:justify-self-stretch"
           style={{
             backgroundColor: 'var(--cream-hi)',

@@ -1,4 +1,5 @@
 import { Suspense, useEffect } from 'react';
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -19,7 +20,7 @@ function ScrollToCurrentHash() {
     const scrollToHash = () => {
       const anchor = window.location.hash.slice(1);
       if (anchor) {
-        requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView());
+        requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
       } else {
         window.scrollTo(0, 0);
       }
@@ -48,6 +49,7 @@ function RouteChunkFallback() {
 
 function Router() {
   const [location] = useLocation();
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const page = PAGE_META[location];
@@ -113,16 +115,29 @@ function Router() {
     <SiteLayout showHero={location === '/'}>
       <Suspense fallback={<RouteChunkFallback />}>
         <ScrollToCurrentHash />
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/menu"><Redirect to="/#menu" /></Route>
-          <Route path="/new-flavor"><Redirect to="/#new-flavor" /></Route>
-          <Route path="/about" component={AboutPage} />
-          <Route path="/wholesale" component={WholesalePage} />
-          <Route path="/events" component={EventsPage} />
-          <Route path="/contact" component={ContactPage} />
-          <Route component={NotFound} />
-        </Switch>
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={location}
+            className="page-route-content"
+            initial={window.matchMedia('(max-width: 767px)').matches
+              ? false
+              : reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+            transition={{ duration: reduceMotion ? 0.12 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Switch>
+              <Route path="/" component={Home} />
+              <Route path="/menu"><Redirect to="/#menu" /></Route>
+              <Route path="/new-flavor"><Redirect to="/#new-flavor" /></Route>
+              <Route path="/about" component={AboutPage} />
+              <Route path="/wholesale" component={WholesalePage} />
+              <Route path="/events" component={EventsPage} />
+              <Route path="/contact" component={ContactPage} />
+              <Route component={NotFound} />
+            </Switch>
+          </motion.div>
+        </AnimatePresence>
       </Suspense>
     </SiteLayout>
   );
@@ -130,14 +145,16 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <MotionConfig reducedMotion="user">
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </MotionConfig>
   );
 }
 

@@ -1,5 +1,4 @@
 import { useState, type ReactNode } from 'react';
-import { MotionConfig } from 'framer-motion';
 import Footer from './Footer';
 import Loader from './Loader';
 import PawTrail from './PawTrail';
@@ -51,17 +50,15 @@ export default function SiteLayout({ children, showHero }: { children: ReactNode
   const [showIntro] = useState(() => shouldShowIntroForSession(showHero));
 
   return (
-    <MotionConfig reducedMotion="user">
-      <main className="relative min-h-screen bg-[var(--cream)]">
-        <Loader enabled={showHero && showIntro} />
-        <div className="paper-overlay" aria-hidden="true" />
-        <div className="grain-overlay" aria-hidden="true" />
-        <GlobalMarqueeBorder />
-        <PawTrail />
-        <Postcard showHero={showHero} />
-        {children}
-        <Footer />
-      </main>
-    </MotionConfig>
+    <main className="page-content-gutter relative min-h-screen bg-[var(--cream)]">
+      <Loader enabled={showHero && showIntro} />
+      <div className="paper-overlay" aria-hidden="true" />
+      <div className="grain-overlay" aria-hidden="true" />
+      <GlobalMarqueeBorder />
+      <PawTrail />
+      <Postcard showHero={showHero} />
+      {children}
+      <Footer />
+    </main>
   );
 }

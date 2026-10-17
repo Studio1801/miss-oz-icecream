@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 const rise = {
-  initial: { opacity: 0, y: 24 },
+  initial: false,
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
+  viewport: { once: true, amount: 0.1 },
 };
 
 const CLIPS: { src: string; poster: string; label: string; caption: string; rotate: string }[] = [
@@ -110,7 +110,7 @@ function Reel({
 
 export default function Reels() {
   return (
-    <section className="parlour-paper relative py-[80px] md:py-[110px] px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section className="parlour-paper relative py-[56px] md:py-[110px] px-[var(--edge)] md:px-[6vw] bg-[var(--cream)] overflow-hidden">
       <div className="max-w-[1300px] mx-auto">
         <motion.div {...rise} transition={{ duration: 0.7 }} className="text-center mb-[52px]">
           <span className="flex items-center justify-center gap-[10px] text-[var(--gold)] mb-[14px]" aria-hidden="true">
@@ -129,7 +129,7 @@ export default function Reels() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-[28px] gap-y-[56px] items-start">
+        <div className="grid grid-cols-1 max-[639px]:grid-cols-2 sm:grid-cols-3 gap-x-[28px] gap-y-[56px] max-[639px]:gap-x-6 max-[639px]:gap-y-8 items-start">
           {CLIPS.map((c, i) => (
             <motion.div key={c.src} {...rise} transition={{ duration: 0.7, delay: i * 0.12 }}>
               <Reel {...c} />

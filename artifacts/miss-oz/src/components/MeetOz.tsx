@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 'italic' as const };
 
 const rise = {
-  initial: { opacity: 0, y: 24 },
+  initial: false,
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
+  viewport: { once: true, amount: 0.1 },
 };
 
 const PawPrint = ({ size = 34, className = '' }: { size?: number; className?: string }) => (
@@ -73,7 +73,7 @@ function Snapshot({
 
 export default function MeetOz() {
   return (
-    <section className="parlour-paper relative py-[90px] max-[639px]:py-[72px] md:py-[130px] px-[6vw] max-[639px]:px-4 bg-[var(--cream)] overflow-hidden">
+    <section className="parlour-paper relative py-[56px] md:py-[130px] px-[var(--edge)] md:px-[6vw] bg-[var(--cream)] overflow-hidden">
       {/* faint paw trail wandering across the backdrop */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 text-[var(--cocoa)]">
         <PawPrint size={26} className="absolute top-[12%] left-[8%] opacity-[0.08] rotate-[20deg]" />
@@ -128,7 +128,7 @@ export default function MeetOz() {
         <motion.div
           {...rise}
           transition={{ duration: 0.7, delay: 0.35 }}
-          className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6 items-start"
+          className="mt-14 grid grid-cols-1 max-[639px]:grid-cols-2 sm:grid-cols-3 gap-10 sm:gap-6 max-[639px]:gap-x-6 max-[639px]:gap-y-8 items-start"
         >
           <Snapshot src="/images/oz-boots.webp" alt="Oz, a tricolor Cavalier King Charles Spaniel, wearing yellow boots in a carpet of autumn leaves" caption="yellow boots season" rotate="-2.5deg" />
           <Snapshot src="/images/oz-flowers.webp" alt="Oz smiling on a sunny trail beside yellow wildflowers" caption="research department" rotate="1.5deg" />

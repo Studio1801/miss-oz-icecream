@@ -1,7 +1,9 @@
 import PawMark from './PawMark';
 
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { createPortal } from 'react-dom';
+import { useLocation } from 'wouter';
 import { Bunting } from './Decor';
 import OrderChooser from './OrderChooser';
 import { SITE_NAV_LINKS, SiteNavigationLink, navTarget, sectionTarget } from './SiteNavigation';
@@ -41,6 +43,11 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   const [paused, setPaused] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
+  const [location] = useLocation();
+  const reduceMotion = !!useReducedMotion();
+  const menuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const firstMenuLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const wasMenuOpenRef = useRef(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
@@ -64,26 +71,56 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
   // Prevent page scrolling behind the fixed mobile menu overlay
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    const previousOverflow = document.body.style.overflow;
+    if (menuOpen) document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previousOverflow; };
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (menuOpen) {
+      wasMenuOpenRef.current = true;
+      firstMenuLinkRef.current?.focus({ preventScroll: true });
+    } else if (wasMenuOpenRef.current) {
+      wasMenuOpenRef.current = false;
+      menuTriggerRef.current?.focus({ preventScroll: true });
+    }
+  }, [menuOpen]);
+
+  const toggleMenu = (event: MouseEvent<HTMLButtonElement>) => {
+    menuTriggerRef.current = event.currentTarget;
+    setMenuOpen((open) => !open);
+  };
 
   const current = SLIDES[slide] ?? SLIDES[0];
   const compactHeader = isHeaderScrolled || !showHero;
+  const currentPath = location.split('#')[0] || '/';
+  const activeNavTarget = showHero && window.location.hash === '#visit'
+    ? '/contact'
+    : currentPath;
   return (
     <>
-    <header className="relative z-[970] hidden h-14 w-full items-center justify-between border-b border-[var(--berry)] bg-[var(--cream)] px-4 max-[639px]:sticky max-[639px]:top-0 max-[639px]:flex">
+    <header className="relative z-[970] hidden h-14 w-full items-center justify-between border-b border-[var(--berry)] bg-[var(--cream)] px-4 max-[639px]:flex">
       <button
         type="button"
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={menuOpen}
-        onClick={() => setMenuOpen((o) => !o)}
+        aria-controls="mobile-menu-panel"
+        onClick={toggleMenu}
         className="flex h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
         style={{ background: 'rgba(94,23,53,0.06)' }}
       >
-        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-all duration-300" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
-        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-all duration-300" style={{ opacity: menuOpen ? 0 : 1 }} />
-        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-all duration-300" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-opacity duration-150" style={{ opacity: menuOpen ? 0 : 1 }} />
+        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
       <img
         src="/images/logo-official.webp"
@@ -94,7 +131,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         href={UBEREATS_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-11 min-w-[72px] items-center justify-center rounded-full bg-[var(--berry-deep)] px-4 text-[14px] font-bold text-[var(--cream-hi)]"
+        className="interaction-primary inline-flex h-11 min-w-[72px] items-center justify-center rounded-full bg-[var(--berry-deep)] px-4 text-[14px] font-bold text-[var(--cream-hi)]"
       >
         Order
       </a>
@@ -119,7 +156,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
       {/* MASTHEAD — desktop only; mobile nav overlays the hero photo */}
       {showHero && <div aria-hidden="true" className="hidden lg:block h-[clamp(130px,13vw,170px)]" />}
       <header
-        className="fixed top-0 left-0 right-0 z-[970] px-[3vw] hidden lg:block transition-[padding,background-color,box-shadow] duration-300 ease-out"
+        className="fixed top-0 left-0 right-0 z-[970] px-[var(--edge)] md:px-[3vw] hidden lg:block transition-[padding,background-color,box-shadow] duration-300 ease-out"
         style={{
           left: 'clamp(14px, 2vw, 26px)',
           right: 'clamp(14px, 2vw, 26px)',
@@ -163,7 +200,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
             </nav>
             <SiteNavigationLink
               to="/about#oz"
-              className="mobile-minimum-12 group relative text-center leading-snug hidden xl:block cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
+              className="mobile-minimum-12 group relative text-center leading-snug hidden xl:block cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
               style={{
                 fontFamily: 'var(--font-sans)',
                 color: '#9A6E0B',
@@ -240,7 +277,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
       {/* HERO SCENE — composite: cone foreground left + rotating café backdrop right.
           z-[955] lifts the photo above the fixed paper (940) / grain (950) overlays so it stays
           bright and natural, while staying below the marquee frame (960). */}
-      <div className="relative w-full z-[955] pointer-events-none">
+      <div data-hscroll className="hero-scene-shell relative w-full z-[955] pointer-events-none">
         <div
           className="w-full relative max-w-none px-0"
           style={{
@@ -255,25 +292,19 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           }}
         >
           {/* 16:7 aspect mirrors the wide-cinema feel of the reference */}
-          <div className="relative w-full aspect-[5/8] sm:aspect-[4/3] md:aspect-[16/7] overflow-hidden">
+          <div className="hero-scene-frame relative w-full aspect-[5/8] sm:aspect-[4/3] md:aspect-[16/7] overflow-hidden">
 
             {/* ── LAYER 1: rotating café backdrop ── */}
-            <AnimatePresence initial={false}>
-              <motion.img
-                key={current.src}
-                src={current.src}
-                alt={current.alt}
-                initial={{ opacity: 0, scale: 1 }}
-                animate={{ opacity: 1, scale: 1.06 }}
-                exit={{ opacity: 0, scale: 1.07 }}
-                transition={{
-                  opacity: { duration: 1.4, ease: [0.4, 0, 0.2, 1] },
-                  scale: { duration: 8, ease: 'linear' },
-                }}
-                className="hero-scene-photo absolute inset-0 w-full h-full object-cover saturate-[1.05] contrast-[1.03]"
-                style={{ objectPosition: current.pos ?? 'center' }}
-              />
-            </AnimatePresence>
+            <img
+              key={current.src}
+              src={current.src}
+              alt={current.alt}
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+              className="hero-scene-photo absolute inset-0 w-full h-full object-cover saturate-[1.05] contrast-[1.03]"
+              style={{ objectPosition: current.pos ?? 'center' }}
+            />
 
             {/* ── LAYER 2: soft darkening behind the text ── */}
             <div
@@ -293,26 +324,46 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               }}
             >
               {/* Miss Oz — Higante display, gold, matching the logo lettering */}
-              <div
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(56px,8.8vw,126px)',
-                  lineHeight: 1,
-                  color: '#EBC77F',
-                  WebkitTextStroke: 'clamp(3px,0.45vw,7px) var(--berry)',
-                  paintOrder: 'stroke fill',
-                  filter: 'drop-shadow(0 4px 5px rgba(20,8,12,0.45))',
-                }}
-              >
-                <span style={{ fontSize: '1.18em', position: 'relative', zIndex: 2, display: 'inline-block', verticalAlign: 'baseline' }}>M</span>
-                <span style={{ position: 'relative', zIndex: 1, display: 'inline-block' }}>iss</span>
-                {' '}
-                <span style={{ fontSize: '1.18em', position: 'relative', zIndex: 2, display: 'inline-block', verticalAlign: 'baseline' }}>O</span>
-                <span style={{ position: 'relative', zIndex: 1, display: 'inline-block' }}>z</span>
+              <div className="hero-entrance hero-enter-title relative inline-block">
+                <div
+                  className="hero-title-text"
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(56px,8.8vw,126px)',
+                    lineHeight: 1,
+                    color: '#EBC77F',
+                    WebkitTextStroke: 'clamp(3px,0.45vw,7px) var(--berry)',
+                    paintOrder: 'stroke fill',
+                    filter: 'drop-shadow(0 4px 5px rgba(20,8,12,0.45))',
+                  }}
+                >
+                  <span style={{ fontSize: '1.18em', position: 'relative', zIndex: 2, display: 'inline-block', verticalAlign: 'baseline' }}>M</span>
+                  <span style={{ position: 'relative', zIndex: 1, display: 'inline-block' }}>iss</span>
+                  {' '}
+                  <span style={{ fontSize: '1.18em', position: 'relative', zIndex: 2, display: 'inline-block', verticalAlign: 'baseline' }}>O</span>
+                  <span style={{ position: 'relative', zIndex: 1, display: 'inline-block' }}>z</span>
+                </div>
+                <div
+                  aria-label="Since 2007"
+                  className="hero-year-stamp hero-stamp-entrance absolute right-[-8px] top-[-68px] hidden h-[76px] w-[76px] items-center justify-center rounded-full max-[767px]:flex"
+                  style={{
+                    background: '#F3E7C9',
+                    color: 'var(--berry)',
+                    fontFamily: 'var(--font-script)',
+                    fontSize: '15px',
+                    fontStyle: 'italic',
+                    zIndex: 3,
+                    pointerEvents: 'none',
+                    boxShadow: '0 6px 18px rgba(0,0,0,0.32)',
+                  }}
+                >
+                  <span aria-hidden="true" className="absolute inset-[5px] rounded-full border border-dotted border-[var(--berry)]" />
+                  <span className="relative">Since 2007</span>
+                </div>
               </div>
               {/* Tagline — cream script */}
               <div
-                className="hero-tagline"
+                className="hero-entrance hero-enter-tagline hero-tagline"
                 style={{
                   fontFamily: 'var(--font-script)',
                   fontSize: 'clamp(17px,2.3vw,32px)',
@@ -325,7 +376,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               </div>
               {/* Subtext — hidden on mobile (too long to fit), shown sm+ */}
               <div
-                className="hidden sm:block"
+                className="hero-entrance hero-enter-subtext hidden sm:block"
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 'clamp(12px,1.15vw,17px)',
@@ -340,7 +391,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 Ice Cream &amp; Handmade Desserts · Portland, Oregon
               </div>
               <div
-                className="mobile-minimum-12 max-[639px]:hidden flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
+                className="mobile-minimum-12 max-[767px]:hidden flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 'clamp(11px,1vw,15px)',
@@ -357,7 +408,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'rgba(251,242,223,0.6)' }} />
               </div>
               <div
-                className="max-[639px]:hidden flex items-center justify-center gap-[7px]"
+                className="max-[767px]:hidden flex items-center justify-center gap-[7px]"
                 style={{ color: '#F4A9C7', marginTop: 'clamp(6px,0.7vw,10px)', textShadow: '0 1px 6px rgba(20,8,12,0.6)' }}
               >
                 <span aria-hidden="true" style={{ fontSize: 'clamp(11px,1vw,15px)' }}>♥</span>
@@ -375,10 +426,10 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 </span>
               </div>
               {/* CTA button */}
-              <div className="flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
+              <div className="hero-entrance hero-enter-button hero-cta-wrap relative flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
                 <SiteNavigationLink
                   to={sectionTarget('menu', showHero)}
-                  className="mobile-minimum-12 group relative inline-flex min-h-[44px] items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 hover:scale-[1.06] hover:-translate-y-[2px] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                  className="hero-menu-button interaction-primary mobile-minimum-12 group relative inline-flex min-h-[44px] items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 'clamp(11px,0.95vw,14px)',
@@ -397,10 +448,14 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   View Menu
                   <span
                     aria-hidden="true"
-                    className="inline-block not-italic transition-transform duration-200 group-hover:translate-x-[3px]"
+                    className="hero-menu-arrow inline-block not-italic"
                     style={{ color: 'var(--gold-hi)', fontSize: '0.88em', marginLeft: '-2px' }}
                   >→</span>
                 </SiteNavigationLink>
+              </div>
+              <div className="hero-entrance hero-enter-dogs hero-mobile-dogs hidden max-[767px]:flex items-center justify-center gap-2">
+                <PawMark size={18} className="text-[#F4A9C7]" />
+                <span>Dogs welcome</span>
               </div>
             </div>
 
@@ -420,7 +475,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   aria-current={i === slide}
                   aria-label={`Show slide ${i + 1} of ${SLIDES.length}`}
                   onClick={() => setSlide(i)}
-                  className="hero-slide-dot w-[9px] h-[9px] rounded-full transition-all duration-300"
+                  className="hero-slide-dot w-[9px] h-[9px] rounded-full transition-all duration-500"
                   style={{
                     background: i === slide ? '#F4A9C7' : 'rgba(244,169,199,0.4)',
                     transform: i === slide ? 'scale(1.3)' : 'scale(1)',
@@ -436,7 +491,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
         {/* "PORTLAND'S HOMEGROWN ICE CREAM CAFE" — dark ribbon below the hero photo */}
         <div
-          className="mx-auto max-w-[1400px] px-[4vw] max-[639px]:px-4 sm:px-[4vw]"
+          className="mx-auto max-w-[1400px] px-[var(--edge)] md:px-[4vw]"
         >
           <div
             className="flex items-center justify-center gap-[clamp(10px,2vw,24px)] py-[10px] max-[639px]:flex-col max-[639px]:gap-[4px]"
@@ -444,13 +499,10 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           >
             <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50 max-[639px]:hidden" />
             <span
-              className="mobile-minimum-12 text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-normal"
+              className="hero-ribbon-copy mobile-minimum-12 text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-nowrap"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(8px,0.85vw,11px)' }}
             >
               Portland's Homegrown Ice Cream Cafe
-            </span>
-            <span className="hidden items-center justify-center gap-1 text-[14px] font-semibold text-[var(--cream-hi)] max-[639px]:inline-flex">
-              Since 2007 · <PawMark size={14} className="shrink-0 text-[var(--gold-hi)]" /> Dogs welcome
             </span>
             <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50 max-[639px]:hidden" />
           </div>
@@ -463,13 +515,14 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         type="button"
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={menuOpen}
-        onClick={() => setMenuOpen((o) => !o)}
+        aria-controls="mobile-menu-panel"
+        onClick={toggleMenu}
         className="lg:hidden max-[639px]:hidden fixed top-4 left-4 z-[970] flex flex-col justify-center items-center gap-[5px] w-[42px] h-[42px] max-[639px]:w-11 max-[639px]:h-11 rounded-xl pointer-events-auto touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
         style={{ background: 'rgba(242,225,194,0.88)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
       >
-        <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300 origin-center" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
-        <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300" style={{ opacity: menuOpen ? 0 : 1 }} />
-        <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300 origin-center" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+        <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] origin-center" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+        <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ opacity: menuOpen ? 0 : 1 }} />
+        <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] origin-center" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
       <div aria-hidden={isHeaderScrolled} className={`lg:hidden max-[639px]:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
         <img
@@ -480,115 +533,124 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         />
       </div>
 
-      {/* MOBILE MENU — fixed full-screen overlay, slides in from top */}
-      <AnimatePresence>
+    </section>
+    {createPortal(
+      <AnimatePresence initial={false}>
         {menuOpen && (
           <motion.div
             key="mobile-menu-overlay"
-            className="lg:hidden fixed inset-0 z-[980] flex flex-col"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.24, ease: 'easeOut' }}
+            id="mobile-menu-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+            className="mobile-menu-overlay parlour-paper lg:hidden fixed inset-0 z-[955]"
+            style={{ backgroundColor: '#f1e4c8' }}
+            initial={{ opacity: 0, y: reduceMotion ? 0 : '-100%' }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{
+              opacity: 0,
+              y: reduceMotion ? 0 : '-100%',
+              transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+            }}
+            transition={{ duration: reduceMotion ? 0.18 : 0.38, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Tap-outside-to-close backdrop */}
-            <div
-              className="absolute inset-0"
-              style={{ background: 'rgba(20,8,12,0.72)' }}
-              onClick={() => setMenuOpen(false)}
-            />
-            <motion.nav
-              aria-label="Mobile navigation"
-              initial={{ y: '-100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-110%' }}
-              transition={{ type: 'spring', stiffness: 360, damping: 36, mass: 0.85 }}
-              className="relative flex max-h-[100dvh] flex-col items-center gap-0 overflow-y-auto overscroll-contain px-6 pt-14 pb-8 rounded-b-[24px]"
-              style={{ background: 'rgba(242,225,194,0.98)', boxShadow: '0 12px 40px rgba(20,8,12,0.28)' }}
-            >
-              {/* ✕ close */}
-              <button
-                type="button"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Close menu"
-                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-[var(--cocoa)] hover:bg-[rgba(178,78,121,0.08)] transition-colors text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
-              >✕</button>
-              {/* small logo */}
-              <motion.img
-                src="/images/logo-official.webp"
-                alt=""
-                aria-hidden="true"
-                className="h-auto mb-5"
-                style={{ width: '68px', opacity: 0.88 }}
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 0.88, scale: 1 }}
-                transition={{ delay: 0.06, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              />
-              {SITE_NAV_LINKS.map((n, idx) => (
-                <SiteNavigationLink
-                  key={n.label}
-                  asChild
-                  to={navTarget(n.target, showHero)}
-                  onClick={() => {
-                    document.body.style.overflow = '';
-                    setMenuOpen(false);
+            <div className="mobile-menu-content">
+                <nav aria-label="Primary mobile navigation" className="mobile-menu-links">
+                  {SITE_NAV_LINKS.map((item, index) => {
+                    const isCurrent = activeNavTarget === item.target;
+                    return (
+                      <SiteNavigationLink
+                        key={item.label}
+                        asChild
+                        to={navTarget(item.target, showHero)}
+                        className="mobile-menu-link"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <motion.a
+                          ref={index === 0 ? firstMenuLinkRef : undefined}
+                          aria-current={isCurrent ? 'page' : undefined}
+                          initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{
+                            opacity: 0,
+                            y: reduceMotion ? 0 : 16,
+                            transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+                          }}
+                          transition={{
+                            opacity: { duration: reduceMotion ? 0.18 : 0.24, delay: 0.12 + index * 0.05 },
+                            y: { duration: reduceMotion ? 0.18 : 0.24, delay: 0.12 + index * 0.05, ease: [0.22, 1, 0.36, 1] },
+                          }}
+                          className="mobile-menu-link"
+                        >
+                          {item.label}
+                        </motion.a>
+                      </SiteNavigationLink>
+                    );
+                  })}
+                  <SiteNavigationLink
+                    asChild
+                    to="/about#oz"
+                    className="mobile-menu-link mobile-menu-meet"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <motion.a
+                      initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{
+                        opacity: 0,
+                        y: reduceMotion ? 0 : 16,
+                        transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+                      }}
+                      transition={{
+                        opacity: { duration: reduceMotion ? 0.18 : 0.24, delay: 0.37 },
+                        y: { duration: reduceMotion ? 0.18 : 0.24, delay: 0.37, ease: [0.22, 1, 0.36, 1] },
+                      }}
+                      className="mobile-menu-link mobile-menu-meet"
+                    >
+                      <span aria-hidden="true">♥</span> Meet Oz!
+                    </motion.a>
+                  </SiteNavigationLink>
+                </nav>
+
+                <motion.div
+                  className="mobile-menu-bottom"
+                  initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{
+                    opacity: 0,
+                    y: reduceMotion ? 0 : 16,
+                    transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+                  }}
+                  transition={{
+                    opacity: { duration: reduceMotion ? 0.18 : 0.24, delay: 0.42 },
+                    y: { duration: reduceMotion ? 0.18 : 0.24, delay: 0.42, ease: [0.22, 1, 0.36, 1] },
                   }}
                 >
-                  <motion.a
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.09 + idx * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-                    className="w-full min-h-[44px] inline-flex items-center justify-center text-center py-3.5 uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
-                    style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', letterSpacing: '2.5px' }}
+                  <a
+                    href={UBEREATS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mobile-menu-order"
+                    onClick={() => setMenuOpen(false)}
                   >
-                    {n.label}
-                  </motion.a>
-                </SiteNavigationLink>
-              ))}
-              <SiteNavigationLink
-                asChild
-                to="/about#oz"
-                onClick={() => {
-                  document.body.style.overflow = '';
-                  setMenuOpen(false);
-                }}
-              >
-                <motion.a
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.09 + SITE_NAV_LINKS.length * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full text-center py-3.5 font-bold hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
-                  style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--berry)', letterSpacing: '1.5px' }}
-                >
-                  ♥ Meet Oz!
-                </motion.a>
-              </SiteNavigationLink>
-              <motion.div
-                aria-hidden="true"
-                className="w-12 h-px bg-[var(--marionberry)] opacity-30 my-3"
-                initial={{ opacity: 0, scaleX: 0 }}
-                animate={{ opacity: 0.3, scaleX: 1 }}
-                transition={{ delay: 0.09 + (SITE_NAV_LINKS.length + 1) * 0.045, duration: 0.3 }}
-              />
-              <motion.a
-                href={UBEREATS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.09 + (SITE_NAV_LINKS.length + 2) * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-                className="rounded-full bg-[var(--berry-deep)] text-[var(--cream-hi)] font-bold uppercase tracking-[2px] text-[11px] px-7 py-3 transition-colors hover:bg-[var(--berry)]"
-                style={{ fontFamily: 'var(--font-sans)' }}
-                onClick={() => setMenuOpen(false)}
-              >
-                Place an Order
-              </motion.a>
-            </motion.nav>
+                    Place an Order
+                  </a>
+                  <div className="mobile-menu-meta">
+                    <img
+                      src="/images/logo-official.webp"
+                      alt=""
+                      aria-hidden="true"
+                      className="mobile-menu-mark"
+                    />
+                    <p>Pearl District, Portland. Dogs welcome.</p>
+                  </div>
+                </motion.div>
+            </div>
           </motion.div>
         )}
-      </AnimatePresence>
-
-    </section>
+      </AnimatePresence>,
+      document.body,
+    )}
     </>
   );
 }

@@ -73,7 +73,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
       setNote('');
       setJustSigned(true);
       if (liveRef.current) liveRef.current.textContent = 'Thank you. Your note is in the book.';
-      window.setTimeout(() => setJustSigned(false), 2600);
+      window.setTimeout(() => setJustSigned(false), 2000);
     } catch {
       if (liveRef.current) liveRef.current.textContent = 'We could not confirm your note was saved. Please try again later.';
     } finally {
@@ -82,7 +82,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
   }
 
   return (
-    <section id={id} className="parlour-paper relative py-[80px] md:py-[120px] px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section id={id} className="parlour-paper relative py-[56px] md:py-[120px] px-[var(--edge)] md:px-[6vw] bg-[var(--cream)] overflow-hidden">
       <Starburst size={160} color="var(--gold)" className="pointer-events-none absolute top-[50px] left-[3vw] opacity-[0.10] hidden md:block" />
       <Starburst size={130} color="var(--berry)" className="pointer-events-none absolute bottom-[60px] right-[4vw] opacity-[0.09] hidden md:block" />
       {/* diner-table vignette */}
@@ -94,26 +94,26 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
 
       <div className="relative text-center max-w-[720px] mx-auto mb-[clamp(24px,3vw,40px)]">
         <motion.span
-          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
+          initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7 }}
           className="block text-[12px] tracking-[5px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-3"
         >
           Since 2007
         </motion.span>
         <motion.span
-          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
+          initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.1 }}
           className="block font-script text-[var(--berry-deep)] text-[clamp(28px,3.4vw,40px)] mb-1"
         >
           put your name in the book
         </motion.span>
         <motion.h2
-          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.15 }}
+          initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.15 }}
           className="text-[clamp(40px,5.6vw,74px)] leading-[0.98] mb-4 text-[var(--cocoa)]"
           style={macklin}
         >
           The Parlor Guestbook
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.2 }}
+          initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.2 }}
           className="italic text-[17px] text-[#1d0e0d] opacity-80"
         >
           Every parlor worth its salt keeps a book by the door. Leave a memory, a favorite scoop, or just a hello.
@@ -122,7 +122,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
 
       {/* ===== Open guest ledger ===== */}
       <motion.div
-        initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
+        initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.1 }}
         className="relative mx-auto max-w-[1060px]"
       >
         {/* GUESTBOOK tab */}
@@ -189,9 +189,11 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 <button
                   type="submit"
                   disabled={!name.trim() || !note.trim() || submitting}
-                  className="bg-[var(--cocoa)] text-[var(--cream)] py-[11px] px-[26px] rounded-full text-[14px] font-semibold tracking-[0.5px] mech-btn hover:bg-[var(--berry)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)]"
+                  className="interaction-primary relative inline-flex items-center justify-center bg-[var(--cocoa)] text-[var(--cream)] py-[11px] px-[26px] rounded-full text-[14px] font-semibold tracking-[0.5px] mech-btn hover:bg-[var(--berry)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)]"
                 >
-                  {submitting ? 'Signing…' : justSigned ? 'Signed ♥' : 'Leave your mark'}
+                  <span className={`transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${submitting || justSigned ? 'opacity-0' : 'opacity-100'}`}>Leave your mark</span>
+                  {submitting && <span role="status" aria-label="Signing" className="interaction-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
+                  {justSigned && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.22 }} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">✓</motion.span>}
                 </button>
               </div>
               <p ref={liveRef} aria-live="polite" className="sr-only" />
@@ -207,21 +209,24 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 <div className="text-[var(--berry-deep)] leading-none" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,28px)' }}>
                   Signatures
                 </div>
-                <span className="text-[11px] max-[639px]:text-[12px] tracking-[2px] uppercase font-bold text-[var(--cocoa)] opacity-45" style={{ fontFamily: 'var(--font-sans)' }}>
+                <span className={`text-[11px] max-[639px]:text-[12px] tracking-[2px] uppercase font-bold text-[var(--cocoa)] opacity-45 whitespace-nowrap ${!loading && entries.length === 0 ? 'max-[639px]:hidden' : ''}`} style={{ fontFamily: 'var(--font-sans)' }}>
                   {loading ? '…' : `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`}
                 </span>
               </div>
 
               {!loading && (loadError || entries.length === 0) && (
                 <p className="py-4 text-[14.5px] italic text-[var(--cocoa)]" role="status">
-                  {loadError ? 'Guestbook entries are unavailable right now.' : 'No entries yet. Be the first to sign the book.'}
+                  <span className="hidden max-[639px]:inline">Be the first to sign the book</span>
+                  <span className="max-[639px]:hidden">
+                    {loadError ? 'Guestbook entries are unavailable right now.' : 'No entries yet. Be the first to sign the book.'}
+                  </span>
                 </p>
               )}
               <ul className="flex flex-col md:flex-1 md:justify-evenly" role="list">
                 {entries.slice(0, 6).map((entry, i) => (
                   <motion.li
                     key={entry.id}
-                    initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: Math.min(i, 4) * 0.06 }}
+                    initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.4, delay: Math.min(i, 4) * 0.06 }}
                     className={`py-[12px] ${i > 0 ? 'border-t border-[rgba(28,13,12,0.12)]' : ''}`}
                   >
                     <div className="flex items-baseline gap-2">
@@ -243,7 +248,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
 
         {/* Oz keeping an eye on the book — sits beside/below the ledger, never over text */}
         <motion.figure
-          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.15 }}
+          initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.15 }}
           className="relative z-30 w-[clamp(150px,15vw,190px)] rotate-[6deg] bg-[var(--cream-hi)] p-[8px] pb-[10px] rounded-[3px] mt-[40px] mx-auto lg:absolute lg:mt-0 lg:mx-0 lg:-bottom-[96px] lg:-right-[64px]"
           style={{ boxShadow: '0 10px 28px rgba(28,13,12,0.18)' }}
         >

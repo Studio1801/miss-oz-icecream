@@ -97,8 +97,8 @@ export default function FlavorVoting() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 32 }} whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+      initial={false} whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
       className="flex flex-col justify-center gap-[4px]"
       id="vote"
       style={{ scrollMarginTop: '32px' }}
@@ -180,7 +180,7 @@ export default function FlavorVoting() {
                 {/* Toggle icon */}
                 <motion.div
                   animate={{ rotate: isOpen ? 45 : 0 }}
-                  transition={{ duration: 0.2, ease: 'easeInOut' }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                   className="shrink-0 w-[24px] h-[24px] rounded-full flex items-center justify-center text-[15px] font-light leading-none select-none"
                   style={{
                     color: isOpen ? 'var(--cream-hi)' : 'var(--berry)',
@@ -199,7 +199,10 @@ export default function FlavorVoting() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{
+                      height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                      opacity: { duration: 0.22, delay: 0.06, ease: [0.22, 1, 0.36, 1] },
+                    }}
                     style={{ overflow: 'hidden' }}
                   >
                     <div className="px-[12px] pb-[12px]">
@@ -254,7 +257,7 @@ export default function FlavorVoting() {
 
                             {!revealed ? (
                               <button onClick={() => handleVote(i)} disabled={!votes || pending}
-                                className="relative vote-btn clickable font-sans border-none py-[8px] px-[20px] rounded-full text-[12.5px] font-semibold tracking-[0.4px] mech-btn transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="interaction-primary relative vote-btn clickable font-sans border-none py-[8px] px-[20px] rounded-full text-[12.5px] font-semibold tracking-[0.4px] mech-btn transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ background: 'var(--cocoa)', color: 'var(--cream-hi)', fontFamily: 'var(--font-sans)' }}>
                                 {pending ? 'Recording vote…' : 'Vote for this ♥'}
                                 {burst === i && !reduce && [...Array(8)].map((_, j) => {
@@ -283,7 +286,7 @@ export default function FlavorVoting() {
                                   </div>
                                   <div className="text-[10.5px] mt-[4px]"
                                     style={{ color: 'var(--cocoa)', opacity: 0.55, fontFamily: 'var(--font-sans)' }}>
-                                    {votes ? <><CountUp to={votes[i]} reduce={reduce} /> votes</> : 'Totals unavailable'}
+                                    {votes ? <><CountUp to={votes[i]} reduce={reduce} /> votes</> : <span className="max-[639px]:hidden">Totals unavailable</span>}
                                     {isChoice && <span className="ml-1 font-bold" style={{ color: 'var(--berry-deep)', opacity: 1 }}>· your pick ♥</span>}
                                   </div>
                                 </div>
@@ -306,7 +309,7 @@ export default function FlavorVoting() {
       </div>
 
       {/* Vote total */}
-      <div className="mt-[14px] text-[10.5px] max-[639px]:text-[12px] tracking-[3px] uppercase font-semibold"
+      <div className={`mt-[14px] text-[10.5px] max-[639px]:text-[12px] tracking-[3px] uppercase font-semibold ${voteError || !votes ? 'max-[639px]:hidden' : ''}`}
         style={{ color: 'rgba(115,32,62,0.6)', fontFamily: 'var(--font-sans)' }}>
         {voteError || (votes ? (total === 0 ? 'No votes yet. Be the first.' : `${total.toLocaleString()} neighbors have voted`) : 'Loading vote totals…')}
       </div>

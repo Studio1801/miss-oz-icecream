@@ -1,6 +1,6 @@
 import Story from '../components/Story';
 import MeetOz from '../components/MeetOz';
-import DeferredReels from '../components/DeferredReels';
+import Reels from '../components/Reels';
 
 export default function About() {
   return (
@@ -8,7 +8,7 @@ export default function About() {
       <h1 className="sr-only">About Us</h1>
       <div id="oz"><MeetOz /></div>
       <Story />
-      <DeferredReels />
+      <Reels />
     </>
   );
 }
