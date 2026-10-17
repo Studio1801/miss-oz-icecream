@@ -155,7 +155,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 Sign the book
               </div>
 
-              <label htmlFor="gb-name" className="block text-[11px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+              <label htmlFor="gb-name" className="block text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                 Your name
               </label>
               <input
@@ -168,7 +168,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 className="ledger-input w-full bg-transparent border-b-2 border-[rgba(28,13,12,0.28)] pb-[6px] mb-[28px] text-[22px] font-script text-[var(--berry-deep)] placeholder:text-[rgba(28,13,12,0.3)] placeholder:font-sans placeholder:italic placeholder:text-[16px] focus:outline-none focus:border-[var(--berry)] transition-colors rounded-sm px-1 py-1"
               />
 
-              <label htmlFor="gb-note" className="block text-[11px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+              <label htmlFor="gb-note" className="block text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                 Leave a note
               </label>
               <textarea
@@ -207,7 +207,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 <div className="text-[var(--berry-deep)] leading-none" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,28px)' }}>
                   Signatures
                 </div>
-                <span className="text-[11px] tracking-[2px] uppercase font-bold text-[var(--cocoa)] opacity-45" style={{ fontFamily: 'var(--font-sans)' }}>
+                <span className="text-[11px] max-[639px]:text-[12px] tracking-[2px] uppercase font-bold text-[var(--cocoa)] opacity-45" style={{ fontFamily: 'var(--font-sans)' }}>
                   {loading ? '…' : `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`}
                 </span>
               </div>
@@ -227,7 +227,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                     <div className="flex items-baseline gap-2">
                       <span className="font-script-alt text-[20px] text-[var(--berry-deep)] leading-tight shrink-0">{entry.name}</span>
                       <span aria-hidden="true" className="flex-1 self-end mb-[5px] border-b border-dotted border-[rgba(28,13,12,0.28)]" />
-                      <span className="text-[11px] tracking-[1px] uppercase text-[var(--cocoa)] opacity-50 shrink-0 whitespace-nowrap" style={{ fontFamily: 'var(--font-sans)' }}>{entry.when}</span>
+                      <span className="text-[11px] max-[639px]:text-[12px] tracking-[1px] uppercase text-[var(--cocoa)] opacity-50 shrink-0 whitespace-nowrap" style={{ fontFamily: 'var(--font-sans)' }}>{entry.when}</span>
                     </div>
                     <p className="text-[14.5px] leading-[1.55] italic text-[#1d0e0d] opacity-85 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>"{entry.note}"</p>
                   </motion.li>

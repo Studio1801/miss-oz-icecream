@@ -56,7 +56,7 @@ function Snapshot({
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center gap-3 border-2 border-dashed border-[rgba(28,13,12,0.22)] rounded-[2px] text-[var(--cocoa)]">
             <PawPrint className="opacity-30" />
-            <span className="text-[11px] tracking-[3px] uppercase font-bold opacity-40 text-center px-4">
+            <span className="text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold opacity-40 text-center px-4">
               Photo of Oz
               <br />
               coming soon
@@ -73,7 +73,7 @@ function Snapshot({
 
 export default function MeetOz() {
   return (
-    <section className="parlour-paper relative py-[90px] md:py-[130px] px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section className="parlour-paper relative py-[90px] max-[639px]:py-[72px] md:py-[130px] px-[6vw] max-[639px]:px-4 bg-[var(--cream)] overflow-hidden">
       {/* faint paw trail wandering across the backdrop */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 text-[var(--cocoa)]">
         <PawPrint size={26} className="absolute top-[12%] left-[8%] opacity-[0.08] rotate-[20deg]" />

@@ -105,13 +105,13 @@ function WelcomeCard() {
                 style={{ border: '1.5px dashed rgba(59,16,32,0.55)', borderRadius: '4px', padding: '11px 22px 12px' }}
               >
                 <span
-                  className="uppercase whitespace-nowrap"
+                  className="uppercase whitespace-nowrap mobile-minimum-12"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: '7px', letterSpacing: '1px', fontWeight: 700, color: 'rgba(59,16,32,0.55)' }}
                 >
                   ✦ Admit One Sweet Tooth ✦
                 </span>
                 <span
-                  className="flex items-center gap-2 whitespace-nowrap uppercase"
+                  className="flex items-center gap-2 whitespace-nowrap uppercase mobile-minimum-12"
                   style={{ fontFamily: "'DM Serif Display', serif", fontSize: 'clamp(11px,0.85vw,13px)', letterSpacing: '1.5px', color: '#3B1020', lineHeight: 1.3 }}
                 >
                   Place an Order
@@ -292,7 +292,7 @@ export default function MenuSection() {
 
           <section
             aria-label="Menu"
-            className="relative flex flex-col self-start h-auto min-h-0 rounded-t-none rounded-b-[10px] md:rounded-[10px] md:mx-[clamp(12px,2.5vw,32px)] overflow-hidden px-[clamp(18px,2.6vw,42px)] max-[430px]:px-[28px] py-[clamp(22px,2.6vw,36px)]"
+            className="relative flex flex-col self-start h-auto min-h-0 rounded-t-none rounded-b-[10px] md:rounded-[10px] md:mx-[clamp(12px,2.5vw,32px)] overflow-hidden px-[clamp(18px,2.6vw,42px)] max-[639px]:px-4 py-[clamp(22px,2.6vw,36px)] max-[639px]:py-[18px]"
             style={{
               background: 'linear-gradient(180deg, #FBF4E6, #F7EDDA)',
               boxShadow: '0 14px 34px rgba(28,13,12,0.18), inset 0 0 0 1px rgba(94,23,53,0.25), inset 0 0 0 5px rgba(251,244,230,1), inset 0 0 0 6px rgba(94,23,53,0.15)',
@@ -358,13 +358,13 @@ export default function MenuSection() {
           />
           <div>
             <div
-              className="uppercase font-bold tracking-[3px] text-[#3B1E2B]"
+              className="uppercase font-bold tracking-[3px] text-[#3B1E2B] mobile-minimum-12"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(11px,1vw,14px)' }}
             >
               Sweet Memories Start Here.
             </div>
             <div
-              className="mt-[3px] text-[#6E5A54]"
+              className="mt-[3px] text-[#6E5A54] mobile-minimum-12"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10px,0.85vw,12px)' }}
             >
               Thank you for supporting our family-run shop since 2007.
@@ -390,7 +390,7 @@ export default function MenuSection() {
           }}
         >
           <span
-            className="text-[var(--berry-deep)] text-[11px] sm:text-[12.5px] tracking-[2px] uppercase font-bold"
+            className="text-[var(--berry-deep)] text-[11px] max-[639px]:text-[12px] sm:text-[12.5px] tracking-[2px] uppercase font-bold"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
             Locally Owned <span className="text-[var(--pink)] mx-1">·</span>

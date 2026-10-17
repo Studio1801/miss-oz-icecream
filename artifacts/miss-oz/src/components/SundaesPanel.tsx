@@ -43,16 +43,16 @@ export default function SundaesPanel() {
                 style={{ objectPosition: photo.objectPosition, boxShadow: '0 12px 28px rgba(28,13,12,0.17)' }}
               />
               <div className={`min-w-0 ${descriptionOrder}`}>
-                <h3 className="text-[13px] sm:text-[14px] max-[430px]:text-[11.75px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
+                <h3 className="text-[13px] sm:text-[14px] max-[430px]:text-[12px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
                   {item.name}
                 </h3>
                 {item.seasonalLabel && (
-                  <p className="mt-1 text-[10px] max-[430px]:text-[9px] font-semibold text-[var(--marionberry)]">
+                  <p className="mt-1 text-[10px] max-[639px]:text-[12px] font-semibold text-[var(--marionberry)]">
                     {item.seasonalLabel}
                   </p>
                 )}
                 {item.note && (
-                  <p className="mt-2 max-[430px]:mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[15px] max-[430px]:text-[13.25px] text-[#604C4F]">
+                  <p className="mt-2 max-[430px]:mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[15px] max-[639px]:text-[14px] text-[#604C4F]">
                     {item.note}
                   </p>
                 )}
@@ -70,7 +70,7 @@ export default function SundaesPanel() {
           <div className="text-[var(--marionberry)]" style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(20px,1.8vw,26px)', lineHeight: 1.1 }}>
             Make it your own
           </div>
-          <p className="mt-[8px] text-[#6E5A54] leading-relaxed" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
+          <p className="mt-[8px] text-[#6E5A54] leading-relaxed mobile-body-14" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
             Add a second scoop, swap the base flavor, or upgrade with house-made hot fudge or berry compote. Ask your scooper. We love a custom order!
           </p>
         </div>

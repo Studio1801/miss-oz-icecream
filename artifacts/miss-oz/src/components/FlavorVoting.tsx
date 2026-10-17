@@ -10,7 +10,7 @@ type FlavorCard = {
 };
 
 const CARDS: FlavorCard[] = [
-  { name: 'Earl Grey', note: 'black tea with fragrant bergamot', bg: '#E9E3E5' },
+  { name: 'Earl Grey', note: 'black tea with fragrant bergamot', bg: '#EAD8BE', icon: '/images/icon-earl-grey.svg' },
   { name: 'Vietnam Coffee', note: 'deep roast with a creamy condensed finish', bg: '#EAD8BE', icon: '/images/icon-vietnam-coffee.svg', img: '/images/vietnam-coffee-vote.webp' },
   { name: 'Honey Lavender', note: 'wildflower honey with a soft floral bloom', bg: '#E6DDF4', icon: '/images/icon-honey-lavender.svg', img: '/images/honey-lavender-vote.webp' },
 ];
@@ -107,7 +107,7 @@ export default function FlavorVoting() {
       <div className="mb-[18px]">
         <div className="inline-flex items-center gap-[10px] mb-[14px] self-start px-[12px] py-[5px] rounded-full"
           style={{ background: 'rgba(232,177,190,0.24)', border: '1px solid rgba(115,32,62,0.18)' }}>
-          <span className="text-[9px] tracking-[4px] uppercase font-bold"
+          <span className="text-[9px] max-[639px]:text-[12px] tracking-[4px] uppercase font-bold"
             style={{ color: 'var(--berry-deep)', fontFamily: 'var(--font-sans)' }}>
             Community Vote
           </span>
@@ -214,9 +214,11 @@ export default function FlavorVoting() {
                           {/* Larger image */}
                           <div className="shrink-0 w-[132px] h-[132px] rounded-[10px] flex items-center justify-center overflow-hidden"
                             style={{ background: card.bg }}>
-                            {card.img && (
-                              <img loading="lazy" src={card.img} alt={`A serving of ${card.name} ice cream`} width={132} height={132}
-                                className="w-full h-full object-cover"
+                            {(card.img || card.icon) && (
+                              <img loading="lazy" src={card.img ?? card.icon!}
+                                alt={card.img ? `A serving of ${card.name} ice cream` : `${card.name} tea cup illustration`}
+                                width={132} height={132}
+                                className={card.img ? 'w-full h-full object-cover' : 'w-[88px] h-[88px] object-contain'}
                                 style={{ filter: 'drop-shadow(0 3px 7px rgba(28,13,12,0.28))' }} />
                             )}
                           </div>
@@ -304,7 +306,7 @@ export default function FlavorVoting() {
       </div>
 
       {/* Vote total */}
-      <div className="mt-[14px] text-[10.5px] tracking-[3px] uppercase font-semibold"
+      <div className="mt-[14px] text-[10.5px] max-[639px]:text-[12px] tracking-[3px] uppercase font-semibold"
         style={{ color: 'rgba(115,32,62,0.6)', fontFamily: 'var(--font-sans)' }}>
         {voteError || (votes ? (total === 0 ? 'No votes yet. Be the first.' : `${total.toLocaleString()} neighbors have voted`) : 'Loading vote totals…')}
       </div>

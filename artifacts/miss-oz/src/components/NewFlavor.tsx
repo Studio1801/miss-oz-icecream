@@ -53,7 +53,7 @@ export default function NewFlavor() {
             height={18}
             className="h-[18px] w-[18px] object-contain"
           />
-          <span className="text-[11px] tracking-[3px] uppercase font-bold"
+          <span className="text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold"
             style={{ color: 'var(--berry-deep)', fontFamily: 'var(--font-sans)' }}>
             ★ New Flavor Alert ★
           </span>
@@ -94,11 +94,19 @@ export default function NewFlavor() {
           <div className="tape-strip tape-peel top-[-10px] right-[10%]  rotate-3" aria-hidden="true" />
           <div className="tape-strip tape-peel top-[-6px]  left-[10%] -rotate-6" aria-hidden="true" />
           <div className="rounded-[5px] p-[5px]" style={{ background: 'var(--cream-hi)' }}>
-            <img loading="lazy" decoding="async" src={FLAVOR.poster}
-              alt={`A serving of ${FLAVOR.name} ice cream`}
-              width={580}
-              height={580}
-              className="block w-full h-auto rounded-[2px]" />
+            <div className="relative overflow-hidden rounded-[2px]">
+              <img loading="lazy" decoding="async" src={FLAVOR.poster}
+                alt={`A serving of ${FLAVOR.name} ice cream`}
+                width={580}
+                height={580}
+                className="block w-full h-auto" />
+              <div
+                className="absolute bottom-2 right-2 z-10 rounded-full bg-[#f3e7c9] px-[10px] py-[6px] text-[28px] max-[639px]:!text-[14px] leading-none text-[var(--berry-deep)]"
+                style={{ fontFamily: 'var(--font-script)', transform: 'rotate(-4deg)' }}
+              >
+                Yum! Yum!
+              </div>
+            </div>
           </div>
         </div>
 
@@ -109,12 +117,12 @@ export default function NewFlavor() {
             style={{ background: 'radial-gradient(circle at 38% 32%, #d47f98 0%, var(--berry-deep) 100%)', clipPath: BURST }}>
             <div className="flex flex-col items-center justify-center w-[56px] h-[56px] rounded-full text-center leading-none"
               style={{ border: '1.5px dashed var(--cream-hi)' }}>
-              <span className="text-[var(--pink)] text-[9px]">★</span>
+              <span className="text-[var(--pink)] text-[9px] max-[639px]:text-[12px]">★</span>
               <span className="uppercase text-[var(--cream-hi)] mt-[2px]"
                 style={{ fontFamily: 'var(--font-display)', fontSize: '14px', letterSpacing: '1px' }}>
                 {badgeLabel.top}
               </span>
-              <span className="uppercase text-[var(--cream-hi)] opacity-80 mt-[2px] tracking-[1.5px]"
+              <span className="uppercase text-[var(--cream-hi)] opacity-80 mt-[2px] tracking-[1.5px] mobile-minimum-12"
                 style={{ fontFamily: 'var(--font-sans)', fontSize: '5.5px', fontWeight: 700 }}>
                 {badgeLabel.bottom}
               </span>
@@ -122,10 +130,6 @@ export default function NewFlavor() {
           </div>
         </div>
 
-        {/* Small playful pink accent */}
-        <div className="absolute z-20 -right-2 -bottom-3 -rotate-6 select-none"
-          style={{ fontFamily: 'var(--font-script)', fontSize: '28px', color: 'var(--berry)', textShadow: '0 2px 8px rgba(57,22,34,0.12)' }}
-          aria-hidden="true">Yum! Yum!</div>
       </motion.div>
 
       {/* Description + tags — centered below the poster */}
@@ -141,7 +145,7 @@ export default function NewFlavor() {
         <div className="flex flex-wrap gap-[9px] justify-center">
           {FLAVOR.tags.map(tag => (
             <span key={tag}
-              className="py-[5px] px-[14px] rounded-full text-[11.5px] font-semibold"
+              className="py-[5px] px-[14px] rounded-full text-[11.5px] max-[639px]:text-[12px] font-semibold"
               style={{
                 color: 'var(--berry-deep)',
                 background: 'rgba(232,177,190,0.28)',

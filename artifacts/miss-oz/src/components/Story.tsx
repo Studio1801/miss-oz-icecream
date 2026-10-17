@@ -11,7 +11,7 @@ const rise = {
 
 export default function Story() {
   return (
-    <section className="parlour-paper relative py-[76px] md:py-[112px] px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section className="parlour-paper relative py-[76px] max-[639px]:py-[61px] md:py-[112px] px-[6vw] max-[639px]:px-4 bg-[var(--cream)] overflow-hidden">
       <Bunting className="absolute top-0 left-0 right-0" />
       {/* Faint decorative laurels in the far corners */}
       <svg aria-hidden="true" className="hidden md:block absolute top-[60px] left-[4vw] opacity-[0.12]" width="120" height="120" viewBox="0 0 100 100">
@@ -45,7 +45,7 @@ export default function Story() {
             <div className="wax-seal-crack" />
             <svg width="84" height="84" viewBox="0 0 100 100" aria-hidden="true" className="absolute inset-0">
               <defs><path id="storyseal" d="M50,50 m-34,0 a34,34 0 1,1 68,0 a34,34 0 1,1 -68,0" /></defs>
-              <text style={{ fontFamily: 'var(--font-sans)', fontSize: 10.5, letterSpacing: '2px', fontWeight: 600, textTransform: 'uppercase', fill: 'var(--cream)' }}>
+              <text className="mobile-minimum-12" style={{ fontFamily: 'var(--font-sans)', fontSize: 10.5, letterSpacing: '2px', fontWeight: 600, textTransform: 'uppercase', fill: 'var(--cream)' }}>
                 <textPath href="#storyseal">· est. 2007 · Pearl District ·</textPath>
               </text>
             </svg>

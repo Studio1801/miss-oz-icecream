@@ -39,19 +39,19 @@ const FLAVOR_CARDS: FlavorCard[] = [
 export default function FlavorPanel() {
   return (
     <>
-      <div className="mt-[clamp(18px,2.2vw,28px)] grid w-full grid-cols-2 gap-[clamp(10px,1.25vw,16px)] max-[430px]:gap-3 xl:grid-cols-3">
+      <div className="flavor-grid mt-[clamp(18px,2.2vw,28px)] grid w-full grid-cols-2 gap-[clamp(10px,1.25vw,16px)] max-[430px]:gap-3 xl:grid-cols-3">
         {FLAVOR_CARDS.map((flavor) => {
           return (
             <article
               key={flavor.name}
-              className="min-w-0 overflow-hidden rounded-[10px]"
+              className="flavor-card min-w-0 overflow-hidden rounded-[10px]"
               style={{
                 background: 'var(--cream-hi)',
                 boxShadow: '0 9px 22px rgba(28,13,12,0.12)',
               }}
             >
             {flavor.photo ? (
-              <div className="aspect-[4/5] w-full overflow-hidden rounded-t-[10px]">
+              <div className="flavor-card-photo aspect-[4/5] w-full overflow-hidden rounded-t-[10px]">
                 <img
                   src={`${import.meta.env.BASE_URL}${flavor.photo.src}`}
                   alt={flavor.photo.alt ?? (flavor.photo.name === 'Thai Iced Tea'
@@ -61,7 +61,13 @@ export default function FlavorPanel() {
                   height={600}
                   loading="lazy"
                   decoding="async"
-                  className="block h-full w-full object-cover"
+                  className={`block h-full w-full object-cover ${
+                    flavor.photo.name === 'Salted Caramel'
+                      ? 'flavor-photo-zoom-salted-caramel'
+                      : flavor.photo.name === 'Peanut Butter Fudge'
+                        ? 'flavor-photo-zoom-peanut-butter'
+                        : ''
+                  }`}
                   style={{
                     objectPosition: flavor.photo.name === 'Fresh Banana' ? 'center top' : flavor.photo.objectPosition,
                     ...(flavor.photo.name === 'Fresh Banana'
@@ -72,7 +78,7 @@ export default function FlavorPanel() {
               </div>
             ) : (
               <div
-                className="flex aspect-[4/5] items-center justify-center px-3 text-center"
+                className="flavor-card-photo flex aspect-[4/5] items-center justify-center px-3 text-center"
                 style={{ background: 'linear-gradient(145deg, rgba(232,177,190,0.76), #FBF4E6)' }}
               >
                 <h3
@@ -83,7 +89,7 @@ export default function FlavorPanel() {
                 </h3>
               </div>
             )}
-            <div className="px-[clamp(9px,1vw,14px)] py-[clamp(10px,1vw,14px)]">
+            <div className="flavor-card-copy px-[clamp(9px,1vw,14px)] py-[clamp(10px,1vw,14px)]">
               {flavor.photo && (
                 <h3
                   className="leading-tight text-[var(--berry-deep)] text-[clamp(16px,1.25vw,19px)] max-[430px]:text-[14.5px]"
@@ -93,7 +99,7 @@ export default function FlavorPanel() {
                 </h3>
               )}
               <p
-                className={`text-[clamp(11.5px,0.9vw,13px)] max-[430px]:text-[10.25px] leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] ${flavor.photo ? 'mt-1' : ''}`}
+                className={`text-[clamp(11.5px,0.9vw,13px)] max-[639px]:text-[14px] leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] ${flavor.photo ? 'mt-1' : ''}`}
                 style={{ fontFamily: 'var(--font-sans)' }}
               >
                 {flavor.note}
@@ -105,7 +111,7 @@ export default function FlavorPanel() {
       </div>
       <MenuDivider className="mt-[clamp(16px,2vw,24px)]" />
       <p
-        className="mt-[clamp(10px,1.2vw,16px)] text-center text-[#6E5A54]"
+        className="mt-[clamp(10px,1.2vw,16px)] text-center text-[#6E5A54] mobile-body-14"
         style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}
       >
         We rotate approximately 20 flavors. Selection changes with the season.
@@ -118,7 +124,7 @@ export default function FlavorPanel() {
           mt-[clamp(10px,1.2vw,16px)] self-center inline-flex items-center gap-1.5 rounded-full
           bg-[var(--berry-deep)] text-[var(--cream-hi)] font-bold uppercase tracking-[2px]
           transition-colors hover:bg-[var(--berry)] focus-visible:outline-none focus-visible:ring-2
-          focus-visible:ring-[var(--gold)]
+          focus-visible:ring-[var(--gold)] mobile-minimum-12 min-h-[44px]
         "
         style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10px,0.85vw,12px)', padding: '8px 22px' }}
       >

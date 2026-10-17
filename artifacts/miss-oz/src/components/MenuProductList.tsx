@@ -21,17 +21,17 @@ export default function MenuProductList({
         >
           <div className={`min-w-0 ${centered ? 'text-center' : ''}`}>
             <div className={`flex flex-wrap items-baseline gap-x-2 gap-y-1 ${centered ? 'justify-center' : ''}`}>
-              <span className="text-[13px] sm:text-[14px] max-[430px]:text-[11.75px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
+              <span className="text-[13px] sm:text-[14px] max-[430px]:text-[12px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
                 {item.name}
               </span>
               {item.seasonalLabel && (
-                <span className="text-[10px] max-[430px]:text-[9px] font-semibold text-[var(--marionberry)]">
+                <span className="text-[10px] max-[639px]:text-[12px] font-semibold text-[var(--marionberry)]">
                   {item.seasonalLabel}
                 </span>
               )}
             </div>
             {item.note && (
-              <p className={`mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] ${descriptionSize === 'large' ? 'text-[15px] max-[430px]:text-[13.25px]' : 'text-[12px] sm:text-[13px] max-[430px]:text-[10.75px]'}`}>
+              <p className={`mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] ${descriptionSize === 'large' ? 'text-[15px] max-[639px]:text-[14px]' : 'text-[12px] sm:text-[13px] max-[639px]:text-[14px]'}`}>
                 {item.note}
               </p>
             )}

@@ -5,7 +5,7 @@ export default function NotFound() {
       className="mx-auto flex min-h-[50vh] max-w-3xl flex-col items-center justify-center gap-5 px-6 py-16 text-center"
     >
       <p
-        className="text-[11px] font-bold uppercase tracking-[0.3em] text-[var(--marionberry)]"
+        className="text-[11px] max-[639px]:text-[12px] font-bold uppercase tracking-[0.3em] text-[var(--marionberry)]"
         style={{ fontFamily: 'var(--font-sans)' }}
       >
         404
@@ -26,14 +26,14 @@ export default function NotFound() {
       <div className="flex flex-wrap justify-center gap-3 pt-2">
         <a
           href="/"
-          className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--berry-deep)] px-6 py-3 text-[var(--cream-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+          className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--berry-deep)] px-6 py-3 text-[var(--cream-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] mobile-minimum-12"
           style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 700 }}
         >
           Back to Home
         </a>
         <a
           href="/#menu"
-          className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--berry-deep)] px-6 py-3 text-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+          className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--berry-deep)] px-6 py-3 text-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] mobile-minimum-12"
           style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 700 }}
         >
           Browse the Menu

@@ -72,6 +72,33 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   const compactHeader = isHeaderScrolled || !showHero;
   return (
     <>
+    <header className="relative z-[970] hidden h-14 w-full items-center justify-between border-b border-[var(--berry)] bg-[var(--cream)] px-4 max-[639px]:sticky max-[639px]:top-0 max-[639px]:flex">
+      <button
+        type="button"
+        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((o) => !o)}
+        className="flex h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+        style={{ background: 'rgba(94,23,53,0.06)' }}
+      >
+        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-all duration-300" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-all duration-300" style={{ opacity: menuOpen ? 0 : 1 }} />
+        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-all duration-300" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+      </button>
+      <img
+        src="/images/logo-official.webp"
+        alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
+        className="absolute left-1/2 top-1/2 h-10 w-auto max-w-[92px] -translate-x-1/2 -translate-y-1/2 object-contain"
+      />
+      <a
+        href={UBEREATS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex h-11 min-w-[72px] items-center justify-center rounded-full bg-[var(--berry-deep)] px-4 text-[14px] font-bold text-[var(--cream-hi)]"
+      >
+        Order
+      </a>
+    </header>
     <section
       id="home"
       className={showHero
@@ -127,7 +154,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 <SiteNavigationLink
                   key={n.label}
                   to={navTarget(n.target, showHero)}
-                  className="whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
+                  className="mobile-minimum-12 whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
                   {n.label}
@@ -136,7 +163,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
             </nav>
             <SiteNavigationLink
               to="/about#oz"
-              className="group relative text-center leading-snug hidden xl:block cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
+              className="mobile-minimum-12 group relative text-center leading-snug hidden xl:block cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
               style={{
                 fontFamily: 'var(--font-sans)',
                 color: '#9A6E0B',
@@ -172,7 +199,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 <SiteNavigationLink
                   key={n.label}
                   to={navTarget(n.target, showHero)}
-                  className="whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
+                  className="mobile-minimum-12 whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
                   {n.label}
@@ -243,7 +270,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   opacity: { duration: 1.4, ease: [0.4, 0, 0.2, 1] },
                   scale: { duration: 8, ease: 'linear' },
                 }}
-                className="absolute inset-0 w-full h-full object-cover saturate-[1.05] contrast-[1.03]"
+                className="hero-scene-photo absolute inset-0 w-full h-full object-cover saturate-[1.05] contrast-[1.03]"
                 style={{ objectPosition: current.pos ?? 'center' }}
               />
             </AnimatePresence>
@@ -251,7 +278,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
             {/* ── LAYER 2: soft darkening behind the text ── */}
             <div
               aria-hidden="true"
-              className="absolute inset-0 pointer-events-none"
+              className="hero-dark-overlay absolute inset-0 pointer-events-none"
               style={{
                 background: 'radial-gradient(ellipse 55% 70% at 50% 52%, rgba(20,8,12,0.6) 0%, rgba(20,8,12,0.34) 55%, transparent 100%)',
               }}
@@ -259,7 +286,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
             {/* ── LAYER 3: brand text — centered over the slideshow ── */}
             <div
-              className="absolute flex flex-col items-center text-center pointer-events-none left-[4%] right-[4%] sm:left-[18%] sm:right-[18%]"
+              className="hero-title-block absolute flex flex-col items-center text-center pointer-events-none left-[4%] right-[4%] sm:left-[18%] sm:right-[18%]"
               style={{
                 top: '50%',
                 transform: 'translateY(-50%)',
@@ -285,6 +312,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               </div>
               {/* Tagline — cream script */}
               <div
+                className="hero-tagline"
                 style={{
                   fontFamily: 'var(--font-script)',
                   fontSize: 'clamp(17px,2.3vw,32px)',
@@ -312,7 +340,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 Ice Cream &amp; Handmade Desserts · Portland, Oregon
               </div>
               <div
-                className="flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
+                className="mobile-minimum-12 max-[639px]:hidden flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 'clamp(11px,1vw,15px)',
@@ -329,12 +357,12 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'rgba(251,242,223,0.6)' }} />
               </div>
               <div
-                className="flex items-center justify-center gap-[7px]"
+                className="max-[639px]:hidden flex items-center justify-center gap-[7px]"
                 style={{ color: '#F4A9C7', marginTop: 'clamp(6px,0.7vw,10px)', textShadow: '0 1px 6px rgba(20,8,12,0.6)' }}
               >
                 <span aria-hidden="true" style={{ fontSize: 'clamp(11px,1vw,15px)' }}>♥</span>
                 <PawMark size={14} className="text-[#F4A9C7]" />
-                <span
+                <span className="mobile-minimum-12"
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 'clamp(7px,0.65vw,9px)',
@@ -350,7 +378,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               <div className="flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
                 <SiteNavigationLink
                   to={sectionTarget('menu', showHero)}
-                  className="group relative inline-flex items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 hover:scale-[1.06] hover:-translate-y-[2px] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                  className="mobile-minimum-12 group relative inline-flex min-h-[44px] items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 hover:scale-[1.06] hover:-translate-y-[2px] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 'clamp(11px,0.95vw,14px)',
@@ -392,7 +420,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   aria-current={i === slide}
                   aria-label={`Show slide ${i + 1} of ${SLIDES.length}`}
                   onClick={() => setSlide(i)}
-                  className="w-[9px] h-[9px] rounded-full transition-all duration-300"
+                  className="hero-slide-dot w-[9px] h-[9px] rounded-full transition-all duration-300"
                   style={{
                     background: i === slide ? '#F4A9C7' : 'rgba(244,169,199,0.4)',
                     transform: i === slide ? 'scale(1.3)' : 'scale(1)',
@@ -408,21 +436,23 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
         {/* "PORTLAND'S HOMEGROWN ICE CREAM CAFE" — dark ribbon below the hero photo */}
         <div
-          className="mx-auto max-w-[1400px] px-[4vw] sm:px-[4vw]"
-          aria-hidden="true"
+          className="mx-auto max-w-[1400px] px-[4vw] max-[639px]:px-4 sm:px-[4vw]"
         >
           <div
-            className="flex items-center justify-center gap-[clamp(10px,2vw,24px)] py-[10px]"
+            className="flex items-center justify-center gap-[clamp(10px,2vw,24px)] py-[10px] max-[639px]:flex-col max-[639px]:gap-[4px]"
             style={{ background: 'var(--cocoa)' }}
           >
-            <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50" />
+            <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50 max-[639px]:hidden" />
             <span
-              className="text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold whitespace-nowrap"
+              className="mobile-minimum-12 text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-normal"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(8px,0.85vw,11px)' }}
             >
               Portland's Homegrown Ice Cream Cafe
             </span>
-            <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50" />
+            <span className="hidden items-center justify-center gap-1 text-[14px] font-semibold text-[var(--cream-hi)] max-[639px]:inline-flex">
+              Since 2007 · <PawMark size={14} className="shrink-0 text-[var(--gold-hi)]" /> Dogs welcome
+            </span>
+            <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50 max-[639px]:hidden" />
           </div>
         </div>
       </div>
@@ -434,14 +464,14 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={menuOpen}
         onClick={() => setMenuOpen((o) => !o)}
-        className="lg:hidden fixed top-4 left-4 z-[970] flex flex-col justify-center items-center gap-[5px] w-[42px] h-[42px] rounded-xl pointer-events-auto touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+        className="lg:hidden max-[639px]:hidden fixed top-4 left-4 z-[970] flex flex-col justify-center items-center gap-[5px] w-[42px] h-[42px] max-[639px]:w-11 max-[639px]:h-11 rounded-xl pointer-events-auto touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
         style={{ background: 'rgba(242,225,194,0.88)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
       >
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300 origin-center" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300" style={{ opacity: menuOpen ? 0 : 1 }} />
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-all duration-300 origin-center" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
-      <div aria-hidden={isHeaderScrolled} className={`lg:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
+      <div aria-hidden={isHeaderScrolled} className={`lg:hidden max-[639px]:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
         <img
           src="/images/logo-official.webp"
           alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
@@ -508,7 +538,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.09 + idx * 0.045, duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-                    className="w-full text-center py-3.5 uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
+                    className="w-full min-h-[44px] inline-flex items-center justify-center text-center py-3.5 uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] hover:bg-[rgba(178,78,121,0.06)] transition-colors rounded-md"
                     style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', letterSpacing: '2.5px' }}
                   >
                     {n.label}

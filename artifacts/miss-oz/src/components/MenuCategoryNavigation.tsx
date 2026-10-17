@@ -17,7 +17,7 @@ type Props = {
 export default function MenuCategoryNavigation({ activeCategory, onSelect, variant, onOrderWholeCake }: Props) {
   if (variant === 'mobile') {
     return (
-      <nav aria-label="Menu categories" className="px-3 py-[10px]" style={{ background: 'var(--berry-deep)' }}>
+      <nav aria-label="Menu categories" className="px-4 py-[10px]" style={{ background: 'var(--berry-deep)' }}>
         <div className="grid grid-cols-2 min-[360px]:grid-cols-3 gap-[7px]">
           {MENU_CATEGORIES.map((category) => {
             const active = activeCategory === category;
@@ -28,10 +28,10 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
                 aria-pressed={active}
                 onClick={() => onSelect(category)}
                 whileTap={{ scale: 0.93 }}
-                className="relative min-h-[42px] font-bold uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                className="relative min-h-[44px] font-bold uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(10px,2.8vw,11px)',
+                  fontSize: '12px',
                   letterSpacing: '0.5px',
                   lineHeight: 1.25,
                   padding: '8px 6px',

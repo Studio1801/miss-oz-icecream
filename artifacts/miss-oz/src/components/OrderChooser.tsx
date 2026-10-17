@@ -105,6 +105,7 @@ export default function OrderChooser({ variant = 'dark', label = 'Order Online',
       }}
     >
       <div
+        className="mobile-minimum-12"
         style={{
           padding: '10px 16px',
           textAlign: 'center',
@@ -154,12 +155,13 @@ export default function OrderChooser({ variant = 'dark', label = 'Order Online',
             }}
           >
             <span>{p.name}</span>
-            <span style={{ fontSize: 13, opacity: 0.6 }}>→</span>
+            <span className="mobile-minimum-12" style={{ fontSize: 13, opacity: 0.6 }}>→</span>
           </a>
         );
       })}
 
       <div
+        className="mobile-minimum-12"
         style={{
           padding: '8px 16px',
           textAlign: 'center',
