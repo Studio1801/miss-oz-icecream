@@ -72,14 +72,43 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   // Prevent page scrolling behind the fixed mobile menu overlay
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
-    if (menuOpen) document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = previousOverflow; };
+    const previousRootOverflow = document.documentElement.style.overflow;
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousRootOverflow;
+    };
   }, [menuOpen]);
 
   useEffect(() => {
     if (!menuOpen) return;
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setMenuOpen(false);
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setMenuOpen(false);
+      }
+      if (event.key !== 'Tab') return;
+      const panel = document.getElementById('mobile-menu-panel');
+      const targets = [
+        menuTriggerRef.current,
+        ...Array.from(panel?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex="0"]') ?? []),
+      ].filter((element): element is HTMLElement => !!element && element.getBoundingClientRect().width > 0);
+      const first = targets[0];
+      const last = targets[targets.length - 1];
+      if (!first || !last) return;
+      if (!targets.includes(document.activeElement as HTMLElement)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener('keydown', closeOnEscape);
     return () => document.removeEventListener('keydown', closeOnEscape);
@@ -106,16 +135,31 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   const activeNavTarget = showHero && window.location.hash === '#visit'
     ? '/contact'
     : currentPath;
+  const renderSlideDots = () => SLIDES.map((s, i) => (
+    <button
+      key={s.src}
+      type="button"
+      aria-current={i === slide}
+      aria-label={`Show slide ${i + 1} of ${SLIDES.length}`}
+      onClick={() => setSlide(i)}
+      className="hero-slide-dot w-[9px] h-[9px] rounded-full transition-all duration-500"
+      style={{
+        background: i === slide ? '#F4A9C7' : 'rgba(244,169,199,0.4)',
+        transform: i === slide ? 'scale(1.3)' : 'scale(1)',
+        boxShadow: i === slide ? '0 0 0 2px rgba(244,169,199,0.3)' : '0 1px 3px rgba(20,8,12,0.4)',
+      }}
+    />
+  ));
   return (
     <>
-    <header className="relative z-[970] hidden h-14 w-full items-center justify-between border-b border-[var(--berry)] bg-[var(--cream)] px-4 max-[639px]:flex">
+    <header className="mobile-site-header relative z-[970] hidden h-14 w-full items-center justify-between border-b border-[var(--berry)] bg-[var(--cream)] px-4 max-[639px]:flex">
       <button
         type="button"
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={menuOpen}
         aria-controls="mobile-menu-panel"
         onClick={toggleMenu}
-        className="flex h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+        className="mobile-header-toggle flex h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
         style={{ background: 'rgba(94,23,53,0.06)' }}
       >
         <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
@@ -279,7 +323,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           bright and natural, while staying below the marquee frame (960). */}
       <div data-hscroll className="hero-scene-shell relative w-full z-[955] pointer-events-none">
         <div
-          className="w-full relative max-w-none px-0"
+          className="hero-photo-mask w-full relative max-w-none px-0"
           style={{
             maskImage: HERO_MASK,
             WebkitMaskImage: HERO_MASK,
@@ -358,7 +402,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   }}
                 >
                   <span aria-hidden="true" className="absolute inset-[5px] rounded-full border border-dotted border-[var(--berry)]" />
-                  <span className="relative">Since 2007</span>
+                  <span className="hero-year-stamp-copy relative"><span>Since</span><span>2007</span></span>
                 </div>
               </div>
               {/* Tagline — cream script */}
@@ -461,32 +505,30 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
             {/* ── slide dots — bottom-center horizontal row, like the reference ── */}
             <div
-              className="absolute left-1/2 -translate-x-1/2 bottom-[clamp(10px,1.6vw,20px)] flex flex-row gap-[8px] pointer-events-auto"
+              className="hero-desktop-carousel absolute left-1/2 -translate-x-1/2 bottom-[clamp(10px,1.6vw,20px)] flex flex-row gap-[8px] pointer-events-auto"
               aria-label="Storefront slideshow controls"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
               onFocus={() => setPaused(true)}
               onBlur={() => setPaused(false)}
             >
-              {SLIDES.map((s, i) => (
-                <button
-                  key={s.src}
-                  type="button"
-                  aria-current={i === slide}
-                  aria-label={`Show slide ${i + 1} of ${SLIDES.length}`}
-                  onClick={() => setSlide(i)}
-                  className="hero-slide-dot w-[9px] h-[9px] rounded-full transition-all duration-500"
-                  style={{
-                    background: i === slide ? '#F4A9C7' : 'rgba(244,169,199,0.4)',
-                    transform: i === slide ? 'scale(1.3)' : 'scale(1)',
-                    boxShadow: i === slide ? '0 0 0 2px rgba(244,169,199,0.3)' : '0 1px 3px rgba(20,8,12,0.4)',
-                  }}
-                />
-              ))}
+              {renderSlideDots()}
             </div>
 
           </div>
 
+        </div>
+
+        <div
+          className="hero-mobile-carousel hidden pointer-events-auto"
+          role="group"
+          aria-label="Storefront slideshow controls"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
+        >
+          {renderSlideDots()}
         </div>
 
         {/* "PORTLAND'S HOMEGROWN ICE CREAM CAFE" — dark ribbon below the hero photo */}
@@ -494,10 +536,12 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           className="mx-auto max-w-[1400px] px-[var(--edge)] md:px-[4vw]"
         >
           <div
-            className="flex items-center justify-center gap-[clamp(10px,2vw,24px)] py-[10px] max-[639px]:flex-col max-[639px]:gap-[4px]"
+            className="hero-ribbon-bar flex items-center justify-center gap-[clamp(10px,2vw,24px)] py-[10px] max-[639px]:flex-col max-[639px]:gap-[4px]"
             style={{ background: 'var(--cocoa)' }}
           >
             <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50 max-[639px]:hidden" />
+            <span className="hero-ribbon-mobile hidden">Portland's homegrown ice cream cafe</span>
+            <span className="hero-ribbon-mobile hidden">Since 2007 · Dogs welcome</span>
             <span
               className="hero-ribbon-copy mobile-minimum-12 text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-nowrap"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(8px,0.85vw,11px)' }}
@@ -517,14 +561,14 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         aria-expanded={menuOpen}
         aria-controls="mobile-menu-panel"
         onClick={toggleMenu}
-        className="lg:hidden max-[639px]:hidden fixed top-4 left-4 z-[970] flex flex-col justify-center items-center gap-[5px] w-[42px] h-[42px] max-[639px]:w-11 max-[639px]:h-11 rounded-xl pointer-events-auto touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+        className="tablet-menu-toggle lg:hidden max-[639px]:hidden fixed top-4 left-4 z-[970] flex flex-col justify-center items-center gap-[5px] w-[42px] h-[42px] max-[639px]:w-11 max-[639px]:h-11 rounded-xl pointer-events-auto touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
         style={{ background: 'rgba(242,225,194,0.88)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
       >
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] origin-center" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ opacity: menuOpen ? 0 : 1 }} />
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] origin-center" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
-      <div aria-hidden={isHeaderScrolled} className={`lg:hidden max-[639px]:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
+      <div aria-hidden={isHeaderScrolled} className={`tablet-menu-logo lg:hidden max-[639px]:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
         <img
           src="/images/logo-official.webp"
           alt="Miss Oz, Ice Cream Cafe, Portland Oregon"

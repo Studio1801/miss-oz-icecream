@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { MENU_CATEGORIES } from './menuCatalog';
 
 export function useMenuCategory() {
@@ -16,29 +16,53 @@ type Props = {
 /** Shared category controls for the responsive homepage menu. */
 export default function MenuCategoryNavigation({ activeCategory, onSelect, variant, onOrderWholeCake }: Props) {
   const mobileTabsRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (variant !== 'mobile') return;
     const row = mobileTabsRef.current;
     if (!row || row.scrollWidth <= row.clientWidth) return;
-    const activeTab = row?.querySelector<HTMLButtonElement>('button[aria-pressed="true"]');
+    const activeTab = row.querySelector<HTMLButtonElement>('button[aria-selected="true"]');
     if (!activeTab) return;
     const rowRect = row.getBoundingClientRect();
     const tabRect = activeTab.getBoundingClientRect();
     const targetLeft = row.scrollLeft + tabRect.left - rowRect.left - (row.clientWidth - tabRect.width) / 2;
-    row.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
-  }, [activeCategory, variant]);
+    row.scrollTo({ left: Math.max(0, targetLeft), behavior: reduceMotion ? 'instant' : 'smooth' });
+  }, [activeCategory, variant, reduceMotion]);
 
   if (variant === 'mobile') {
     return (
       <nav aria-label="Menu categories" className="menu-category-mobile relative px-4 py-[10px]" style={{ background: 'var(--berry-deep)' }}>
-        <div ref={mobileTabsRef} data-hscroll className="menu-tabs-scroll grid grid-cols-2 min-[360px]:grid-cols-3 gap-[7px] max-[639px]:flex max-[639px]:w-full max-[639px]:snap-x max-[639px]:snap-mandatory max-[639px]:items-center max-[639px]:gap-2 max-[639px]:overflow-x-auto max-[639px]:overscroll-x-contain max-[639px]:scroll-smooth max-[639px]:pr-8">
-          {MENU_CATEGORIES.map((category) => {
+        <div
+          ref={mobileTabsRef}
+          data-hscroll
+          role="tablist"
+          aria-label="Menu categories"
+          className="menu-tabs-scroll grid grid-cols-2 min-[360px]:grid-cols-3 gap-[7px] max-[639px]:flex max-[639px]:w-full max-[639px]:snap-x max-[639px]:snap-mandatory max-[639px]:items-center max-[639px]:gap-2 max-[639px]:overflow-x-auto max-[639px]:overscroll-x-contain max-[639px]:scroll-smooth max-[639px]:pr-8"
+          onKeyDown={(event) => {
+            const index = MENU_CATEGORIES.indexOf(activeCategory as typeof MENU_CATEGORIES[number]);
+            let next = index;
+            if (event.key === 'ArrowRight') next = (index + 1) % MENU_CATEGORIES.length;
+            else if (event.key === 'ArrowLeft') next = (index + MENU_CATEGORIES.length - 1) % MENU_CATEGORIES.length;
+            else if (event.key === 'Home') next = 0;
+            else if (event.key === 'End') next = MENU_CATEGORIES.length - 1;
+            else return;
+            event.preventDefault();
+            onSelect(MENU_CATEGORIES[next]);
+            mobileTabsRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus({ preventScroll: true });
+          }}
+        >
+          {MENU_CATEGORIES.map((category, index) => {
             const active = activeCategory === category;
             return (
               <motion.button
                 key={category}
                 type="button"
+                role="tab"
+                id={`menu-tab-${index}`}
+                aria-controls={`menu-panel-${index}`}
+                aria-selected={active}
+                tabIndex={active ? 0 : -1}
                 aria-pressed={active}
                 onClick={() => onSelect(category)}
                 whileTap={{ scale: 0.985 }}
@@ -55,7 +79,7 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
                   transition: 'color 220ms cubic-bezier(0.22, 1, 0.36, 1)',
                 }}
               >
-                {active && <motion.span layoutId="mobile-pill-active" className="absolute inset-0 rounded-full" style={{ background: 'var(--pink)' }} transition={{ type: 'spring', stiffness: 400, damping: 35 }} />}
+                {active && <span className="absolute inset-0 rounded-full" style={{ background: 'var(--pink)' }} />}
                 <span className="relative">{category}</span>
               </motion.button>
             );

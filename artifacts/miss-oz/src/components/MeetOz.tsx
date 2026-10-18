@@ -32,7 +32,7 @@ function Snapshot({
 }) {
   return (
     <figure
-      className="relative bg-[var(--cream-hi)] p-[10px] pb-[14px] rounded-[3px] w-full max-w-[280px] mx-auto"
+      className="oz-polaroid relative bg-[var(--cream-hi)] p-[10px] pb-[14px] rounded-[3px] w-full max-w-[280px] mx-auto"
       style={{
         transform: `rotate(${rotate})`,
         boxShadow: '0 10px 28px rgba(28,13,12,0.18), 0 2px 6px rgba(28,13,12,0.12)',
@@ -41,7 +41,7 @@ function Snapshot({
       {/* tape */}
       <span
         aria-hidden="true"
-        className="absolute -top-[12px] left-1/2 -translate-x-1/2 w-[76px] h-[24px] rotate-[-3deg]"
+        className="oz-polaroid-tape absolute -top-[12px] left-1/2 -translate-x-1/2 w-[76px] h-[24px] rotate-[-3deg]"
         style={{ background: 'rgba(214,193,150,0.75)', boxShadow: '0 1px 3px rgba(28,13,12,0.15)' }}
       />
       <div className="aspect-[4/5] overflow-hidden rounded-[2px] bg-[rgba(28,13,12,0.05)]">
@@ -73,7 +73,7 @@ function Snapshot({
 
 export default function MeetOz() {
   return (
-    <section className="parlour-paper relative py-[56px] md:py-[130px] px-[var(--edge)] md:px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section className="meet-oz-section parlour-paper relative py-[56px] md:py-[130px] px-[var(--edge)] md:px-[6vw] bg-[var(--cream)] overflow-hidden">
       {/* faint paw trail wandering across the backdrop */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 text-[var(--cocoa)]">
         <PawPrint size={26} className="absolute top-[12%] left-[8%] opacity-[0.08] rotate-[20deg]" />
@@ -109,7 +109,7 @@ export default function MeetOz() {
         </div>
 
         {/* Copy */}
-        <motion.div {...rise} transition={{ duration: 0.7, delay: 0.25 }} className="mt-8 max-w-[640px] mx-auto text-center">
+        <motion.div {...rise} transition={{ duration: 0.7, delay: 0.25 }} className="meet-oz-copy mt-8 max-w-[640px] mx-auto text-center">
           <p className="mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
             The shop is named after Oz, our beloved dog, and the reason we do things the way we do.
             Oregon is about as dog-friendly as a place can be, and she made every corner of it hers.
@@ -119,7 +119,7 @@ export default function MeetOz() {
             along when we travel to hunt down new flavors. Nothing goes on the menu until it passes her
             inspection.
           </p>
-          <p className="mt-10 text-[clamp(22px,2vw,28px)] leading-[1.35] text-[var(--berry)] md:mt-12" style={macklin}>
+          <p className="oz-pull-quote mt-10 text-[clamp(22px,2vw,28px)] leading-[1.35] text-[var(--berry)] md:mt-12" style={macklin}>
             Oz has tested every flavor before you have.
           </p>
         </motion.div>
@@ -128,7 +128,7 @@ export default function MeetOz() {
         <motion.div
           {...rise}
           transition={{ duration: 0.7, delay: 0.35 }}
-          className="mt-14 grid grid-cols-1 max-[639px]:grid-cols-2 sm:grid-cols-3 gap-10 sm:gap-6 max-[639px]:gap-x-6 max-[639px]:gap-y-8 items-start"
+          className="oz-photo-row mt-14 grid grid-cols-1 max-[639px]:grid-cols-2 sm:grid-cols-3 gap-10 sm:gap-6 max-[639px]:gap-x-6 max-[639px]:gap-y-8 items-start"
         >
           <Snapshot src="/images/oz-boots.webp" alt="Oz, a tricolor Cavalier King Charles Spaniel, wearing yellow boots in a carpet of autumn leaves" caption="yellow boots season" rotate="-2.5deg" />
           <Snapshot src="/images/oz-flowers.webp" alt="Oz smiling on a sunny trail beside yellow wildflowers" caption="research department" rotate="1.5deg" />

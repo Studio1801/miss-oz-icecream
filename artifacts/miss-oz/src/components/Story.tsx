@@ -37,7 +37,7 @@ export default function Story() {
         <div aria-hidden="true" className="pointer-events-none absolute inset-[18px] max-[639px]:inset-[12px] rounded-[2px] stitch-border border-[rgba(28,13,12,0.22)]" />
 
         {/* Wax-seal stamp riding the top edge */}
-        <div aria-hidden="true" className="absolute left-1/2 -translate-x-1/2 -top-[40px] z-10">
+        <div aria-hidden="true" className="story-stamp absolute left-1/2 -translate-x-1/2 -top-[40px] z-10">
           <div
             className="wax-seal relative flex items-center justify-center rounded-full cursor-pointer"
             style={{ width: 84, height: 84, background: 'var(--berry)', boxShadow: '0 8px 24px rgba(28,13,12,0.3), inset 0 4px 8px rgba(255,255,255,0.2), inset 0 -4px 8px rgba(0,0,0,0.3)' }}

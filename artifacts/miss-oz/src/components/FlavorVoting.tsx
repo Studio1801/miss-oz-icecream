@@ -286,7 +286,7 @@ export default function FlavorVoting() {
                                   </div>
                                   <div className="text-[10.5px] mt-[4px]"
                                     style={{ color: 'var(--cocoa)', opacity: 0.55, fontFamily: 'var(--font-sans)' }}>
-                                    {votes ? <><CountUp to={votes[i]} reduce={reduce} /> votes</> : <span className="max-[639px]:hidden">Totals unavailable</span>}
+                                    {votes ? <><CountUp to={votes[i]} reduce={reduce} /> votes</> : <span className="api-availability-message max-[639px]:hidden">Totals unavailable</span>}
                                     {isChoice && <span className="ml-1 font-bold" style={{ color: 'var(--berry-deep)', opacity: 1 }}>· your pick ♥</span>}
                                   </div>
                                 </div>
@@ -309,7 +309,7 @@ export default function FlavorVoting() {
       </div>
 
       {/* Vote total */}
-      <div className={`mt-[14px] text-[10.5px] max-[639px]:text-[12px] tracking-[3px] uppercase font-semibold ${voteError || !votes ? 'max-[639px]:hidden' : ''}`}
+      <div className={`mt-[14px] text-[10.5px] max-[639px]:text-[12px] tracking-[3px] uppercase font-semibold ${voteError || !votes ? 'max-[639px]:hidden' : ''} ${voteError.includes('unavailable') ? 'api-availability-message' : ''}`}
         style={{ color: 'rgba(115,32,62,0.6)', fontFamily: 'var(--font-sans)' }}>
         {voteError || (votes ? (total === 0 ? 'No votes yet. Be the first.' : `${total.toLocaleString()} neighbors have voted`) : 'Loading vote totals…')}
       </div>

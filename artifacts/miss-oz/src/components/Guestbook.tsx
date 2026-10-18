@@ -215,7 +215,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
               </div>
 
               {!loading && (loadError || entries.length === 0) && (
-                <p className="py-4 text-[14.5px] italic text-[var(--cocoa)]" role="status">
+                <p className={`py-4 text-[14.5px] italic text-[var(--cocoa)] ${loadError ? 'api-availability-message' : ''}`} role="status">
                   <span className="hidden max-[639px]:inline">Be the first to sign the book</span>
                   <span className="max-[639px]:hidden">
                     {loadError ? 'Guestbook entries are unavailable right now.' : 'No entries yet. Be the first to sign the book.'}

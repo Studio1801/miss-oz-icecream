@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import { useIsMobile } from '../hooks/use-mobile';
 import MenuCategoryNavigation from './MenuCategoryNavigation';
 import CheesecakeOrder from './CheesecakeOrder';
 import CroffleDessertsPanel from './CroffleDessertsPanel';
@@ -137,6 +138,8 @@ function CardDivider() {
 }
 
 export default function MenuSection() {
+  const isMobile = useIsMobile();
+  const reduceMotion = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState<string>(() =>
     window.location.hash === '#cakes' ? 'Whole Cakes' : 'Flavors',
   );
@@ -145,7 +148,7 @@ export default function MenuSection() {
   const closeCakeOrder = useCallback(() => setCakeOrderOpen(false), []);
   const selectCategory = (category: string) => {
     const categoryChanged = category !== activeCategory;
-    scrollMenuAfterSelection.current = categoryChanged;
+    scrollMenuAfterSelection.current = categoryChanged && !window.matchMedia('(max-width: 767px)').matches;
     setActiveCategory(category);
     if (category === 'Whole Cakes') {
       history.replaceState(null, '', `${window.location.pathname}${window.location.search}#cakes`);
@@ -302,12 +305,16 @@ export default function MenuSection() {
               className="grid"
               style={{ gridTemplateColumns: '1fr', gridTemplateRows: 'auto' }}
             >
-              {MENU_CATEGORIES.map((category) => {
+              {MENU_CATEGORIES.map((category, index) => {
                 const isActive = category === activeCategory;
                 return (
                   <motion.div
                     key={category}
-                    className="flex flex-col"
+                    className="menu-panel flex flex-col"
+                    id={`menu-panel-${index}`}
+                    role={isMobile ? 'tabpanel' : undefined}
+                    aria-labelledby={isMobile ? `menu-tab-${index}` : undefined}
+                    inert={!isActive}
                     style={{
                       gridArea: '1 / 1',
                       height: isActive ? 'auto' : 0,
@@ -317,9 +324,13 @@ export default function MenuSection() {
                     initial={false}
                     animate={{
                       opacity: isActive ? 1 : 0,
-                      filter: isActive ? 'blur(0px)' : 'blur(6px)',
+                      filter: isMobile ? 'none' : isActive ? 'blur(0px)' : 'blur(6px)',
+                      y: isMobile && !reduceMotion && !isActive ? 10 : 0,
                     }}
-                    transition={{
+                    transition={isMobile ? {
+                      duration: reduceMotion ? 0 : 0.25,
+                      ease: 'easeOut',
+                    } : {
                       opacity: {
                         duration: isActive ? 0.42 : 0.14,
                         ease: isActive ? [0.16, 1, 0.3, 1] : 'easeIn',

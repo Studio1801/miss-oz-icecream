@@ -13,17 +13,18 @@ export default function MenuProductList({
   const centered = align === 'center';
 
   return (
-    <ul className="divide-y divide-[rgba(94,23,53,0.12)]">
+    <ul className="menu-product-list divide-y divide-[rgba(94,23,53,0.12)]">
       {items.map((item) => (
         <li
           key={item.name}
           className="py-3.5 first:pt-0 max-[430px]:py-4"
         >
           <div className={`min-w-0 ${centered ? 'text-center' : ''}`}>
-            <div className={`flex flex-wrap items-baseline gap-x-2 gap-y-1 ${centered ? 'justify-center' : ''}`}>
-              <span className="text-[13px] sm:text-[14px] max-[430px]:text-[12px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
+            <div className={`menu-product-heading flex flex-wrap items-baseline gap-x-2 gap-y-1 ${centered ? 'justify-center' : ''}`}>
+              <span className="menu-product-name text-[13px] sm:text-[14px] max-[430px]:text-[12px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
                 {item.name}
               </span>
+              {item.price && <span className="menu-product-price hidden">{item.price}</span>}
               {item.seasonalLabel && (
                 <span className="text-[10px] max-[639px]:text-[12px] font-semibold text-[var(--marionberry)]">
                   {item.seasonalLabel}

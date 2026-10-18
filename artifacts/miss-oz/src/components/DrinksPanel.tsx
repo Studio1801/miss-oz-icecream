@@ -30,8 +30,9 @@ export default function DrinksPanel() {
           <div className="mx-auto flex w-full flex-col items-center text-center">
             {milkshake && (
               <>
-                <div className="text-[13px] sm:text-[14px] max-[430px]:text-[12px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
+                <div className="menu-product-heading menu-product-name text-[13px] sm:text-[14px] max-[430px]:text-[12px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
                   {milkshake.name}
+                  {milkshake.price && <span className="menu-product-price hidden">{milkshake.price}</span>}
                 </div>
                 {milkshake.note && (
                   <p className="mt-1 w-full min-w-0 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] text-[12px] sm:text-[13px] max-[639px]:text-[14px] min-[431px]:max-[800px]:max-w-[280px]">
@@ -40,7 +41,7 @@ export default function DrinksPanel() {
                 )}
               </>
             )}
-            <div className="mx-auto mt-[24px] flex w-full max-w-[702px] flex-wrap justify-center gap-6">
+            <div className="menu-drink-photos mx-auto mt-[24px] flex w-full max-w-[702px] flex-wrap justify-center gap-6">
               {MILKSHAKE_PHOTOS.map((photo) => (
                 <figure
                   key={photo.caption}

@@ -29,7 +29,7 @@ export default function MenuPhotoGrid({
   const unpairedPhotoClass = 'md:col-span-2 md:w-1/2 md:justify-self-center xl:col-span-1 xl:w-full';
 
   return (
-    <div className={`mx-auto grid w-full max-w-[760px] ${gridColumns} gap-[20px]`}>
+    <div className={`menu-photo-grid mx-auto grid w-full max-w-[760px] ${gridColumns} gap-[20px]`}>
       {photos.map((photo, index) => {
         const isUnpairedLastPhoto = photos.length % 2 === 1 && index === photos.length - 1;
 

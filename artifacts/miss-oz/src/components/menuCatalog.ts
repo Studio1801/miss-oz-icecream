@@ -2,6 +2,7 @@
  * so the same real menu can be reused when the site eventually gains pages. */
 export type MenuItem = {
   name: string;
+  price?: string;
   note?: string;
   seasonalLabel?: string;
 };

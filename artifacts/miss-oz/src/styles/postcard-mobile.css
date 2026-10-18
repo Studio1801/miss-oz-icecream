@@ -1,0 +1,269 @@
+/* Postcard-only phone layout. All desktop rules remain in index.css. */
+@media (max-width: 767px) {
+  .page-content-gutter > header.mobile-site-header {
+    position: sticky;
+    top: 0;
+    z-index: 970;
+    display: flex !important;
+    height: 56px;
+    min-height: 56px;
+    padding: 0 !important;
+  }
+
+  .mobile-site-header .mobile-header-toggle {
+    box-sizing: border-box;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    margin-left: -15px;
+    padding: 0;
+  }
+
+  .page-content-gutter #home .tablet-menu-toggle,
+  .page-content-gutter #home .tablet-menu-logo,
+  .page-content-gutter #home .hero-desktop-carousel {
+    display: none !important;
+  }
+
+  .page-content-gutter #home .hero-photo-mask {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+
+  .page-content-gutter #home .hero-scene-frame {
+    height: 88svh;
+    min-height: 0;
+    max-height: 640px;
+    overflow: hidden !important;
+    background: #2a1420;
+  }
+
+  /* Reserve the lower part for copy; the scoops stay in the middle of the scene. */
+  .page-content-gutter #home .hero-scene-photo {
+    top: 0;
+    bottom: auto;
+    height: 78%;
+    object-position: 65% 70% !important;
+    transform-origin: center bottom;
+    mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+    animation: hero-mobile-zoom 12s linear backwards;
+  }
+
+  .page-content-gutter #home .hero-dark-overlay {
+    background: linear-gradient(to bottom, transparent 20%, rgba(40, 12, 30, 0.88) 100%) !important;
+  }
+
+  .page-content-gutter #home .hero-title-block {
+    top: auto !important;
+    bottom: 20px !important;
+    left: 8px !important;
+    right: 8px !important;
+    width: auto !important;
+    transform: none !important;
+  }
+
+  .page-content-gutter #home .hero-entrance,
+  .page-content-gutter #home .hero-stamp-entrance {
+    opacity: 1;
+    animation-fill-mode: backwards;
+  }
+
+  .page-content-gutter #home .hero-enter-title {
+    width: 100%;
+  }
+
+  .page-content-gutter #home .hero-title-text {
+    font-size: clamp(36px, 10vw, 56px) !important;
+  }
+
+  .page-content-gutter #home .hero-enter-subtext {
+    display: none !important;
+  }
+
+  .page-content-gutter #home .hero-year-stamp {
+    top: -96px !important;
+    right: 8px !important;
+    display: flex;
+    box-sizing: border-box;
+    width: 84px !important;
+    height: 84px !important;
+    min-width: 84px;
+    min-height: 84px;
+    overflow: visible;
+    text-align: center;
+  }
+
+  .page-content-gutter #home .hero-year-stamp-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px !important;
+    line-height: 1.15;
+    letter-spacing: normal !important;
+    white-space: normal;
+  }
+
+  .page-content-gutter #home .hero-cta-wrap {
+    width: 100%;
+    margin-top: 20px !important;
+  }
+
+  .page-content-gutter #home .hero-menu-button {
+    min-width: 220px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    padding-block: 0 !important;
+    background: #EBC77F !important;
+    color: var(--berry) !important;
+    font-size: 14px !important;
+  }
+
+  .page-content-gutter #home .hero-menu-button > [aria-hidden]:not(.hero-menu-arrow) {
+    display: none;
+  }
+
+  .page-content-gutter #home .hero-mobile-dogs {
+    display: flex !important;
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .page-content-gutter #home .hero-mobile-carousel {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    padding-block: 20px;
+    background: #2a1420;
+  }
+
+  .page-content-gutter #home .hero-mobile-carousel .hero-slide-dot {
+    flex: 0 0 44px;
+    box-sizing: border-box !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 17.5px !important;
+    border: 0;
+    background-clip: content-box !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .page-content-gutter #home .hero-ribbon-bar {
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 0;
+  }
+
+  .page-content-gutter #home .hero-ribbon-bar > span {
+    display: none;
+  }
+
+  .page-content-gutter #home .hero-ribbon-bar > .hero-ribbon-mobile {
+    display: block;
+    max-width: 100%;
+    color: var(--cream-hi);
+    font-family: var(--font-sans);
+    font-size: 15px !important;
+    line-height: 1.5;
+    letter-spacing: normal !important;
+    text-align: center;
+    text-transform: none !important;
+    white-space: normal !important;
+  }
+
+  #mobile-menu-panel.mobile-menu-overlay {
+    background-color: var(--cream) !important;
+    overscroll-behavior: contain;
+  }
+
+  #mobile-menu-panel .mobile-menu-content {
+    height: 100svh;
+    min-height: 0;
+    padding: 72px var(--edge) max(24px, env(safe-area-inset-bottom)) !important;
+  }
+
+  #mobile-menu-panel .mobile-menu-links {
+    width: calc(100% + 12px) !important;
+    max-width: none !important;
+    margin-left: -12px;
+    padding-left: 12px;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  #mobile-menu-panel .mobile-menu-link {
+    flex: 0 0 64px;
+    height: 64px;
+    min-height: 64px;
+    padding-block: 0;
+    border: 0;
+    font-family: var(--font-serif);
+    font-size: 36px;
+    letter-spacing: normal !important;
+    text-transform: none;
+  }
+
+  #mobile-menu-panel .mobile-menu-link[aria-current="page"]::before {
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: -12px;
+    width: 8px;
+    height: 8px;
+    transform: translateY(-50%);
+  }
+
+  #mobile-menu-panel .mobile-menu-meet {
+    margin-top: 24px;
+    color: var(--berry);
+  }
+
+  #mobile-menu-panel .mobile-menu-meet span {
+    color: var(--berry);
+  }
+
+  #mobile-menu-panel .mobile-menu-bottom {
+    flex-shrink: 0;
+    padding-top: 16px;
+  }
+
+  #mobile-menu-panel .mobile-menu-order {
+    height: 56px;
+    min-height: 56px;
+    background: var(--berry);
+    text-transform: none;
+  }
+
+  #mobile-menu-panel .mobile-menu-meta {
+    min-height: 0;
+  }
+
+  #mobile-menu-panel .mobile-menu-meta p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    white-space: normal;
+  }
+
+  #mobile-menu-panel .mobile-menu-mark {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .page-content-gutter #home .hero-entrance,
+  .page-content-gutter #home .hero-stamp-entrance,
+  .page-content-gutter #home .hero-scene-photo {
+    animation: none !important;
+    opacity: 1;
+  }
+}

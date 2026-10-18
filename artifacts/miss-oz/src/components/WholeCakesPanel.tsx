@@ -26,7 +26,7 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           <div className="relative mt-[18px] font-bold text-[#3B1E2B]" style={{ fontSize: 'clamp(14px,1.1vw,17px)' }}>
             Pricing
           </div>
-          <div className="relative mt-[9px] grid grid-cols-3">
+          <div className="cake-price-list relative mt-[9px] grid grid-cols-3">
             {[
               { size: '6-inch', price: '$55', slices: '' },
               { size: '8-inch', price: '$85', slices: '8 slices' },
@@ -38,16 +38,16 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
                   index < 2 ? 'md:border-r md:border-[rgba(94,23,53,0.24)]' : ''
                 }`}
               >
-                <div className="whitespace-nowrap text-[14px] font-normal text-[#4D3538]">
+                <div className="cake-size whitespace-nowrap text-[14px] font-normal text-[#4D3538]">
                   {option.size}
                 </div>
                 <div
-                  className="whitespace-nowrap text-[26px] leading-none text-[var(--berry-deep)] md:text-[32px]"
+                  className="cake-price whitespace-nowrap text-[26px] leading-none text-[var(--berry-deep)] md:text-[32px]"
                   style={{ fontFamily: "'DM Serif Display', serif" }}
                 >
                   {option.price}
                 </div>
-                <div className="mt-1 min-h-[1.25rem] whitespace-nowrap text-[13px] text-[#4D3538]/80">
+                <div className="cake-slices mt-1 min-h-[1.25rem] whitespace-nowrap text-[13px] text-[#4D3538]/80">
                   {option.slices}
                 </div>
               </div>
