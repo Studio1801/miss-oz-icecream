@@ -107,9 +107,9 @@ export default function FlavorVoting() {
       <div className="mb-[18px]">
         <div className="inline-flex items-center gap-[10px] mb-[14px] self-start px-[12px] py-[5px] rounded-full"
           style={{ background: 'rgba(232,177,190,0.24)', border: '1px solid rgba(115,32,62,0.18)' }}>
-          <span className="text-[9px] max-[639px]:text-[12px] tracking-[4px] uppercase font-bold"
+          <span className="mobile-community-vote-label text-[9px] max-[639px]:text-[12px] tracking-[4px] uppercase font-bold"
             style={{ color: 'var(--berry-deep)', fontFamily: 'var(--font-sans)' }}>
-            Community Vote
+            Community vote
           </span>
         </div>
 

@@ -192,7 +192,7 @@ export default function MenuSection() {
         <div className="flex items-center justify-center gap-3 mb-[clamp(14px,1.8vw,22px)]">
           <span className="w-10 h-px bg-[var(--gold)] opacity-60" aria-hidden="true" />
           <span
-            className="text-[var(--berry-deep)] text-[12px] tracking-[4px] uppercase font-bold"
+            className="mobile-menu-step-inside text-[var(--berry-deep)] text-[12px] tracking-[4px] uppercase font-bold"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
             Step Inside

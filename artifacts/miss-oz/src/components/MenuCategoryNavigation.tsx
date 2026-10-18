@@ -38,7 +38,7 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
           data-hscroll
           role="tablist"
           aria-label="Menu categories"
-          className="menu-tabs-scroll grid grid-cols-2 min-[360px]:grid-cols-3 gap-[7px] max-[639px]:flex max-[639px]:w-full max-[639px]:snap-x max-[639px]:snap-mandatory max-[639px]:items-center max-[639px]:gap-2 max-[639px]:overflow-x-auto max-[639px]:overscroll-x-contain max-[639px]:scroll-smooth max-[639px]:pr-8"
+          className="menu-tabs-scroll grid grid-cols-2 min-[360px]:grid-cols-3 gap-[7px] max-[767px]:flex max-[767px]:w-full max-[767px]:snap-x max-[767px]:snap-mandatory max-[767px]:items-center max-[767px]:gap-2 max-[767px]:overflow-x-auto max-[767px]:overscroll-x-contain max-[767px]:scroll-smooth max-[767px]:pr-8"
           onKeyDown={(event) => {
             const index = MENU_CATEGORIES.indexOf(activeCategory as typeof MENU_CATEGORIES[number]);
             let next = index;
@@ -65,10 +65,10 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
                 tabIndex={active ? 0 : -1}
                 aria-pressed={active}
                 onClick={() => onSelect(category)}
-                className="relative min-h-[44px] font-bold uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] max-[639px]:shrink-0 max-[639px]:snap-center max-[639px]:whitespace-nowrap max-[639px]:px-3"
+                className="relative min-h-[44px] font-bold uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] max-[767px]:shrink-0 max-[767px]:snap-center max-[767px]:whitespace-nowrap max-[767px]:px-3"
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '12px',
+                  fontSize: '15px',
                   letterSpacing: '0.5px',
                   lineHeight: 1.25,
                   padding: '8px 6px',

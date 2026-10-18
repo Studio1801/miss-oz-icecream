@@ -313,3 +313,50 @@
     transition: none !important;
   }
 }
+
+@media (max-width: 767px) {
+  .page-content-gutter #menu .menu-category-mobile .menu-tabs-scroll {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: 100%;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--page-gutter);
+  }
+
+  .page-content-gutter #menu .menu-category-mobile .menu-tabs-scroll > [role="tab"] {
+    box-sizing: border-box;
+    flex: 0 0 auto !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    font-size: 15px !important;
+    white-space: nowrap !important;
+    scroll-snap-align: center;
+  }
+
+  .page-content-gutter #menu .mobile-menu-step-inside,
+  .page-content-gutter .mobile-view-menu {
+    font-size: 15px !important;
+  }
+
+  .page-content-gutter #home .hero-menu-button.mobile-view-menu {
+    font-size: 15px !important;
+  }
+
+  .page-content-gutter .mobile-wholesale-eyebrow,
+  .page-content-gutter .mobile-about-seal-copy,
+  .page-content-gutter .mobile-community-vote-label,
+  .page-content-gutter .mobile-guestbook-label,
+  .page-content-gutter .mobile-guestbook-page-label {
+    font-size: 13px !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .page-content-gutter .mobile-community-vote-label,
+  .page-content-gutter .mobile-guestbook-label,
+  .page-content-gutter .mobile-guestbook-page-label {
+    text-transform: none !important;
+  }
+}

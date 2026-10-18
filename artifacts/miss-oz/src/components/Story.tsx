@@ -45,7 +45,7 @@ export default function Story() {
             <div className="wax-seal-crack" />
             <svg width="84" height="84" viewBox="0 0 100 100" aria-hidden="true" className="absolute inset-0">
               <defs><path id="storyseal" d="M50,50 m-34,0 a34,34 0 1,1 68,0 a34,34 0 1,1 -68,0" /></defs>
-              <text className="mobile-minimum-12" style={{ fontFamily: 'var(--font-sans)', fontSize: 10.5, letterSpacing: '2px', fontWeight: 600, textTransform: 'uppercase', fill: 'var(--cream)' }}>
+              <text className="mobile-minimum-12 mobile-about-seal-copy" style={{ fontFamily: 'var(--font-sans)', fontSize: 10.5, letterSpacing: '2px', fontWeight: 600, textTransform: 'uppercase', fill: 'var(--cream)' }}>
                 <textPath href="#storyseal">· est. 2007 · Pearl District ·</textPath>
               </text>
             </svg>

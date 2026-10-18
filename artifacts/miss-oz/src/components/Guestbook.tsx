@@ -166,7 +166,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 Sign the book
               </div>
 
-              <label htmlFor="gb-name" className="block text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+              <label htmlFor="gb-name" className="mobile-guestbook-label block text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                 Your name
               </label>
               <input
@@ -182,7 +182,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
               />
               {validation.error('gb-name')}
 
-              <label htmlFor="gb-note" className="block text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+              <label htmlFor="gb-note" className="mobile-guestbook-label block text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                 Leave a note
               </label>
               <textarea
@@ -217,7 +217,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
               <p ref={liveRef} aria-live="polite" className="sr-only" />
               {validation.mobile && submitResult === 'error' && <p role="alert" className="mobile-field-error">{MOBILE_FORM_FAILURE}</p>}
 
-              <div className="mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
+              <div className="mobile-guestbook-page-label mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
                 Page one.
               </div>
             </form>

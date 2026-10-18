@@ -527,7 +527,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               <div className="hero-entrance hero-enter-button hero-cta-wrap relative flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
                 <SiteNavigationLink
                   to={sectionTarget('menu', showHero)}
-                  className="hero-menu-button interaction-primary mobile-minimum-12 group relative inline-flex min-h-[44px] items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                  className="hero-menu-button mobile-view-menu interaction-primary mobile-minimum-12 group relative inline-flex min-h-[44px] items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 'clamp(11px,0.95vw,14px)',

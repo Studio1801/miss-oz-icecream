@@ -163,7 +163,7 @@ export default function InquireForm({
     : `w-full bg-transparent border-b-2 border-[rgba(28,13,12,0.25)] pb-[5px] text-[17px] text-[var(--cocoa)] placeholder:text-[rgba(28,13,12,0.35)] placeholder:italic focus:outline-none focus:border-[var(--berry)] transition-colors px-1 py-1 rounded-sm ${mobileEventInputClass}`;
 
   const labelCaseClass = sentenceCaseLabels ? 'tracking-[1px] normal-case' : 'tracking-[3px] uppercase';
-  const labelSizeClass = type === 'event' && inline ? 'text-[12px] max-[639px]:text-[14px]' : 'text-[11px] max-[639px]:text-[12px]';
+  const labelSizeClass = type === 'event' && inline ? 'text-[12px] event-form-label' : 'text-[11px] max-[639px]:text-[12px]';
   const labelClass = darkBg
     ? `block ${labelSizeClass} ${labelCaseClass} font-bold text-[#f3ead6] opacity-70 mb-1`
     : `block ${labelSizeClass} ${labelCaseClass} font-bold text-[var(--cocoa)] opacity-60 mb-1`;

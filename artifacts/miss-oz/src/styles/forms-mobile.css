@@ -3,6 +3,12 @@
 }
 
 @media (max-width: 767px) {
+  .page-content-gutter .event-form-label {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 767px) {
   .form-mobile-only {
     display: inline;
   }

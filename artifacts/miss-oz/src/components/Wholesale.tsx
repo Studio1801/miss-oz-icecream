@@ -157,7 +157,7 @@ export default function Wholesale() {
 
       <div className="relative z-10 mx-auto max-w-[980px]">
         <motion.div {...rise} transition={{ duration: 0.65 }} className="mb-6 text-center">
-          <span className="mb-4 block text-[11px] max-[639px]:text-[12px] font-bold tracking-[3px] text-[var(--berry-deep)]">
+          <span className="mobile-wholesale-eyebrow mb-4 block text-[11px] max-[639px]:text-[12px] font-bold tracking-[3px] text-[var(--berry-deep)]">
             Wholesale program · Est. 2007
           </span>
           <h2
