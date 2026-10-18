@@ -181,7 +181,9 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
       onClick={() => setSlide(i)}
       className="hero-slide-dot w-[9px] h-[9px] rounded-full transition-all duration-500"
       style={{
-        background: i === slide ? '#F4A9C7' : 'rgba(244,169,199,0.4)',
+        background: isMobile
+          ? i === slide ? 'var(--cream-hi)' : 'rgba(251,242,223,0.45)'
+          : i === slide ? '#F4A9C7' : 'rgba(244,169,199,0.4)',
         transform: i === slide ? 'scale(1.3)' : 'scale(1)',
         boxShadow: i === slide ? '0 0 0 2px rgba(244,169,199,0.3)' : '0 1px 3px rgba(20,8,12,0.4)',
       }}
@@ -487,7 +489,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 Ice Cream &amp; Handmade Desserts · Portland, Oregon
               </div>
               <div
-                className="mobile-minimum-12 max-[767px]:hidden flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
+                className="hero-since-line mobile-minimum-12 max-[767px]:hidden flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 'clamp(11px,1vw,15px)',
@@ -504,7 +506,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'rgba(251,242,223,0.6)' }} />
               </div>
               <div
-                className="max-[767px]:hidden flex items-center justify-center gap-[7px]"
+                className="hero-pet-line max-[767px]:hidden flex items-center justify-center gap-[7px]"
                 style={{ color: '#F4A9C7', marginTop: 'clamp(6px,0.7vw,10px)', textShadow: '0 1px 6px rgba(20,8,12,0.6)' }}
               >
                 <span aria-hidden="true" style={{ fontSize: 'clamp(11px,1vw,15px)' }}>♥</span>
@@ -553,6 +555,14 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 <PawMark size={18} className="text-[#F4A9C7]" />
                 <span>Dogs welcome</span>
               </div>
+              <div
+                className="hero-mobile-carousel hidden pointer-events-auto"
+                role="group"
+                aria-label="Storefront slideshow controls"
+                {...carouselInteraction}
+              >
+                {renderSlideDots()}
+              </div>
             </div>
 
             {/* ── slide dots — bottom-center horizontal row, like the reference ── */}
@@ -568,15 +578,6 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
         </div>
 
-        <div
-          className="hero-mobile-carousel hidden pointer-events-auto"
-          role="group"
-          aria-label="Storefront slideshow controls"
-          {...carouselInteraction}
-        >
-          {renderSlideDots()}
-        </div>
-
         {/* "PORTLAND'S HOMEGROWN ICE CREAM CAFE" — dark ribbon below the hero photo */}
         <div
           className="mx-auto max-w-[1400px] px-[var(--edge)] md:px-[4vw]"
@@ -587,7 +588,6 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           >
             <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50 max-[639px]:hidden" />
             <span className="hero-ribbon-mobile hidden">Portland's homegrown ice cream cafe</span>
-            <span className="hero-ribbon-mobile hidden">Since 2007 · Dogs welcome</span>
             <span
               className="hero-ribbon-copy mobile-minimum-12 text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-nowrap"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(8px,0.85vw,11px)' }}

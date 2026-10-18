@@ -5,9 +5,12 @@
     top: 0;
     z-index: 970;
     display: flex !important;
+    box-sizing: border-box;
     height: 56px;
     min-height: 56px;
-    padding: 0 !important;
+    width: calc(100% + 2 * var(--gutter));
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 0 var(--gutter) !important;
   }
 
   .mobile-site-header .mobile-header-toggle {
@@ -17,8 +20,42 @@
     height: 48px;
     min-width: 48px;
     min-height: 48px;
-    margin-left: -15px;
+    margin-left: 0;
     padding: 0;
+  }
+
+  .page-content-gutter #home .hero-scene-shell {
+    width: calc(100% + 2 * var(--gutter));
+    margin-inline: calc(-1 * var(--gutter));
+  }
+
+  .page-content-gutter .page-route-content .events-full-bleed {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter) !important;
+  }
+
+  .page-content-gutter #wholesale {
+    overflow: visible !important;
+  }
+
+  .page-content-gutter #wholesale .wholesale-card {
+    overflow: visible !important;
+    border-inline-color: transparent;
+  }
+
+  .page-content-gutter #wholesale .wholesale-berry-band {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter) !important;
+  }
+
+  main.page-content-gutter > footer.miss-oz-footer {
+    box-sizing: border-box;
+    width: calc(100% + 2 * var(--gutter));
+    margin-inline: calc(-1 * var(--gutter));
+  }
+
+  .page-content-gutter .miss-oz-footer {
+    padding-inline: var(--gutter) !important;
   }
 
   .page-content-gutter #home .tablet-menu-toggle,
@@ -44,11 +81,9 @@
   .page-content-gutter #home .hero-scene-photo {
     top: 0;
     bottom: auto;
-    height: 78%;
+    height: 100%;
     object-position: 65% 70% !important;
     transform-origin: center bottom;
-    mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
     animation: hero-mobile-zoom 12s linear backwards;
   }
 
@@ -133,14 +168,20 @@
     line-height: 24px;
   }
 
+  .page-content-gutter #home :is(.hero-since-line, .hero-pet-line) {
+    display: none !important;
+  }
+
   .page-content-gutter #home .hero-mobile-carousel {
     display: flex;
     justify-content: center;
     gap: 8px;
     box-sizing: border-box;
     width: 100%;
-    padding-block: 20px;
-    background: #2a1420;
+    min-height: 44px;
+    margin-top: 16px;
+    padding: 0;
+    background: transparent;
   }
 
   .page-content-gutter #home .hero-mobile-carousel .hero-slide-dot {

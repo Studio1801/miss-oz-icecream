@@ -174,11 +174,11 @@ export default function Wholesale() {
         <motion.div
           {...rise}
           transition={{ duration: 0.65, delay: 0.08 }}
-          className="overflow-hidden rounded-[18px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_18px_50px_rgba(57,22,34,0.09)]"
+          className="wholesale-card overflow-hidden rounded-[18px] border border-[rgba(115,32,62,0.16)] bg-white/75 shadow-[0_18px_50px_rgba(57,22,34,0.09)]"
         >
           <WholesaleAwning />
           <div className="grid md:grid-cols-[0.8fr_1.2fr]">
-            <div className="flex flex-col items-center justify-center bg-[var(--berry)] px-7 py-9 text-center text-[var(--cream-hi)] md:px-8 md:py-10">
+            <div className="wholesale-berry-band flex flex-col items-center justify-center bg-[var(--berry)] px-7 py-9 text-center text-[var(--cream-hi)] md:px-8 md:py-10">
               <PolaroidStack />
               <span className="text-[12px] font-bold tracking-[3px] text-[var(--cream-hi)]">
                 For shops &amp; restaurants

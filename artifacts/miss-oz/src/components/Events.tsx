@@ -48,7 +48,7 @@ export default function Events() {
   return (
     <section
       id="events"
-      className="parlour-paper relative overflow-hidden bg-[var(--pink)] px-[var(--edge)] md:px-[6vw] pt-[26px] pb-[48px] md:pt-[38px] md:pb-[56px] lg:flex lg:min-h-[calc(100svh-110px)] lg:items-center"
+      className="events-full-bleed parlour-paper relative overflow-hidden bg-[var(--pink)] px-[var(--edge)] md:px-[6vw] pt-[26px] pb-[48px] md:pt-[38px] md:pb-[56px] lg:flex lg:min-h-[calc(100svh-110px)] lg:items-center"
     >
       <Bunting className="absolute top-0 left-0 right-0" />
       <Starburst size={150} color="var(--berry)" className="pointer-events-none absolute -bottom-8 -left-8 opacity-[0.10] hidden md:block" />
