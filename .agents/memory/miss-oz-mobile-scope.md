@@ -3,11 +3,17 @@ name: Miss Oz mobile scope
 description: Client constraints for mobile spacing and preserving the fixed bulb frame and desktop appearance.
 ---
 
-Mobile layout changes are restricted to widths at or below 767px. Preserve desktop appearance, colors, font families, copy, photos, and the bulb frame itself.
+Miss Oz mobile is the 1440px desktop adapted for phones, not a redesign. Preserve the same brand, fonts, colors, copy, photos, section order, and decorative language. Mobile-only changes are limited to sizing, stacking, tap/read comfort, and collapsing desktop navigation with its existing fonts, colors, and link names. Keep decorations; shrink or move them to resolve collisions, and remove one only if it still collides after that. Do not add mobile-only components, sections, copy, colors, or fonts, or remove desktop content, photos, buttons, or features. All mobile rules stop at 767px; do not change 768px and up.
+
+**Why:** The client made desktop-at-1440 the source of truth and explicitly said the rule applies to past and future mobile work.
+
+**How to apply:** Before each mobile edit, compare the corresponding desktop element. Audit Home, Events, Wholesale, About, and Contact at 1440px and 390px, including sections, tabs, navigation, and footer. Keep and report only differences justified by the allowed mobile adaptations; verify widths 320–430 and the 768px boundary. Claim pixel identity only against a trustworthy pre-change baseline.
+
+Give content clearance from the existing frame, apply the outer gutter only once, and remove duplicate inset padding in nested wrappers such as Story. Retain original desktop utility values at the desktop breakpoint.
 
 **Why:** The client explicitly identified content clearance around the fixed frame as the problem, not the frame's design.
 
-**How to apply:** Give content clearance from the existing frame, apply the outer gutter only once, and remove duplicate inset padding in nested wrappers such as Story. Retain original desktop utility values at the desktop breakpoint.
+**How to apply:** Preserve the bulb frame itself and keep the content gutter separate from its fixed overlay.
 
 Do not globally expose overflow on decorative cards to fix text clipping.
 

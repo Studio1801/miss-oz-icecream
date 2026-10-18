@@ -96,13 +96,12 @@ export default function Footer() {
         {/* Hours */}
         <div className="max-[639px]:min-w-0">
           <h2 className="footer-label text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Hours</h2>
-          <p className="footer-hours-desktop leading-[1.8] text-[#EFE2CE]">OPEN DAILY<br />11AM–10PM</p>
-          <p className="footer-hours-mobile leading-[1.8] text-[#EFE2CE]">Open daily<br />11am to 10pm</p>
+          <p className="leading-[1.8] text-[#EFE2CE]">OPEN DAILY<br />11AM–10PM</p>
         </div>
 
         {/* Mailing List */}
         <div className="footer-mailing-list min-w-[260px] flex-1 max-w-[340px] max-[639px]:col-span-2 max-[639px]:min-w-0 max-[639px]:max-w-none scissor-cut p-[20px] max-[639px]:p-3 mt-[-20px] max-[639px]:mt-0 rounded-[10px]">
-          <h2 className="footer-label text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]"><span className="footer-heading-desktop">Mailing List</span><span className="footer-heading-mobile">Mailing list</span></h2>
+          <h2 className="footer-label text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Mailing List</h2>
           {submitted ? (
             <p className="text-[#EFE2CE] text-[15px] mt-2 font-script-alt text-[22px]">Thanks for subscribing!</p>
           ) : (

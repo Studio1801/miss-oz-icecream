@@ -206,6 +206,7 @@ export default function MenuSection() {
             variant="mobile"
             activeCategory={activeCategory}
             onSelect={selectCategory}
+            onOrderWholeCake={() => setCakeOrderOpen(true)}
           />
         </div>
 

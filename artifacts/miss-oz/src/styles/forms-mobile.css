@@ -1,7 +1,3 @@
-.form-mobile-only {
-  display: none;
-}
-
 @media (max-width: 767px) {
   .page-content-gutter .event-form-label {
     font-size: 14px !important;
@@ -9,14 +5,6 @@
 }
 
 @media (max-width: 767px) {
-  .form-mobile-only {
-    display: inline;
-  }
-
-  .form-desktop-only {
-    display: none;
-  }
-
   body :is(input, select, textarea) {
     font-size: 16px !important;
   }
@@ -79,9 +67,6 @@
     padding: 0 12px !important;
     font-size: 15px !important;
     line-height: 1.2 !important;
-    letter-spacing: 0 !important;
-    text-transform: none !important;
-    white-space: normal !important;
     opacity: 1 !important;
   }
 
@@ -111,12 +96,6 @@
     width: 100% !important;
     min-width: 0;
     margin: 0;
-    transform: none !important;
-  }
-
-  .page-content-gutter #wholesale .wholesale-polaroids img {
-    object-fit: contain;
-    background: var(--cream-hi);
   }
 
   .page-content-gutter #wholesale .wholesale-minimums {
@@ -126,7 +105,5 @@
   .page-content-gutter #menu .cake-order-trigger {
     min-height: 52px;
     font-size: 15px !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
   }
 }

@@ -93,8 +93,7 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           "
           style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}
         >
-          <span className="form-desktop-only">Order a Whole Cheesecake →</span>
-          <span className="form-mobile-only">Order a whole cheesecake →</span>
+          Order a Whole Cheesecake →
         </button>
       </div>
       <div>

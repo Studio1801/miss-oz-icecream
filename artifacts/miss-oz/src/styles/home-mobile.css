@@ -58,10 +58,6 @@
     overflow-wrap: normal !important;
   }
 
-  .page-content-gutter #menu .menu-panel {
-    overflow: visible !important;
-  }
-
   .page-content-gutter #menu .menu-panel[aria-hidden="true"] {
     visibility: hidden;
     transition: visibility 0s 250ms;
@@ -146,7 +142,6 @@
     font-weight: 700;
     line-height: 1.4;
     text-align: left;
-    letter-spacing: normal !important;
   }
 
   .page-content-gutter #menu .menu-product-price {
@@ -218,10 +213,6 @@
     text-align: left;
   }
 
-  .api-availability-message {
-    display: none !important;
-  }
-
   .page-content-gutter :is(input, select, textarea) {
     font-size: 16px !important;
     min-height: 48px;
@@ -259,10 +250,6 @@
     margin: 12px;
   }
 
-  .page-content-gutter .meet-oz-section > [aria-hidden="true"] {
-    display: none;
-  }
-
   .page-content-gutter .story-stamp {
     position: relative;
     top: auto;
@@ -270,10 +257,6 @@
     width: fit-content;
     margin: 0 auto 24px;
     transform: none;
-  }
-
-  .page-content-gutter .story-section > div > [aria-hidden="true"][class*="inset-"] {
-    display: none;
   }
 
   .page-content-gutter :is(.bunting, .pennant, .tape-strip, .wax-seal, .oz-polaroid-tape, .story-stamp) {
@@ -291,8 +274,6 @@
     left: calc(var(--frame) + 2px) !important;
     width: 8px !important;
     height: 8px !important;
-    opacity: 0.045 !important;
-    transform: none !important;
   }
 
   .page-content-gutter .marquee-shell .mq-track span {
@@ -336,6 +317,10 @@
     scroll-snap-align: center;
   }
 
+  .page-content-gutter #menu .menu-category-mobile .mobile-wholecake-order {
+    font-size: 20px !important;
+  }
+
   .page-content-gutter #menu .mobile-menu-step-inside,
   .page-content-gutter .mobile-view-menu {
     font-size: 15px !important;
@@ -351,12 +336,11 @@
   .page-content-gutter .mobile-guestbook-label,
   .page-content-gutter .mobile-guestbook-page-label {
     font-size: 13px !important;
-    letter-spacing: 0.04em !important;
   }
 
   .page-content-gutter .mobile-community-vote-label,
   .page-content-gutter .mobile-guestbook-label,
   .page-content-gutter .mobile-guestbook-page-label {
-    text-transform: none !important;
+    text-transform: uppercase !important;
   }
 }

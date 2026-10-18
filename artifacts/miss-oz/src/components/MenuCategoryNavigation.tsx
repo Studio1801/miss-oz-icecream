@@ -84,6 +84,16 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
             );
           })}
         </div>
+        {activeCategory === 'Whole Cakes' && onOrderWholeCake && (
+          <button
+            type="button"
+            onClick={onOrderWholeCake}
+            className="mobile-wholecake-order interaction-primary mx-auto mt-2 flex min-h-11 items-center justify-center rounded-full px-4 text-[var(--gold-hi)] transition-colors hover:bg-[rgba(255,217,138,0.14)] hover:text-[var(--cream-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+            style={{ fontFamily: 'var(--font-script)', fontSize: '20px', lineHeight: 1.1 }}
+          >
+            Order Here!
+          </button>
+        )}
       </nav>
     );
   }

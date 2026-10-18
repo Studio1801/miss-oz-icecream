@@ -7,7 +7,6 @@ import { useLocation } from 'wouter';
 import { Bunting } from './Decor';
 import OrderChooser from './OrderChooser';
 import { SITE_NAV_LINKS, SiteNavigationLink, navTarget, sectionTarget } from './SiteNavigation';
-import { UBEREATS_URL } from './menuCatalog';
 import { useIsMobile } from '../hooks/use-mobile';
 
 /* Full-width homepage slideshow — real storefront photos */
@@ -201,15 +200,18 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
       aria-current={i === slide}
       aria-label={`Show slide ${i + 1} of ${SLIDES.length}`}
       onClick={() => setSlide(i)}
-      className="hero-slide-dot w-[9px] h-[9px] rounded-full transition-all duration-500"
-      style={{
-        background: isMobile
-          ? i === slide ? 'var(--cream-hi)' : 'rgba(251,242,223,0.45)'
-          : i === slide ? '#F4A9C7' : 'rgba(244,169,199,0.4)',
-        transform: i === slide ? 'scale(1.3)' : 'scale(1)',
-        boxShadow: i === slide ? '0 0 0 2px rgba(244,169,199,0.3)' : '0 1px 3px rgba(20,8,12,0.4)',
-      }}
-    />
+      className="hero-slide-dot inline-flex items-center justify-center w-[9px] h-[9px] rounded-full"
+    >
+      <span
+        aria-hidden="true"
+        className="hero-slide-dot-indicator block w-[9px] h-[9px] rounded-full transition-all duration-500"
+        style={{
+          background: i === slide ? '#F4A9C7' : 'rgba(244,169,199,0.4)',
+          transform: i === slide ? 'scale(1.3)' : 'scale(1)',
+          boxShadow: i === slide ? '0 0 0 2px rgba(244,169,199,0.3)' : '0 1px 3px rgba(20,8,12,0.4)',
+        }}
+      />
+    </button>
   ));
   return (
     <>
@@ -238,14 +240,6 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         className="absolute left-1/2 top-1/2 h-[52px] w-[52px] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
         style={{ left: 'calc(50% - 6px)' }}
       />
-      <a
-        href={UBEREATS_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mobile-header-order interaction-primary inline-flex h-11 min-w-[72px] items-center justify-center rounded-full bg-[var(--berry-deep)] px-4 text-[16px] font-bold text-[var(--cream-hi)]"
-      >
-        Order
-      </a>
     </header>
     <section
       id="home"
@@ -489,23 +483,6 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   <span style={{ fontSize: '1.18em', position: 'relative', zIndex: 2, display: 'inline-block', verticalAlign: 'baseline' }}>O</span>
                   <span style={{ position: 'relative', zIndex: 1, display: 'inline-block' }}>z</span>
                 </div>
-                <div
-                  aria-label="Since 2007"
-                  className="hero-year-stamp hero-stamp-entrance absolute right-[-8px] top-[-68px] hidden h-[76px] w-[76px] items-center justify-center rounded-full max-[767px]:flex"
-                  style={{
-                    background: '#F3E7C9',
-                    color: 'var(--berry)',
-                    fontFamily: 'var(--font-script)',
-                    fontSize: '15px',
-                    fontStyle: 'italic',
-                    zIndex: 3,
-                    pointerEvents: 'none',
-                    boxShadow: '0 6px 18px rgba(0,0,0,0.32)',
-                  }}
-                >
-                  <span aria-hidden="true" className="absolute inset-[5px] rounded-full border border-dotted border-[var(--berry)]" />
-                  <span className="hero-year-stamp-copy relative"><span>Since</span><span>2007</span></span>
-                </div>
               </div>
               {/* Tagline — cream script */}
               <div
@@ -520,9 +497,9 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               >
                 Sweet Memories Start Here.
               </div>
-              {/* Subtext — hidden on mobile (too long to fit), shown sm+ */}
+              {/* Subtext — keep the same description at every viewport size. */}
               <div
-                className="hero-entrance hero-enter-subtext hidden sm:block"
+                className="hero-entrance hero-enter-subtext"
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 'clamp(12px,1.15vw,17px)',
@@ -537,7 +514,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 Ice Cream &amp; Handmade Desserts · Portland, Oregon
               </div>
               <div
-                className="hero-since-line mobile-minimum-12 max-[767px]:hidden flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
+                className="hero-since-line mobile-minimum-12 flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 'clamp(11px,1vw,15px)',
@@ -554,7 +531,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'rgba(251,242,223,0.6)' }} />
               </div>
               <div
-                className="hero-pet-line max-[767px]:hidden flex items-center justify-center gap-[7px]"
+                className="hero-pet-line flex items-center justify-center gap-[7px]"
                 style={{ color: '#F4A9C7', marginTop: 'clamp(6px,0.7vw,10px)', textShadow: '0 1px 6px rgba(20,8,12,0.6)' }}
               >
                 <span aria-hidden="true" style={{ fontSize: 'clamp(11px,1vw,15px)' }}>♥</span>
@@ -599,10 +576,6 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   >→</span>
                 </SiteNavigationLink>
               </div>
-              <div className="hero-entrance hero-enter-dogs hero-mobile-dogs hidden max-[767px]:flex items-center justify-center gap-2">
-                <PawMark size={18} className="text-[#F4A9C7]" />
-                <span>Dogs welcome</span>
-              </div>
               <div
                 className="hero-mobile-carousel hidden pointer-events-auto"
                 role="group"
@@ -631,18 +604,17 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           className="mx-auto max-w-[1400px] px-[var(--edge)] md:px-[4vw]"
         >
           <div
-            className="hero-ribbon-bar flex items-center justify-center gap-[clamp(10px,2vw,24px)] py-[10px] max-[639px]:flex-col max-[639px]:gap-[4px]"
+            className="hero-ribbon-bar flex items-center justify-center gap-[clamp(10px,2vw,24px)] py-[10px]"
             style={{ background: 'var(--cocoa)' }}
           >
-            <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50 max-[639px]:hidden" />
-            <span className="hero-ribbon-mobile hidden">Portland's homegrown ice cream cafe</span>
+            <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50" />
             <span
               className="hero-ribbon-copy mobile-minimum-12 text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-nowrap"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(8px,0.85vw,11px)' }}
             >
               Portland's Homegrown Ice Cream Cafe
             </span>
-            <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50 max-[639px]:hidden" />
+            <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50" />
           </div>
         </div>
       </div>
@@ -681,8 +653,8 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation"
-            className="mobile-menu-overlay parlour-paper lg:hidden fixed inset-0 z-[955]"
-            style={{ backgroundColor: '#f1e4c8' }}
+            className="mobile-menu-overlay lg:hidden fixed inset-0 z-[955]"
+            style={{ backgroundColor: 'var(--cream)' }}
             initial={{ opacity: 0, y: reduceMotion ? 0 : '-100%' }}
             animate={{ opacity: 1, y: 0 }}
             exit={{
@@ -745,44 +717,16 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                       }}
                       className="mobile-menu-link mobile-menu-meet"
                     >
-                      <span aria-hidden="true">♥</span> Meet Oz!
+                      <span aria-hidden="true" className="mobile-menu-meet-sparkle mobile-menu-meet-sparkle-left">✦</span>
+                      <span aria-hidden="true" className="mobile-menu-meet-sparkle mobile-menu-meet-sparkle-right">✦</span>
+                      <span aria-hidden="true" className="mobile-menu-meet-sparkle mobile-menu-meet-sparkle-bottom">✦</span>
+                      <span className="mobile-menu-meet-top">Small Batch, Big Heart</span>
+                      <span className="mobile-menu-meet-bottom">
+                        <span aria-hidden="true">♥</span> Meet Oz! <span aria-hidden="true">→</span>
+                      </span>
                     </motion.a>
                   </SiteNavigationLink>
                 </nav>
-
-                <motion.div
-                  className="mobile-menu-bottom"
-                  initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{
-                    opacity: 0,
-                    y: reduceMotion ? 0 : 16,
-                    transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
-                  }}
-                  transition={{
-                    opacity: { duration: reduceMotion ? 0.18 : 0.24, delay: 0.42 },
-                    y: { duration: reduceMotion ? 0.18 : 0.24, delay: 0.42, ease: [0.22, 1, 0.36, 1] },
-                  }}
-                >
-                  <a
-                    href={UBEREATS_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mobile-menu-order"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Place an Order
-                  </a>
-                  <div className="mobile-menu-meta">
-                    <img
-                      src="/images/logo-official.webp"
-                      alt=""
-                      aria-hidden="true"
-                      className="mobile-menu-mark"
-                    />
-                    <p>Pearl District, Portland. Dogs welcome.</p>
-                  </div>
-                </motion.div>
             </div>
           </motion.div>
         )}
