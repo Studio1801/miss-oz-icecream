@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Starburst } from './Decor';
+import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE } from '../hooks/useMobileForm';
 
 const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 'italic' as const };
 
@@ -30,6 +31,8 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
   const [name, setName] = useState('');
   const [note, setNote] = useState('');
   const [justSigned, setJustSigned] = useState(false);
+  const [submitResult, setSubmitResult] = useState<'idle' | 'success' | 'error'>('idle');
+  const validation = useMobileForm();
   const liveRef = useRef<HTMLParagraphElement | null>(null);
 
   // Fetch shared entries from the database on mount
@@ -45,12 +48,15 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
       .finally(() => setLoading(false));
   }, []);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (submitting || (validation.mobile && submitResult === 'success')) return;
+    if (!validation.validate(e.currentTarget)) return;
     const cleanName = name.trim();
     const cleanNote = note.trim();
     if (!cleanName || !cleanNote || submitting) return;
     setSubmitting(true);
+    setSubmitResult('idle');
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     try {
       const posted = await fetch(`${base}/api/guestbook`, {
@@ -66,15 +72,18 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
       setEntries(stored);
       setLoadError(false);
       if (!stored.some((entry) => entry.id === data?.entry?.id)) {
+        setSubmitResult('error');
         if (liveRef.current) liveRef.current.textContent = 'Your note was received, but we could not confirm it was saved. Please try again later.';
         return;
       }
       setName('');
       setNote('');
       setJustSigned(true);
+      setSubmitResult('success');
       if (liveRef.current) liveRef.current.textContent = 'Thank you. Your note is in the book.';
       window.setTimeout(() => setJustSigned(false), 2000);
     } catch {
+      setSubmitResult('error');
       if (liveRef.current) liveRef.current.textContent = 'We could not confirm your note was saved. Please try again later.';
     } finally {
       setSubmitting(false);
@@ -149,7 +158,9 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
             {/* LEFT PAGE — sign the book */}
             <form
               onSubmit={handleSubmit}
-              className="ledger-page ledger-page-l text-left pl-[58px] pr-[26px] md:pr-[38px] py-[38px] md:py-[48px] flex flex-col"
+              noValidate={validation.mobile}
+              onInput={(event) => { validation.clear(event); if (submitResult === 'success') setSubmitResult('idle'); }}
+              className="mobile-form ledger-page ledger-page-l text-left pl-[58px] pr-[26px] md:pr-[38px] py-[38px] md:py-[48px] flex flex-col"
             >
               <div className="text-[var(--berry-deep)] leading-none mb-6" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,28px)' }}>
                 Sign the book
@@ -159,20 +170,24 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 Your name
               </label>
               <input
-                id="gb-name"
+                {...validation.field('gb-name')}
                 type="text"
+                autoComplete="name"
+                required={validation.mobile}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={40}
                 placeholder="e.g. The Alvarez family"
                 className="ledger-input w-full bg-transparent border-b-2 border-[rgba(28,13,12,0.28)] pb-[6px] mb-[28px] text-[22px] font-script text-[var(--berry-deep)] placeholder:text-[rgba(28,13,12,0.3)] placeholder:font-sans placeholder:italic placeholder:text-[16px] focus:outline-none focus:border-[var(--berry)] transition-colors rounded-sm px-1 py-1"
               />
+              {validation.error('gb-name')}
 
               <label htmlFor="gb-note" className="block text-[11px] max-[639px]:text-[12px] tracking-[3px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                 Leave a note
               </label>
               <textarea
-                id="gb-note"
+                {...validation.field('gb-note')}
+                required={validation.mobile}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 maxLength={180}
@@ -184,19 +199,23 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                   backgroundAttachment: 'local'
                 }}
               />
+              {validation.error('gb-note')}
               <div className="flex items-center justify-between gap-4 mt-2 md:mt-7 flex-wrap">
                 <span className="text-[13px] text-[var(--cocoa)] opacity-55 italic" style={{ fontFamily: 'var(--font-sans)' }}>{note.length}/180</span>
                 <button
                   type="submit"
-                  disabled={!name.trim() || !note.trim() || submitting}
+                  disabled={!validation.mobile && (!name.trim() || !note.trim() || submitting)}
+                  aria-disabled={validation.mobile && (submitting || submitResult === 'success') || undefined}
+                  aria-busy={submitting}
                   className="interaction-primary relative inline-flex items-center justify-center bg-[var(--cocoa)] text-[var(--cream)] py-[11px] px-[26px] rounded-full text-[14px] font-semibold tracking-[0.5px] mech-btn hover:bg-[var(--berry)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)]"
                 >
-                  <span className={`transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${submitting || justSigned ? 'opacity-0' : 'opacity-100'}`}>Leave your mark</span>
+                  <span aria-hidden={submitting || undefined} role={validation.mobile && submitResult === 'success' ? 'status' : undefined} className={`transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${submitting || (!validation.mobile && justSigned) ? 'opacity-0' : 'opacity-100'}`}>{validation.mobile && submitResult === 'success' ? `✓ ${MOBILE_FORM_SUCCESS}` : 'Leave your mark'}</span>
                   {submitting && <span role="status" aria-label="Signing" className="interaction-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
-                  {justSigned && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.22 }} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">✓</motion.span>}
+                  {justSigned && !validation.mobile && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.22 }} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">✓</motion.span>}
                 </button>
               </div>
               <p ref={liveRef} aria-live="polite" className="sr-only" />
+              {validation.mobile && submitResult === 'error' && <p role="alert" className="mobile-field-error">{MOBILE_FORM_FAILURE}</p>}
 
               <div className="mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
                 Page one.

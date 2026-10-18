@@ -131,6 +131,7 @@ export default function OrderChooser({ variant = 'dark', label = 'Order Online',
             target="_blank"
             rel="noopener noreferrer"
             role="option"
+            data-press-card
             onClick={() => setOpen(false)}
             style={{
               display: 'flex',
@@ -146,6 +147,7 @@ export default function OrderChooser({ variant = 'dark', label = 'Order Online',
               transition: 'background 0.15s, color 0.15s',
             }}
             onMouseEnter={(e) => {
+              if (!window.matchMedia('(hover: hover)').matches) return;
               (e.currentTarget as HTMLElement).style.background = c.bg;
               (e.currentTarget as HTMLElement).style.color = c.text;
             }}

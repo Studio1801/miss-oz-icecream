@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useId, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE, sentenceCase } from '../hooks/useMobileForm';
 
 export type InquiryType = 'wholesale' | 'event' | 'general';
 
@@ -54,25 +55,20 @@ export default function InquireForm({
   const [desiredOrderQuantities, setDesiredOrderQuantities] = useState('');
   const [additionalEventDetails, setAdditionalEventDetails] = useState('');
   const [validationMessage, setValidationMessage] = useState('');
-  const [isMobileViewport, setIsMobileViewport] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches,
-  );
+  const validation = useMobileForm();
+  const formId = useId();
+  const fieldId = (name: string) => `inquiry-${formId}-${name}`;
+  const field = (name: string) => validation.field(fieldId(name));
+  const error = (name: string) => validation.error(fieldId(name));
+  const isMobileViewport = validation.mobile;
   const [status, setStatus] = useState<Status>('idle');
   const [open, setOpen] = useState(inline);
   const [showSuccessCheck, setShowSuccessCheck] = useState(false);
 
-  useEffect(() => {
-    const media = window.matchMedia('(max-width: 639px)');
-    const update = () => setIsMobileViewport(media.matches);
-    update();
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
-
-  const mobileEventForm = type === 'event' && inline && isMobileViewport;
-
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === 'sending' || (isMobileViewport && status === 'success')) return;
+    if (!validation.validate(e.currentTarget)) return;
     const wholesaleComplete =
       type !== 'wholesale' ||
       (businessName.trim() &&
@@ -137,6 +133,10 @@ export default function InquireForm({
         }),
       });
       if (!res.ok) throw new Error('server error');
+      if (isMobileViewport) {
+        const result = await res.json();
+        if (result.ok !== true || result.note) throw new Error('Sending was not confirmed');
+      }
       setStatus('success');
       setShowSuccessCheck(true);
       window.setTimeout(() => setShowSuccessCheck(false), 2000);
@@ -204,7 +204,7 @@ export default function InquireForm({
             {submitLabel}
             <span aria-hidden="true"> →</span>
           </motion.button>
-        ) : status === 'success' ? (
+        ) : status === 'success' && !isMobileViewport ? (
           <motion.div
             key="success"
             initial={{ opacity: 0, y: 12 }}
@@ -273,12 +273,20 @@ export default function InquireForm({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             onSubmit={handleSubmit}
-            className={`mx-auto max-w-[460px] text-left ${type === 'event' && inline ? 'lg:max-w-none' : ''}`}
+            noValidate={isMobileViewport}
+            onInput={(event) => {
+              validation.clear(event);
+              if (isMobileViewport && status === 'success') setStatus('idle');
+            }}
+            data-dark={darkBg}
+            className={`mobile-form mx-auto max-w-[460px] text-left ${type === 'event' && inline ? 'lg:max-w-none' : ''}`}
           >
             {type === 'wholesale' && (
               <div className="mb-5">
-                <label className={labelClass}>Business Name</label>
+                <label htmlFor={fieldId('business-name')} className={labelClass}>Business Name</label>
                 <input
+                  {...field('business-name')}
+                  autoComplete="organization"
                   type="text"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
@@ -287,11 +295,14 @@ export default function InquireForm({
                   placeholder="Your business name"
                   className={inputClass}
                 />
+                {error('business-name')}
               </div>
             )}
             <div className={fieldSpacing}>
-              <label className={labelClass}>{labelText(type === 'wholesale' ? 'Contact Person' : 'Your name')}</label>
+              <label htmlFor={fieldId('name')} className={labelClass}>{labelText(type === 'wholesale' ? 'Contact Person' : 'Your name')}</label>
               <input
+                {...field('name')}
+                autoComplete="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -300,11 +311,15 @@ export default function InquireForm({
                 placeholder={type === 'wholesale' ? 'Your name' : 'Name or business name'}
                 className={inputClass}
               />
+              {error('name')}
             </div>
               <div className={type === 'event' && inline ? `${fieldSpacing} grid gap-y-3 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-2` : ''}>
               <div className={type === 'event' && inline ? '' : fieldSpacing}>
-                <label className={labelClass}>{labelText(type === 'wholesale' ? 'Email Address' : 'Email')}</label>
+                <label htmlFor={fieldId('email')} className={labelClass}>{labelText(type === 'wholesale' ? 'Email Address' : 'Email')}</label>
                 <input
+                  {...field('email')}
+                  autoComplete="email"
+                  inputMode="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -313,12 +328,16 @@ export default function InquireForm({
                   placeholder="you@example.com"
                   className={inputClass}
                 />
+                {error('email')}
               </div>
               <div className={type === 'event' && inline ? '' : fieldSpacing}>
-                <label className={labelClass}>
+                <label htmlFor={fieldId('phone')} className={labelClass}>
                   {type === 'wholesale' ? labelText('Phone Number') : <>{labelText('Phone')} <span className="normal-case font-normal" style={{ opacity: 0.6 }}>(optional)</span></>}
                 </label>
                 <input
+                  {...field('phone')}
+                  autoComplete="tel"
+                  inputMode="tel"
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -327,36 +346,44 @@ export default function InquireForm({
                   placeholder="503-555-0100"
                   className={inputClass}
                 />
+                {error('phone')}
               </div>
             </div>
             {type === 'wholesale' ? (
               <>
                 <div className={fieldSpacing}>
-                  <label className={labelClass}>{labelText('Business Type')}</label>
-                  <select value={businessType} onChange={(e) => setBusinessType(e.target.value)} required className={inputClass}>
+                  <label htmlFor={fieldId('business-type')} className={labelClass}>{labelText('Business Type')}</label>
+                  <select {...field('business-type')} value={businessType} onChange={(e) => setBusinessType(e.target.value)} required className={inputClass}>
                     <option value="">Choose a business type</option>
                     {BUSINESS_TYPES.map((option) => <option key={option} value={option}>{option}</option>)}
                   </select>
+                  {error('business-type')}
                 </div>
                 <fieldset className={fieldSpacing}>
                   <legend className={labelClass}>{labelText('Products of Interest')}</legend>
                   <div className="grid gap-2 sm:grid-cols-2">
-                    {WHOLESALE_PRODUCTS.map((product) => (
-                      <label key={product} className="flex items-center gap-2 text-[15px]" style={{ color: darkBg ? '#f3ead6' : 'var(--cocoa)', fontFamily: 'var(--font-sans)' }}>
+                    {WHOLESALE_PRODUCTS.map((product, index) => (
+                      <div key={product}>
+                      <label htmlFor={fieldId(`product-${index}`)} className="flex items-center gap-2 text-[15px]" style={{ color: darkBg ? '#f3ead6' : 'var(--cocoa)', fontFamily: 'var(--font-sans)' }}>
                         <input
+                          {...field(`product-${index}`)}
                           type="checkbox"
+                          required={index === 0 && productsOfInterest.length === 0}
                           checked={productsOfInterest.includes(product)}
                           onChange={(e) => setProductsOfInterest((current) => e.target.checked ? [...current, product] : current.filter((item) => item !== product))}
                           className="h-4 w-4 accent-[var(--gold-hi)]"
                         />
                         {product}
                       </label>
+                      {error(`product-${index}`)}
+                      </div>
                     ))}
                   </div>
                 </fieldset>
                 <div className={fieldSpacing}>
-                  <label className={labelClass}>{labelText('Estimated Order Volume')}</label>
+                  <label htmlFor={fieldId('volume')} className={labelClass}>{labelText('Estimated Order Volume')}</label>
                   <input
+                    {...field('volume')}
                     type="text"
                     value={estimatedOrderVolume}
                     onChange={(e) => setEstimatedOrderVolume(e.target.value)}
@@ -365,10 +392,12 @@ export default function InquireForm({
                     placeholder="How much product do you expect to order?"
                     className={inputClass}
                   />
+                  {error('volume')}
                 </div>
                 <div className={finalFieldSpacing}>
-                  <label className={labelClass}>{labelText('Additional Information')}</label>
+                  <label htmlFor={fieldId('information')} className={labelClass}>{labelText('Additional Information')}</label>
                   <textarea
+                    {...field('information')}
                     value={additionalInformation}
                     onChange={(e) => setAdditionalInformation(e.target.value)}
                     maxLength={1200}
@@ -376,37 +405,44 @@ export default function InquireForm({
                     placeholder="Tell us anything else we should know."
                     className={textareaClass}
                   />
+                  {error('information')}
                 </div>
               </>
             ) : type === 'event' ? (
               <>
                 <div className={`${fieldSpacing} grid ${dateTimeGap} sm:grid-cols-2 ${inline ? 'lg:grid-cols-3' : ''}`}>
                   <div>
-                    <label htmlFor="event-date" className={labelClass}>{labelText('Event Date')}</label>
-                    <input id="event-date" type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required className={inputClass} />
+                    <label htmlFor={fieldId('date')} className={labelClass}>{labelText('Event Date')}</label>
+                    <input {...field('date')} type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required className={inputClass} />
+                    {error('date')}
                   </div>
                   <div>
-                    <label htmlFor="event-time" className={labelClass}>{labelText('Event Time')}</label>
-                    <input id="event-time" type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} required className={inputClass} />
+                    <label htmlFor={fieldId('time')} className={labelClass}>{labelText('Event Time')}</label>
+                    <input {...field('time')} type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} required className={inputClass} />
+                    {error('time')}
                   </div>
                   <div className={inline ? 'sm:col-span-2 lg:col-span-1' : 'sm:col-span-2'}>
-                    <label htmlFor="event-servings" className={labelClass}>{labelText('Number of Servings')}</label>
-                    <input id="event-servings" type="number" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="Guest count" className={inputClass} />
+                    <label htmlFor={fieldId('servings')} className={labelClass}>{labelText('Number of Servings')}</label>
+                    <input {...field('servings')} type="number" inputMode="numeric" min="1" value={numberOfServings} onChange={(e) => setNumberOfServings(e.target.value)} required placeholder="Guest count" className={inputClass} />
+                    {error('servings')}
                   </div>
                 </div>
                 <div className={fieldSpacing}>
-                  <label htmlFor="event-quantities" className={labelClass}>{labelText('Desired Order Quantities')}</label>
-                  <textarea id="event-quantities" value={desiredOrderQuantities} onChange={(e) => setDesiredOrderQuantities(e.target.value)} maxLength={600} rows={inline ? 2 : 3} required placeholder="For example: 50 single scoops, 30 double scoops" className={textareaClass} />
+                  <label htmlFor={fieldId('quantities')} className={labelClass}>{labelText('Desired Order Quantities')}</label>
+                  <textarea {...field('quantities')} value={desiredOrderQuantities} onChange={(e) => setDesiredOrderQuantities(e.target.value)} maxLength={600} rows={inline ? 2 : 3} required placeholder="For example: 50 single scoops, 30 double scoops" className={textareaClass} />
+                  {error('quantities')}
                 </div>
                 <div className={finalFieldSpacing}>
-                  <label htmlFor="event-details" className={labelClass}>{labelText('Additional Event Details')}</label>
-                  <textarea id="event-details" value={additionalEventDetails} onChange={(e) => setAdditionalEventDetails(e.target.value)} maxLength={1200} rows={inline ? 2 : 4} placeholder="Tell us anything else about your event." className={textareaClass} />
+                  <label htmlFor={fieldId('details')} className={labelClass}>{labelText('Additional Event Details')}</label>
+                  <textarea {...field('details')} value={additionalEventDetails} onChange={(e) => setAdditionalEventDetails(e.target.value)} maxLength={1200} rows={inline ? 2 : 4} placeholder="Tell us anything else about your event." className={textareaClass} />
+                  {error('details')}
                 </div>
               </>
             ) : (
               <div className={finalFieldSpacing}>
-                <label className={labelClass}>{labelText('Tell us more')}</label>
+                <label htmlFor={fieldId('message')} className={labelClass}>{labelText('Tell us more')}</label>
                 <textarea
+                  {...field('message')}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   maxLength={1200}
@@ -415,6 +451,7 @@ export default function InquireForm({
                   placeholder="How can we help?"
                   className={textareaClass}
                 />
+                {error('message')}
               </div>
             )}
 
@@ -425,16 +462,17 @@ export default function InquireForm({
             )}
             {status === 'error' && (
               <p className="text-[13px] text-red-400 mb-4 italic" role="alert">
-                Something went wrong. Please try again or email us directly.
+                {isMobileViewport ? MOBILE_FORM_FAILURE : 'Something went wrong. Please try again or email us directly.'}
               </p>
             )}
 
             <div className="flex items-center gap-4 flex-wrap">
               <button
                 type="submit"
-                disabled={
-                  status === 'sending' ||
-                  (!mobileEventForm && (
+                aria-disabled={isMobileViewport && (status === 'sending' || status === 'success') || undefined}
+                aria-busy={status === 'sending'}
+                disabled={!isMobileViewport && (
+                  status === 'sending' || (
                     !name.trim() ||
                     !email.trim() ||
                     (type === 'wholesale'
@@ -442,11 +480,11 @@ export default function InquireForm({
                       : type === 'event'
                       ? !eventDate.trim() || !eventTime.trim() || !numberOfServings.trim() || !desiredOrderQuantities.trim()
                       : !message.trim())
-                  ))
-                }
+                  )
+                )}
                 className={`interaction-primary relative bg-[var(--cocoa)] text-[var(--cream)] py-[11px] px-[26px] rounded-full text-[14px] font-semibold tracking-[0.5px] mech-btn hover:bg-[var(--berry)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--gold)] ${type === 'event' && inline ? 'max-[639px]:w-full max-[639px]:h-[52px] max-[639px]:py-0 max-[639px]:bg-[var(--berry)] max-[639px]:text-[var(--cream-hi)]' : ''}`}
               >
-                <span className={`transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${status === 'sending' ? 'opacity-0' : 'opacity-100'}`}>{submitButtonLabel}</span>
+                <span aria-hidden={status === 'sending' || undefined} role={isMobileViewport && status === 'success' ? 'status' : undefined} className={`transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${status === 'sending' ? 'opacity-0' : 'opacity-100'}`}>{isMobileViewport && status === 'success' ? `✓ ${MOBILE_FORM_SUCCESS}` : isMobileViewport ? sentenceCase(submitButtonLabel) : submitButtonLabel}</span>
                 {status === 'sending' && <span role="status" aria-label="Sending" className="interaction-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
               </button>
               {!inline && (

@@ -166,7 +166,7 @@ export default function MenuSection() {
 
     const marginTop = Number.parseFloat(window.getComputedStyle(menu).scrollMarginTop) || 0;
     const top = Math.max(0, window.scrollY + menu.getBoundingClientRect().top - marginTop);
-    window.scrollTo({ top, behavior: 'smooth' });
+    window.scrollTo({ top, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }, [activeCategory]);
 
   useEffect(() => {
@@ -174,7 +174,7 @@ export default function MenuSection() {
       if (window.location.hash !== '#cakes') return;
       setActiveCategory('Whole Cakes');
       requestAnimationFrame(() =>
-        document.getElementById('cakes')?.scrollIntoView({ behavior: 'smooth' }),
+        document.getElementById('cakes')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }),
       );
     };
     window.addEventListener('hashchange', activateCakes);

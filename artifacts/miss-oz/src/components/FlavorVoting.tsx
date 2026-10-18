@@ -144,6 +144,7 @@ export default function FlavorVoting() {
             <div key={i}>
               {/* ── Collapsed row ── */}
               <button
+                data-press-card
                 onClick={() => setExpanded(isOpen ? null : i)}
                 className="w-full flex items-center gap-[12px] px-[16px] py-[13px] text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--berry)]"
                 style={{ background: isOpen ? 'rgba(232,177,190,0.18)' : 'transparent', cursor: 'pointer' }}

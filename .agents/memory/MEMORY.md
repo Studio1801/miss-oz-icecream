@@ -7,3 +7,4 @@
 - [Miss Oz menu copy](miss-oz-menu-copy-confirmations.md) — the Thai Iced Tea taste note was explicitly approved by the client.
 - [Miss Oz flavor grid](miss-oz-flavor-grid.md) — more flavors are expected; append them without reordering or centering cards to rebalance odd row counts.
 - [Miss Oz mobile scope](miss-oz-mobile-scope.md) — preserve desktop and the bulb frame; apply outer gutters once and retain decorative card clipping.
+- [Browser verification](browser-verification.md) — remote testing needs the public development preview URL; local proxy URLs are only for local browsers.

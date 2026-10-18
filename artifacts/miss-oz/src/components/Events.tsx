@@ -68,7 +68,7 @@ export default function Events() {
               }}
             >
               <span
-                className="block whitespace-nowrap rounded-[4px] border border-dashed px-[18px] py-[7px] font-script text-[22px] leading-none text-[var(--berry-deep)]"
+                className="event-service-tag block whitespace-nowrap rounded-[4px] border border-dashed px-[18px] py-[7px] font-script text-[22px] leading-none text-[var(--berry-deep)]"
                 style={{ borderColor: 'rgba(59,16,32,0.45)' }}
               >
                 coming soon

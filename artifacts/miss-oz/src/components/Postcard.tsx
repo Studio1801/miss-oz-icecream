@@ -1,13 +1,14 @@
 import PawMark from './PawMark';
 
-import { useEffect, useRef, useState, type MouseEvent } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef, useState, type FocusEvent, type MouseEvent } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'wouter';
 import { Bunting } from './Decor';
 import OrderChooser from './OrderChooser';
 import { SITE_NAV_LINKS, SiteNavigationLink, navTarget, sectionTarget } from './SiteNavigation';
 import { UBEREATS_URL } from './menuCatalog';
+import { useIsMobile } from '../hooks/use-mobile';
 
 /* Full-width homepage slideshow — real storefront photos */
 const SLIDES: { src: string; alt: string; pos?: string }[] = [
@@ -41,13 +42,26 @@ const HERO_MASK =
 export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   const [slide, setSlide] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [focusPaused, setFocusPaused] = useState(false);
+  const [fingerDown, setFingerDown] = useState(false);
+  const isMobile = useIsMobile();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
   const [location] = useLocation();
-  const reduceMotion = !!useReducedMotion();
+  const [reduceMotion, setReduceMotion] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
   const menuTriggerRef = useRef<HTMLButtonElement | null>(null);
   const firstMenuLinkRef = useRef<HTMLAnchorElement | null>(null);
   const wasMenuOpenRef = useRef(false);
+
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduceMotion(preference.matches);
+    update();
+    preference.addEventListener('change', update);
+    return () => preference.removeEventListener('change', update);
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
@@ -64,10 +78,33 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   }, []);
 
   useEffect(() => {
-    if (!showHero || paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!showHero || paused || focusPaused || fingerDown || reduceMotion) return;
     const t = setInterval(() => setSlide((s) => (s + 1) % SLIDES.length), 11000);
     return () => clearInterval(t);
-  }, [paused, slide, showHero]);
+  }, [paused, focusPaused, fingerDown, reduceMotion, slide, showHero]);
+
+  useEffect(() => {
+    const release = () => setFingerDown(false);
+    window.addEventListener('pointerup', release);
+    window.addEventListener('pointercancel', release);
+    window.addEventListener('blur', release);
+    return () => {
+      window.removeEventListener('pointerup', release);
+      window.removeEventListener('pointercancel', release);
+      window.removeEventListener('blur', release);
+    };
+  }, []);
+
+  const carouselInteraction = {
+    onPointerDownCapture: () => { if (isMobile) setFingerDown(true); },
+    onMouseEnter: () => { if (window.matchMedia('(hover: hover)').matches) setPaused(true); },
+    onMouseLeave: () => setPaused(false),
+    onFocus: (event: FocusEvent<HTMLDivElement>) =>
+      setFocusPaused(!isMobile || event.target.matches(':focus-visible')),
+    onBlur: (event: FocusEvent<HTMLDivElement>) => {
+      if (!event.currentTarget.contains(event.relatedTarget)) setFocusPaused(false);
+    },
+  };
 
   // Prevent page scrolling behind the fixed mobile menu overlay
   useEffect(() => {
@@ -321,7 +358,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
       {/* HERO SCENE — composite: cone foreground left + rotating café backdrop right.
           z-[955] lifts the photo above the fixed paper (940) / grain (950) overlays so it stays
           bright and natural, while staying below the marquee frame (960). */}
-      <div data-hscroll className="hero-scene-shell relative w-full z-[955] pointer-events-none">
+      <div className="hero-scene-shell relative w-full z-[955] pointer-events-none">
         <div
           className="hero-photo-mask w-full relative max-w-none px-0"
           style={{
@@ -336,7 +373,21 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           }}
         >
           {/* 16:7 aspect mirrors the wide-cinema feel of the reference */}
-          <div className="hero-scene-frame relative w-full aspect-[5/8] sm:aspect-[4/3] md:aspect-[16/7] overflow-hidden">
+          <motion.div
+            className="hero-scene-frame relative w-full aspect-[5/8] sm:aspect-[4/3] md:aspect-[16/7] overflow-hidden"
+            drag={isMobile ? 'x' : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={reduceMotion ? 0 : 0.08}
+            dragMomentum={false}
+            dragTransition={{ bounceStiffness: 400, bounceDamping: 30 }}
+            style={{ touchAction: isMobile ? 'pan-y' : undefined, pointerEvents: isMobile ? 'auto' : undefined }}
+            onPointerDownCapture={() => { if (isMobile) setFingerDown(true); }}
+            onDragEnd={(_, info) => {
+              setFingerDown(false);
+              if (Math.abs(info.offset.x) < 50) return;
+              setSlide((current) => (current + (info.offset.x < 0 ? 1 : -1) + SLIDES.length) % SLIDES.length);
+            }}
+          >
 
             {/* ── LAYER 1: rotating café backdrop ── */}
             <img
@@ -346,6 +397,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               fetchPriority="high"
               loading="eager"
               decoding="async"
+              draggable={false}
               className="hero-scene-photo absolute inset-0 w-full h-full object-cover saturate-[1.05] contrast-[1.03]"
               style={{ objectPosition: current.pos ?? 'center' }}
             />
@@ -507,15 +559,12 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
             <div
               className="hero-desktop-carousel absolute left-1/2 -translate-x-1/2 bottom-[clamp(10px,1.6vw,20px)] flex flex-row gap-[8px] pointer-events-auto"
               aria-label="Storefront slideshow controls"
-              onMouseEnter={() => setPaused(true)}
-              onMouseLeave={() => setPaused(false)}
-              onFocus={() => setPaused(true)}
-              onBlur={() => setPaused(false)}
+              {...carouselInteraction}
             >
               {renderSlideDots()}
             </div>
 
-          </div>
+          </motion.div>
 
         </div>
 
@@ -523,10 +572,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           className="hero-mobile-carousel hidden pointer-events-auto"
           role="group"
           aria-label="Storefront slideshow controls"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocus={() => setPaused(true)}
-          onBlur={() => setPaused(false)}
+          {...carouselInteraction}
         >
           {renderSlideDots()}
         </div>

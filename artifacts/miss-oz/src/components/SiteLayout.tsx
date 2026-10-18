@@ -4,6 +4,8 @@ import Loader from './Loader';
 import PawTrail from './PawTrail';
 import Postcard from './Postcard';
 
+import { useMobilePressFeedback } from '../hooks/useMobilePressFeedback';
+
 const INTRO_SESSION_KEY = 'miss-oz-intro-seen';
 let cachedIntroDecision: boolean | undefined;
 
@@ -47,6 +49,7 @@ function GlobalMarqueeBorder() {
 }
 
 export default function SiteLayout({ children, showHero }: { children: ReactNode; showHero: boolean }) {
+  useMobilePressFeedback();
   const [showIntro] = useState(() => shouldShowIntroForSession(showHero));
 
   return (

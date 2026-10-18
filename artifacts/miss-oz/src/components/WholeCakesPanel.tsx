@@ -87,13 +87,14 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           type="button"
           onClick={onOrder}
           className="
-            w-full rounded-full bg-[var(--berry-deep)] px-5 py-3 font-bold uppercase tracking-[1.5px]
+            cake-order-trigger w-full rounded-full bg-[var(--berry-deep)] px-5 py-3 font-bold uppercase tracking-[1.5px]
             interaction-primary text-[var(--cream-hi)]
             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold-hi)]
           "
           style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}
         >
-          Order a Whole Cheesecake →
+          <span className="form-desktop-only">Order a Whole Cheesecake →</span>
+          <span className="form-mobile-only">Order a whole cheesecake →</span>
         </button>
       </div>
       <div>

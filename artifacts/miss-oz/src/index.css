@@ -339,8 +339,10 @@
     box-shadow: 0 6px 0 var(--cocoa), 0 10px 20px rgba(28,13,12,0.4), inset 0 2px 0 rgba(255,255,255,0.2);
   transition: transform 120ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-.mech-btn:active {
-  transform: scale(0.97);
+  @media (min-width: 768px) {
+    .mech-btn:active {
+      transform: scale(0.97);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .mech-btn, .mech-btn:active, .mech-btn:focus-visible {
@@ -350,8 +352,10 @@
   }
 
   /* ── Marquee ── */
-  .mq-track:hover {
-    animation-play-state: paused;
+  @media (hover: hover) {
+    .mq-track:hover {
+      animation-play-state: paused;
+    }
   }
 
   .stitch-border {
@@ -380,10 +384,12 @@ a {
   transform-origin: center;
 }
 
-button:not(:disabled):active,
-.interaction-primary:not(:disabled):active {
-  transform: scale(0.97);
-  transition-duration: 120ms;
+@media (min-width: 768px) {
+  button:not(:disabled):active,
+  .interaction-primary:not(:disabled):active {
+    transform: scale(0.97);
+    transition-duration: 120ms;
+  }
 }
 
 .interaction-link {
@@ -405,9 +411,14 @@ button:not(:disabled):active,
   pointer-events: none;
 }
 
-.interaction-link:not(.interaction-primary):hover::before,
 .interaction-link:not(.interaction-primary):focus-visible::before {
   transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .interaction-link:not(.interaction-primary):hover::before {
+    transform: scaleX(1);
+  }
 }
 
 input:not([type="checkbox"]):not([type="radio"]),
@@ -545,9 +556,14 @@ select:focus-visible {
     opacity: 0;
   }
 
-  .interaction-link:not(.interaction-primary):hover::before,
   .interaction-link:not(.interaction-primary):focus-visible::before {
     opacity: 1;
+  }
+
+  @media (hover: hover) {
+    .interaction-link:not(.interaction-primary):hover::before {
+      opacity: 1;
+    }
   }
 
   .interaction-spinner {
@@ -757,8 +773,7 @@ select:focus-visible {
     transition: none !important;
   }
   /* Any Tailwind hover-translate micro-lift (vote buttons, taped cards, menu cards) */
-  [class*="hover:-translate"],
-  [class*="hover:-translate"]:hover {
+  [class*="hover:-translate"] {
     transform: none !important;
     transition: none !important;
   }
@@ -768,9 +783,11 @@ select:focus-visible {
   .poster-lift {
     transform: none !important;
   }
-  .group:hover .tape-peel, .group:focus-visible .tape-peel { transform: none !important; }
-  .poster-lift:hover { transform: none !important; box-shadow: 0 24px 54px rgba(28,13,12,0.4), inset 0 0 0 1px rgba(255,244,214,0.14) !important; }
-  .wax-seal:hover { transform: none !important; filter: drop-shadow(0 8px 24px rgba(28,13,12,0.3)); }
+  .group:focus-visible .tape-peel { transform: none !important; }
+  @media (hover: hover) {
+    .poster-lift:hover { transform: none !important; box-shadow: 0 24px 54px rgba(28,13,12,0.4), inset 0 0 0 1px rgba(255,244,214,0.14) !important; }
+    .wax-seal:hover { transform: none !important; filter: drop-shadow(0 8px 24px rgba(28,13,12,0.3)); }
+  }
   .bulbs-b { opacity: 0.55; }
 }
 
@@ -779,9 +796,16 @@ select:focus-visible {
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
   transform-origin: top center;
 }
-.group:hover .tape-peel, .group:focus-visible .tape-peel, a:hover .tape-peel, a:focus-visible .tape-peel, button:hover .tape-peel, button:focus-visible .tape-peel {
+.group:focus-visible .tape-peel, a:focus-visible .tape-peel, button:focus-visible .tape-peel {
   transform: scaleY(0.7) rotate(-2deg) translateY(-2px);
   filter: drop-shadow(0 4px 2px rgba(28,13,12,0.3));
+}
+
+@media (hover: hover) {
+  .group:hover .tape-peel, a:hover .tape-peel, button:hover .tape-peel {
+    transform: scaleY(0.7) rotate(-2deg) translateY(-2px);
+    filter: drop-shadow(0 4px 2px rgba(28,13,12,0.3));
+  }
 }
 
 /* Ledger field interaction */
@@ -799,9 +823,11 @@ select:focus-visible {
 .wax-seal {
   transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
 }
-.wax-seal:hover {
-  transform: scale(1.15) rotate(8deg);
-  filter: drop-shadow(0 12px 24px rgba(28,13,12,0.4));
+@media (hover: hover) {
+  .wax-seal:hover {
+    transform: scale(1.15) rotate(8deg);
+    filter: drop-shadow(0 12px 24px rgba(28,13,12,0.4));
+  }
 }
 .wax-seal-crack {
   position: absolute;
@@ -811,8 +837,10 @@ select:focus-visible {
   transition: opacity 0.3s ease 0.1s;
   pointer-events: none;
 }
-.wax-seal:hover .wax-seal-crack {
-  opacity: 1;
+@media (hover: hover) {
+  .wax-seal:hover .wax-seal-crack {
+    opacity: 1;
+  }
 }
 
 /* Sprinkles */
@@ -830,9 +858,11 @@ select:focus-visible {
 .poster-lift {
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
 }
-.poster-lift:hover {
-  transform: translateY(-6px) rotate(1.5deg);
-  box-shadow: 0 34px 64px rgba(28,13,12,0.5), inset 0 0 0 1px rgba(255,244,214,0.14) !important;
+@media (hover: hover) {
+  .poster-lift:hover {
+    transform: translateY(-6px) rotate(1.5deg);
+    box-shadow: 0 34px 64px rgba(28,13,12,0.5), inset 0 0 0 1px rgba(255,244,214,0.14) !important;
+  }
 }
 
 /* Meet Oz header link motion */
@@ -1629,7 +1659,8 @@ select:focus-visible {
 
   .miss-oz-footer {
     margin-top: 0 !important;
-    padding: 56px 0 calc(56px + env(safe-area-inset-bottom)) !important;
+    /* The parent main already supplies --edge; do not apply it twice. */
+    padding: 96px 0 calc(48px + env(safe-area-inset-bottom)) !important;
   }
 
   .miss-oz-footer .clip-scallop-top {
@@ -1637,8 +1668,15 @@ select:focus-visible {
   }
 
   .miss-oz-footer .footer-bunting {
-    top: 16px !important;
-    height: 40px;
+    position: relative !important;
+    inset: auto !important;
+    animation: none !important;
+    transform: none !important;
+    height: 44px;
+    width: 100%;
+    margin-bottom: 20px;
+    overflow: hidden !important;
+    pointer-events: none;
   }
 
   .miss-oz-footer .footer-intro {
@@ -1668,8 +1706,8 @@ select:focus-visible {
 
   .miss-oz-footer .footer-polaroid {
     display: block;
-    width: 120px !important;
-    margin: 16px auto 24px !important;
+    width: 110px !important;
+    margin: 16px !important;
     padding: 8px 8px 10px !important;
     transform: rotate(-3deg);
   }
@@ -1683,7 +1721,7 @@ select:focus-visible {
   .miss-oz-footer .footer-details {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
-    gap: 24px !important;
+    gap: 28px !important;
     padding-top: 24px !important;
     border-top: 1px solid rgba(242, 225, 194, 0.3);
   }
@@ -1698,7 +1736,7 @@ select:focus-visible {
     color: var(--gold-hi) !important;
     font-size: 15px !important;
     font-weight: 600 !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0 !important;
     text-transform: none !important;
   }
 
@@ -1715,6 +1753,9 @@ select:focus-visible {
   .miss-oz-footer .footer-text-link {
     color: inherit;
     text-decoration: none;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
   }
 
   .miss-oz-footer .footer-dog-line {
@@ -1747,9 +1788,11 @@ select:focus-visible {
   .miss-oz-footer .footer-mailing-fields input,
   .miss-oz-footer .footer-mailing-fields button {
     width: 100%;
+    min-width: 0;
     height: 52px !important;
     min-height: 52px;
     margin: 0;
+    font-size: 16px !important;
   }
 
   .miss-oz-footer .footer-mailing-fields input {
@@ -1757,8 +1800,8 @@ select:focus-visible {
   }
 
   .miss-oz-footer .footer-mailing-fields button {
-    font-size: 15px !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
   }
 
   .miss-oz-footer .footer-socials {
@@ -1832,7 +1875,9 @@ select:focus-visible {
     width: 100%;
     border-radius: 10px 10px 0 0;
   }
+}
 
+@media (max-width: 767px) {
   .page-content-gutter .event-polaroid-stage {
     display: flex;
     height: auto !important;
@@ -1852,6 +1897,12 @@ select:focus-visible {
 }
 
 @media (max-width: 359px) {
+  .page-content-gutter #wholesale .wholesale-heading {
+    font-size: clamp(30px, 10.6vw, 38px) !important;
+    overflow-wrap: normal !important;
+    word-break: normal;
+  }
+
   .hero-title-text {
     font-size: clamp(32px, 12vw, 44px) !important;
   }

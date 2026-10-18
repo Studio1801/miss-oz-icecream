@@ -1,13 +1,36 @@
 import { useState } from 'react';
 import { Bunting } from './Decor';
 import PawMark from './PawMark';
+import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE } from '../hooks/useMobileForm';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const validation = useMobileForm();
 
-  const handleSubscribe = () => {
-    if (email.trim()) setSubmitted(true);
+  const handleSubscribe = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!validation.mobile) {
+      if (email.trim()) setSubmitted(true);
+      return;
+    }
+    if (status === 'sending' || status === 'success' || !validation.validate(event.currentTarget)) return;
+    setStatus('sending');
+    try {
+      const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+      const response = await fetch(`${base}/api/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const result = await response.json();
+      if (!response.ok || result.ok !== true || result.note) throw new Error('Subscription not confirmed');
+      setStatus('success');
+      setEmail('');
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -79,15 +102,16 @@ export default function Footer() {
 
         {/* Mailing List */}
         <div className="footer-mailing-list min-w-[260px] flex-1 max-w-[340px] max-[639px]:col-span-2 max-[639px]:min-w-0 max-[639px]:max-w-none scissor-cut p-[20px] max-[639px]:p-3 mt-[-20px] max-[639px]:mt-0 rounded-[10px]">
-          <h2 className="footer-label text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]"><span className="footer-heading-desktop">Mailing List</span><span className="footer-heading-mobile">Join the mailing list</span></h2>
+          <h2 className="footer-label text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]"><span className="footer-heading-desktop">Mailing List</span><span className="footer-heading-mobile">Mailing list</span></h2>
           {submitted ? (
             <p className="text-[#EFE2CE] text-[15px] mt-2 font-script-alt text-[22px]">Thanks for subscribing!</p>
           ) : (
-            <div className="footer-mailing-fields flex flex-col gap-3 max-[639px]:flex-row max-[639px]:gap-2">
+            <form onSubmit={handleSubscribe} noValidate onInput={(event) => { validation.clear(event); if (status === 'success') setStatus('idle'); }} className="mobile-form footer-mailing-fields flex flex-col gap-3 max-[639px]:flex-row max-[639px]:gap-2">
               <label className="sr-only footer-email-label" htmlFor="footer-email">Your email</label>
               <input
-                id="footer-email"
+                {...validation.field('footer-email')}
                 type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email"
@@ -96,32 +120,35 @@ export default function Footer() {
                 aria-label="Your email"
                 className="w-full py-[12px] px-[14px] max-[639px]:h-12 max-[639px]:py-0 bg-[rgba(255,255,255,0.03)] border-2 border-[var(--berry)] text-[var(--cream)] placeholder-[rgba(242,225,194,0.5)] text-[15px] focus:outline-none focus:border-[var(--gold-hi)] transition-colors rounded-sm"
                 style={{ fontFamily: 'var(--font-sans)' }}
-                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
               />
+              {validation.error('footer-email')}
               <button
-                type="button"
-                onClick={handleSubscribe}
+                type="submit"
+                aria-busy={status === 'sending'}
+                aria-disabled={validation.mobile && (status === 'sending' || status === 'success') || undefined}
                 className="interaction-primary clickable w-full py-[12px] px-[14px] max-[639px]:h-12 max-[639px]:py-0 bg-[var(--berry)] text-[var(--cream-hi)] text-[14px] tracking-[2px] uppercase font-semibold mech-btn hover:bg-[var(--berry-deep)] transition-colors rounded-sm"
                 style={{ fontFamily: 'var(--font-sans)' }}
               >
-                Subscribe
+                <span aria-hidden={status === 'sending' || undefined} role={status === 'success' ? 'status' : undefined} className={status === 'sending' ? 'opacity-0' : ''}>{validation.mobile && status === 'success' ? `✓ ${MOBILE_FORM_SUCCESS}` : 'Subscribe'}</span>
+                {status === 'sending' && <span role="status" aria-label="Sending" className="interaction-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
               </button>
-            </div>
+              {validation.mobile && status === 'error' && <p role="alert" className="mobile-field-error">{MOBILE_FORM_FAILURE}</p>}
+            </form>
           )}
 
           {/* Social icons */}
           <div className="footer-socials flex gap-[14px] mt-[24px] max-[639px]:mt-4">
             {/* Facebook */}
             <a href="#" aria-label="Facebook" className="w-[36px] h-[36px] max-[639px]:w-11 max-[639px]:h-11 shrink-0 rounded-full border border-[rgba(242,225,194,0.4)] flex items-center justify-center text-[#EFE2CE] hover:border-[var(--gold-hi)] hover:text-[var(--gold-hi)] transition-colors">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             </a>
             {/* Twitter / X */}
             <a href="#" aria-label="Twitter" className="w-[36px] h-[36px] max-[639px]:w-11 max-[639px]:h-11 shrink-0 rounded-full border border-[rgba(242,225,194,0.4)] flex items-center justify-center text-[#EFE2CE] hover:border-[var(--gold-hi)] hover:text-[var(--gold-hi)] transition-colors">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
             </a>
             {/* Instagram */}
-            <a href="#" aria-label="Instagram" className="w-[36px] h-[36px] max-[639px]:w-11 max-[639px]:h-11 shrink-0 rounded-full border border-[rgba(242,225,194,0.4)] flex items-center justify-center text-[#EFE2CE] hover:border-[var(--gold-hi)] hover:text-[var(--gold-hi)] transition-colors">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            <a href="https://www.instagram.com/missozicecreamcafe/" target="_blank" rel="noopener noreferrer" aria-label="Instagram: @missozicecreamcafe" className="w-[36px] h-[36px] max-[639px]:w-11 max-[639px]:h-11 shrink-0 rounded-full border border-[rgba(242,225,194,0.4)] flex items-center justify-center text-[#EFE2CE] hover:border-[var(--gold-hi)] hover:text-[var(--gold-hi)] transition-colors">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             </a>
           </div>
         </div>

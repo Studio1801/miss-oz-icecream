@@ -54,3 +54,4 @@ Thumbs.db
 
 # Vercel build metadata
 .vercel/
+/generated-artifacts/

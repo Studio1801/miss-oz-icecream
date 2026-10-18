@@ -65,7 +65,6 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
                 tabIndex={active ? 0 : -1}
                 aria-pressed={active}
                 onClick={() => onSelect(category)}
-                whileTap={{ scale: 0.985 }}
                 className="relative min-h-[44px] font-bold uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] max-[639px]:shrink-0 max-[639px]:snap-center max-[639px]:whitespace-nowrap max-[639px]:px-3"
                 style={{
                   fontFamily: 'var(--font-sans)',

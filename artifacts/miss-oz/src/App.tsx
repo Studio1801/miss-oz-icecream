@@ -20,7 +20,10 @@ function ScrollToCurrentHash() {
     const scrollToHash = () => {
       const anchor = window.location.hash.slice(1);
       if (anchor) {
-        requestAnimationFrame(() => document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+        requestAnimationFrame(() => document.getElementById(decodeURIComponent(anchor))?.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+          block: 'start',
+        }));
       } else {
         window.scrollTo(0, 0);
       }

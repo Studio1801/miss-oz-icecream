@@ -26,3 +26,27 @@ Mobile menu category changes must preserve the page's vertical position, not mer
 **Why:** Native browser scroll anchoring moved the page when swapping panels of different heights, even with the menu section itself excluded from anchoring. The client explicitly requested no jump.
 
 **How to apply:** Preserve the mobile anchoring opt-out and verify actual scroll position across short and tall panel changes. Keep the existing desktop scroll-to-menu behavior.
+
+Touch press feedback must not rely solely on native CSS `:active`.
+
+**Why:** Held-touch verification produced pointer events and working final taps without a native active state. CSS-only feedback was therefore absent during the actual hold.
+
+**How to apply:** Track press/release/cancellation explicitly, clear feedback when a gesture becomes a scroll or drag, and preserve resting geometry.
+
+Reduced-motion preferences must stop running autoplay timers when the preference changes, not just on initial page load.
+
+**Why:** CSS responded to a live preference change while the animation library's initial reduced-motion snapshot left the carousel interval running.
+
+**How to apply:** Subscribe to media-query changes for timer-driven behavior, cancel active intervals when reduced motion is enabled, and check the current preference before imperative smooth scrolling.
+
+Restrict text-audit exemptions to actual marquees and intentional horizontal scrollers, never ordinary content sections.
+
+**Why:** A scrolling-content exemption on an entire hero hides its ordinary headlines and copy from gutter and font-size checks.
+
+**How to apply:** Annotate only the moving strip or scrolling control itself; keep surrounding content in the audit.
+
+An empty gutter/font-size audit does not establish that the page looks correct.
+
+**Why:** Overlapping photo captions and headings split mid-word can pass every geometry check.
+
+**How to apply:** Pair the console audit with full-page visual inspection, including widths on either side of layout breakpoints.

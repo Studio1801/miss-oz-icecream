@@ -71,7 +71,7 @@ function WholesaleAwning() {
 
 function PolaroidStack() {
   return (
-    <div className="mx-auto mb-6 grid w-full max-w-[400px] grid-cols-2 gap-4">
+    <div className="wholesale-polaroids mx-auto mb-6 grid w-full max-w-[400px] grid-cols-2 gap-4">
       {polaroidPhotos.map((photo, index) => (
         <figure
           key={photo.src}
@@ -161,7 +161,7 @@ export default function Wholesale() {
             Wholesale program · Est. 2007
           </span>
           <h2
-            className="mb-4 text-[clamp(42px,6vw,70px)] leading-[0.98] text-[var(--berry-deep)]"
+            className="wholesale-heading mb-4 text-[clamp(42px,6vw,70px)] leading-[0.98] text-[var(--berry-deep)]"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Become our Wholesale Partner
@@ -241,7 +241,7 @@ export default function Wholesale() {
                 ))}
               </div>
 
-              <p className="mt-4 text-[13px] leading-relaxed max-[639px]:text-[13px] max-[639px]:leading-[1.5] text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
+              <p className="wholesale-minimums mt-4 text-[13px] leading-relaxed max-[639px]:text-[13px] max-[639px]:leading-[1.5] text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
                 Wholesale minimums: $300 minimum total order. One dozen (12 cookies) minimum per cookie order.
               </p>
 

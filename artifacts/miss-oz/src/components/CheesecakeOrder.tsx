@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
+import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE } from '../hooks/useMobileForm';
 
 type OrderStatus = 'idle' | 'sending' | 'sent' | 'error';
 
@@ -12,6 +13,7 @@ function getFollowingWednesday() {
 }
 
 export default function CheesecakeOrder({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const validation = useMobileForm();
   const [status, setStatus] = useState<OrderStatus>('idle');
   const [showSuccessCheck, setShowSuccessCheck] = useState(false);
   const followingWednesday = getFollowingWednesday();
@@ -20,6 +22,7 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
     if (!open) return;
     setStatus('idle');
     setShowSuccessCheck(false);
+    validation.reset();
     const closeOnEscape = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', closeOnEscape);
@@ -31,6 +34,8 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === 'sending' || (validation.mobile && status === 'sent')) return;
+    if (!validation.validate(e.currentTarget)) return;
     setStatus('sending');
     const form = e.currentTarget;
     const values = new FormData(form);
@@ -55,6 +60,10 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
         }),
       });
       if (!response.ok) throw new Error('Order request failed');
+      if (validation.mobile) {
+        const result = await response.json();
+        if (result.ok !== true || result.note) throw new Error('Sending was not confirmed');
+      }
       form.reset();
       setStatus('sent');
       setShowSuccessCheck(true);
@@ -72,7 +81,7 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
         role="dialog"
         aria-modal="true"
         aria-labelledby="whole-cake-order-title"
-        className="fixed inset-0 z-[2000] flex items-start justify-center overflow-y-auto p-[14px] sm:p-[28px]"
+        className="cake-order-dialog fixed inset-0 z-[2000] flex items-start justify-center overflow-y-auto p-[14px] sm:p-[28px]"
         style={{ background: 'rgba(28,13,12,0.72)', backdropFilter: 'blur(5px)' }}
         onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
         initial={{ opacity: 0 }}
@@ -111,34 +120,35 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
               </div>
               <p className="mt-3"><strong>Important:</strong> Your pickup is the following Wednesday, not the Wednesday of the same week.</p>
             </div>
-            <form onSubmit={handleSubmit} className="rounded-[9px] p-[clamp(14px,2vw,22px)]" style={{ background: 'rgba(227,180,76,0.12)', border: '1px solid rgba(94,23,53,0.18)' }}>
+            <form onSubmit={handleSubmit} noValidate={validation.mobile} onInput={(event) => { validation.clear(event); if (validation.mobile && status === 'sent') setStatus('idle'); }} className="mobile-form rounded-[9px] p-[clamp(14px,2vw,22px)]" style={{ background: 'rgba(227,180,76,0.12)', border: '1px solid rgba(94,23,53,0.18)' }}>
               <div className="font-bold text-[#3B1E2B]" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(18px,2vw,23px)' }}>Your Order Details</div>
               <div className="mt-4 grid gap-3 text-[#3B1E2B]" style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}>
-                <label>Cake size
-                  <select name="cakeSize" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }}>
+                <label htmlFor="cake-size">Cake size
+                  <select {...validation.field('cake-size')} name="cakeSize" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }}>
                     <option value="">Choose a size</option><option>6-inch</option><option>8-inch</option><option>10-inch</option>
                   </select>
+                  {validation.error('cake-size')}
                 </label>
-                <label>Quantity<input name="quantity" type="number" min="1" defaultValue="1" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} /></label>
+                <label htmlFor="cake-quantity">Quantity<input {...validation.field('cake-quantity')} name="quantity" type="number" inputMode="numeric" min="1" defaultValue="1" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} />{validation.error('cake-quantity')}</label>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <label>Customer name<input name="name" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} /></label>
-                  <label>Phone number<input name="phone" type="tel" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} /></label>
+                  <label htmlFor="cake-name">Customer name<input {...validation.field('cake-name')} name="name" autoComplete="name" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} />{validation.error('cake-name')}</label>
+                  <label htmlFor="cake-phone">Phone number<input {...validation.field('cake-phone')} name="phone" type="tel" autoComplete="tel" inputMode="tel" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} />{validation.error('cake-phone')}</label>
                 </div>
-                <label>Email address<input name="email" type="email" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} /></label>
-                <label>Pickup date<input name="pickupDate" value={`${followingWednesday} by noon`} readOnly className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.6)', border: '1px solid rgba(94,23,53,0.22)' }} /></label>
-                <label>Order notes<textarea name="notes" rows={3} className="mt-1 w-full resize-y rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} /></label>
+                <label htmlFor="cake-email">Email address<input {...validation.field('cake-email')} name="email" type="email" autoComplete="email" inputMode="email" required className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} />{validation.error('cake-email')}</label>
+                <label htmlFor="cake-pickup">Pickup date<input id="cake-pickup" name="pickupDate" value={`${followingWednesday} by noon`} readOnly className="mt-1 w-full rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.6)', border: '1px solid rgba(94,23,53,0.22)' }} /></label>
+                <label htmlFor="cake-notes">Order notes<textarea {...validation.field('cake-notes')} name="notes" rows={3} className="mt-1 w-full resize-y rounded-[6px] px-3 py-2.5" style={{ background: 'rgba(251,244,230,0.9)', border: '1px solid rgba(94,23,53,0.22)' }} />{validation.error('cake-notes')}</label>
               </div>
               <div className="mt-4 rounded-[7px] px-3 py-3 text-[#5B4540]" style={{ background: 'rgba(251,244,230,0.62)', border: '1px dashed rgba(94,23,53,0.24)', fontFamily: 'var(--font-sans)', fontSize: '12px' }}>
                 <div className="font-bold text-[#3B1E2B]">Payment</div>
                 <p className="mt-1">Payment in full will be required when placing your order because each cake is prepared specifically for you.</p>
                 <p className="mt-1 font-bold text-[var(--berry-deep)]">Your order is confirmed only after payment has been completed.</p>
               </div>
-              <button type="submit" disabled={status === 'sending'} className="interaction-primary relative mt-4 w-full rounded-full bg-[var(--berry-deep)] px-5 py-3 font-bold uppercase tracking-[1.5px] text-[var(--cream-hi)] disabled:opacity-60" style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}>
-                <span className={`transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${status === 'sending' ? 'opacity-0' : 'opacity-100'}`}>Submit Pre-Order</span>
+              <button type="submit" disabled={!validation.mobile && status === 'sending'} aria-disabled={validation.mobile && (status === 'sending' || status === 'sent') || undefined} aria-busy={status === 'sending'} className="interaction-primary relative mt-4 w-full rounded-full bg-[var(--berry-deep)] px-5 py-3 font-bold uppercase tracking-[1.5px] text-[var(--cream-hi)] disabled:opacity-60" style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}>
+                <span aria-hidden={status === 'sending' || undefined} role={validation.mobile && status === 'sent' ? 'status' : undefined} className={`transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${status === 'sending' ? 'opacity-0' : 'opacity-100'}`}>{validation.mobile ? status === 'sent' ? `✓ ${MOBILE_FORM_SUCCESS}` : 'Submit pre-order' : 'Submit Pre-Order'}</span>
                 {status === 'sending' && <span role="status" aria-label="Sending" className="interaction-spinner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />}
               </button>
-              {status === 'sent' && <p className="mt-3 text-center text-[#3B1E2B]"><AnimatePresence>{showSuccessCheck && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }} className="mr-1 inline-block">✓</motion.span>}</AnimatePresence>Thank you. Your pre-order request has been sent.</p>}
-              {status === 'error' && <p className="mt-3 text-center text-[var(--berry-deep)]">We couldn’t send your request. Please try again.</p>}
+              {status === 'sent' && !validation.mobile && <p className="mt-3 text-center text-[#3B1E2B]"><AnimatePresence>{showSuccessCheck && <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }} className="mr-1 inline-block">✓</motion.span>}</AnimatePresence>Thank you. Your pre-order request has been sent.</p>}
+              {status === 'error' && <p role="alert" className="mt-3 text-center text-[var(--berry-deep)]">{validation.mobile ? MOBILE_FORM_FAILURE : 'We couldn’t send your request. Please try again.'}</p>}
             </form>
           </div>
         </motion.div>
