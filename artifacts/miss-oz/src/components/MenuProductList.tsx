@@ -32,7 +32,7 @@ export default function MenuProductList({
               )}
             </div>
             {item.note && (
-              <p className={`mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] ${descriptionSize === 'large' ? 'text-[15px] max-[639px]:text-[14px]' : 'text-[12px] sm:text-[13px] max-[639px]:text-[14px]'}`}>
+              <p className={`menu-product-note mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] ${descriptionSize === 'large' ? 'text-[15px] max-[639px]:text-[14px]' : 'text-[12px] sm:text-[13px] max-[639px]:text-[14px]'}`}>
                 {item.note}
               </p>
             )}

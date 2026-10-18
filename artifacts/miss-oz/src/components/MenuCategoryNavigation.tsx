@@ -16,6 +16,9 @@ type Props = {
 /** Shared category controls for the responsive homepage menu. */
 export default function MenuCategoryNavigation({ activeCategory, onSelect, variant, onOrderWholeCake }: Props) {
   const mobileTabsRef = useRef<HTMLDivElement>(null);
+  const mobileTabViewportRef = useRef<HTMLDivElement>(null);
+  const mobileNavRef = useRef<HTMLElement>(null);
+  const [isStuck, setIsStuck] = useState(false);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -30,65 +33,129 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
     row.scrollTo({ left: Math.max(0, targetLeft), behavior: reduceMotion ? 'instant' : 'smooth' });
   }, [activeCategory, variant, reduceMotion]);
 
+  useEffect(() => {
+    if (variant !== 'mobile') {
+      setIsStuck(false);
+      return;
+    }
+
+    const nav = mobileNavRef.current;
+    const row = mobileTabsRef.current;
+    const viewport = mobileTabViewportRef.current;
+    if (!nav || !row || !viewport) return;
+
+    const updateOverflow = () => {
+      const maxScroll = Math.max(0, row.scrollWidth - row.clientWidth);
+      viewport.dataset.overflowLeft = String(row.scrollLeft > 1);
+      viewport.dataset.overflowRight = String(maxScroll - row.scrollLeft > 1);
+    };
+
+    const updateStickyState = () => {
+      const stickyTop = Number.parseFloat(window.getComputedStyle(nav).top) || 0;
+      const navRect = nav.getBoundingClientRect();
+      const sectionBottom = nav.closest('#menu')?.getBoundingClientRect().bottom ?? Number.POSITIVE_INFINITY;
+      const stuck = navRect.top <= stickyTop + 1 && navRect.bottom < sectionBottom - 1;
+      setIsStuck((current) => current === stuck ? current : stuck);
+    };
+
+    let frame = 0;
+    const scheduleStickyUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        updateStickyState();
+      });
+    };
+
+    const resizeObserver = new ResizeObserver(updateOverflow);
+    resizeObserver.observe(row);
+    row.querySelectorAll('button').forEach((tab) => resizeObserver.observe(tab));
+    row.addEventListener('scroll', updateOverflow, { passive: true });
+    window.addEventListener('scroll', scheduleStickyUpdate, { passive: true });
+    window.addEventListener('resize', updateOverflow);
+    window.addEventListener('resize', scheduleStickyUpdate);
+    updateOverflow();
+    scheduleStickyUpdate();
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
+      row.removeEventListener('scroll', updateOverflow);
+      window.removeEventListener('scroll', scheduleStickyUpdate);
+      window.removeEventListener('resize', updateOverflow);
+      window.removeEventListener('resize', scheduleStickyUpdate);
+    };
+  }, [activeCategory, variant]);
+
   if (variant === 'mobile') {
     return (
-      <nav aria-label="Menu categories" className="menu-category-mobile relative px-4 py-[10px]" style={{ background: 'var(--berry-deep)' }}>
-        <div
-          ref={mobileTabsRef}
-          data-hscroll
-          role="tablist"
-          aria-label="Menu categories"
-          className="menu-tabs-scroll grid grid-cols-2 min-[360px]:grid-cols-3 gap-[7px] max-[767px]:flex max-[767px]:w-full max-[767px]:snap-x max-[767px]:snap-mandatory max-[767px]:items-center max-[767px]:gap-2 max-[767px]:overflow-x-auto max-[767px]:overscroll-x-contain max-[767px]:scroll-smooth max-[767px]:pr-8"
-          onKeyDown={(event) => {
-            const index = MENU_CATEGORIES.indexOf(activeCategory as typeof MENU_CATEGORIES[number]);
-            let next = index;
-            if (event.key === 'ArrowRight') next = (index + 1) % MENU_CATEGORIES.length;
-            else if (event.key === 'ArrowLeft') next = (index + MENU_CATEGORIES.length - 1) % MENU_CATEGORIES.length;
-            else if (event.key === 'Home') next = 0;
-            else if (event.key === 'End') next = MENU_CATEGORIES.length - 1;
-            else return;
-            event.preventDefault();
-            onSelect(MENU_CATEGORIES[next]);
-            mobileTabsRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus({ preventScroll: true });
-          }}
-        >
-          {MENU_CATEGORIES.map((category, index) => {
-            const active = activeCategory === category;
-            return (
-              <motion.button
-                key={category}
-                type="button"
-                role="tab"
-                id={`menu-tab-${index}`}
-                aria-controls={`menu-panel-${index}`}
-                aria-selected={active}
-                tabIndex={active ? 0 : -1}
-                aria-pressed={active}
-                onClick={() => onSelect(category)}
-                className="relative min-h-[44px] font-bold uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] max-[767px]:shrink-0 max-[767px]:snap-center max-[767px]:whitespace-nowrap max-[767px]:px-3"
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '15px',
-                  letterSpacing: '0.5px',
-                  lineHeight: 1.25,
-                  padding: '8px 6px',
-                  borderRadius: '999px',
-                  color: active ? 'var(--berry-deep)' : 'var(--cream-hi)',
-                  border: '1.5px solid transparent',
-                  transition: 'color 220ms cubic-bezier(0.22, 1, 0.36, 1)',
-                }}
-              >
-                {active && <span className="absolute inset-0 rounded-full" style={{ background: 'var(--pink)' }} />}
-                <span className="relative">{category}</span>
-              </motion.button>
-            );
-          })}
+      <nav
+        ref={mobileNavRef}
+        data-stuck={isStuck ? 'true' : 'false'}
+        aria-label="Menu categories"
+        className="menu-category-mobile relative px-4 py-[10px]"
+        style={{ background: 'var(--berry-deep)' }}
+      >
+        <div ref={mobileTabViewportRef} className="menu-tabs-viewport relative min-w-0 flex-1">
+          <div
+            ref={mobileTabsRef}
+            data-hscroll
+            role="tablist"
+            aria-label="Menu categories"
+            className="menu-tabs-scroll grid grid-cols-2 min-[360px]:grid-cols-3 gap-[7px] max-[767px]:flex max-[767px]:w-full max-[767px]:snap-x max-[767px]:snap-mandatory max-[767px]:items-center max-[767px]:gap-2 max-[767px]:overflow-x-auto max-[767px]:overscroll-x-contain max-[767px]:scroll-smooth max-[767px]:pr-8"
+            onKeyDown={(event) => {
+              const index = MENU_CATEGORIES.indexOf(activeCategory as typeof MENU_CATEGORIES[number]);
+              let next = index;
+              if (event.key === 'ArrowRight') next = (index + 1) % MENU_CATEGORIES.length;
+              else if (event.key === 'ArrowLeft') next = (index + MENU_CATEGORIES.length - 1) % MENU_CATEGORIES.length;
+              else if (event.key === 'Home') next = 0;
+              else if (event.key === 'End') next = MENU_CATEGORIES.length - 1;
+              else return;
+              event.preventDefault();
+              onSelect(MENU_CATEGORIES[next]);
+              mobileTabsRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus({ preventScroll: true });
+            }}
+          >
+            {MENU_CATEGORIES.map((category, index) => {
+              const active = activeCategory === category;
+              return (
+                <motion.button
+                  key={category}
+                  type="button"
+                  role="tab"
+                  id={`menu-tab-${index}`}
+                  aria-controls={`menu-panel-${index}`}
+                  aria-selected={active}
+                  tabIndex={active ? 0 : -1}
+                  aria-pressed={active}
+                  onClick={() => onSelect(category)}
+                  className="relative min-h-[44px] font-bold uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] max-[767px]:shrink-0 max-[767px]:snap-center max-[767px]:whitespace-nowrap max-[767px]:px-3"
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '15px',
+                    letterSpacing: '0.5px',
+                    lineHeight: 1.25,
+                    padding: '8px 6px',
+                    borderRadius: '999px',
+                    color: active ? 'var(--berry-deep)' : 'var(--cream-hi)',
+                    border: '1.5px solid transparent',
+                    transition: 'color 220ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  }}
+                >
+                  {active && <span className="absolute inset-0 rounded-full" style={{ background: 'var(--pink)' }} />}
+                  <span className="relative">{category}</span>
+                </motion.button>
+              );
+            })}
+          </div>
+          <span aria-hidden="true" className="menu-tab-fade menu-tab-fade-left" />
+          <span aria-hidden="true" className="menu-tab-fade menu-tab-fade-right" />
         </div>
         {activeCategory === 'Whole Cakes' && onOrderWholeCake && (
           <button
             type="button"
             onClick={onOrderWholeCake}
-            className="mobile-wholecake-order interaction-primary mx-auto mt-2 flex min-h-11 items-center justify-center rounded-full px-4 text-[var(--gold-hi)] transition-colors hover:bg-[rgba(255,217,138,0.14)] hover:text-[var(--cream-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+            className="mobile-wholecake-order interaction-primary flex min-h-11 shrink-0 items-center justify-center rounded-full px-4 text-[var(--gold-hi)] transition-colors hover:bg-[rgba(255,217,138,0.14)] hover:text-[var(--cream-hi)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
             style={{ fontFamily: 'var(--font-script)', fontSize: '20px', lineHeight: 1.1 }}
           >
             Order Here!

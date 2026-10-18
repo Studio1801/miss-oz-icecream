@@ -9,11 +9,11 @@ export default function CroffleDessertsPanel() {
       <div className="mt-[clamp(16px,2vw,24px)]">
         <div className="grid grid-cols-1 gap-x-[clamp(24px,3vw,40px)] gap-y-6 max-[430px]:gap-y-5 md:grid-cols-2">
           <section className="min-w-0">
-            <h4 className="mb-3 max-[430px]:mb-[7px] text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Croffle menu</h4>
+            <h4 className="menu-subsection-label mb-3 max-[430px]:mb-[7px] text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Croffle menu</h4>
             <MenuProductList items={CROFFLES} descriptionSize="large" />
           </section>
           <section className="min-w-0">
-            <h4 className="mb-3 max-[430px]:mb-[7px] text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
+            <h4 className="menu-subsection-label mb-3 max-[430px]:mb-[7px] text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
             <MenuProductList items={DESSERTS} descriptionSize="large" />
           </section>
         </div>
@@ -28,7 +28,7 @@ export default function CroffleDessertsPanel() {
             Fresh-baked favorites
           </div>
           <p
-              className="mt-[7px] text-[#6E5A54] italic mobile-body-14"
+              className="menu-closing-copy mt-[7px] text-[#6E5A54] italic mobile-body-14"
             style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}
           >
             A few of the housemade sweets you may find at Miss Oz.
@@ -50,7 +50,7 @@ export default function CroffleDessertsPanel() {
           >
             always housemade, never rushed
           </div>
-          <p className="mt-[8px] text-[#6E5A54] leading-relaxed mobile-body-14" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
+          <p className="menu-closing-copy mt-[8px] text-[#6E5A54] leading-relaxed mobile-body-14" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
             See the full menu on Uber Eats.
           </p>
           <a

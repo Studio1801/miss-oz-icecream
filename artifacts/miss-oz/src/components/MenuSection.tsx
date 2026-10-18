@@ -144,11 +144,14 @@ export default function MenuSection() {
     window.location.hash === '#cakes' ? 'Whole Cakes' : 'Flavors',
   );
   const scrollMenuAfterSelection = useRef(false);
+  const scrollMobileHeadingAfterSelection = useRef(false);
   const [cakeOrderOpen, setCakeOrderOpen] = useState(false);
   const closeCakeOrder = useCallback(() => setCakeOrderOpen(false), []);
   const selectCategory = (category: string) => {
     const categoryChanged = category !== activeCategory;
-    scrollMenuAfterSelection.current = categoryChanged && !window.matchMedia('(max-width: 767px)').matches;
+    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+    scrollMenuAfterSelection.current = categoryChanged && !isMobileViewport;
+    scrollMobileHeadingAfterSelection.current = categoryChanged && isMobileViewport;
     setActiveCategory(category);
     if (category === 'Whole Cakes') {
       history.replaceState(null, '', `${window.location.pathname}${window.location.search}#cakes`);
@@ -168,6 +171,28 @@ export default function MenuSection() {
     const top = Math.max(0, window.scrollY + menu.getBoundingClientRect().top - marginTop);
     window.scrollTo({ top, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }, [activeCategory]);
+
+  useEffect(() => {
+    if (!scrollMobileHeadingAfterSelection.current) return;
+    scrollMobileHeadingAfterSelection.current = false;
+
+    const timeout = window.setTimeout(() => {
+      const heading = document.querySelector<HTMLElement>(
+        '#menu .menu-panel[aria-hidden="false"] > .text-center h3',
+      );
+      if (!heading) return;
+
+      const headerBottom = document.querySelector('.mobile-site-header')?.getBoundingClientRect().bottom ?? 0;
+      const targetOffset = headerBottom + 52 + 8;
+      const top = Math.max(0, window.scrollY + heading.getBoundingClientRect().top - targetOffset);
+      window.scrollTo({
+        top,
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      });
+    }, reduceMotion ? 0 : 260);
+
+    return () => window.clearTimeout(timeout);
+  }, [activeCategory, reduceMotion]);
 
   useEffect(() => {
     const activateCakes = () => {

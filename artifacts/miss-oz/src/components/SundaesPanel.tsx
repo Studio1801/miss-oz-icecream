@@ -55,7 +55,7 @@ export default function SundaesPanel() {
                   </p>
                 )}
                 {item.note && (
-                  <p className="mt-2 max-[430px]:mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[15px] max-[639px]:text-[14px] text-[#604C4F]">
+                  <p className="menu-product-note mt-2 max-[430px]:mt-1 leading-relaxed max-[430px]:leading-[1.5] text-[15px] max-[639px]:text-[14px] text-[#604C4F]">
                     {item.note}
                   </p>
                 )}
@@ -73,7 +73,7 @@ export default function SundaesPanel() {
           <div className="text-[var(--marionberry)]" style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(20px,1.8vw,26px)', lineHeight: 1.1 }}>
             Make it your own
           </div>
-          <p className="mt-[8px] text-[#6E5A54] leading-relaxed mobile-body-14" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
+          <p className="menu-closing-copy mt-[8px] text-[#6E5A54] leading-relaxed mobile-body-14" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
             Add a second scoop, swap the base flavor, or upgrade with house-made hot fudge or berry compote. Ask your scooper. We love a custom order!
           </p>
         </div>

@@ -35,7 +35,7 @@ export default function DrinksPanel() {
                   {milkshake.price && <span className="menu-product-price hidden">{milkshake.price}</span>}
                 </div>
                 {milkshake.note && (
-                  <p className="mt-1 w-full min-w-0 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] text-[12px] sm:text-[13px] max-[639px]:text-[14px] min-[431px]:max-[800px]:max-w-[280px]">
+                  <p className="menu-product-note mt-1 w-full min-w-0 leading-relaxed max-[430px]:leading-[1.5] text-[#604C4F] text-[12px] sm:text-[13px] max-[639px]:text-[14px] min-[431px]:max-[800px]:max-w-[280px]">
                     {milkshake.note}
                   </p>
                 )}
@@ -79,7 +79,7 @@ export default function DrinksPanel() {
           <div className="text-[var(--marionberry)]" style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(20px,1.8vw,26px)', lineHeight: 1.1 }}>
             Seasonal Specials
           </div>
-          <p className="mt-[8px] text-[#6E5A54] leading-relaxed mobile-body-14" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
+          <p className="menu-closing-copy mt-[8px] text-[#6E5A54] leading-relaxed mobile-body-14" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
             S&apos;mores Sundae, S&apos;more Hot Chocolate, Chai Latte, Pumpkin Spice Latte
           </p>
         </div>
