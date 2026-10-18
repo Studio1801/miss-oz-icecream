@@ -576,7 +576,6 @@ select:focus-visible {
 @media (max-width: 639px) {
   .hero-scene-photo {
     filter: brightness(0.8) saturate(1.05) contrast(1.03);
-    object-position: 100% 66% !important;
   }
 
   .hero-dark-overlay {
@@ -948,11 +947,6 @@ select:focus-visible {
     min-height: min(88svh, 760px);
     max-height: 760px;
     background: #2a1420;
-  }
-
-  .hero-scene-photo {
-    object-position: 50% 62% !important;
-    animation: hero-mobile-zoom 12s linear both;
   }
 
   .hero-dark-overlay {

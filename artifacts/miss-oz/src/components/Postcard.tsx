@@ -11,27 +11,46 @@ import { UBEREATS_URL } from './menuCatalog';
 import { useIsMobile } from '../hooks/use-mobile';
 
 /* Full-width homepage slideshow — real storefront photos */
-const SLIDES: { src: string; alt: string; pos?: string }[] = [
+const SLIDES: {
+  src: string;
+  alt: string;
+  pos?: string;
+  mobilePos: string;
+  mobileScale?: number;
+  mobileY?: string;
+}[] = [
   {
     src: '/images/slide-cones.webp',
     alt: 'Two waffle cones with scoops of marionberry ice cream held up inside the shop',
     pos: 'center 55%',
+    mobilePos: 'center 54%',
   },
   {
     src: '/images/slide-interior-bar.webp',
     alt: 'The Miss Oz interior, chalkboard menus, colorful bunting, pendant lights, and a full display case of flavors behind the counter',
     pos: 'center 58%',
+    mobilePos: 'center 52%',
   },
   {
     src: '/images/storefront-photo-wide2.webp',
     alt: "The Miss Oz storefront in Portland's Pearl District, a corner shop with a neon Open sign in the window, lantern lights glowing inside, and a bike parked out front",
+    pos: 'center',
+    mobilePos: '30% 50%',
+    mobileScale: 1.14,
+    mobileY: '-10%',
   },
   {
     src: '/images/slide-corner.webp',
     alt: 'The brick corner of the shop at dusk, with a glowing ice cream cone sculpture of string lights above the awning and the pink Miss Oz sidewalk sign out front',
     pos: 'center 62%',
+    mobilePos: '36% 50%',
+    mobileScale: 1.12,
+    mobileY: '-12%',
   },
 ];
+
+const mobileSlideImage = (src: string, width: 640 | 960) =>
+  src.replace('/images/', '/images/mobile/').replace(/\.webp$/, `-${width}.webp`);
 
 // Desktop header split: two links left of the logo, three to the right.
 
@@ -79,9 +98,12 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
   useEffect(() => {
     if (!showHero || paused || focusPaused || fingerDown || reduceMotion) return;
-    const t = setInterval(() => setSlide((s) => (s + 1) % SLIDES.length), 11000);
+    const t = setInterval(
+      () => setSlide((s) => (s + 1) % SLIDES.length),
+      isMobile ? 6000 : 11000,
+    );
     return () => clearInterval(t);
-  }, [paused, focusPaused, fingerDown, reduceMotion, slide, showHero]);
+  }, [paused, focusPaused, fingerDown, reduceMotion, slide, showHero, isMobile]);
 
   useEffect(() => {
     const release = () => setFingerDown(false);
@@ -191,30 +213,36 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   ));
   return (
     <>
-    <header className="mobile-site-header relative z-[970] hidden h-14 w-full items-center justify-between border-b border-[var(--berry)] bg-[var(--cream)] px-4 max-[639px]:flex">
+    <header
+      className="mobile-site-header relative z-[970] hidden h-[60px] w-full items-center justify-between border-b border-[var(--pink)] bg-[var(--cream)] px-4 max-[767px]:flex"
+      style={{
+        boxShadow: isHeaderScrolled ? '0 5px 18px rgba(28,13,12,0.16)' : 'none',
+        transition: 'box-shadow 220ms ease',
+      }}
+    >
       <button
         type="button"
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={menuOpen}
         aria-controls="mobile-menu-panel"
         onClick={toggleMenu}
-        className="mobile-header-toggle flex h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
-        style={{ background: 'rgba(94,23,53,0.06)' }}
+        className="mobile-header-toggle flex h-12 w-12 flex-col items-center justify-center gap-[5px] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
       >
-        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
-        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-opacity duration-150" style={{ opacity: menuOpen ? 0 : 1 }} />
-        <span className="block h-[2px] w-[18px] rounded-full bg-[var(--cocoa)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+        <span className="block h-[2px] w-6 rounded-full bg-[var(--berry-deep)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+        <span className="block h-[2px] w-6 rounded-full bg-[var(--berry-deep)] transition-opacity duration-150" style={{ opacity: menuOpen ? 0 : 1 }} />
+        <span className="block h-[2px] w-6 rounded-full bg-[var(--berry-deep)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
       <img
         src="/images/logo-official.webp"
         alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
-        className="absolute left-1/2 top-1/2 h-10 w-auto max-w-[92px] -translate-x-1/2 -translate-y-1/2 object-contain"
+        className="absolute left-1/2 top-1/2 h-[52px] w-[52px] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
+        style={{ left: 'calc(50% - 6px)' }}
       />
       <a
         href={UBEREATS_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="interaction-primary inline-flex h-11 min-w-[72px] items-center justify-center rounded-full bg-[var(--berry-deep)] px-4 text-[14px] font-bold text-[var(--cream-hi)]"
+        className="mobile-header-order interaction-primary inline-flex h-11 min-w-[72px] items-center justify-center rounded-full bg-[var(--berry-deep)] px-4 text-[16px] font-bold text-[var(--cream-hi)]"
       >
         Order
       </a>
@@ -392,17 +420,37 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           >
 
             {/* ── LAYER 1: rotating café backdrop ── */}
-            <img
-              key={current.src}
-              src={current.src}
-              alt={current.alt}
-              fetchPriority="high"
-              loading="eager"
-              decoding="async"
-              draggable={false}
-              className="hero-scene-photo absolute inset-0 w-full h-full object-cover saturate-[1.05] contrast-[1.03]"
-              style={{ objectPosition: current.pos ?? 'center' }}
-            />
+            <AnimatePresence initial={false} mode="sync">
+              <motion.picture
+                key={current.src}
+                className="absolute inset-0 z-0 block h-full w-full"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  scale: isMobile ? current.mobileScale ?? 1 : 1,
+                  y: isMobile ? current.mobileY ?? '0%' : '0%',
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduceMotion || !isMobile ? 0 : 0.6, ease: 'easeInOut' }}
+                style={{ transformOrigin: 'center center' }}
+              >
+                <source
+                  media="(max-width: 767px)"
+                  srcSet={`${mobileSlideImage(current.src, 640)} 640w, ${mobileSlideImage(current.src, 960)} 960w`}
+                  sizes="100vw"
+                />
+                <img
+                  src={current.src}
+                  alt={current.alt}
+                  fetchPriority={slide === 0 ? 'high' : 'auto'}
+                  loading="eager"
+                  decoding="async"
+                  draggable={false}
+                  className="hero-scene-photo absolute inset-0 h-full w-full object-cover saturate-[1.05] contrast-[1.03]"
+                  style={{ objectPosition: isMobile ? current.mobilePos : current.pos ?? 'center' }}
+                />
+              </motion.picture>
+            </AnimatePresence>
 
             {/* ── LAYER 2: soft darkening behind the text ── */}
             <div
