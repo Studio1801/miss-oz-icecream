@@ -21,16 +21,31 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
   const [isStuck, setIsStuck] = useState(false);
   const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    if (variant !== 'mobile') return;
+  const centerActiveMobileTab = (behavior: ScrollBehavior) => {
     const row = mobileTabsRef.current;
     if (!row || row.scrollWidth <= row.clientWidth) return;
     const activeTab = row.querySelector<HTMLButtonElement>('button[aria-selected="true"]');
     if (!activeTab) return;
     const rowRect = row.getBoundingClientRect();
     const tabRect = activeTab.getBoundingClientRect();
-    const targetLeft = row.scrollLeft + tabRect.left - rowRect.left - (row.clientWidth - tabRect.width) / 2;
-    row.scrollTo({ left: Math.max(0, targetLeft), behavior: reduceMotion ? 'instant' : 'smooth' });
+    const targetLeft =
+      row.scrollLeft +
+      tabRect.left -
+      rowRect.left -
+      (row.clientWidth - tabRect.width) / 2;
+    row.scrollTo({ left: Math.max(0, targetLeft), behavior });
+  };
+
+  useEffect(() => {
+    if (variant !== 'mobile') return;
+    let effectActive = true;
+    centerActiveMobileTab(reduceMotion ? 'instant' : 'smooth');
+    document.fonts?.ready.then(() => {
+      if (effectActive) centerActiveMobileTab('instant');
+    });
+    return () => {
+      effectActive = false;
+    };
   }, [activeCategory, variant, reduceMotion]);
 
   useEffect(() => {
@@ -48,13 +63,23 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
       const maxScroll = Math.max(0, row.scrollWidth - row.clientWidth);
       viewport.dataset.overflowLeft = String(row.scrollLeft > 1);
       viewport.dataset.overflowRight = String(maxScroll - row.scrollLeft > 1);
+      const activeTab = row.querySelector<HTMLButtonElement>('button[aria-selected="true"]');
+      const activeLabel = activeTab?.querySelector<HTMLElement>('span.relative') ?? activeTab;
+      const viewportRect = viewport.getBoundingClientRect();
+      const labelRect = activeLabel?.getBoundingClientRect();
+      viewport.dataset.activeLabelNearLeft = String(
+        !!labelRect && labelRect.left < viewportRect.left + 24,
+      );
+      viewport.dataset.activeLabelNearRight = String(
+        !!labelRect && labelRect.right > viewportRect.right - 24,
+      );
     };
 
     const updateStickyState = () => {
       const stickyTop = Number.parseFloat(window.getComputedStyle(nav).top) || 0;
       const navRect = nav.getBoundingClientRect();
       const sectionBottom = nav.closest('#menu')?.getBoundingClientRect().bottom ?? Number.POSITIVE_INFINITY;
-      const stuck = navRect.top <= stickyTop + 1 && navRect.bottom < sectionBottom - 1;
+      const stuck = Math.abs(navRect.top - stickyTop) <= 1 && navRect.bottom < sectionBottom - 1;
       setIsStuck((current) => current === stuck ? current : stuck);
     };
 
@@ -67,7 +92,10 @@ export default function MenuCategoryNavigation({ activeCategory, onSelect, varia
       });
     };
 
-    const resizeObserver = new ResizeObserver(updateOverflow);
+    const resizeObserver = new ResizeObserver(() => {
+      updateOverflow();
+      centerActiveMobileTab('instant');
+    });
     resizeObserver.observe(row);
     row.querySelectorAll('button').forEach((tab) => resizeObserver.observe(tab));
     row.addEventListener('scroll', updateOverflow, { passive: true });
