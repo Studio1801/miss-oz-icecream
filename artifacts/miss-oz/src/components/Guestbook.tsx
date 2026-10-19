@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Starburst } from './Decor';
-import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE } from '../hooks/useMobileForm';
+import PawMark from './PawMark';
+import { useMobileForm, MOBILE_FORM_SUCCESS } from '../hooks/useMobileForm';
 
 const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 'italic' as const };
 
@@ -32,21 +33,40 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
   const [note, setNote] = useState('');
   const [justSigned, setJustSigned] = useState(false);
   const [submitResult, setSubmitResult] = useState<'idle' | 'success' | 'error'>('idle');
+  const [showAllEntries, setShowAllEntries] = useState(false);
   const validation = useMobileForm();
   const liveRef = useRef<HTMLParagraphElement | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const unconfirmedEntry = useRef<{ id: string; name: string; note: string } | null>(null);
 
   // Fetch shared entries from the database on mount
-  useEffect(() => {
+  const loadGuestbook = useCallback(async () => {
+    setLoading(true);
+    setLoadError(false);
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-    fetch(`${base}/api/guestbook`)
-      .then((r) => {
-        if (!r.ok) throw new Error('Could not load guestbook');
-        return r.json();
-      })
-      .then((data) => setEntries(sanitizeEntries(data?.entries)))
-      .catch(() => setLoadError(true))
-      .finally(() => setLoading(false));
+    try {
+      const response = await fetch(`${base}/api/guestbook`);
+      if (!response.ok) throw new Error('Could not load guestbook');
+      const data = await response.json();
+      setEntries(sanitizeEntries(data?.entries));
+    } catch {
+      setLoadError(true);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    void loadGuestbook();
+  }, [loadGuestbook]);
+
+  function retryApiAction() {
+    if (loadError && submitResult !== 'error') {
+      void loadGuestbook();
+      return;
+    }
+    formRef.current?.requestSubmit();
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,6 +79,28 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
     setSubmitResult('idle');
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     try {
+      if (validation.mobile && unconfirmedEntry.current) {
+        const pending = unconfirmedEntry.current;
+        if (pending.name === cleanName && pending.note === cleanNote) {
+          const confirmation = await fetch(`${base}/api/guestbook`);
+          if (!confirmation.ok) throw new Error('Could not confirm guestbook entry');
+          const stored = sanitizeEntries((await confirmation.json())?.entries);
+          setEntries(stored);
+          if (stored.some((entry) => entry.id === pending.id)) {
+            unconfirmedEntry.current = null;
+            setLoadError(false);
+            setName('');
+            setNote('');
+            setJustSigned(true);
+            setSubmitResult('success');
+            if (liveRef.current) liveRef.current.textContent = 'Thank you. Your note is in the book.';
+            window.setTimeout(() => setJustSigned(false), 2000);
+            return;
+          }
+        }
+        unconfirmedEntry.current = null;
+      }
+
       const posted = await fetch(`${base}/api/guestbook`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -66,6 +108,9 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
       });
       if (!posted.ok) throw new Error('Could not submit guestbook entry');
       const data = await posted.json();
+      unconfirmedEntry.current = validation.mobile && typeof data?.entry?.id === 'string'
+        ? { id: data.entry.id, name: cleanName, note: cleanNote }
+        : null;
       const refreshed = await fetch(`${base}/api/guestbook`);
       if (!refreshed.ok) throw new Error('Could not confirm guestbook entry');
       const stored = sanitizeEntries((await refreshed.json())?.entries);
@@ -76,6 +121,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
         if (liveRef.current) liveRef.current.textContent = 'Your note was received, but we could not confirm it was saved. Please try again later.';
         return;
       }
+      unconfirmedEntry.current = null;
       setName('');
       setNote('');
       setJustSigned(true);
@@ -91,7 +137,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
   }
 
   return (
-    <section id={id} className="parlour-paper relative py-[56px] md:py-[120px] px-[var(--edge)] md:px-[6vw] bg-[var(--cream)] overflow-hidden">
+    <section id={id} className="guestbook-section parlour-paper relative py-[56px] md:py-[120px] px-[var(--edge)] md:px-[6vw] bg-[var(--cream)] overflow-hidden">
       <Starburst size={160} color="var(--gold)" className="pointer-events-none absolute top-[50px] left-[3vw] opacity-[0.10] hidden md:block" />
       <Starburst size={130} color="var(--berry)" className="pointer-events-none absolute bottom-[60px] right-[4vw] opacity-[0.09] hidden md:block" />
       {/* diner-table vignette */}
@@ -132,11 +178,11 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
       {/* ===== Open guest ledger ===== */}
       <motion.div
         initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.1 }}
-        className="relative mx-auto max-w-[1060px]"
+        className="guestbook-ledger relative mx-auto max-w-[1060px]"
       >
         {/* GUESTBOOK tab */}
         <div
-          className="relative z-20 mx-auto -mb-[9px] w-fit px-6 py-1.5 rounded-t-[8px] text-[12px] tracking-[4px] uppercase font-bold text-[var(--cream-hi)]"
+          className="guestbook-ledger-tab relative z-20 mx-auto -mb-[9px] w-fit px-6 py-1.5 rounded-t-[8px] text-[12px] tracking-[4px] uppercase font-bold text-[var(--cream-hi)]"
           style={{ background: 'var(--cocoa)', boxShadow: 'inset 0 0 0 1.5px var(--gold)', fontFamily: 'var(--font-sans)' }}
         >
           Guestbook
@@ -144,10 +190,10 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
 
         {/* leather-look cover */}
         <div
-          className="relative rounded-[12px] p-[10px] md:p-[14px]"
+          className="guestbook-cover-shell relative rounded-[12px] p-[10px] md:p-[14px]"
           style={{ background: 'linear-gradient(160deg, var(--berry-deep), #3a0e20)', boxShadow: '0 34px 80px rgba(0,0,0,0.5), inset 0 0 0 2px var(--gold), inset 0 0 0 4px var(--berry-deep)' }}
         >
-          <div className="relative grid md:grid-cols-2 md:min-h-[570px] rounded-[5px] overflow-hidden stitch-border-light">
+          <div className="guestbook-pages relative grid md:grid-cols-2 md:min-h-[570px] rounded-[5px] overflow-hidden stitch-border-light">
             {/* spine crease */}
             <div
               aria-hidden="true"
@@ -157,11 +203,16 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
 
             {/* LEFT PAGE — sign the book */}
             <form
+              ref={formRef}
               onSubmit={handleSubmit}
               noValidate={validation.mobile}
-              onInput={(event) => { validation.clear(event); if (submitResult === 'success') setSubmitResult('idle'); }}
-              className="mobile-form ledger-page ledger-page-l text-left pl-[58px] pr-[26px] md:pr-[38px] py-[38px] md:py-[48px] flex flex-col"
+              onInput={(event) => { validation.clear(event); if (submitResult !== 'idle') setSubmitResult('idle'); }}
+              className="mobile-form guestbook-form ledger-page ledger-page-l text-left pl-[58px] pr-[26px] md:pr-[38px] py-[38px] md:py-[48px] flex flex-col"
             >
+              <div className="guestbook-mobile-heading hidden">
+                <span style={macklin}>Guestbook</span>
+                <p>Leave a note for Miss Oz.</p>
+              </div>
               <div className="text-[var(--berry-deep)] leading-none mb-6" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,28px)' }}>
                 Sign the book
               </div>
@@ -191,7 +242,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 maxLength={180}
-                rows={3}
+                rows={4}
                 placeholder="A memory, a favorite flavor, a hello…"
                 className="ledger-input w-full bg-transparent border-0 rounded-none px-2 py-1 text-[18px] leading-[34px] text-[#1d0e0d] placeholder:text-[rgba(28,13,12,0.35)] placeholder:italic resize-none focus:outline-none focus:bg-[rgba(255,255,255,0.4)] transition-colors mb-4 md:min-h-[180px]"
                 style={{
@@ -200,8 +251,8 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 }}
               />
               {validation.error('gb-note')}
-              <div className="flex items-center justify-between gap-4 mt-2 md:mt-7 flex-wrap">
-                <span className="text-[13px] text-[var(--cocoa)] opacity-55 italic" style={{ fontFamily: 'var(--font-sans)' }}>{note.length}/180</span>
+              <div className="guestbook-submit-row flex items-center justify-between gap-4 mt-2 md:mt-7 flex-wrap">
+                <span className="guestbook-character-count text-[13px] text-[var(--cocoa)] opacity-55 italic" style={{ fontFamily: 'var(--font-sans)' }}>{note.length}/180</span>
                 <button
                   type="submit"
                   disabled={!validation.mobile && (!name.trim() || !note.trim() || submitting)}
@@ -215,16 +266,21 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 </button>
               </div>
               <p ref={liveRef} aria-live="polite" className="sr-only" />
-              {validation.mobile && submitResult === 'error' && <p role="alert" className="mobile-field-error">{MOBILE_FORM_FAILURE}</p>}
+              {validation.mobile && (submitResult === 'error' || loadError) && (
+                <div className="guestbook-mobile-api-error" role="alert">
+                  <p>Couldn't save that. Try once more in a minute.</p>
+                  <button type="button" onClick={retryApiAction}>Retry</button>
+                </div>
+              )}
 
-              <div className="mobile-guestbook-page-label mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
+              <div className="guestbook-mobile-page-label hidden md:block mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
                 Page one.
               </div>
             </form>
 
             {/* RIGHT PAGE — the signatures */}
-            <div className="ledger-page ledger-page-r text-left pl-[58px] pr-[26px] md:pr-[38px] py-[38px] md:py-[48px] flex flex-col">
-              <div className="flex items-baseline justify-between gap-3 mb-4">
+            <div className="guestbook-signatures-pane ledger-page ledger-page-r text-left pl-[58px] pr-[26px] md:pr-[38px] py-[38px] md:py-[48px] flex flex-col">
+              <div className="guestbook-desktop-signature-heading flex items-baseline justify-between gap-3 mb-4">
                 <div className="text-[var(--berry-deep)] leading-none" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,28px)' }}>
                   Signatures
                 </div>
@@ -234,14 +290,13 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
               </div>
 
               {!loading && (loadError || entries.length === 0) && (
-                <p className={`py-4 text-[14.5px] italic text-[var(--cocoa)] ${loadError ? 'api-availability-message' : ''}`} role="status">
-                  <span className="hidden max-[639px]:inline">Be the first to sign the book</span>
+                <p className={`guestbook-desktop-empty py-4 text-[14.5px] italic text-[var(--cocoa)] ${loadError ? 'api-availability-message' : ''}`} role="status">
                   <span className="max-[639px]:hidden">
                     {loadError ? 'Guestbook entries are unavailable right now.' : 'No entries yet. Be the first to sign the book.'}
                   </span>
                 </p>
               )}
-              <ul className="flex flex-col md:flex-1 md:justify-evenly" role="list">
+              <ul className="guestbook-desktop-list flex flex-col md:flex-1 md:justify-evenly" role="list">
                 {entries.slice(0, 6).map((entry, i) => (
                   <motion.li
                     key={entry.id}
@@ -257,8 +312,40 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                   </motion.li>
                 ))}
               </ul>
+              <div className="guestbook-mobile-signatures hidden">
+                <h3>Signatures</h3>
+                {!loading && !loadError && entries.length === 0 && (
+                  <div className="guestbook-mobile-empty hidden" role="status">
+                    <PawMark size={28} className="text-[var(--berry)]" />
+                    <span className="guestbook-mobile-empty-title">Nobody has signed yet.</span>
+                    <span className="guestbook-mobile-empty-copy">Yours could be the first.</span>
+                  </div>
+                )}
+                <ul role="list">
+                  {entries.slice(0, showAllEntries ? entries.length : 5).map((entry, i) => (
+                    <motion.li
+                      key={`mobile-${entry.id}`}
+                      initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.4, delay: Math.min(i, 4) * 0.06 }}
+                      className={`guestbook-mobile-note guestbook-mobile-note-${i % 2 === 0 ? 'left' : 'right'}`}
+                    >
+                      <span className="guestbook-mobile-note-name font-script-alt">{entry.name}</span>
+                      <p>{entry.note}</p>
+                      <time>{entry.when}</time>
+                    </motion.li>
+                  ))}
+                </ul>
+                {entries.length > 5 && (
+                  <button
+                    type="button"
+                    className="guestbook-mobile-show-more"
+                    onClick={() => setShowAllEntries((current) => !current)}
+                  >
+                    {showAllEntries ? 'Show less' : 'Show more'}
+                  </button>
+                )}
+              </div>
 
-              <div className="mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
+              <div className="guestbook-mobile-page-label hidden md:block mt-auto pt-6 text-center text-[12px] tracking-[2px] uppercase text-[var(--cocoa)] opacity-40" style={{ fontFamily: 'var(--font-sans)' }} aria-hidden="true">
                 Page two.
               </div>
             </div>

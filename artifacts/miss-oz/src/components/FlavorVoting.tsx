@@ -6,12 +6,13 @@ type FlavorCard = {
   note: string;
   bg: string;
   icon?: string;
+  mobileIcon?: string;
   img?: string;
 };
 
 const CARDS: FlavorCard[] = [
-  { name: 'Earl Grey', note: 'black tea with fragrant bergamot', bg: '#EAD8BE', icon: '/images/icon-earl-grey.svg' },
-  { name: 'Vietnam Coffee', note: 'deep roast with a creamy condensed finish', bg: '#EAD8BE', icon: '/images/icon-vietnam-coffee.svg', img: '/images/vietnam-coffee-vote.webp' },
+  { name: 'Earl Grey', note: 'black tea with fragrant bergamot', bg: '#EAD8BE', icon: '/images/icon-earl-grey.svg', mobileIcon: '/images/icon-earl-grey-mobile.svg' },
+  { name: 'Vietnam Coffee', note: 'deep roast with a creamy condensed finish', bg: '#EAD8BE', icon: '/images/icon-vietnam-coffee.svg', mobileIcon: '/images/icon-vietnam-coffee-mobile.svg', img: '/images/vietnam-coffee-vote.webp' },
   { name: 'Honey Lavender', note: 'wildflower honey with a soft floral bloom', bg: '#E6DDF4', icon: '/images/icon-honey-lavender.svg', img: '/images/honey-lavender-vote.webp' },
 ];
 const VOTE_KEY = 'missoz-flavor-vote-v4';
@@ -155,7 +156,12 @@ export default function FlavorVoting() {
                   style={{ background: card.bg }}>
                   {card.icon && (
                     <img loading="lazy" src={card.icon} alt="" aria-hidden="true" width={34} height={34}
-                      className="w-[34px] h-[34px] object-contain"
+                      className="vote-row-icon vote-row-icon-desktop w-[34px] h-[34px] object-contain"
+                      style={{ filter: 'drop-shadow(0 1px 3px rgba(28,13,12,0.25))' }} />
+                  )}
+                  {card.mobileIcon && (
+                    <img loading="lazy" src={card.mobileIcon} alt="" aria-hidden="true" width={34} height={34}
+                      className="vote-row-icon vote-row-icon-mobile hidden w-[34px] h-[34px] object-contain"
                       style={{ filter: 'drop-shadow(0 1px 3px rgba(28,13,12,0.25))' }} />
                   )}
                 </div>
@@ -172,7 +178,7 @@ export default function FlavorVoting() {
                       </span>
                     )}
                   </div>
-                  <div className="text-[12px] truncate mt-[2px]"
+                  <div className="vote-row-note text-[12px] mt-[2px]"
                     style={{ fontFamily: 'var(--font-script-alt)', color: 'var(--berry)' }}>
                     {card.note}
                   </div>
@@ -214,9 +220,9 @@ export default function FlavorVoting() {
                             ? '0 12px 30px rgba(57,22,34,0.16), 0 0 0 2px var(--pink)'
                             : '0 8px 24px rgba(57,22,34,0.12)',
                         }}>
-                        <div className="flex items-center gap-[14px] p-[14px]">
+                        <div className="vote-expanded-content flex items-center gap-[14px] p-[14px]">
                           {/* Larger image */}
-                          <div className="shrink-0 w-[132px] h-[132px] rounded-[10px] flex items-center justify-center overflow-hidden"
+                          <div className={`vote-expanded-photo ${card.img ? 'vote-expanded-photo--real' : 'vote-expanded-photo--placeholder'} shrink-0 w-[132px] h-[132px] rounded-[10px] flex items-center justify-center overflow-hidden`}
                             style={{ background: card.bg }}>
                             {(card.img || card.icon) && (
                               <img loading="lazy" src={card.img ?? card.icon!}
@@ -228,14 +234,16 @@ export default function FlavorVoting() {
                           </div>
 
                           {/* Details + CTA */}
-                          <div className="flex-1 min-w-0">
-                            <div className="text-[19px] leading-tight mb-[3px]"
-                              style={{ ...macklin, color: 'var(--cocoa)' }}>
-                              {card.name}
-                            </div>
-                            <div className="text-[13px] mb-[12px]"
-                              style={{ fontFamily: 'var(--font-script-alt)', color: 'var(--berry)' }}>
-                              {card.note}
+                          <div className="vote-expanded-details flex-1 min-w-0">
+                            <div className="vote-expanded-copy">
+                              <div className="text-[19px] leading-tight mb-[3px]"
+                                style={{ ...macklin, color: 'var(--cocoa)' }}>
+                                {card.name}
+                              </div>
+                              <div className="text-[13px] mb-[12px]"
+                                style={{ fontFamily: 'var(--font-script-alt)', color: 'var(--berry)' }}>
+                                {card.note}
+                              </div>
                             </div>
 
                             {/* Burst particles */}
@@ -258,7 +266,7 @@ export default function FlavorVoting() {
 
                             {!revealed ? (
                               <button onClick={() => handleVote(i)} disabled={!votes || pending}
-                className="interaction-primary relative vote-btn clickable font-sans border-none py-[8px] px-[20px] rounded-full text-[12.5px] font-semibold tracking-[0.4px] mech-btn transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="interaction-primary relative vote-btn clickable font-sans border-none py-[8px] px-[20px] rounded-full text-[12.5px] font-semibold tracking-[0.4px] mech-btn transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ background: 'var(--cocoa)', color: 'var(--cream-hi)', fontFamily: 'var(--font-sans)' }}>
                                 {pending ? 'Recording vote…' : 'Vote for this ♥'}
                                 {burst === i && !reduce && [...Array(8)].map((_, j) => {
@@ -272,7 +280,7 @@ export default function FlavorVoting() {
                                 })}
                               </button>
                             ) : (
-                              <div className="flex items-center gap-[10px]">
+                              <div className="vote-result flex items-center gap-[10px]">
                                 <div className="text-[26px] leading-none shrink-0"
                                   style={{ ...macklin, color: 'var(--cocoa)' }}>
                                   <CountUp to={pct} reduce={reduce} suffix="%" />
@@ -293,6 +301,11 @@ export default function FlavorVoting() {
                                 </div>
                               </div>
                             )}
+                            {revealed && (
+                              <div className="vote-thanks-label hidden" role="status">
+                                Thanks for voting <span aria-hidden="true">✓</span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -310,7 +323,7 @@ export default function FlavorVoting() {
       </div>
 
       {/* Vote total */}
-      <div className={`mt-[14px] text-[10.5px] max-[639px]:text-[12px] tracking-[3px] uppercase font-semibold ${voteError.includes('unavailable') ? 'api-availability-message' : ''}`}
+      <div className={`vote-total mt-[14px] text-[10.5px] max-[639px]:text-[12px] tracking-[3px] uppercase font-semibold ${voteError.includes('unavailable') ? 'api-availability-message' : ''}`}
         style={{ color: 'rgba(115,32,62,0.6)', fontFamily: 'var(--font-sans)' }}>
         {voteError || (votes ? (total === 0 ? 'No votes yet. Be the first.' : `${total.toLocaleString()} neighbors have voted`) : 'Loading vote totals…')}
       </div>
