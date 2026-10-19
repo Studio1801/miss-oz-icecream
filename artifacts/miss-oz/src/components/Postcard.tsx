@@ -240,6 +240,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         className="absolute left-1/2 top-1/2 h-[52px] w-[52px] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
         style={{ left: 'calc(50% - 6px)' }}
       />
+      <OrderChooser variant="light" label="Order" className="mobile-order-pill" />
     </header>
     <section
       id="home"

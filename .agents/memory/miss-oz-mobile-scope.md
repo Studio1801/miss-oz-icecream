@@ -27,11 +27,17 @@ Mobile navigation uses one hamburger-to-X header toggle, not an additional close
 
 **How to apply:** Preserve the toggle when opening the drawer, include it in keyboard focus handling, and keep hero visibility independent from loading and animation state.
 
-Mobile menu category changes must preserve the page's vertical position, not merely avoid explicit scroll commands.
+Mobile menu category changes must position the active panel heading below the sticky header and tab bar; preserve desktop scroll-to-menu behavior separately.
 
-**Why:** Native browser scroll anchoring moved the page when swapping panels of different heights, even with the menu section itself excluded from anchoring. The client explicitly requested no jump.
+**Why:** The client’s later mobile-menu specification explicitly requires the selected heading to scroll into view beneath the sticky controls, superseding the earlier no-position-change preference.
 
-**How to apply:** Preserve the mobile anchoring opt-out and verify actual scroll position across short and tall panel changes. Keep the existing desktop scroll-to-menu behavior.
+**How to apply:** Measure the header and sticky bar heights when computing the heading offset, and verify category changes across short and tall panels. Keep the existing desktop scroll-to-menu behavior.
+
+Mobile Flavors keeps two columns, a 10px gap, and cards at least 148px wide at 390px; use square subject-preserving photos, 16px italic serif names, and 13px descriptions. A lone odd final card spans the row but is centered at the normal half-grid width and keeps the standard photo-over-text layout.
+
+**Why:** The client supplied explicit mobile-only fit and photo-crop requirements, including keeping every flavor bowl visible and correcting the Fresh Banana crop. The final card layout was later clarified to match the other cards rather than use a horizontal photo/text layout.
+
+**How to apply:** Restrict these rules to widths up to 767px, preserve the two panel outlines and desktop card styling, and recheck every crop whenever flavor photos change.
 
 Touch press feedback must not rely solely on native CSS `:active`.
 

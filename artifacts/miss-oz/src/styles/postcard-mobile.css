@@ -42,6 +42,25 @@
     padding: 0;
   }
 
+  .mobile-site-header .mobile-order-pill {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  .mobile-site-header .mobile-order-pill > button {
+    box-sizing: border-box;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 11px !important;
+    gap: 4px !important;
+    border-radius: 999px;
+    background: var(--berry-deep) !important;
+    color: var(--cream-hi) !important;
+    font-size: 12px !important;
+    letter-spacing: 0.5px !important;
+    white-space: nowrap;
+  }
+
   .page-content-gutter #home .hero-scene-shell {
     width: calc(100% + 2 * var(--gutter));
     margin-inline: calc(-1 * var(--gutter));

@@ -183,7 +183,7 @@ export default function MenuSection() {
       if (!heading) return;
 
       const headerBottom = document.querySelector('.mobile-site-header')?.getBoundingClientRect().bottom ?? 0;
-      const targetOffset = headerBottom + 52 + 8;
+      const targetOffset = headerBottom + 48 + 8;
       const top = Math.max(0, window.scrollY + heading.getBoundingClientRect().top - targetOffset);
       window.scrollTo({
         top,
