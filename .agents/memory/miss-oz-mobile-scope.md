@@ -9,6 +9,12 @@ Miss Oz mobile is the 1440px desktop adapted for phones, not a redesign. Preserv
 
 **How to apply:** Before each mobile edit, compare the corresponding desktop element. Audit Home, Events, Wholesale, About, and Contact at 1440px and 390px, including sections, tabs, navigation, and footer. Keep and report only differences justified by the allowed mobile adaptations; verify widths 320–430 and the 768px boundary. Claim pixel identity only against a trustworthy pre-change baseline.
 
+The Guestbook is an explicit exception to the no-mobile-only-components rule: below 768px it uses a single notepad sheet with a centered heading and stacked signature notes; at 768px and above it stays the existing two-page book.
+
+**Why:** The client specifically requested a mobile-only Guestbook format change while requiring the desktop book to remain untouched.
+
+**How to apply:** Keep the notepad and note-stack presentation inside the ≤767px rules, preserve the existing copy and brand styling, and verify the two-page desktop layout at 1440px.
+
 Give content clearance from the existing frame, apply the outer gutter only once, and remove duplicate inset padding in nested wrappers such as Story. Retain original desktop utility values at the desktop breakpoint.
 
 **Why:** The client explicitly identified content clearance around the fixed frame as the problem, not the frame's design.
