@@ -1633,6 +1633,7 @@ select:focus-visible {
     position: relative !important;
     top: auto !important;
     left: auto !important;
+    translate: none !important;
     width: min(100%, 180px) !important;
     flex: 0 0 auto;
     margin: 0 auto;

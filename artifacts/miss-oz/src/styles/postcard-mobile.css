@@ -56,7 +56,7 @@
     border-radius: 999px;
     background: var(--berry-deep) !important;
     color: var(--cream-hi) !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     letter-spacing: 0.5px !important;
     white-space: nowrap;
   }
@@ -115,17 +115,19 @@
 
   .page-content-gutter #home .hero-enter-title {
     width: 100%;
+    container-type: inline-size;
   }
 
   .page-content-gutter #home .hero-title-text {
-    font-size: clamp(48px, 15.5vw, 64px) !important;
+    font-size: clamp(40px, 14vw, 64px) !important;
+    font-size: clamp(32px, 18cqw, 64px) !important;
   }
 
   .page-content-gutter #home .hero-enter-subtext {
     display: block !important;
     max-width: 32ch;
     margin: 8px auto 0 !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
     line-height: 1.4;
     text-align: center;
   }

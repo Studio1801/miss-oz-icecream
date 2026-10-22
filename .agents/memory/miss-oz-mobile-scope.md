@@ -39,6 +39,12 @@ Mobile menu category changes must position the active panel heading below the st
 
 **How to apply:** Measure the header and sticky bar heights when computing the heading offset, and verify category changes across short and tall panels. Keep the existing desktop scroll-to-menu behavior.
 
+The mobile Menu awning, maroon category bar, and menu panel form one centered frame with matching outer edges.
+
+**Why:** The client supplied a screenshot showing the category bar offset from the panel and explicitly requested a structurally aligned frame.
+
+**How to apply:** Preserve the shared width and side alignment across all categories and while the bar is sticky. Keep the inner tabs horizontally scrollable; do not independently inset the outer bar.
+
 Mobile Flavors keeps two columns, a 10px gap, and cards at least 148px wide at 390px; use square subject-preserving photos, 16px italic serif names, and 13px descriptions. A lone odd final card spans the row but is centered at the normal half-grid width and keeps the standard photo-over-text layout.
 
 **Why:** The client supplied explicit mobile-only fit and photo-crop requirements, including keeping every flavor bowl visible and correcting the Fresh Banana crop. The final card layout was later clarified to match the other cards rather than use a horizontal photo/text layout.

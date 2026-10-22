@@ -118,7 +118,7 @@ function Router() {
     <SiteLayout showHero={location === '/'}>
       <Suspense fallback={<RouteChunkFallback />}>
         <ScrollToCurrentHash />
-        <AnimatePresence initial={false}>
+        <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={location}
             className="page-route-content"
@@ -129,7 +129,7 @@ function Router() {
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
             transition={{ duration: reduceMotion ? 0.12 : 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Switch>
+            <Switch location={location}>
               <Route path="/" component={Home} />
               <Route path="/menu" component={MenuPage} />
               <Route path="/new-flavor"><Redirect to="/#new-flavor" /></Route>

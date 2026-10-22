@@ -3,6 +3,8 @@ import type { AnchorHTMLAttributes, FocusEvent, MouseEvent, ReactElement, ReactN
 import { Link } from 'wouter';
 import { prefetchPageChunk } from '../pageChunks';
 
+const APP_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 export const SITE_NAV_LINKS = [
   { label: 'Home', target: '/' },
   { label: 'Menu', target: '/menu' },
