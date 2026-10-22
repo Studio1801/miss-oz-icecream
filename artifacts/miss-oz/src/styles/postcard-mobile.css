@@ -54,6 +54,7 @@
     padding: 0 11px !important;
     gap: 4px !important;
     border-radius: 999px;
+    box-shadow: 0 2px 5px rgba(28, 13, 12, 0.18) !important;
     background: var(--berry-deep) !important;
     color: var(--cream-hi) !important;
     font-size: 12px !important;

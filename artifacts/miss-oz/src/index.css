@@ -1650,3 +1650,39 @@ select:focus-visible {
     font-size: clamp(32px, 12vw, 44px) !important;
   }
 }
+
+/* Alignment only at intermediate widths; retain the existing three columns. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .page-content-gutter #menu .menu-content-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr) minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .page-content-gutter #menu .menu-content-grid > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .page-content-gutter #menu section[aria-label="Menu"] {
+    margin-inline: 0;
+    padding-inline: 18px;
+  }
+
+  .page-content-gutter #menu .menu-order-ticket-content {
+    padding-inline: 6px !important;
+  }
+
+  .page-content-gutter #menu .menu-order-ticket .whitespace-nowrap {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .page-content-gutter .guestbook-oz-photo {
+    right: 0;
+  }
+}

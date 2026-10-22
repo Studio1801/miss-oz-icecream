@@ -86,7 +86,7 @@ function WelcomeCard() {
             href={UBEREATS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="interaction-primary group mt-[clamp(16px,1.8vw,24px)] w-full block"
+            className="menu-order-ticket interaction-primary group mt-[clamp(16px,1.8vw,24px)] w-full block"
             style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.3))' }}
           >
             <span
@@ -102,7 +102,7 @@ function WelcomeCard() {
               }}
             >
               <span
-                className="flex flex-col items-center justify-center"
+                className="menu-order-ticket-content flex flex-col items-center justify-center"
                 style={{ border: '1.5px dashed rgba(59,16,32,0.55)', borderRadius: '4px', padding: '11px 22px 12px' }}
               >
                 <span
@@ -183,7 +183,8 @@ export default function MenuSection() {
       if (!heading) return;
 
       const headerBottom = document.querySelector('.mobile-site-header')?.getBoundingClientRect().bottom ?? 0;
-      const targetOffset = headerBottom + 48 + 8;
+      const categoryHeight = document.querySelector('.menu-category-mobile')?.getBoundingClientRect().height ?? 48;
+      const targetOffset = headerBottom + categoryHeight + 8;
       const top = Math.max(0, window.scrollY + heading.getBoundingClientRect().top - targetOffset);
       window.scrollTo({
         top,
@@ -237,7 +238,7 @@ export default function MenuSection() {
 
         <div
           className="
-            grid grid-cols-1
+            menu-content-grid grid min-w-0 grid-cols-1
             md:grid-cols-[minmax(170px,220px)_minmax(380px,1fr)_minmax(170px,220px)]
             lg:grid-cols-[minmax(210px,270px)_minmax(420px,1fr)_minmax(210px,270px)]
             gap-[clamp(14px,1.8vw,22px)] items-stretch md:px-[clamp(20px,3vw,48px)]
@@ -321,6 +322,7 @@ export default function MenuSection() {
 
           <section
             aria-label="Menu"
+            data-active-category={activeCategory}
             className="relative flex flex-col self-start h-auto min-h-0 rounded-t-none rounded-b-[10px] md:rounded-[10px] md:mx-[clamp(12px,2.5vw,32px)] overflow-hidden px-[clamp(18px,2.6vw,42px)] max-[639px]:px-4 py-[clamp(22px,2.6vw,36px)] max-[639px]:py-[18px]"
             style={{
               background: 'linear-gradient(180deg, #FBF4E6, #F7EDDA)',

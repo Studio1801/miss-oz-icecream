@@ -2,7 +2,7 @@
  * OrderChooser — inline platform picker for delivery orders.
  * Uses a React portal so the dropdown escapes any overflow:hidden parents.
  */
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DELIVERY_PLATFORMS } from '../lib/delivery';
@@ -17,6 +17,7 @@ interface DropdownPos {
   top: number;
   left: number;
   width: number;
+  maxHeight: number;
   openUp: boolean;
 }
 
@@ -29,21 +30,44 @@ export default function OrderChooser({ variant = 'dark', label = 'Order Online',
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<DropdownPos | null>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Calculate portal position from the button's bounding rect
   const calcPos = useCallback(() => {
     if (!btnRef.current) return;
     const r = btnRef.current.getBoundingClientRect();
-    const dropH = 220; // approximate dropdown height
-    const spaceBelow = window.innerHeight - r.bottom;
-    const openUp = spaceBelow < dropH && r.top > dropH;
+    const viewport = window.visualViewport;
+    const viewportLeft = viewport?.offsetLeft ?? 0;
+    const viewportTop = viewport?.offsetTop ?? 0;
+    const viewportWidth = viewport?.width ?? document.documentElement.clientWidth;
+    const viewportHeight = viewport?.height ?? window.innerHeight;
+    // Keep the picker inside both the visible viewport and the decorative frame.
+    const gutter = Math.min(38, Math.max(24, viewportWidth * 0.02 + 11));
+    const width = Math.min(240, Math.max(0, viewportWidth - gutter * 2));
+    const maxHeight = Math.max(0, viewportHeight - gutter * 2);
+    const dropH = Math.min(dropdownRef.current?.offsetHeight ?? 220, maxHeight);
+    const minLeft = viewportLeft + gutter;
+    const minTop = viewportTop + gutter;
+    const maxTop = viewportTop + viewportHeight - gutter - dropH;
+    const spaceBelow = viewportTop + viewportHeight - gutter - r.bottom - 8;
+    const spaceAbove = r.top - minTop - 8;
+    const openUp = spaceBelow < dropH && spaceAbove > spaceBelow;
     setPos({
-      top: openUp ? r.top + window.scrollY - dropH - 8 : r.bottom + window.scrollY + 8,
-      left: r.left + window.scrollX + r.width / 2,
-      width: 240,
+      top: Math.max(minTop, Math.min(openUp ? r.top - dropH - 8 : r.bottom + 8, maxTop)),
+      left: Math.max(minLeft, Math.min(r.right - width, viewportLeft + viewportWidth - gutter - width)),
+      width,
+      maxHeight,
       openUp,
     });
   }, []);
+
+  useLayoutEffect(() => {
+    if (!open || !dropdownRef.current) return;
+    calcPos();
+    const observer = new ResizeObserver(calcPos);
+    observer.observe(dropdownRef.current);
+    return () => observer.disconnect();
+  }, [open, calcPos]);
 
   const toggle = () => {
     if (!open) {
@@ -60,17 +84,26 @@ export default function OrderChooser({ variant = 'dark', label = 'Order Online',
     const close = () => setOpen(false);
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
     const onMouse = (e: MouseEvent) => {
-      if (btnRef.current && !btnRef.current.contains(e.target as Node)) close();
+      const target = e.target as Node;
+      if (!btnRef.current?.contains(target) && !dropdownRef.current?.contains(target)) close();
+    };
+    const onScroll = (event: Event) => {
+      if (event.target instanceof Node && dropdownRef.current?.contains(event.target)) return;
+      close();
     };
     document.addEventListener('keydown', onKey);
     document.addEventListener('mousedown', onMouse);
-    window.addEventListener('scroll', close, { passive: true, capture: true });
+    window.addEventListener('scroll', onScroll, { passive: true, capture: true });
     window.addEventListener('resize', close, { passive: true });
+    window.visualViewport?.addEventListener('resize', close);
+    window.visualViewport?.addEventListener('scroll', close);
     return () => {
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('mousedown', onMouse);
-      window.removeEventListener('scroll', close, { capture: true } as EventListenerOptions);
+      window.removeEventListener('scroll', onScroll, { capture: true } as EventListenerOptions);
       window.removeEventListener('resize', close);
+      window.visualViewport?.removeEventListener('resize', close);
+      window.visualViewport?.removeEventListener('scroll', close);
     };
   }, [open]);
 
@@ -85,6 +118,7 @@ export default function OrderChooser({ variant = 'dark', label = 'Order Online',
 
   const dropdown = pos && (
     <motion.div
+      ref={dropdownRef}
       role="listbox"
       aria-label="Choose a delivery platform"
       initial={{ opacity: 0, y: pos.openUp ? 6 : -6, scale: 0.97 }}
@@ -92,16 +126,18 @@ export default function OrderChooser({ variant = 'dark', label = 'Order Online',
       exit={{ opacity: 0, y: pos.openUp ? 6 : -6, scale: 0.97 }}
       transition={{ duration: 0.16, ease: 'easeOut' }}
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: pos.top,
         left: pos.left,
         width: pos.width,
-        transform: 'translateX(-50%)',
+        maxHeight: pos.maxHeight,
         zIndex: 99999,
         background: 'var(--cream-hi)',
         boxShadow: '0 10px 32px rgba(28,13,12,0.28), 0 0 0 1.5px rgba(28,13,12,0.12)',
         borderRadius: 14,
         overflow: 'hidden',
+        overflowY: 'auto',
+        overscrollBehavior: 'contain',
       }}
     >
       <div

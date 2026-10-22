@@ -3,7 +3,7 @@ name: Miss Oz mobile scope
 description: Client constraints for mobile spacing and preserving the fixed bulb frame and desktop appearance.
 ---
 
-Miss Oz mobile is the 1440px desktop adapted for phones, not a redesign. Preserve the same brand, fonts, colors, copy, photos, section order, and decorative language. Mobile-only changes are limited to sizing, stacking, tap/read comfort, and collapsing desktop navigation with its existing fonts, colors, and link names. Keep decorations; shrink or move them to resolve collisions, and remove one only if it still collides after that. Do not add mobile-only components, sections, copy, colors, or fonts, or remove desktop content, photos, buttons, or features. All mobile rules stop at 767px; do not change 768px and up.
+Miss Oz mobile is the 1440px desktop adapted for phones, not a redesign. Preserve the same brand, fonts, colors, copy, photos, section order, and decorative language. This includes decorative drop caps: retain their desktop letterform, color, and floated treatment instead of normalizing them into body text. Mobile-only changes are limited to sizing, stacking, tap/read comfort, and collapsing desktop navigation with its existing fonts, colors, and link names. Keep decorations; shrink or move them to resolve collisions, and remove one only if it still collides after that. Do not add mobile-only components, sections, copy, colors, or fonts, or remove desktop content, photos, buttons, or features. All mobile rules stop at 767px; do not change 768px and up.
 
 **Why:** The client made desktop-at-1440 the source of truth and explicitly said the rule applies to past and future mobile work.
 
@@ -15,7 +15,7 @@ The Guestbook is an explicit exception to the no-mobile-only-components rule: be
 
 **How to apply:** Keep the notepad and note-stack presentation inside the ≤767px rules, preserve the existing copy and brand styling, and verify the two-page desktop layout at 1440px.
 
-Give content clearance from the existing frame, apply the outer gutter only once, and remove duplicate inset padding in nested wrappers such as Story. Retain original desktop utility values at the desktop breakpoint.
+Give content clearance from the existing frame, apply the outer gutter only once, and remove duplicate inset padding in nested wrappers such as Story. Alignment-only requests permit spacing, positioning, and word-boundary wrapping corrections, not new typography, colors, decorations, or section layouts. Retain original desktop utility values at the desktop breakpoint.
 
 **Why:** The client explicitly identified content clearance around the fixed frame as the problem, not the frame's design.
 

@@ -355,7 +355,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
         {/* Oz keeping an eye on the book — sits beside/below the ledger, never over text */}
         <motion.figure
           initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative z-30 w-[clamp(150px,15vw,190px)] rotate-[6deg] bg-[var(--cream-hi)] p-[8px] pb-[10px] rounded-[3px] mt-[40px] mx-auto lg:absolute lg:mt-0 lg:mx-0 lg:-bottom-[96px] lg:-right-[64px]"
+          className="guestbook-oz-photo relative z-30 w-[clamp(150px,15vw,190px)] rotate-[6deg] bg-[var(--cream-hi)] p-[8px] pb-[10px] rounded-[3px] mt-[40px] mx-auto lg:absolute lg:mt-0 lg:mx-0 lg:-bottom-[96px] lg:-right-[64px]"
           style={{ boxShadow: '0 10px 28px rgba(28,13,12,0.18)' }}
         >
           <span aria-hidden="true" className="absolute -top-[11px] left-1/2 -translate-x-1/2 w-[64px] h-[20px] rotate-[-4deg]" style={{ background: 'rgba(214,193,150,0.75)', boxShadow: '0 1px 3px rgba(28,13,12,0.15)' }} />

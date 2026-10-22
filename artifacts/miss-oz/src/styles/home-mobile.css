@@ -4,6 +4,45 @@
     overflow-anchor: none;
   }
 
+  .page-content-gutter #new-flavor .new-flavor-badge-burst {
+    width: 96px;
+    height: 96px;
+  }
+
+  .page-content-gutter #home .hero-ribbon-bar {
+    padding-inline: 12px;
+  }
+
+  .page-content-gutter #home .hero-ribbon-copy {
+    min-width: 0;
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal;
+    text-wrap: balance;
+  }
+
+  .page-content-gutter #home .hero-ribbon-bar > span:not(.hero-ribbon-copy) {
+    flex-shrink: 0;
+  }
+
+  .page-content-gutter #new-flavor .new-flavor-badge-inner {
+    width: 72px;
+    height: 72px;
+  }
+
+  .page-content-gutter #new-flavor .new-flavor-badge-label {
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: normal;
+    hyphens: none;
+  }
+
+  .page-content-gutter #new-flavor .new-flavor-eyebrow > span {
+    overflow-wrap: normal;
+    word-break: normal;
+    text-wrap: balance;
+  }
+
   .page-content-gutter #menu .menu-category-mobile {
     width: 100%;
     margin-inline: 0;
@@ -223,13 +262,13 @@
   }
 
   .page-content-gutter .meet-oz-section h2 {
-    width: calc(100% + 18px);
-    max-width: none;
-    margin-inline: -9px;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
     font-size: clamp(36px, 11vw, 46px) !important;
     line-height: 1.05 !important;
     letter-spacing: -0.04em;
-    white-space: nowrap;
+    white-space: normal;
     text-wrap: pretty;
     overflow-wrap: normal;
   }
@@ -269,7 +308,7 @@
   }
 
   .page-content-gutter .story-section > div {
-    padding: 20px !important;
+    padding: 28px !important;
   }
 
   .page-content-gutter .story-section h2 {
@@ -310,18 +349,6 @@
     text-wrap: pretty !important;
   }
 
-  .page-content-gutter .story-section .story-drop-cap {
-    float: none !important;
-    margin: 0 !important;
-    color: inherit !important;
-    font-family: inherit !important;
-    font-size: inherit !important;
-    font-style: inherit !important;
-    font-weight: inherit !important;
-    line-height: inherit !important;
-    text-shadow: none !important;
-  }
-
   .page-content-gutter .oz-photo-row {
     grid-template-columns: minmax(0, 1fr) !important;
     gap: 24px !important;
@@ -359,6 +386,7 @@
     left: auto;
     width: fit-content;
     margin: 0 auto 16px;
+    translate: none;
     transform: none;
   }
 
@@ -586,6 +614,10 @@
     overflow-wrap: normal !important;
   }
 
+  .page-content-gutter #menu .menu-product-heading.menu-product-name {
+    flex: 0 0 auto;
+  }
+
   .page-content-gutter #menu .menu-product-list > li {
     padding-top: 12px !important;
     padding-bottom: 12px !important;
@@ -759,6 +791,12 @@
 }
 
 @media (max-width: 767px) {
+  /* One shared frame width for the awning, category bar, and every menu panel. */
+  .page-content-gutter #menu {
+    width: calc(100% + 4px);
+    margin-inline: -2px;
+  }
+
   .page-content-gutter #menu .menu-category-mobile {
     height: 48px;
     min-height: 48px;
@@ -773,6 +811,15 @@
   .page-content-gutter #menu .menu-category-mobile .menu-tabs-scroll > [role="tab"] {
     height: 44px !important;
     min-height: 44px !important;
+    max-width: calc(100% - 32px) !important;
+    white-space: normal !important;
+  }
+
+  .page-content-gutter #menu .menu-category-mobile [role="tab"] > span.relative {
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal;
+    text-align: center;
   }
 
   .page-content-gutter #menu .menu-category-mobile [role="tab"] > span.absolute {
@@ -797,15 +844,54 @@
     min-height: 44px;
   }
 
-  .page-content-gutter #menu section[aria-label="Menu"]:has(.flavor-grid) {
-    width: calc(100% + 12px);
-    margin-inline: -6px;
-    padding: 10px !important;
+  /* Keep the cake action without squeezing the scrolling category labels. */
+  .page-content-gutter #menu .menu-category-mobile:has(.mobile-wholecake-order) {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 0;
+    padding-bottom: 4px !important;
+  }
+
+  .page-content-gutter #menu .menu-category-mobile:has(.mobile-wholecake-order) .menu-tabs-viewport {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .page-content-gutter #menu .menu-category-mobile .mobile-wholecake-order {
+    margin-inline: auto !important;
+  }
+
+  .page-content-gutter #menu section[aria-label="Menu"] {
+    box-sizing: border-box;
+    width: 100%;
+    margin-inline: 0;
+    padding: 20px 18px !important;
     box-shadow:
       0 14px 34px rgba(28, 13, 12, 0.18),
       inset 0 0 0 1px rgba(94, 23, 53, 0.25),
       inset 0 0 0 7px #FBF4E6,
       inset 0 0 0 8px rgba(94, 23, 53, 0.15) !important;
+  }
+
+  .page-content-gutter #menu section[aria-label="Menu"][data-active-category="Flavors"] {
+    padding: 18px 10px !important;
+  }
+
+  .page-content-gutter #menu .menu-panel > .text-center > .flex > span[aria-hidden="true"] {
+    flex-shrink: 0;
+  }
+
+  .page-content-gutter #menu .menu-product-name {
+    flex: 1 1 12ch;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* These buttons already have 44px touch targets; don't expand them beyond the frame. */
+  .page-content-gutter #menu .menu-panel a[href]::after {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: none;
   }
 
   .page-content-gutter #menu .flavor-grid {
@@ -859,7 +945,7 @@
     line-height: 1.4 !important;
     hyphens: manual;
     text-wrap: pretty;
-    overflow-wrap: normal;
+    overflow-wrap: anywhere !important;
   }
 
   .page-content-gutter #menu .flavor-card:last-child:nth-child(odd) {

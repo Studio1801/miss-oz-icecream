@@ -39,7 +39,7 @@ export default function NewFlavor() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5, type: 'spring', stiffness: 280, damping: 18 }}
-          className="inline-flex items-center gap-[10px] mb-[20px] px-[18px] py-[8px] rounded-full relative"
+          className="new-flavor-eyebrow inline-flex items-center gap-[10px] mb-[20px] px-[18px] py-[8px] rounded-full relative"
           style={{
             background: 'var(--pink)',
             boxShadow: '0 4px 14px rgba(115,32,62,0.12)',
@@ -111,18 +111,18 @@ export default function NewFlavor() {
         </div>
 
         {/* Starburst badge */}
-        <div className="absolute z-20 -top-5 left-0 -rotate-12 motion-safe:animate-[newBadgeSwing_3.5s_ease-in-out_infinite]"
+        <div className="new-flavor-badge absolute z-20 -top-5 left-0 -rotate-12 motion-safe:animate-[newBadgeSwing_3.5s_ease-in-out_infinite]"
           style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.5))' }}>
-          <div className="relative flex items-center justify-center w-[82px] h-[82px]"
+          <div className="new-flavor-badge-burst relative flex items-center justify-center w-[82px] h-[82px]"
             style={{ background: 'radial-gradient(circle at 38% 32%, #d47f98 0%, var(--berry-deep) 100%)', clipPath: BURST }}>
-            <div className="flex flex-col items-center justify-center w-[56px] h-[56px] rounded-full text-center leading-none"
+            <div className="new-flavor-badge-inner flex flex-col items-center justify-center w-[56px] h-[56px] rounded-full text-center leading-none"
               style={{ border: '1.5px dashed var(--cream-hi)' }}>
               <span className="text-[var(--pink)] text-[9px] max-[639px]:text-[12px]">★</span>
-              <span className="uppercase text-[var(--cream-hi)] mt-[2px]"
+              <span className="new-flavor-badge-label uppercase text-[var(--cream-hi)] mt-[2px]"
                 style={{ fontFamily: 'var(--font-display)', fontSize: '14px', letterSpacing: '1px' }}>
                 {badgeLabel.top}
               </span>
-              <span className="uppercase text-[var(--cream-hi)] opacity-80 mt-[2px] tracking-[1.5px] mobile-minimum-12"
+              <span className="new-flavor-badge-label uppercase text-[var(--cream-hi)] opacity-80 mt-[2px] tracking-[1.5px] mobile-minimum-12"
                 style={{ fontFamily: 'var(--font-sans)', fontSize: '5.5px', fontWeight: 700 }}>
                 {badgeLabel.bottom}
               </span>
