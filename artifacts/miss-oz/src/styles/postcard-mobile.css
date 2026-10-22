@@ -73,8 +73,12 @@
   }
 
   .page-content-gutter #wholesale .wholesale-berry-band {
-    margin-inline: calc(-1 * var(--gutter));
-    padding-inline: var(--gutter) !important;
+    margin-inline: 0;
+    padding-inline: 24px !important;
+  }
+
+  .page-content-gutter #wholesale .wholesale-intro-copy {
+    padding-inline: 24px;
   }
 
   main.page-content-gutter > footer.miss-oz-footer {
@@ -195,6 +199,11 @@
     height: 100svh;
     min-height: 0;
     padding: 72px var(--edge) max(24px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .mobile-menu-close {
+    top: calc(10px + var(--bulb-frame-width) + env(safe-area-inset-top, 0px));
+    left: calc(10px + var(--bulb-frame-width));
   }
 
   #mobile-menu-panel .mobile-menu-links {

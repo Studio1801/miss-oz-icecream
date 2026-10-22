@@ -276,6 +276,17 @@
   .page-content-gutter .meet-oz-section > div > div:first-child > p {
     font-size: 20px !important;
     line-height: 1.15 !important;
+    text-align: center !important;
+  }
+
+  .page-content-gutter .meet-oz-copy > p:not(.oz-pull-quote),
+  .page-content-gutter .reels-intro-copy {
+    padding-inline: 28px;
+  }
+
+  .page-content-gutter .meet-oz-copy,
+  .page-content-gutter .reels-intro-copy {
+    max-width: 100% !important;
   }
 
   .page-content-gutter .meet-oz-copy > p:not(.oz-pull-quote),

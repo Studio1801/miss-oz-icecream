@@ -46,7 +46,7 @@ export default function Story() {
             <svg width="84" height="84" viewBox="0 0 100 100" aria-hidden="true" className="absolute inset-0">
               <defs><path id="storyseal" d="M50,50 m-34,0 a34,34 0 1,1 68,0 a34,34 0 1,1 -68,0" /></defs>
               <text className="mobile-minimum-12 mobile-about-seal-copy" style={{ fontFamily: 'var(--font-sans)', fontSize: 10.5, letterSpacing: '2px', fontWeight: 600, textTransform: 'uppercase', fill: 'var(--cream)' }}>
-                <textPath href="#storyseal">· est. 2007 · Pearl District ·</textPath>
+                <textPath href="#storyseal" startOffset="4" textLength={2 * Math.PI * 34 - 8} lengthAdjust="spacing">est. 2007 · Pearl District ·</textPath>
               </text>
             </svg>
             {/* little cone glyph */}

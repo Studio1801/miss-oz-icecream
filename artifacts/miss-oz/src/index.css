@@ -976,10 +976,15 @@ select:focus-visible {
   }
 }
 
-/* Opaque mobile navigation sits below the fixed header and marquee lights. */
+/* Opaque mobile navigation owns its close control, independently of the page header. */
 .mobile-menu-overlay {
   overflow: hidden;
   background-color: var(--cream);
+}
+
+.mobile-menu-close {
+  top: max(16px, env(safe-area-inset-top));
+  left: 24px;
 }
 
 .mobile-menu-content {

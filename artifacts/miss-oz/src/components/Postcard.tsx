@@ -151,7 +151,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
       if (event.key !== 'Tab') return;
       const panel = document.getElementById('mobile-menu-panel');
       const targets = [
-        menuTriggerRef.current,
+        document.getElementById('mobile-menu-close'),
         ...Array.from(panel?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex="0"]') ?? []),
       ].filter((element): element is HTMLElement => !!element && element.getBoundingClientRect().width > 0);
       const first = targets[0];
@@ -229,6 +229,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         aria-controls="mobile-menu-panel"
         onClick={toggleMenu}
         className="mobile-header-toggle flex h-12 w-12 flex-col items-center justify-center gap-[5px] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+        style={{ visibility: menuOpen ? 'hidden' : 'visible' }}
       >
         <span className="block h-[2px] w-6 rounded-full bg-[var(--berry-deep)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
         <span className="block h-[2px] w-6 rounded-full bg-[var(--berry-deep)] transition-opacity duration-150" style={{ opacity: menuOpen ? 0 : 1 }} />
@@ -629,7 +630,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         aria-controls="mobile-menu-panel"
         onClick={toggleMenu}
         className="tablet-menu-toggle lg:hidden max-[639px]:hidden fixed top-4 left-4 z-[970] flex flex-col justify-center items-center gap-[5px] w-[42px] h-[42px] max-[639px]:w-11 max-[639px]:h-11 rounded-xl pointer-events-auto touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
-        style={{ background: 'rgba(242,225,194,0.88)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+        style={{ background: 'rgba(242,225,194,0.88)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)', visibility: menuOpen ? 'hidden' : 'visible' }}
       >
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] origin-center" style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ opacity: menuOpen ? 0 : 1 }} />
@@ -646,6 +647,21 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
 
     </section>
     {createPortal(
+      <>
+      {menuOpen && (
+        <button
+          id="mobile-menu-close"
+          type="button"
+          aria-label="Close menu"
+          aria-controls="mobile-menu-panel"
+          onClick={() => setMenuOpen(false)}
+          className="mobile-menu-close lg:hidden fixed z-[980] flex h-12 w-12 items-center justify-center text-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 5L19 19M19 5L5 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </button>
+      )}
       <AnimatePresence initial={false}>
         {menuOpen && (
           <motion.div
@@ -731,7 +747,8 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>,
+      </AnimatePresence>
+      </>,
       document.body,
     )}
     </>

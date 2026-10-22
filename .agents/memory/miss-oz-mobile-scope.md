@@ -17,7 +17,9 @@ The Guestbook is an explicit exception to the no-mobile-only-components rule: be
 
 Give content clearance from the existing frame, apply the outer gutter only once, and remove duplicate inset padding in nested wrappers such as Story. Alignment-only requests permit spacing, positioning, and word-boundary wrapping corrections, not new typography, colors, decorations, or section layouts. Retain original desktop utility values at the desktop breakpoint.
 
-**Why:** The client explicitly identified content clearance around the fixed frame as the problem, not the frame's design.
+On About, keep “The real flavor tester” centered and align the Meet Oz body copy and home-movie introduction with the Story paragraph gutters.
+
+**Why:** The client explicitly identified content clearance around the fixed frame as the problem, not the frame's design, and requested matching text alignment across the About sections.
 
 **How to apply:** Preserve the bulb frame itself and keep the content gutter separate from its fixed overlay.
 

@@ -166,7 +166,7 @@ export default function Wholesale() {
           >
             Become our Wholesale Partner
           </h2>
-          <p className="mx-auto max-w-[500px] text-[18px] leading-relaxed text-[var(--cocoa)] md:text-[19px]">
+          <p className="wholesale-intro-copy mx-auto max-w-[500px] text-[18px] leading-relaxed text-[var(--cocoa)] md:text-[19px]">
             The same small-batch case, in sizes built for your menu.
           </p>
         </motion.div>

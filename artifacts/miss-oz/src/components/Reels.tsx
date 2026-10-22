@@ -124,7 +124,7 @@ export default function Reels() {
           >
             Little Home Movies
           </h2>
-          <p className="mt-[12px] text-[var(--cocoa)] text-[16px] md:text-[17px] max-w-[540px] mx-auto">
+          <p className="reels-intro-copy mt-[12px] text-[var(--cocoa)] text-[16px] md:text-[17px] max-w-[540px] mx-auto">
             A few seconds of everyday life. Our street corner, the counter, and the shop dog hard at work.
           </p>
         </motion.div>
