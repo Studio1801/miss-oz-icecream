@@ -22,6 +22,13 @@ const itemGroups = [
 
 const polaroidPhotos = [
   {
+    src: 'images/wholesale/image6.webp',
+    alt: 'A scoop of Oregon Marionberry ice cream in a silver dessert dish, with the full dish visible.',
+    caption: 'Ice cream',
+    objectPosition: 'center',
+    rotation: '-1.5deg',
+  },
+  {
     src: 'images/whole-basque-cheesecake.webp',
     alt: 'A whole golden-brown Original Basque cheesecake with its baked top clearly visible.',
     caption: 'Bakes',

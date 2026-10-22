@@ -12,10 +12,9 @@ const output = process.argv.find((a) => a.startsWith('--out='))?.slice(6)
   || 'generated-artifacts/mobile-audit';
 const screenshots = process.argv.includes('--screenshots');
 const origin = process.env.AUDIT_URL || 'http://127.0.0.1:80';
-const widths = process.argv.find((a) => a.startsWith('--widths='))?.slice(9).split(',').map(Number)
-  || [320, 360, 390, 430];
+const widths = [320, 360, 390, 430];
 const routes = process.argv.find((a) => a.startsWith('--routes='))?.slice(9).split(',')
-  || ['/', '/menu', '/events', '/wholesale', '/about', '/contact', '/a-missing-page'];
+  || ['/', '/events', '/wholesale', '/about', '/contact', '/a-missing-page'];
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const profile = await mkdtemp(path.join(tmpdir(), 'miss-oz-audit-'));
 await mkdir(output, { recursive: true });
@@ -36,7 +35,7 @@ const USER_CHECK = `(() => {
   let n;
   while ((n = tw.nextNode())) {
     const p = n.parentElement, t = n.textContent.trim();
-    if (!t || p.closest('script,style,[aria-hidden="true"],[data-marquee],[data-hscroll]')) continue;
+    if (!t || p.closest('script,style,[data-marquee],[data-hscroll]')) continue;
     const r = document.createRange(); r.selectNodeContents(n);
     for (const b of r.getClientRects()) {
       if (b.width && (b.left < E - 1 || W - b.right < E - 1)) { bad.push(['edge', t.slice(0, 24), Math.round(b.left), Math.round(W - b.right)]); break; }
@@ -93,7 +92,7 @@ async function inspect(width, route, state, viewportOnly = false) {
     let node;
     while ((node = tw.nextNode())) {
       const text = node.textContent.trim(), p = node.parentElement;
-      if (!badTexts.has(text.slice(0,24)) || p.closest('script,style,[aria-hidden="true"],[data-marquee],[data-hscroll]')) continue;
+      if (!badTexts.has(text.slice(0,24)) || p.closest('script,style,[data-marquee],[data-hscroll]')) continue;
       const r = document.createRange(); r.selectNodeContents(node);
       const rects = [...r.getClientRects()];
       if (!rects.length) continue;
@@ -149,7 +148,7 @@ try {
       await wait(650);
       await settle(true);
       await inspect(width, route, 'page');
-      if (route === '/menu') {
+      if (route === '/') {
         const tabs = await evaluate(`[...document.querySelectorAll('[role=tab]')].filter(e => e.getBoundingClientRect().height > 0).map(e=>({id:e.id,text:e.textContent.trim()}))`);
         for (const tab of tabs) {
           await evaluate(`document.getElementById(${JSON.stringify(tab.id)}).click()`);

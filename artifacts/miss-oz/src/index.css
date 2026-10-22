@@ -137,17 +137,17 @@
   --cream: #F2E1C2;
   --cream-hi: #FBF2DF;
   --pink: #EAB8CE;
-  --gold: #D9C59B;
-  --gold-hi: #EAB8CE;
+  --gold: #C79A3B;
+  --gold-hi: #E3B44C;
   --cocoa: #1C0D0C;
 
   /* Vintage diner accents (poster board) */
-  --teal: #4E8F79;
-  --teal-deep: #4E8F79;
+  --teal: #2C5D5B;
+  --teal-deep: #173F3C;
   --mint: #9FD4BE;
   --mint-deep: #4E8F79;
-  --brick: #8C2A54;
-  --brick-deep: #5E1735;
+  --brick: #BD5749;
+  --brick-deep: #9C3F35;
   --paper: #EFE2C4;
   --paper-hi: #F6EDD6;
 
@@ -432,7 +432,7 @@ select {
 input:not([type="checkbox"]):not([type="radio"]):focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  box-shadow: 0 0 0 3px rgba(178, 78, 121, 0.2);
+  box-shadow: 0 0 0 3px rgba(199, 154, 59, 0.2);
 }
 
 .interaction-spinner {
@@ -1043,13 +1043,13 @@ select:focus-visible {
   justify-content: center;
   gap: 4px;
   margin-top: 8px;
-  color: var(--marionberry);
+  color: #9A6E0B;
   font-size: 13px;
   line-height: 1.2;
 }
 
 .mobile-menu-meet-top {
-  color: var(--marionberry);
+  color: #9A6E0B;
 }
 
 .mobile-menu-meet-bottom {
@@ -1633,7 +1633,6 @@ select:focus-visible {
     position: relative !important;
     top: auto !important;
     left: auto !important;
-    translate: none !important;
     width: min(100%, 180px) !important;
     flex: 0 0 auto;
     margin: 0 auto;

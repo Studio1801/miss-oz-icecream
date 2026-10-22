@@ -8,7 +8,7 @@ import Home from '@/pages/home';
 import SiteLayout from '@/components/SiteLayout';
 import { Redirect, Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { NOT_FOUND_META, PAGE_META, PUBLIC_ORIGIN } from './pageMeta';
-import { AboutPage, ContactPage, EventsPage, MenuPage, WholesalePage } from './pageChunks';
+import { AboutPage, ContactPage, EventsPage, WholesalePage } from './pageChunks';
 
 const queryClient = new QueryClient();
 const localBusinessSchema = document.querySelector<HTMLScriptElement>('#local-business-schema')?.textContent ?? '';
@@ -118,7 +118,7 @@ function Router() {
     <SiteLayout showHero={location === '/'}>
       <Suspense fallback={<RouteChunkFallback />}>
         <ScrollToCurrentHash />
-        <AnimatePresence initial={false} mode="wait">
+        <AnimatePresence initial={false}>
           <motion.div
             key={location}
             className="page-route-content"
@@ -129,9 +129,9 @@ function Router() {
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
             transition={{ duration: reduceMotion ? 0.12 : 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Switch location={location}>
+            <Switch>
               <Route path="/" component={Home} />
-              <Route path="/menu" component={MenuPage} />
+              <Route path="/menu"><Redirect to="/#menu" /></Route>
               <Route path="/new-flavor"><Redirect to="/#new-flavor" /></Route>
               <Route path="/about" component={AboutPage} />
               <Route path="/wholesale" component={WholesalePage} />

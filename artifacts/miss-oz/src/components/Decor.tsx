@@ -3,9 +3,10 @@
 
 const BUNTING_COLORS = [
   'var(--berry)',
-  'var(--marionberry)',
-  'var(--mint-deep)',
+  'var(--gold-hi)',
+  'var(--teal)',
   'var(--pink)',
+  'var(--brick)',
 ];
 
 export function Bunting({ className = '', count = 40 }: { className?: string; count?: number }) {

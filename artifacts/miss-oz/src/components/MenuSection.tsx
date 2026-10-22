@@ -27,9 +27,9 @@ const scallopStyle = {
 };
 const sidePanelHeightClass = 'md:h-[calc(100svh-134px)] md:min-h-[600px]';
 
-function Awning({ className = '' }: { className?: string }) {
+function Awning() {
   return (
-    <div aria-hidden="true" className={`relative z-10 -mb-[2px] ${className}`}>
+    <div aria-hidden="true" className="relative z-10 -mb-[2px]">
       <div className="h-[14px] rounded-t-[10px]" style={awningStyle} />
       <div className="h-[9px]" style={scallopStyle as React.CSSProperties} />
     </div>
@@ -106,13 +106,13 @@ function WelcomeCard() {
                 style={{ border: '1.5px dashed rgba(59,16,32,0.55)', borderRadius: '4px', padding: '11px 22px 12px' }}
               >
                 <span
-                  className="uppercase whitespace-nowrap mobile-minimum-12 md:max-lg:whitespace-normal md:max-lg:text-center"
+                  className="uppercase whitespace-nowrap mobile-minimum-12"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: '7px', letterSpacing: '1px', fontWeight: 700, color: 'rgba(59,16,32,0.55)' }}
                 >
                   ✦ Admit One Sweet Tooth ✦
                 </span>
                 <span
-                  className="flex items-center gap-2 whitespace-nowrap uppercase mobile-minimum-12 md:max-lg:flex-wrap md:max-lg:justify-center md:max-lg:whitespace-normal"
+                  className="flex items-center gap-2 whitespace-nowrap uppercase mobile-minimum-12"
                   style={{ fontFamily: "'DM Serif Display', serif", fontSize: 'clamp(11px,0.85vw,13px)', letterSpacing: '1.5px', color: '#3B1020', lineHeight: 1.3 }}
                 >
                   Place an Order
@@ -226,7 +226,7 @@ export default function MenuSection() {
         </div>
 
         <div className="md:hidden">
-          <Awning className="menu-mobile-awning" />
+          <Awning />
           <MenuCategoryNavigation
             variant="mobile"
             activeCategory={activeCategory}
@@ -238,7 +238,7 @@ export default function MenuSection() {
         <div
           className="
             grid grid-cols-1
-            md:grid-cols-[minmax(140px,220px)_minmax(300px,1fr)_minmax(140px,220px)]
+            md:grid-cols-[minmax(170px,220px)_minmax(380px,1fr)_minmax(170px,220px)]
             lg:grid-cols-[minmax(210px,270px)_minmax(420px,1fr)_minmax(210px,270px)]
             gap-[clamp(14px,1.8vw,22px)] items-stretch md:px-[clamp(20px,3vw,48px)]
           "

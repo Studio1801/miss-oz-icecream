@@ -120,7 +120,7 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
               </div>
               <p className="mt-3"><strong>Important:</strong> Your pickup is the following Wednesday, not the Wednesday of the same week.</p>
             </div>
-              <form onSubmit={handleSubmit} noValidate={validation.mobile} onInput={(event) => { validation.clear(event); if (validation.mobile && status === 'sent') setStatus('idle'); }} className="mobile-form rounded-[9px] p-[clamp(14px,2vw,22px)]" style={{ background: 'rgba(232,184,206,0.12)', border: '1px solid rgba(94,23,53,0.18)' }}>
+            <form onSubmit={handleSubmit} noValidate={validation.mobile} onInput={(event) => { validation.clear(event); if (validation.mobile && status === 'sent') setStatus('idle'); }} className="mobile-form rounded-[9px] p-[clamp(14px,2vw,22px)]" style={{ background: 'rgba(227,180,76,0.12)', border: '1px solid rgba(94,23,53,0.18)' }}>
               <div className="font-bold text-[#3B1E2B]" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(18px,2vw,23px)' }}>Your Order Details</div>
               <div className="mt-4 grid gap-3 text-[#3B1E2B]" style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}>
                 <label htmlFor="cake-size">Cake size

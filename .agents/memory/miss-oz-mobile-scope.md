@@ -3,12 +3,6 @@ name: Miss Oz mobile scope
 description: Client constraints for mobile spacing and preserving the fixed bulb frame and desktop appearance.
 ---
 
-Scope restriction: preserve the last approved design. Requests for specific removals and alignment fixes do not authorize broader responsive restyling, including changes to Home, the Order button, or About Us. This restriction takes precedence over interpreting the mobile guidelines below as permission to make additional changes.
-
-**Why:** The client explicitly objected that broader design changes were not intended and repeated that only specific removals and alignment adjustments were requested.
-
-**How to apply:** Change only the named elements and requested geometry. Do not alter unrelated appearance or behavior without an explicit request.
-
 Miss Oz mobile is the 1440px desktop adapted for phones, not a redesign. Preserve the same brand, fonts, colors, copy, photos, section order, and decorative language. Mobile-only changes are limited to sizing, stacking, tap/read comfort, and collapsing desktop navigation with its existing fonts, colors, and link names. Keep decorations; shrink or move them to resolve collisions, and remove one only if it still collides after that. Do not add mobile-only components, sections, copy, colors, or fonts, or remove desktop content, photos, buttons, or features. All mobile rules stop at 767px; do not change 768px and up.
 
 **Why:** The client made desktop-at-1440 the source of truth and explicitly said the rule applies to past and future mobile work.
@@ -44,12 +38,6 @@ Mobile menu category changes must position the active panel heading below the st
 **Why:** The client’s later mobile-menu specification explicitly requires the selected heading to scroll into view beneath the sticky controls, superseding the earlier no-position-change preference.
 
 **How to apply:** Measure the header and sticky bar heights when computing the heading offset, and verify category changes across short and tall panels. Keep the existing desktop scroll-to-menu behavior.
-
-The mobile Menu awning, maroon category bar, and menu panel form one centered frame with matching outer edges.
-
-**Why:** The client supplied a screenshot showing the category bar offset from the panel and explicitly requested a structurally aligned frame.
-
-**How to apply:** Preserve the shared width and side alignment across all categories and while the bar is sticky. Keep the inner tabs horizontally scrollable; do not independently inset the outer bar.
 
 Mobile Flavors keeps two columns, a 10px gap, and cards at least 148px wide at 390px; use square subject-preserving photos, 16px italic serif names, and 13px descriptions. A lone odd final card spans the row but is centered at the normal half-grid width and keeps the standard photo-over-text layout.
 
