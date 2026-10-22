@@ -8,7 +8,7 @@ import Home from '@/pages/home';
 import SiteLayout from '@/components/SiteLayout';
 import { Redirect, Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { NOT_FOUND_META, PAGE_META, PUBLIC_ORIGIN } from './pageMeta';
-import { AboutPage, ContactPage, EventsPage, WholesalePage } from './pageChunks';
+import { AboutPage, ContactPage, EventsPage, MenuPage, WholesalePage } from './pageChunks';
 
 const queryClient = new QueryClient();
 const localBusinessSchema = document.querySelector<HTMLScriptElement>('#local-business-schema')?.textContent ?? '';
@@ -131,7 +131,7 @@ function Router() {
           >
             <Switch>
               <Route path="/" component={Home} />
-              <Route path="/menu"><Redirect to="/#menu" /></Route>
+              <Route path="/menu" component={MenuPage} />
               <Route path="/new-flavor"><Redirect to="/#new-flavor" /></Route>
               <Route path="/about" component={AboutPage} />
               <Route path="/wholesale" component={WholesalePage} />

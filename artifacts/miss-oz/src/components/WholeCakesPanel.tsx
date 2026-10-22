@@ -16,7 +16,7 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
             fontSize: 'clamp(10.5px,0.9vw,12.5px)',
           }}
         >
-          <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full" style={{ background: 'rgba(227,180,76,0.25)' }} />
+          <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full" style={{ background: 'rgba(232,184,206,0.25)' }} />
           <div className="relative text-[var(--berry-deep)] text-[clamp(25px,2.6vw,36px)] max-[430px]:text-[22.75px]" style={{ fontFamily: 'var(--font-script)', lineHeight: 1 }}>
             Original Basque Cheesecake
           </div>
@@ -65,7 +65,7 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           style={{
             background: 'rgba(251,244,230,0.9)',
             border: '2px solid var(--berry-deep)',
-            boxShadow: '0 5px 0 rgba(227,180,76,0.7), inset 0 0 0 5px rgba(242,225,194,0.55)',
+            boxShadow: '0 5px 0 rgba(178,78,121,0.55), inset 0 0 0 5px rgba(242,225,194,0.55)',
             fontFamily: 'var(--font-sans)',
             fontSize: 'clamp(11px,0.95vw,13.5px)',
           }}

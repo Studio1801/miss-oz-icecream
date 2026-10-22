@@ -29,7 +29,11 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
   '/contact': {
     title: 'Contact | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Find Miss Oz contact details and leave a note in the guestbook.',
+    description: 'Contact Miss Oz Ice Cream & Dessert Cafe and leave a note in the guestbook.',
+  },
+  '/menu': {
+    title: 'Menu | Miss Oz Ice Cream & Dessert Cafe',
+    description: 'Browse Miss Oz handmade ice cream, sundaes, croffles, desserts, drinks, and whole cakes.',
   },
 };
 

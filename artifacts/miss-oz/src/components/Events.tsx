@@ -10,11 +10,6 @@ const EVENT_POLAROIDS = [
     alt: 'Midnight Fudge Sundae topped with whipped cream, rainbow sprinkles, and a cherry in a Miss Oz cup.',
     caption: 'Midnight Fudge Sundae',
   },
-  {
-    src: `${import.meta.env.BASE_URL}images/wholesale/image11.webp`,
-    alt: 'Rose City Banana Split with vanilla, strawberry, and chocolate scoops, sauces, whipped cream, sprinkles, and cherries',
-    caption: 'Rose City Banana Split',
-  },
 ];
 
 function EventPolaroid({ photo, className }: { photo: (typeof EVENT_POLAROIDS)[number]; className: string }) {
@@ -103,8 +98,7 @@ export default function Events() {
           </div>
 
           <div className="event-polaroid-stage relative mx-auto mt-[44px] h-[220px] w-full max-w-[430px] lg:mx-0 lg:h-[clamp(232px,18.2vw,262px)] lg:max-w-none">
-            <EventPolaroid photo={EVENT_POLAROIDS[0]} className="left-[calc(50%_-_124px)] z-10 -rotate-[6deg] lg:left-[calc(50%_-_clamp(174px,14.2vw,204px))]" />
-            <EventPolaroid photo={EVENT_POLAROIDS[1]} className="left-[calc(50%_-_6px)] z-20 rotate-[5deg]" />
+            <EventPolaroid photo={EVENT_POLAROIDS[0]} className="left-1/2 z-10 -translate-x-1/2 -rotate-[3deg]" />
           </div>
         </div>
 

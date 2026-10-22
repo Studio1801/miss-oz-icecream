@@ -32,7 +32,7 @@ export default function NotFound() {
           Back to Home
         </a>
         <a
-          href="/#menu"
+          href="/menu"
           className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--berry-deep)] px-6 py-3 text-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] mobile-minimum-12"
           style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 700 }}
         >

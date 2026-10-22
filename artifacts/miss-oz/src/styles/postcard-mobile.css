@@ -226,14 +226,14 @@
     position: relative;
     gap: 4px;
     margin-top: 8px;
-    color: #9A6E0B;
+    color: var(--marionberry);
     font-size: 13px;
     line-height: 1.2;
   }
 
   #mobile-menu-panel .mobile-menu-meet-top {
     display: block;
-    color: #9A6E0B;
+    color: var(--marionberry);
   }
 
   #mobile-menu-panel .mobile-menu-meet-bottom {
@@ -243,7 +243,7 @@
 
   #mobile-menu-panel .mobile-menu-meet-sparkle {
     position: absolute;
-    color: #9A6E0B;
+    color: var(--marionberry);
     font-size: 9px;
     line-height: 1;
     animation: twinkle 2.6s infinite;

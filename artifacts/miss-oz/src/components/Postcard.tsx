@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { useLocation } from 'wouter';
 import { Bunting } from './Decor';
 import OrderChooser from './OrderChooser';
-import { SITE_NAV_LINKS, SiteNavigationLink, navTarget, sectionTarget } from './SiteNavigation';
+import { SITE_NAV_LINKS, SiteNavigationLink } from './SiteNavigation';
 import { useIsMobile } from '../hooks/use-mobile';
 
 /* Full-width homepage slideshow — real storefront photos */
@@ -293,10 +293,10 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           <div className="flex flex-col justify-center py-[clamp(10px,1.1vw,14px)]" style={{ borderTop: '1.5px solid var(--marionberry)', borderBottom: '1.5px solid var(--marionberry)' }}>
             <div className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
             <nav aria-label="Primary" className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
-              {SITE_NAV_LINKS.slice(0, 2).map((n) => (
+              {SITE_NAV_LINKS.slice(0, 3).map((n) => (
                 <SiteNavigationLink
                   key={n.label}
-                  to={navTarget(n.target, showHero)}
+                  to={n.target}
                   className="mobile-minimum-12 whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
@@ -309,20 +309,20 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               className="mobile-minimum-12 group relative text-center leading-snug hidden xl:block cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
               style={{
                 fontFamily: 'var(--font-sans)',
-                color: '#9A6E0B',
+                color: 'var(--marionberry)',
                 letterSpacing: '2px',
                 fontSize: 'clamp(9px,0.75vw,11px)',
                 fontWeight: 800,
                 textTransform: 'uppercase',
               }}
             >
-              <span aria-hidden="true" className="absolute -top-[10px] -left-[12px] text-[9px] text-[var(--gold,#B8860B)]" style={{ animation: 'twinkle 2.6s 0s infinite' }}>✦</span>
+              <span aria-hidden="true" className="absolute -top-[10px] -left-[12px] text-[9px] text-[var(--marionberry)]" style={{ animation: 'twinkle 2.6s 0s infinite' }}>✦</span>
               <span aria-hidden="true" className="absolute -bottom-[9px] -right-[10px] text-[8px] text-[var(--berry)]" style={{ animation: 'twinkle 2.6s 0.9s infinite' }}>✦</span>
-              <span aria-hidden="true" className="absolute -top-[8px] -right-[16px] text-[7px] text-[var(--gold,#B8860B)]" style={{ animation: 'twinkle 2.6s 1.7s infinite' }}>✦</span>
+              <span aria-hidden="true" className="absolute -top-[8px] -right-[16px] text-[7px] text-[var(--marionberry)]" style={{ animation: 'twinkle 2.6s 1.7s infinite' }}>✦</span>
               <span className="block transition-colors group-hover:text-[var(--berry)] meet-oz-wiggle">
                 Small Batch, Big Heart
                 <br />
-                <span className="inline-block mt-[2px] tracking-[1.5px] text-[var(--berry)] group-hover:text-[var(--gold,#B8860B)]">
+                <span className="inline-block mt-[2px] tracking-[1.5px] text-[var(--berry)] group-hover:text-[var(--marionberry)]">
                   <span aria-hidden="true" className="inline-block mr-[3px] meet-oz-heart">♥</span>
                   Meet Oz!
                   <span aria-hidden="true" className="inline-block ml-[3px] meet-oz-arrow">→</span>
@@ -338,10 +338,10 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           {/* RIGHT */}
           <div className="flex flex-col justify-center py-[clamp(10px,1.1vw,14px)]" style={{ borderTop: '1.5px solid var(--marionberry)', borderBottom: '1.5px solid var(--marionberry)' }}>
             <nav aria-label="Primary continued" className="flex items-center justify-center gap-[clamp(8px,1.3vw,18px)]">
-              {SITE_NAV_LINKS.slice(2).map((n) => (
+              {SITE_NAV_LINKS.slice(3).map((n) => (
                 <SiteNavigationLink
                   key={n.label}
-                  to={navTarget(n.target, showHero)}
+                  to={n.target}
                   className="mobile-minimum-12 whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
@@ -472,7 +472,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                     fontFamily: 'var(--font-display)',
                     fontSize: 'clamp(56px,8.8vw,126px)',
                     lineHeight: 1,
-                    color: '#EBC77F',
+                color: 'var(--gold-hi)',
                     WebkitTextStroke: 'clamp(3px,0.45vw,7px) var(--berry)',
                     paintOrder: 'stroke fill',
                     filter: 'drop-shadow(0 4px 5px rgba(20,8,12,0.45))',
@@ -507,7 +507,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   letterSpacing: '2px',
                   textTransform: 'uppercase',
                   fontWeight: 700,
-                  color: '#EBC77F',
+                  color: 'var(--gold-hi)',
                   textShadow: '0 1px 6px rgba(20,8,12,0.75)',
                   marginTop: 'clamp(8px,1vw,14px)',
                 }}
@@ -552,7 +552,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               {/* CTA button */}
               <div className="hero-entrance hero-enter-button hero-cta-wrap relative flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
                 <SiteNavigationLink
-                  to={sectionTarget('menu', showHero)}
+                  to="/menu"
                   className="hero-menu-button mobile-view-menu interaction-primary mobile-minimum-12 group relative inline-flex min-h-[44px] items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                   style={{
                     fontFamily: 'var(--font-sans)',
@@ -610,7 +610,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           >
             <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50" />
             <span
-              className="hero-ribbon-copy mobile-minimum-12 text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-nowrap"
+              className="hero-ribbon-copy mobile-minimum-12 max-[639px]:max-w-full text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-normal max-[639px]:text-balance"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(8px,0.85vw,11px)' }}
             >
               Portland's Homegrown Ice Cream Cafe
@@ -673,7 +673,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                       <SiteNavigationLink
                         key={item.label}
                         asChild
-                        to={navTarget(item.target, showHero)}
+                        to={item.target}
                         className="mobile-menu-link"
                         onClick={() => setMenuOpen(false)}
                       >

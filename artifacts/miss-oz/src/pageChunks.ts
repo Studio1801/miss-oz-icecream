@@ -4,17 +4,20 @@ const loadAboutPage = () => import('./pages/about');
 const loadWholesalePage = () => import('./pages/wholesale');
 const loadEventsPage = () => import('./pages/events');
 const loadContactPage = () => import('./pages/contact');
+const loadMenuPage = () => import('./pages/menu');
 
 export const AboutPage = lazy(loadAboutPage);
 export const WholesalePage = lazy(loadWholesalePage);
 export const EventsPage = lazy(loadEventsPage);
 export const ContactPage = lazy(loadContactPage);
+export const MenuPage = lazy(loadMenuPage);
 
 const pageLoaders: Record<string, () => Promise<unknown>> = {
   '/about': loadAboutPage,
   '/wholesale': loadWholesalePage,
   '/events': loadEventsPage,
   '/contact': loadContactPage,
+  '/menu': loadMenuPage,
 };
 
 export function prefetchPageChunk(target: string) {

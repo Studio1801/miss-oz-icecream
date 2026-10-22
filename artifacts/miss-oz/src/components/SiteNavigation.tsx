@@ -5,18 +5,12 @@ import { prefetchPageChunk } from '../pageChunks';
 
 export const SITE_NAV_LINKS = [
   { label: 'Home', target: '/' },
+  { label: 'Menu', target: '/menu' },
   { label: 'Events', target: '/events' },
   { label: 'Wholesale', target: '/wholesale' },
   { label: 'About Us', target: '/about' },
   { label: 'Contact', target: '/contact' },
 ];
-
-const APP_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-
-export const sectionTarget = (id: string, isHome: boolean) => `${isHome ? '' : '/'}#${id}`;
-
-export const navTarget = (target: string, showHero: boolean) =>
-  showHero && target === '/contact' ? '#visit' : target;
 
 export const handleSameRouteNavigation = (target: string, event: MouseEvent<Element>) => {
   if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
