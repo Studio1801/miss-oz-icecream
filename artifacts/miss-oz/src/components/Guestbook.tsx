@@ -147,29 +147,29 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
         style={{ background: 'radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(28,13,12,0.07) 100%)' }}
       />
 
-      <div className="relative text-center max-w-[720px] mx-auto mb-[clamp(24px,3vw,40px)]">
+      <div className="guestbook-header relative text-center max-w-[720px] mx-auto mb-[clamp(24px,3vw,40px)]">
         <motion.span
           initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7 }}
-          className="block text-[12px] tracking-[5px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-3"
+          className="guestbook-since block text-[12px] tracking-[5px] uppercase font-bold text-[var(--cocoa)] opacity-60 mb-3"
         >
           Since 2007
         </motion.span>
         <motion.span
           initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.1 }}
-          className="block font-script text-[var(--berry-deep)] text-[clamp(28px,3.4vw,40px)] mb-1"
+          className="guestbook-kicker block font-script text-[var(--berry-deep)] text-[clamp(28px,3.4vw,40px)] mb-1"
         >
           put your name in the book
         </motion.span>
         <motion.h2
           initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.15 }}
-          className="text-[clamp(40px,5.6vw,74px)] leading-[0.98] mb-4 text-[var(--cocoa)]"
+          className="guestbook-title text-[clamp(40px,5.6vw,74px)] leading-[0.98] mb-4 text-[var(--cocoa)]"
           style={macklin}
         >
           The Parlor Guestbook
         </motion.h2>
         <motion.p
           initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.7, delay: 0.2 }}
-          className="italic text-[17px] text-[#1d0e0d] opacity-80"
+          className="guestbook-intro italic text-[17px] text-[#1d0e0d] opacity-80"
         >
           Every parlor worth its salt keeps a book by the door. Leave a memory, a favorite scoop, or just a hello.
         </motion.p>
@@ -213,7 +213,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 <span style={macklin}>Guestbook</span>
                 <p>Leave a note for Miss Oz.</p>
               </div>
-              <div className="text-[var(--berry-deep)] leading-none mb-6" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,28px)' }}>
+              <div className="guestbook-sign-heading text-[var(--berry-deep)] leading-none mb-6" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,28px)' }}>
                 Sign the book
               </div>
 

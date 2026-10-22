@@ -82,13 +82,13 @@ export default function MeetOz() {
         <PawPrint size={22} className="absolute bottom-[9%] right-[14%] opacity-[0.08] -rotate-[10deg]" />
       </div>
 
-      <div className="relative z-10 max-w-[1220px] mx-auto">
+      <div className="meet-oz-content relative z-10 max-w-[1220px] mx-auto">
         {/* Header */}
-        <div className="text-center">
+        <div className="meet-oz-header text-center">
           <motion.h2
             {...rise}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="relative inline-block leading-[1.02] mb-1"
+            className="meet-oz-title relative inline-block leading-[1.02] mb-1"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(40px, calc(6.8vw + 8px), 96px)',
@@ -110,11 +110,11 @@ export default function MeetOz() {
 
         {/* Copy */}
         <motion.div {...rise} transition={{ duration: 0.7, delay: 0.25 }} className="meet-oz-copy mt-8 max-w-[640px] mx-auto text-center">
-          <p className="mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
+          <p className="meet-oz-paragraph mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
             The shop is named after Oz, our beloved dog, and the reason we do things the way we do.
             Oregon is about as dog-friendly as a place can be, and she made every corner of it hers.
           </p>
-          <p className="mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
+          <p className="meet-oz-paragraph mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
             She keeps a close eye on the kitchen, stars in her own daily vlog for our guests, and comes
             along when we travel to hunt down new flavors. Nothing goes on the menu until it passes her
             inspection.

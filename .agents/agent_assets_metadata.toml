@@ -138,3 +138,17 @@ mtime_ms = 1791491906779
 storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/0f6cd989-f7b4-43e4-916e-974dc8603707/5ea75561-1ea2-4ac8-92bc-03d02de90180"
 storage_version_token = "1791491935536516"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "H9dpc4xo8fxuGn_ZaKSyz"
+uri = "file://generated-artifacts/guestbook-mobile-after-390.jpg"
+type = "image"
+title = "Guestbook mobile screenshot (390px)"
+description = "Updated /contact page with the mobile header hierarchy and notepad form."
+logical_id = "5fc4bbd0-d297-4c48-aea2-0ee72cfabd74"
+content_hash = "sha256:27b37da0b95c737c122ca9f0c5922afda317e45f48223c6547effc2a8b500c56"
+size = 57438
+mtime_ms = 1792675332313
+storage_uri = "gcs://replit-rams-assets-pike/rams/assets/repl:feb53807-ac47-43e8-9a13-0093c8bfff15/5fc4bbd0-d297-4c48-aea2-0ee72cfabd74/a5e6d39d-669b-4b0b-85a0-f7352f3be192"
+storage_version_token = "1792675392593222"
+content_type = "image/jpeg"
