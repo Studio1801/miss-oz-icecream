@@ -9,7 +9,7 @@ export type FlavorPhoto = {
 export const FLAVOR_PHOTOS: FlavorPhoto[] = [
   {
     name: 'Mexican Vanilla',
-    src: 'images/mexican-vanilla.webp',
+    src: 'images/mexican-vanilla-client.png',
     alt: 'A scoop of Mexican vanilla ice cream in a silver dessert bowl against a pink backdrop.',
     objectPosition: '50% 62%',
   },
@@ -21,7 +21,7 @@ export const FLAVOR_PHOTOS: FlavorPhoto[] = [
   { name: 'Marionberry', src: 'images/wholesale/image6.webp', objectPosition: '50% 62%' },
   {
     name: 'Cookies & Cream',
-    src: 'images/cookies-and-cream.webp',
+    src: 'images/cookies-and-cream-client.png',
     alt: 'A scoop of cookies and cream ice cream in a silver dessert bowl',
     objectPosition: '50% 62%',
   },
@@ -30,7 +30,7 @@ export const FLAVOR_PHOTOS: FlavorPhoto[] = [
   { name: 'Mint Chocolate Chip', src: 'images/wholesale/image10.webp', objectPosition: '50% 62%' },
   {
     name: 'Fresh Banana',
-    src: 'images/fresh-banana.webp',
+    src: 'images/fresh-banana-client.png',
     alt: 'A scoop of fresh banana ice cream in a silver dessert bowl',
     objectPosition: '50% 100%',
   },

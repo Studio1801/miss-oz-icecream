@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 // Keep the current artwork in one obvious place for a future real asset swap.
-const FLAVOR_POSTER_ASSET = '/images/licorice-vote.webp';
+const FLAVOR_POSTER_ASSET = '/images/licorice-client.png';
 
 const FLAVOR = {
   name: 'Licorice',
