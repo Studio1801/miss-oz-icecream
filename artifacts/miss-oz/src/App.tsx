@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from 'react';
-import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'framer-motion';
+import { MotionConfig, motion, useReducedMotion } from 'framer-motion';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -118,29 +118,26 @@ function Router() {
     <SiteLayout showHero={location === '/'}>
       <Suspense fallback={<RouteChunkFallback />}>
         <ScrollToCurrentHash />
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={location}
-            className="page-route-content"
-            initial={window.matchMedia('(max-width: 767px)').matches
-              ? false
-              : reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
-            transition={{ duration: reduceMotion ? 0.12 : 0.3, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Switch>
-              <Route path="/" component={Home} />
-              <Route path="/menu"><Redirect to="/#menu" /></Route>
-              <Route path="/new-flavor"><Redirect to="/#new-flavor" /></Route>
-              <Route path="/about" component={AboutPage} />
-              <Route path="/wholesale" component={WholesalePage} />
-              <Route path="/events" component={EventsPage} />
-              <Route path="/contact" component={ContactPage} />
-              <Route component={NotFound} />
-            </Switch>
-          </motion.div>
-        </AnimatePresence>
+        <motion.div
+          key={location}
+          className="page-route-content"
+          initial={window.matchMedia('(max-width: 767px)').matches
+            ? false
+            : reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduceMotion ? 0.12 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/menu"><Redirect to="/#menu" /></Route>
+            <Route path="/new-flavor"><Redirect to="/#new-flavor" /></Route>
+            <Route path="/about" component={AboutPage} />
+            <Route path="/wholesale" component={WholesalePage} />
+            <Route path="/events" component={EventsPage} />
+            <Route path="/contact" component={ContactPage} />
+            <Route component={NotFound} />
+          </Switch>
+        </motion.div>
       </Suspense>
     </SiteLayout>
   );
