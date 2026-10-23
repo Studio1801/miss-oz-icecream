@@ -68,7 +68,7 @@ export default function FlavorPanel() {
                       : flavor.photo.objectPosition ?? '50% 62%',
                     transform: flavor.name === 'Fresh Banana'
                       ? 'translateX(-3%) scaleX(1.06)'
-                      : flavor.name === 'Mexican Vanilla' ? 'translateY(-3%) scale(1.32)' : undefined,
+                      : flavor.name === 'Mexican Vanilla' ? 'translateY(-5%) scale(1.32)' : undefined,
                   }}
                 />
               </div>
