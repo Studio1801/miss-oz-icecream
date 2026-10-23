@@ -89,7 +89,7 @@ export const FLAVORS: MenuItem[] = [
   { name: 'Fresh Banana', note: 'We ripen fresh bananas in our kitchen until they reach their sweetest, then turn them into ice cream full of naturally rich banana flavor.' },
   { name: 'Belgian Chocolate', note: 'House-made chocolate base with premium Sudan cocoa powder.' },
   { name: 'Mint Chocolate Chip', note: 'We steeped teas for a gentle, lingering mint flavor, finished with the sweetness of semi-sweet chocolate chips. Naturally pale, with no artificial colors.' },
-  { name: 'Cookies & Cream', note: 'chocolate sandwich cookies folded into sweet cream.' },
+  { name: 'Cookies & Cream', note: 'Chocolate sandwich cookies folded into sweet cream.' },
   { name: 'Horchata', note: "Mexico's beloved national drink, churned into ice cream. Made from scratch with Miss Oz's handmade recipe." },
   { name: 'Salted Caramel', note: 'Slow-cooked caramel with a touch of sea salt, churned into sweet cream.' },
   { name: 'Peanut Butter Fudge', note: 'Rich, creamy peanut butter ice cream swirled with our house-made chocolate fudge for the perfect balance of nutty sweetness and chocolatey indulgence.' },
