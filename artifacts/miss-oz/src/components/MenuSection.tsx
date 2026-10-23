@@ -55,9 +55,9 @@ function WelcomeCard() {
             className="text-center leading-[1.2] text-[#F2E1C2]"
             style={{ fontFamily: "'DM Serif Display', serif", fontStyle: 'italic', fontSize: 'clamp(28px,2.6vw,38px)' }}
           >
-            ~ Come Slow
+            Come Slow
             <br />
-            Down ~
+            Down
             <br />
             With Us!
           </div>

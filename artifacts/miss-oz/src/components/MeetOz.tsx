@@ -119,6 +119,9 @@ export default function MeetOz() {
             along when we travel to hunt down new flavors. Nothing goes on the menu until it passes her
             inspection.
           </p>
+          <p className="mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
+            My shifts: Monday–Thursday, 10:30 AM–2:30 PM or 2:30–6:00 PM. My schedule may change from week to week. If you miss me, say hello to my photo on the wall! 🐾
+          </p>
           <p className="oz-pull-quote mt-10 text-[clamp(22px,2vw,28px)] leading-[1.35] text-[var(--berry)] md:mt-12" style={macklin}>
             Oz has tested every flavor before you have.
           </p>

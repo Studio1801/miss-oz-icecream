@@ -242,7 +242,17 @@ export default function Wholesale() {
               </div>
 
               <p className="wholesale-minimums mt-4 text-[13px] leading-relaxed max-[639px]:text-[13px] max-[639px]:leading-[1.5] text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
-                Wholesale minimums: $300 minimum total order. One dozen (12 cookies) minimum per cookie order.
+                Wholesale Order Minimums
+                <br />
+                • Orders that include ice cream: $300 minimum total order. Cookies may count toward this minimum.
+                <br />
+                • Cookie-only orders: Minimum 12 cookies per flavor. The $300 minimum does not apply.
+                <br />
+                • All cookies must be ordered in quantities of 12 per flavor.
+                <br /><br />
+                Weekly Order &amp; Pickup Schedule
+                <br />
+                Orders close every Friday for pickup the following Wednesday after 2 PM. If you need a different pickup schedule, let us know when placing your order—we’ll do our best to accommodate you.
               </p>
 
               <div className="mt-2 text-center">
@@ -251,9 +261,6 @@ export default function Wholesale() {
                   submitLabel="Become our Wholesale Partner"
                   buttonClassName="inline-flex items-center gap-2 rounded-full bg-[var(--berry)] px-7 py-[13px] text-[14px] font-bold tracking-[0.4px] text-[var(--cream-hi)] mech-btn hover:bg-[var(--berry-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--berry)] focus-visible:ring-offset-2"
                 />
-                <div className="mt-4 text-[13px] text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
-                  Or say hello at @missozicecreamcafe
-                </div>
               </div>
             </div>
           </div>
