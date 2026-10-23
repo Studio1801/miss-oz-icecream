@@ -64,6 +64,7 @@ export default function FlavorPanel() {
                   className="block h-full w-full object-cover"
                   style={{
                     objectPosition: flavor.photo.objectPosition ?? '50% 62%',
+                    transform: flavor.name === 'Fresh Banana' ? 'translateX(-3%) scaleX(1.06)' : undefined,
                   }}
                 />
               </div>
