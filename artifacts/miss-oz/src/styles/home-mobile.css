@@ -1416,3 +1416,14 @@
     line-height: 1.45;
   }
 }
+
+@media (max-width: 359px) {
+  .page-content-gutter .meet-oz-copy > p:not(.oz-pull-quote),
+  .page-content-gutter .reels-intro-copy {
+    padding-inline: 20px;
+  }
+
+  .page-content-gutter .story-section > div {
+    padding-inline: 20px !important;
+  }
+}

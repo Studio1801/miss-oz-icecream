@@ -1519,6 +1519,12 @@ select:focus-visible {
     word-break: normal !important;
   }
 
+  .miss-oz-footer .footer-text-link[href^="mailto:"] {
+    max-width: 100%;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
   .miss-oz-footer .footer-dog-line {
     margin-top: 8px !important;
   }
