@@ -100,7 +100,7 @@ export default function NewFlavor() {
                 width={580}
                 height={580}
                 className="block w-full h-auto"
-                style={{ transform: 'scale(1.25) translateY(-3%)', transformOrigin: 'center center' }} />
+                style={{ transform: 'translateY(-20%) scale(1.25)', transformOrigin: 'center center' }} />
               <div
                 className="absolute bottom-2 right-2 z-10 rounded-full bg-[#f3e7c9] px-[10px] py-[6px] text-[28px] max-[639px]:!text-[14px] leading-none text-[var(--berry-deep)]"
                 style={{ fontFamily: 'var(--font-script)', transform: 'rotate(-4deg)' }}
