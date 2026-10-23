@@ -6,7 +6,7 @@ import { buildEmail } from "../lib/emailTemplates";
 
 const router: IRouter = Router();
 
-const TO_EMAIL = resolveContactEmail(process.env.CONTACT_EMAIL, "hello@missozicecream.com");
+const TO_EMAIL = resolveContactEmail(process.env.CONTACT_EMAIL, "bluecanvascorp@gmail.com");
 const FROM_EMAIL = process.env.FROM_EMAIL ?? "Miss Oz Website <noreply@missozicecream.com>";
 
 let resend: Resend | null = null;
