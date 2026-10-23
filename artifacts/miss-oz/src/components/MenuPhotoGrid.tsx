@@ -52,7 +52,7 @@ export default function MenuPhotoGrid({
             />
             {showCaptions && (
               <figcaption
-                className="bg-[var(--berry-deep)] px-2 py-2.5 text-center text-[12px] max-[430px]:text-[12px] font-semibold leading-snug text-[var(--cream-hi)]"
+                className="grid min-h-14 w-full min-w-0 place-items-center whitespace-normal break-words bg-[var(--berry-deep)] px-2 py-2.5 text-center text-[12px] max-[430px]:text-[12px] font-semibold leading-[1.35] text-[var(--cream-hi)]"
                 style={{ fontFamily: 'var(--font-sans)' }}
               >
                 {photo.caption}
