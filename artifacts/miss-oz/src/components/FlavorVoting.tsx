@@ -13,7 +13,7 @@ type FlavorCard = {
 const CARDS: FlavorCard[] = [
   { name: 'Earl Grey', note: 'black tea with fragrant bergamot', bg: '#EAD8BE', icon: '/images/icon-earl-grey.svg', mobileIcon: '/images/icon-earl-grey-mobile.svg' },
   { name: 'Vietnam Coffee', note: 'deep roast with a creamy condensed finish', bg: '#EAD8BE', icon: '/images/icon-vietnam-coffee.svg', mobileIcon: '/images/icon-vietnam-coffee-mobile.svg', img: '/images/vietnam-coffee-vote.webp' },
-  { name: 'Honey Lavender', note: 'wildflower honey with a soft floral bloom', bg: '#E6DDF4', icon: '/images/icon-honey-lavender.svg', img: '/images/honey-lavender-vote.webp' },
+  { name: 'Honey Lavender', note: 'wildflower honey with a soft floral bloom', bg: '#E6DDF4', icon: '/images/icon-honey-lavender.svg', mobileIcon: '/images/icon-honey-lavender.svg', img: '/images/honey-lavender-vote.webp' },
 ];
 const VOTE_KEY = 'missoz-flavor-vote-v4';
 
