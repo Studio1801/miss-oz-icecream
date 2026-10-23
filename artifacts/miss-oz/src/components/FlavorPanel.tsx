@@ -63,10 +63,12 @@ export default function FlavorPanel() {
                   decoding="async"
                   className="block h-full w-full object-cover"
                   style={{
-                    objectPosition: flavor.photo.objectPosition ?? '50% 62%',
+                    objectPosition: flavor.name === 'Mexican Vanilla'
+                      ? '50% 75%'
+                      : flavor.photo.objectPosition ?? '50% 62%',
                     transform: flavor.name === 'Fresh Banana'
                       ? 'translateX(-3%) scaleX(1.06)'
-                      : flavor.name === 'Mexican Vanilla' ? 'scale(1.18)' : undefined,
+                      : flavor.name === 'Mexican Vanilla' ? 'translateY(-3%) scale(1.32)' : undefined,
                   }}
                 />
               </div>
