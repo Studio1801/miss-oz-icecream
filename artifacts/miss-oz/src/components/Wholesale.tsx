@@ -25,6 +25,7 @@ const polaroidPhotos = [
     src: 'images/wholesale-tubs-client.png',
     alt: 'A scoop of Oregon Marionberry ice cream in a silver dessert dish, with the full dish visible.',
     caption: 'Ice cream',
+    products: items.slice(0, 2),
     objectPosition: 'center',
     rotation: '-1.5deg',
   },
@@ -32,6 +33,7 @@ const polaroidPhotos = [
     src: 'images/whole-basque-cheesecake.webp',
     alt: 'A whole golden-brown Original Basque cheesecake with its baked top clearly visible.',
     caption: 'Bakes',
+    products: items.slice(2, 3),
     objectPosition: 'center',
     rotation: '0.5deg',
   },
@@ -39,6 +41,7 @@ const polaroidPhotos = [
     src: 'images/cookie-chocolate-chip-new.webp',
     alt: 'A stack of chocolate chip cookies on a green-checkered plate.',
     caption: 'Cookies',
+    products: items.slice(3),
     objectPosition: 'center',
     rotation: '1.5deg',
   },
@@ -98,6 +101,9 @@ function PolaroidStack() {
           />
           <figcaption className="mt-[4px] break-words text-center font-script-alt text-[12px] leading-tight text-[var(--berry-deep)] lg:text-[14px]">
             {photo.caption}
+            <span className="mt-1 block font-sans text-[10px] leading-snug text-[var(--berry-deep)]">
+              {photo.products.map((product) => product.name).join(' · ')}
+            </span>
           </figcaption>
         </figure>
       ))}
