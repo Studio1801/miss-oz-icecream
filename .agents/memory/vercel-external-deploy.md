@@ -13,6 +13,14 @@ description: Gotchas when deploying a single artifact from the pnpm-workspace mo
 
 ## Local route verification
 
+## Guestbook on static Vercel builds
+
+Guestbook serverless entry points must reuse the existing Express guestbook route, not implement a separate storage or notification flow.
+
+**Why:** The static frontend build does not deploy the standalone API server. A catch-all SPA rewrite can return HTML for `/api/guestbook`, causing a load failure that mobile previously mislabeled as a failed save.
+
+**How to apply:** Keep API paths out of the SPA fallback and retain adapters for both supported Vercel root-directory choices. Validate adapter routing separately from Vite; workspace success does not establish that a published Vercel API exists. Do not publish without authorization.
+
 Vite preview does not apply `vercel.json` rewrites or redirects. It can return the root `index.html` for a deep path such as `/about` even when the build contains `dist/public/about/index.html`. Do not treat a plain Vite preview curl as a Vercel route test.
 
 **Why:** Local Miss Oz production-preview curls showed the SPA fallback while the route-specific HTML files existed; only the Vercel rules map those paths to the pre-rendered shells and redirect legacy paths.

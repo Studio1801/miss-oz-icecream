@@ -266,7 +266,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
                 </button>
               </div>
               <p ref={liveRef} aria-live="polite" className="sr-only" />
-              {validation.mobile && (submitResult === 'error' || loadError) && (
+              {validation.mobile && submitResult === 'error' && (
                 <div className="guestbook-mobile-api-error" role="alert">
                   <p>Couldn't save that. Try once more in a minute.</p>
                   <button type="button" onClick={retryApiAction}>Retry</button>
@@ -290,11 +290,14 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
               </div>
 
               {!loading && (loadError || entries.length === 0) && (
-                <p className={`guestbook-desktop-empty py-4 text-[14.5px] italic text-[var(--cocoa)] ${loadError ? 'api-availability-message' : ''}`} role="status">
-                  <span className="max-[639px]:hidden">
+                <p className={`${loadError ? 'api-availability-message' : 'guestbook-desktop-empty'} py-4 text-[14.5px] italic text-[var(--cocoa)]`} role="status">
+                  <span className={loadError ? '' : 'max-[639px]:hidden'}>
                     {loadError ? 'Guestbook entries are unavailable right now.' : 'No entries yet. Be the first to sign the book.'}
                   </span>
                 </p>
+              )}
+              {validation.mobile && !loading && loadError && (
+                <button type="button" onClick={() => void loadGuestbook()}>Retry</button>
               )}
               <ul className="guestbook-desktop-list flex flex-col md:flex-1 md:justify-evenly" role="list">
                 {entries.slice(0, 6).map((entry, i) => (
