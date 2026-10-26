@@ -82,9 +82,9 @@ export default function MeetOz() {
         <PawPrint size={22} className="absolute bottom-[9%] right-[14%] opacity-[0.08] -rotate-[10deg]" />
       </div>
 
-      <div className="relative z-10 max-w-[1220px] mx-auto">
+      <div className="meet-oz-content relative z-10 max-w-[1220px] mx-auto">
         {/* Header */}
-        <div className="text-center">
+        <div className="meet-oz-header text-center">
           <motion.h2
             {...rise}
             transition={{ duration: 0.7, delay: 0.1 }}
