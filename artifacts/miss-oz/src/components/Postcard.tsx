@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { useLocation } from 'wouter';
 import { Bunting } from './Decor';
 import OrderChooser from './OrderChooser';
-import { SITE_NAV_LINKS, SiteNavigationLink, navTarget, sectionTarget } from './SiteNavigation';
+import { SITE_NAV_LINKS, SiteNavigationLink, sectionTarget } from './SiteNavigation';
 import { useIsMobile } from '../hooks/use-mobile';
 
 /* Full-width homepage slideshow — real storefront photos */
@@ -190,9 +190,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
   const current = SLIDES[slide] ?? SLIDES[0];
   const compactHeader = isHeaderScrolled || !showHero;
   const currentPath = location.split('#')[0] || '/';
-  const activeNavTarget = showHero && window.location.hash === '#visit'
-    ? '/contact'
-    : currentPath;
+  const activeNavTarget = currentPath;
   const renderSlideDots = () => SLIDES.map((s, i) => (
     <button
       key={s.src}
@@ -297,7 +295,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               {SITE_NAV_LINKS.slice(0, 2).map((n) => (
                 <SiteNavigationLink
                   key={n.label}
-                  to={navTarget(n.target, showHero)}
+                  to={n.target}
                   className="mobile-minimum-12 whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
@@ -342,7 +340,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               {SITE_NAV_LINKS.slice(2).map((n) => (
                 <SiteNavigationLink
                   key={n.label}
-                  to={navTarget(n.target, showHero)}
+                  to={n.target}
                   className="mobile-minimum-12 whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
                   style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
                 >
@@ -689,7 +687,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                       <SiteNavigationLink
                         key={item.label}
                         asChild
-                        to={navTarget(item.target, showHero)}
+                        to={item.target}
                         className="mobile-menu-link"
                         onClick={() => setMenuOpen(false)}
                       >
