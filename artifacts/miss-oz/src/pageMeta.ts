@@ -21,15 +21,15 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
   '/wholesale': {
     title: 'Wholesale | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Explore Miss Oz ice cream and dessert wholesale offerings, and ask about becoming a partner.',
+    description: 'Explore handmade ice cream and dessert wholesale options from Miss Oz in the Pearl District, Portland, and ask about becoming a partner.',
   },
   '/events': {
     title: 'Events | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Plan an event with Miss Oz Ice Cream & Dessert Cafe in Portland and send an event inquiry.',
+    description: 'Plan an event with Miss Oz Ice Cream & Dessert Cafe in the Pearl District, Portland, and send an event inquiry.',
   },
   '/contact': {
     title: 'Contact | Miss Oz Ice Cream & Dessert Cafe',
-    description: 'Find Miss Oz contact details and leave a note in the guestbook.',
+    description: 'Contact Miss Oz Ice Cream & Dessert Cafe in the Pearl District, Portland, or leave a note in our guestbook.',
   },
 };
 
