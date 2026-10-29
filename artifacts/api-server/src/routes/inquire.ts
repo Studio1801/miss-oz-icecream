@@ -6,8 +6,8 @@ import { buildEmail, type FieldRow } from "../lib/emailTemplates";
 
 const router: IRouter = Router();
 
-const TO_EMAIL = resolveContactEmail(process.env.CONTACT_EMAIL, "bluecanvascorp@gmail.com");
-const WHOLESALE_TO_EMAIL = "bluecanvascorp@gmail.com";
+const TO_EMAIL = resolveContactEmail(process.env.CONTACT_EMAIL, "behappy@missozicecream.com");
+const WHOLESALE_TO_EMAIL = "behappy@missozicecream.com";
 const FROM_EMAIL = process.env.FROM_EMAIL ?? "Miss Oz Website <noreply@missozicecream.com>";
 
 let resend: Resend | null = null;
