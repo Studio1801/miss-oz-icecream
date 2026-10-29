@@ -110,7 +110,7 @@ export default function FlavorPanel() {
         className="flavor-rotation-note menu-closing-copy mt-[clamp(10px,1.2vw,16px)] text-center text-[#6E5A54] mobile-body-14"
         style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}
       >
-        We rotate approximately 20 flavors. Selection changes with the season.
+        Around 20 flavors in the case at any time, with rotating seasonal flavors drawn from our collection of over 150 recipes.
       </p>
       <a
         href={UBEREATS_URL}
