@@ -90,7 +90,7 @@ export default function Footer() {
           <h2 className="footer-label text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Contact</h2>
           <p className="leading-[1.8] max-[639px]:break-words text-[#EFE2CE]">
             <a className="footer-text-link" href="tel:+15032242021">Tel: (503) 224-2021</a><br /><a className="footer-text-link" href="https://www.instagram.com/missozicecreamcafe/" target="_blank" rel="noopener noreferrer">@missozicecreamcafe</a>
-            <br /><a className="footer-text-link" href="mailto:bluecanvascorp@gmail.com">bluecanvascorp@gmail.com</a>
+            <br /><a className="footer-text-link" href="mailto:behappy@missozicecream.com">behappy@missozicecream.com</a>
           </p>
         </div>
 
