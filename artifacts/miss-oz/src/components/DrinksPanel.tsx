@@ -1,5 +1,6 @@
 import MenuProductList from './MenuProductList';
 import { DRINKS } from './menuCatalog';
+import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 
 const MILKSHAKE_PHOTOS = [
   {
@@ -20,12 +21,13 @@ const MILKSHAKE_PHOTOS = [
 ];
 
 export default function DrinksPanel() {
-  const milkshake = DRINKS.find((item) => item.name === 'Milkshakes');
+  const drinks = syncCategory(DRINKS, useSheetMenu(), 'Drinks', (row) => ({ name: String(row.name), note: String(row.description ?? '') }));
+  const milkshake = drinks.find((item) => item.name === 'Milkshakes');
 
   return (
     <div className="flex flex-col">
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col text-center">
-        <MenuProductList items={DRINKS.filter((item) => item.name !== 'Milkshakes')} align="center" />
+        <MenuProductList items={drinks.filter((item) => item.name !== 'Milkshakes')} align="center" />
         <div className="mt-4 border-t border-[rgba(94,23,53,0.12)] pt-4">
           <div className="mx-auto flex w-full flex-col items-center text-center">
             {milkshake && (

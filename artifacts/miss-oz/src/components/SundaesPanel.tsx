@@ -1,6 +1,7 @@
 import MenuProductList from './MenuProductList';
 import { SUNDAES, SUNDAE_PHOTOS } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
+import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 
 function normalizeName(name: string) {
   return name.replace(/[’']/g, '').toLowerCase();
@@ -17,13 +18,22 @@ const SUNDAES_WITHOUT_PHOTOS = SUNDAES.filter(
 );
 
 export default function SundaesPanel() {
+  const sheetMenu = useSheetMenu();
+  const sundaes = syncCategory(SUNDAES, sheetMenu, 'Sundaes', (row) => ({ name: String(row.name), note: String(row.description ?? '') }));
+  const photoRows = SUNDAE_ROWS.flatMap(({ photo, item }) => {
+    const live = sundaes.find((sundae) => sundae.name === item.name);
+    return live ? [{ photo, item: live }] : [];
+  });
+  const withoutPhotos = sheetMenu
+    ? sundaes.filter((sundae) => !photoRows.some((row) => row.item.name === sundae.name))
+    : SUNDAES_WITHOUT_PHOTOS;
   return (
     <div className="flex-1 flex flex-col">
       <div className="mt-[clamp(18px,2.2vw,28px)] flex flex-col gap-[clamp(18px,2vw,26px)] max-[430px]:gap-5">
-        {SUNDAES_WITHOUT_PHOTOS.length > 0 && (
-          <MenuProductList items={SUNDAES_WITHOUT_PHOTOS} descriptionSize="large" />
+        {withoutPhotos.length > 0 && (
+          <MenuProductList items={withoutPhotos} descriptionSize="large" />
         )}
-        {SUNDAE_ROWS.map(({ photo, item }, index) => {
+        {photoRows.map(({ photo, item }, index) => {
           const photoOrder = index % 2 === 0 ? 'lg:order-1' : 'lg:order-2';
           const descriptionOrder = index % 2 === 0 ? 'lg:order-2' : 'lg:order-1';
 

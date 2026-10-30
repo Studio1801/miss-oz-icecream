@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { sendToSheet } from '../lib/sheetSync';
 import { motion } from 'framer-motion';
 import { Starburst } from './Decor';
 import PawMark from './PawMark';
@@ -101,6 +102,7 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
         unconfirmedEntry.current = null;
       }
 
+      sendToSheet({ type: 'contact', name: cleanName, detail: `Guestbook note: ${cleanNote.slice(0, 120)}`, note: cleanNote });
       const posted = await fetch(`${base}/api/guestbook`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

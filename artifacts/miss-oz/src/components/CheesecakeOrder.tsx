@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { sendToSheet } from '../lib/sheetSync';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE } from '../hooks/useMobileForm';
@@ -47,6 +48,14 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
       `Order notes: ${values.get('notes') || 'None'}`,
     ].join('\n');
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+    sendToSheet({
+      type: 'cake',
+      name: String(values.get('name') ?? ''),
+      email: String(values.get('email') ?? ''),
+      phone: String(values.get('phone') ?? ''),
+      detail: `${values.get('cakeSize')}, qty ${values.get('quantity')}, pickup ${values.get('pickupDate')}`,
+      note: String(values.get('notes') || ''),
+    });
     try {
       const response = await fetch(`${base}/api/inquire`, {
         method: 'POST',

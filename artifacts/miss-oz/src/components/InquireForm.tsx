@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sendToSheet } from '../lib/sheetSync';
 import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE, sentenceCase } from '../hooks/useMobileForm';
 
 export type InquiryType = 'wholesale' | 'event' | 'general';
@@ -110,6 +111,19 @@ export default function InquireForm({
         `Desired Order Quantities: ${desiredOrderQuantities.trim()}`,
         `Additional Event Details: ${additionalEventDetails.trim() || 'None provided'}`,
       ].join('\n');
+      sendToSheet({
+        type: type === 'general' ? 'contact' : type,
+        name: type === 'wholesale' && businessName.trim() ? `${name.trim()} (${businessName.trim()})` : name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        detail:
+          type === 'wholesale'
+            ? `${businessType || 'Business'}: ${productsOfInterest.join(', ')}, ${estimatedOrderVolume.trim()}`
+            : type === 'event'
+              ? `${eventDate.trim()} ${eventTime.trim()}, ${numberOfServings.trim()} servings`
+              : message.trim().slice(0, 140),
+        note: type === 'wholesale' ? wholesaleMessage : type === 'event' ? eventMessage : message.trim(),
+      });
       const res = await fetch(`${base}/api/inquire`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
