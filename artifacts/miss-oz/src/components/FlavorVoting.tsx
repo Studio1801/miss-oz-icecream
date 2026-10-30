@@ -30,16 +30,37 @@ function CountUp({ to, reduce, suffix = '' }: { to: number; reduce: boolean; suf
   return <>{val}{suffix}</>;
 }
 
-/** Votes live in the Miss Oz Google Sheet (Submissions tab, type "vote"). */
+type SheetFlavor = { name?: string; note?: string; image?: string };
+
+/** Turn the owner's flavors from the Sheet into cards, keeping the built-in art when a name matches. */
+function cardsFromSheet(list: SheetFlavor[] | undefined): FlavorCard[] {
+  const clean = (list ?? []).filter((f) => String(f?.name ?? '').trim());
+  if (!clean.length) return CARDS;
+  return clean.slice(0, 3).map((f) => {
+    const name = String(f.name).trim();
+    const known = CARDS.find((c) => c.name.toLowerCase() === name.toLowerCase());
+    const image = String(f.image ?? '').trim();
+    return {
+      ...(known ?? { bg: '#EAD8BE' }),
+      name,
+      note: String(f.note ?? '').trim() || known?.note || '',
+      ...(image ? { img: image } : {}),
+    } as FlavorCard;
+  });
+}
+
+/** Votes and the current flavors live in the Miss Oz Google Sheet. */
 async function fetchResults() {
   const res = await fetch(`${SHEET_URL}?action=voteResults`);
   if (!res.ok) throw new Error();
-  const data = (await res.json()) as { ok?: boolean; votes?: Record<string, number> };
+  const data = (await res.json()) as { ok?: boolean; votes?: Record<string, number>; flavors?: SheetFlavor[]; round?: string };
   if (!data.ok) throw new Error('Vote totals unavailable');
-  return CARDS.map(card => {
+  const cards = cardsFromSheet(data.flavors);
+  const counts = cards.map(card => {
     const count = Number(data.votes?.[card.name] ?? 0);
     return Number.isSafeInteger(count) && count >= 0 ? count : 0;
   });
+  return { cards, counts, round: String(data.round ?? '') };
 }
 
 async function postVote(flavor: string) {
@@ -55,6 +76,8 @@ async function postVote(flavor: string) {
 export default function FlavorVoting() {
   const reduce = !!useReducedMotion();
   const [votes, setVotes] = useState<number[] | null>(null);
+  const [cards, setCards] = useState<FlavorCard[]>(CARDS);
+  const [round, setRound] = useState('');
   const [voteError, setVoteError] = useState('');
   const [pending, setPending] = useState(false);
   const [choice, setChoice] = useState<number | null>(null);
@@ -67,14 +90,20 @@ export default function FlavorVoting() {
   const revealed = choice !== null;
 
   useEffect(() => () => { if (burstTimer.current) clearTimeout(burstTimer.current); }, []);
-  useEffect(() => {
+  function applyResults(r: { cards: FlavorCard[]; counts: number[]; round: string }) {
+    setCards(r.cards);
+    setVotes(r.counts);
+    setRound(r.round);
+    // one vote per round: a reset or new flavors in the dashboard opens voting again
     try {
-      const { choice: c } = JSON.parse(localStorage.getItem(VOTE_KEY) ?? '{}') as { choice?: unknown };
-      if (typeof c === 'number' && c >= 0 && c <= 2) setChoice(c);
+      const saved = JSON.parse(localStorage.getItem(VOTE_KEY) ?? '{}') as { choice?: unknown; round?: unknown };
+      const sameRound = (saved.round ?? '') === r.round;
+      if (sameRound && typeof saved.choice === 'number' && saved.choice >= 0 && saved.choice < r.cards.length) setChoice(saved.choice);
+      else setChoice(null);
     } catch { /* ignore */ }
-  }, []);
+  }
   useEffect(() => {
-    fetchResults().then(setVotes).catch(() => setVoteError('Vote totals are unavailable right now.'));
+    fetchResults().then(applyResults).catch(() => setVoteError('Vote totals are unavailable right now.'));
   }, []);
 
   async function handleVote(i: number) {
@@ -82,16 +111,17 @@ export default function FlavorVoting() {
     setPending(true);
     setVoteError('');
     try {
-      await postVote(CARDS[i].name);
+      await postVote(cards[i].name);
       setChoice(i);
-      try { localStorage.setItem(VOTE_KEY, JSON.stringify({ choice: i })); } catch { /* ignore */ }
+      try { localStorage.setItem(VOTE_KEY, JSON.stringify({ choice: i, round })); } catch { /* ignore */ }
       setBurst(i);
       if (!reduce) {
         if (burstTimer.current) clearTimeout(burstTimer.current);
         burstTimer.current = setTimeout(() => setBurst(null), 900);
       }
       try {
-        setVotes(await fetchResults());
+        const r = await fetchResults();
+        setCards(r.cards); setVotes(r.counts);
       } catch {
         setVotes(null);
         setVoteError('Your vote was recorded, but totals are unavailable right now.');
@@ -141,12 +171,12 @@ export default function FlavorVoting() {
           border: '1px solid rgba(115,32,62,0.16)',
           boxShadow: '0 10px 28px rgba(57,22,34,0.08)',
         }}>
-        {CARDS.map((card, i) => {
+        {cards.map((card, i) => {
           const pct = total && votes ? Math.round((votes[i] / total) * 100) : 0;
           const isChoice = choice === i;
           const isLeader = revealed && i === leader;
           const isOpen = expanded === i;
-          const isLast = i === CARDS.length - 1;
+          const isLast = i === cards.length - 1;
 
           return (
             <div key={i}>

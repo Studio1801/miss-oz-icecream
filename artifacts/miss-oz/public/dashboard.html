@@ -34,15 +34,16 @@
   .top-right a { color: var(--wine); text-decoration: none; font-weight: 600; }
   .top-right a:hover { text-decoration: underline; }
 
-  .tabs { display: flex; gap: 26px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
-  .tab { background: none; border: none; font-family: inherit; font-weight: 600; font-size: 15.5px; color: var(--ink-soft); cursor: pointer; padding: 8px 0 14px; position: relative; }
+  .tabs { display: flex; gap: 26px; border-bottom: 1px solid var(--line); margin-bottom: 24px; position: relative; }
+  .tab-ink { position: absolute; bottom: -1px; left: 0; height: 2.5px; width: 0; background: var(--wine); border-radius: 2px; transition: transform .42s var(--ease), width .42s var(--ease); }
+  .tab { transition: color .25s ease; background: none; border: none; font-family: inherit; font-weight: 600; font-size: 15.5px; color: var(--ink-soft); cursor: pointer; padding: 8px 0 14px; position: relative; }
   .tab:hover { color: var(--ink); }
   .tab.active { color: var(--wine); }
-  .tab.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2.5px; background: var(--wine); border-radius: 2px; }
+
   .tab .badge { font-size: 12px; color: var(--wine); background: var(--blush); border-radius: 999px; padding: 1px 8px; margin-left: 6px; font-weight: 700; }
 
   .view { display: none; }
-  .view.active { display: block; animation: fade .2s ease; }
+  .view.active { display: block; animation: rise .38s var(--ease) both; }
   @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
   .btn { font-family: inherit; font-weight: 600; font-size: 15px; border-radius: 12px; padding: 11px 18px; cursor: pointer; border: none; transition: background .15s, transform .05s; }
@@ -119,7 +120,40 @@
   .feed .empty { color: var(--ink-soft); font-size: 14px; padding: 18px 2px; }
   .sync-note { margin: 14px 0 0; padding: 11px 14px; border-radius: 12px; background: #fbe8e4; color: #8a3b2e; font-size: 13.5px; display: none; }
   .sync-note.show { display: block; }
+  .confirm-backdrop { z-index: 60; align-items: center; }
+  .modal.ask { max-width: 400px; }
+  .modal.ask h2 { font-family: "Fraunces", serif; font-weight: 600; font-size: 20px; margin: 0 0 8px; }
+  .modal.ask p { margin: 0; color: var(--ink-soft); font-size: 15px; white-space: pre-line; }
+  .modal.ask .modal-foot { margin-top: 20px; }
+  .alert { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 14px 0 0; padding: 14px 16px; border-radius: 14px; background: #fdf1d9; border: 1px solid #efd9a6; }
+  .alert[hidden] { display: none; }
+  .alert-text { display: flex; flex-direction: column; gap: 2px; }
+  .alert-text strong { font-size: 15.5px; color: #6b4a0f; }
+  .alert-text span { font-size: 13.5px; color: #8a6a2e; }
+  .alert.fresh { animation: nudge 1.2s ease-out 2; }
+  @keyframes nudge { 0%,100% { box-shadow: 0 0 0 0 rgba(165,118,31,0); } 40% { box-shadow: 0 0 0 6px rgba(165,118,31,.22); } }
+  @media (max-width: 560px){ .alert { flex-direction: column; align-items: stretch; } }
+
   /* submissions */
+
+  .link { background: none; border: 0; padding: 4px 0; font: inherit; font-size: 13.5px; font-weight: 600; color: var(--wine); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(99,15,57,.3); }
+  .link.danger { color: #a0352a; text-decoration-color: rgba(160,53,42,.3); }
+  .sure { font-size: 13.5px; color: var(--ink-soft); display: inline-flex; gap: 8px; align-items: center; }
+  .req-actions { display: flex; align-items: center; gap: 18px; margin-left: auto; }
+  .note-actions { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line-soft); }
+  .note-flag { font-size: 12.5px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+  .note-flag.off { color: var(--ink-soft); }
+  .hidden-note { background: transparent; }
+  .hidden-note blockquote { color: var(--ink-soft); }
+  .gb-hint { margin: 14px 0 0; }
+  .vote-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+  .vote-form fieldset { border: 0; padding: 0; margin: 18px 0 0; display: grid; gap: 8px; }
+  .vote-form legend { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .vote-form label { display: grid; gap: 4px; font-size: 12.5px; color: var(--ink-soft); }
+  .vote-form label span { font-weight: 400; }
+  .vote-form input { font: inherit; font-size: 15px; color: var(--ink); padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .vote-form-foot { display: flex; justify-content: flex-end; align-items: center; gap: 18px; margin-top: 20px; }
+  @media (max-width: 560px){ .req-actions { width: 100%; justify-content: space-between; } }
   .chip .n.new { color: var(--amber); font-weight: 700; }
   .chip.active .n.new { color: #f6d9a8; }
   .req { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; padding: 18px 20px; margin-top: 12px; }
@@ -186,6 +220,28 @@
   .modal-foot .rm:hover { color: #a23b2e; }
 
   :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 8px; }
+
+  /* motion: one easing curve, short durations, nothing bouncy */
+  :root { --ease: cubic-bezier(.22,.8,.24,1); }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+  .btn, .req-done, .chip, .link, .tab, .modal-x, .edit-btn { -webkit-tap-highlight-color: transparent; }
+  .btn, .req-done { transition: background .2s ease, transform .16s var(--ease), box-shadow .2s ease; }
+  .btn:active, .req-done:active, .chip:active { transform: scale(.97); }
+  .chip { transition: background .25s ease, color .25s ease, border-color .25s ease, transform .16s var(--ease); }
+  .link { transition: color .2s ease, text-decoration-color .2s ease; }
+  .sw-track { transition: background .3s ease !important; }
+  .sw-knob { transition: transform .32s var(--ease) !important; }
+  .dish { transition: opacity .3s ease; }
+  .swap > * { animation: rise .34s var(--ease) both; }
+  .swap > *:nth-child(2) { animation-delay: .03s; } .swap > *:nth-child(3) { animation-delay: .06s; }
+  .swap > *:nth-child(4) { animation-delay: .09s; } .swap > *:nth-child(n+5) { animation-delay: .12s; }
+  .modal-backdrop.show { animation: fadeIn .22s ease both; }
+  .modal-backdrop.show .modal { animation: pop .3s var(--ease) both; }
+  .alert:not([hidden]) { animation: rise .4s var(--ease) both; }
+  .alert.fresh:not([hidden]) { animation: rise .4s var(--ease) both, nudge 1.2s ease-out .4s 2; }
+  .req, .note { transition: opacity .3s ease, background .3s ease; }
   @media (prefers-reduced-motion: reduce) { *, .view.active { transition: none !important; animation: none !important; } }
   @media (max-width: 920px) { .menu-layout { grid-template-columns: 1fr; } .rail { position: static; order: -1; } }
   @media (max-width: 520px) { .dish-grid { grid-template-columns: 1fr 1fr; } }
@@ -219,6 +275,10 @@
     <button class="tab" data-view="subs" role="tab">Submissions<span class="badge" id="subsBadge">0</span></button>
   </div>
   <div class="sync-note" id="syncNote"></div>
+  <div class="alert" id="newAlert" role="status" aria-live="polite" hidden>
+    <div class="alert-text"><strong id="alertHead"></strong><span id="alertSub"></span></div>
+    <button class="btn btn-wine btn-sm" id="alertGo">Take a look</button>
+  </div>
 
   <!-- ============ MENU ============ -->
   <section class="view active" id="view-menu">
@@ -263,6 +323,16 @@
 </div>
 
 <!-- edit / add dish modal -->
+<div class="modal-backdrop confirm-backdrop" id="askModal" aria-hidden="true">
+  <div class="modal ask" role="alertdialog" aria-modal="true" aria-labelledby="askTitle" aria-describedby="askBody">
+    <h2 id="askTitle"></h2>
+    <p id="askBody"></p>
+    <div class="modal-foot">
+      <button class="btn btn-wine" id="askOk">Yes</button>
+      <button class="btn btn-soft" id="askNo">Cancel</button>
+    </div>
+  </div>
+</div>
 <div class="modal-backdrop" id="dishModal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dmTitle">
     <div class="modal-head"><h2 id="dmTitle">Edit dish</h2><button class="modal-x" id="dmClose" aria-label="Close">&times;</button></div>
@@ -290,7 +360,21 @@
     document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     t.classList.add("active"); $("view-" + t.dataset.view).classList.add("active");
+    moveInk();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }));
+  const tabsEl = document.querySelector(".tabs");
+  const ink = document.createElement("span"); ink.className = "tab-ink"; tabsEl.appendChild(ink);
+  function moveInk(){
+    const a = tabsEl.querySelector(".tab.active"); if (!a) return;
+    ink.style.width = a.offsetWidth + "px";
+    ink.style.transform = "translateX(" + a.offsetLeft + "px)";
+  }
+  // place it without sliding on first paint, then let it glide
+  ink.style.transition = "none"; requestAnimationFrame(() => { moveInk(); requestAnimationFrame(() => ink.style.transition = ""); });
+  window.addEventListener("resize", moveInk);
+  // replay the entrance on a list after a user action (not on background refreshes)
+  function swapIn(el){ if (!el) return; el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); }
 
   // ---------- menu data ----------
   const CATS = ["Ice cream flavors","Sundaes","Croffles","Cookies & desserts","Drinks"];
@@ -366,7 +450,7 @@
       const b = document.createElement("button");
       b.className = "chip" + (menuFilter===key ? " active" : "");
       b.innerHTML = label + '<span class="n">' + n + '</span>';
-      b.addEventListener("click", () => { menuFilter = key; renderChips(); renderGrid(); });
+      b.addEventListener("click", () => { menuFilter = key; renderChips(); renderGrid(); swapIn(grid); });
       menuChips.appendChild(b);
     };
     mk("all","All", dishes.length);
@@ -395,7 +479,16 @@
       // edit
       card.querySelector(".edit-btn").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); openDish(d); });
       // toggle
-      card.querySelector('input[type=checkbox]').addEventListener("change", e => { d.on = e.target.checked; card.classList.toggle("off", !d.on); updateRail(); persistMenu(); });
+      card.querySelector('input[type=checkbox]').addEventListener("change", async e => {
+        const want = e.target.checked;
+        e.target.checked = !want;   // hold until confirmed
+        const ok = await askConfirm(
+          want ? "Put " + d.name + " back on the menu?" : "Take " + d.name + " off the menu?",
+          want ? "It will show on your website again within a minute." : "It disappears from your website within a minute. You can switch it back on anytime.",
+          want ? "Yes, show it" : "Yes, take it off");
+        if (!ok) return;
+        d.on = want; e.target.checked = want; card.classList.toggle("off", !d.on); updateRail(); persistMenu();
+      });
       grid.appendChild(card);
     });
   }
@@ -431,21 +524,50 @@
     dishModal.classList.add("show"); dishModal.setAttribute("aria-hidden","false");
     setTimeout(()=>$("dmName").focus(), 40);
   }
+  // in-page confirmation, used before anything goes live on the website
+  function askConfirm(title, body, okLabel){
+    const m = $("askModal");
+    $("askTitle").textContent = title; $("askBody").textContent = body || ""; $("askOk").textContent = okLabel || "Yes";
+    m.classList.add("show"); m.setAttribute("aria-hidden","false"); $("askOk").focus();
+    return new Promise(res => {
+      const done = v => { m.classList.remove("show"); m.setAttribute("aria-hidden","true"); $("askOk").onclick = $("askNo").onclick = m.onclick = document.onkeydown = null; res(v); };
+      $("askOk").onclick = () => done(true);
+      $("askNo").onclick = () => done(false);
+      m.onclick = e => { if (e.target === m) done(false); };
+      document.onkeydown = e => { if (e.key === "Escape") done(false); };
+    });
+  }
   function closeDish(){ dishModal.classList.remove("show"); dishModal.setAttribute("aria-hidden","true"); }
   $("addDishBtn").addEventListener("click", ()=> openDish(null));
   $("dmClose").addEventListener("click", closeDish);
   $("dmCancel").addEventListener("click", closeDish);
   dishModal.addEventListener("click", e => { if(e.target===dishModal) closeDish(); });
   document.addEventListener("keydown", e => { if(e.key==="Escape" && dishModal.classList.contains("show")) closeDish(); });
-  $("dmSave").addEventListener("click", ()=>{
+  $("dmSave").addEventListener("click", async ()=>{
     const name = $("dmName").value.trim(); if(!name){ $("dmName").focus(); return; }
     const data = { name, cat: $("dmCat").value, price: $("dmPrice").value.trim(), desc: $("dmDesc").value.trim() };
+    let summary = "";
+    if (editing){
+      const lines = [];
+      if (editing.name !== data.name) lines.push("Name: " + editing.name + " to " + data.name);
+      if (editing.cat !== data.cat) lines.push("Category: " + editing.cat + " to " + data.cat);
+      if ((editing.price||"") !== data.price) lines.push("Price: " + (editing.price || "none") + " to " + (data.price || "none"));
+      if ((editing.desc||"") !== data.desc) lines.push("Description updated");
+      if (!lines.length){ closeDish(); return; }
+      summary = lines.join("\n") + "\n\nThis goes live on your website within a minute.";
+    } else {
+      summary = data.name + " will be added to " + data.cat + " and show on your website within a minute.";
+    }
+    const ok = await askConfirm(editing ? "Save changes to " + editing.name + "?" : "Add " + data.name + "?", summary, editing ? "Yes, save" : "Yes, add it");
+    if (!ok) return;
     if (editing){ Object.assign(editing, data); }
     else { dishes.push({ id: nextId++, on:true, photo: sitePhoto(data.cat, data.name), ...data }); if(menuFilter!=="all" && menuFilter!==data.cat) menuFilter="all"; }
     closeDish(); renderChips(); renderGrid(); updateRail(); persistMenu();
   });
-  $("dmRemove").addEventListener("click", ()=>{
-    if (editing){ dishes = dishes.filter(d => d !== editing); closeDish(); renderChips(); renderGrid(); updateRail(); persistMenu(); }
+  $("dmRemove").addEventListener("click", async ()=>{
+    if (!editing) return;
+    const ok = await askConfirm("Remove " + editing.name + " from your menu?", "It disappears from your website. To just hide it for a while, switch it off instead.", "Yes, remove");
+    if (ok){ dishes = dishes.filter(d => d !== editing); closeDish(); renderChips(); renderGrid(); updateRail(); persistMenu(); }
   });
 
   // ---------- submissions ----------
@@ -464,6 +586,22 @@
   const ACTION_TYPES = ["cake","wholesale","event","contact"];
   const isAction = t => ACTION_TYPES.includes(t);
   let showHandled = false;
+  let voteSetup = { flavors: [], round: "" };
+  let editingVote = false, confirmKey = "";
+  function setSubStatus(s, status){
+    if (s.raw) s.raw.status = status;
+    s.status = status === "new" ? "new" : "done";
+    if (status === "deleted") subs = subs.filter(x => x !== s);
+    confirmKey = "";
+    renderSubChips(); renderFeed(); updateBadge();
+    if (live() && s.id) apiPost({ action:"setStatus", id:s.id, status }).catch(()=>{});
+  }
+  // two taps to delete or reset, no pop-up
+  function confirmBtn(key, label, sure){
+    return confirmKey === key
+      ? '<span class="sure">'+sure+' <button class="link danger" data-act="'+key+'">Yes</button> <button class="link" data-act="cancel">No</button></span>'
+      : '<button class="link danger" data-ask="'+key+'">'+label+'</button>';
+  }
   function renderSubChips(){
     subChips.innerHTML = "";
     SUB_TYPES.forEach(t => {
@@ -473,7 +611,7 @@
       b.className = "chip" + (subFilter===t.key ? " active" : "");
       const count = isAction(t.key) ? (fresh ? '<span class="n new">'+fresh+' new</span>' : '<span class="n">'+all.length+'</span>') : '<span class="n">'+all.length+'</span>';
       b.innerHTML = t.label + count;
-      b.addEventListener("click", ()=>{ subFilter = t.key; showHandled = false; renderSubChips(); renderFeed(); });
+      b.addEventListener("click", ()=>{ subFilter = t.key; showHandled = false; renderSubChips(); renderFeed(); swapIn(feed); });
       subChips.appendChild(b);
     });
   }
@@ -515,14 +653,15 @@
           (email ? '<a href="mailto:'+h(email)+'">'+h(email)+'</a>' : '') +
           (phone ? '<a href="tel:'+h(phone.replace(/[^\d+]/g,""))+'">'+h(phone)+'</a>' : '') +
         '</div>' +
+        '<div class="req-actions">' + confirmBtn("del:"+s.n, "Delete", "Delete for good?") +
         (done ? '<button class="req-undo" data-n="'+s.n+'">Handled &#10003; <span>Undo</span></button>'
-              : '<button class="req-done" data-n="'+s.n+'">Mark as handled</button>') +
+              : '<button class="req-done" data-n="'+s.n+'">Mark as handled</button>') + '</div>' +
       '</footer></article>';
   }
   function renderFeed(){
     const rows = subs.filter(s => s.type===subFilter).slice().reverse();
     const label = (SUB_TYPES.find(t=>t.key===subFilter)||{}).label || "";
-    if (!rows.length){ feed.innerHTML = '<p class="empty">'+(syncFailed ? "" : (subs.length ? "No "+label.toLowerCase()+" yet." : "Nothing yet. Anything sent through your website shows up here."))+'</p>'; return; }
+    if (!rows.length && subFilter !== "vote"){ feed.innerHTML = '<p class="empty">'+(syncFailed ? "" : (subs.length ? "No "+label.toLowerCase()+" yet." : "Nothing yet. Anything sent through your website shows up here."))+'</p>'; return; }
     let html = "";
     if (isAction(subFilter)){
       const open = rows.filter(s=>s.status==="new"), done = rows.filter(s=>s.status!=="new");
@@ -532,26 +671,108 @@
         if (showHandled) html += done.map(reqCard).join("");
       }
     } else if (subFilter === "vote"){
-      const tally = {};
-      rows.forEach(s => { const k = String((s.raw&&s.raw.note) || String(s.title).replace(/^Voted for /,"")).trim() || "Other"; tally[k]=(tally[k]||0)+1; });
-      const list = Object.entries(tally).sort((a,b)=>b[1]-a[1]), max = list[0][1];
-      html += '<div class="tally"><p class="tally-total">'+rows.length+(rows.length===1?" vote":" votes")+' so far</p>' +
-        list.map(([k,n],i)=>'<div class="tally-row'+(i===0?' lead':'')+'"><div class="tally-name">'+h(k)+'</div><div class="tally-bar"><span style="width:'+Math.max(6,Math.round(n/max*100))+'%"></span></div><div class="tally-n">'+n+'</div></div>').join("") +
-        '<p class="tally-last">Last vote '+h(niceWhen(rows[0].raw||{}))+'</p></div>';
+      html += voteView(rows);
     } else {
-      html += rows.map(s => '<figure class="note"><blockquote>'+h((s.raw&&s.raw.note)||s.title)+'</blockquote><figcaption>'+h(s.who)+(niceWhen(s.raw||{}) ? '<span>'+h(niceWhen(s.raw||{}))+'</span>' : '')+'</figcaption></figure>').join("");
+      const st = x => String((x.raw && x.raw.status) || "new");
+      const ordered = rows.filter(x => st(x)==="pinned").concat(rows.filter(x => st(x)!=="pinned"));
+      html += '<p class="hint gb-hint">Pinned notes show first on your website. Hidden notes stay here but leave the website.</p>';
+      html += ordered.map(x => {
+        const status = st(x), hidden = status==="hidden", pinned = status==="pinned";
+        return '<figure class="note'+(hidden?' hidden-note':'')+'">' +
+          (pinned ? '<div class="note-flag">Pinned to top</div>' : hidden ? '<div class="note-flag off">Hidden from website</div>' : '') +
+          '<blockquote>'+h((x.raw&&x.raw.note)||x.title)+'</blockquote>' +
+          '<figcaption>'+h(x.who)+(niceWhen(x.raw||{}) ? '<span>'+h(niceWhen(x.raw||{}))+'</span>' : '')+'</figcaption>' +
+          '<div class="note-actions">' +
+            '<button class="link" data-gb="'+(pinned?'new':'pinned')+'" data-n="'+x.n+'">'+(pinned?'Unpin':'Pin to top')+'</button>' +
+            '<button class="link" data-gb="'+(hidden?'new':'hidden')+'" data-n="'+x.n+'">'+(hidden?'Show on website':'Hide')+'</button>' +
+            confirmBtn("del:"+x.n, "Delete", "Delete for good?") +
+          '</div></figure>';
+      }).join("");
     }
     feed.innerHTML = html;
-    feed.querySelectorAll(".req-done,.req-undo").forEach(b => b.addEventListener("click", () => {
+    feed.querySelectorAll(".req-done[data-n],.req-undo").forEach(b => b.addEventListener("click", () => {
       const s = subs.find(x => String(x.n) === b.dataset.n); if(!s) return;
-      s.status = s.status === "new" ? "done" : "new";
-      if(s.raw) s.raw.status = s.status === "new" ? "new" : "handled";
-      renderSubChips(); renderFeed(); updateBadge();
-      if(live() && s.id) apiPost({ action:"setStatus", id:s.id, status: s.status === "new" ? "new" : "handled" }).catch(()=>{});
+      setSubStatus(s, s.status === "new" ? "handled" : "new");
     }));
     const sm = $("smBtn"); if(sm) sm.addEventListener("click", ()=>{ showHandled = !showHandled; renderFeed(); });
+    const byN = n => subs.find(x => String(x.n) === String(n));
+    feed.querySelectorAll("[data-ask]").forEach(b => b.addEventListener("click", () => { confirmKey = b.dataset.ask; renderFeed(); }));
+    feed.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => {
+      const k = b.dataset.act;
+      if (k === "cancel"){ confirmKey = ""; renderFeed(); return; }
+      if (k.startsWith("del:")){ const x = byN(k.slice(4)); if (x) setSubStatus(x, "deleted"); return; }
+      if (k === "resetvotes"){ confirmKey = ""; resetVotes(); }
+    }));
+    feed.querySelectorAll("[data-gb]").forEach(b => b.addEventListener("click", () => { const x = byN(b.dataset.n); if (x) setSubStatus(x, b.dataset.gb); }));
+    const ev = $("voteEdit"); if (ev) ev.addEventListener("click", () => { editingVote = true; renderFeed(); });
+    const vc = $("voteCancel"); if (vc) vc.addEventListener("click", () => { editingVote = false; renderFeed(); });
+    const vf = $("voteForm"); if (vf) vf.addEventListener("submit", e => { e.preventDefault(); saveVoteFlavors(vf); });
   }
+  function voteView(rows){
+    const flavors = (voteSetup.flavors && voteSetup.flavors.length) ? voteSetup.flavors : [];
+    if (editingVote){
+      const f = [0,1,2].map(i => flavors[i] || { name:"", note:"", image:"" });
+      return '<form class="tally vote-form" id="voteForm"><p class="tally-total">Pick the 3 flavors for the next vote</p>' +
+        '<p class="hint">Saving starts a fresh vote. Current votes are kept in the Sheet under "Flavor Votes (past)".</p>' +
+        f.map((x,i) => '<fieldset><legend>Flavor '+(i+1)+'</legend>' +
+          '<label>Name<input name="name'+i+'" value="'+h(x.name)+'" placeholder="e.g. Black Sesame"></label>' +
+          '<label>Short description<input name="note'+i+'" value="'+h(x.note)+'" placeholder="e.g. toasted sesame, nutty and smooth"></label>' +
+          '<label>Photo link (optional)<input name="image'+i+'" value="'+h(x.image)+'" placeholder="https://..."></label></fieldset>').join("") +
+        '<div class="vote-form-foot"><button type="button" class="link" id="voteCancel">Cancel</button><button type="submit" class="req-done">Save and start new vote</button></div></form>';
+    }
+    const tally = {};
+    flavors.forEach(f => tally[f.name] = 0);
+    rows.forEach(s => { const k = String((s.raw&&s.raw.note) || String(s.title).replace(/^Voted for /,"")).trim() || "Other"; tally[k]=(tally[k]||0)+1; });
+    const list = Object.entries(tally).sort((a,b)=>b[1]-a[1]), max = Math.max(1, ...list.map(x=>x[1]));
+    return '<div class="tally"><p class="tally-total">'+(rows.length ? rows.length+(rows.length===1?" vote":" votes")+' so far' : 'No votes yet this round')+'</p>' +
+      list.map(([k,n],i)=>'<div class="tally-row'+(i===0&&n?' lead':'')+'"><div class="tally-name">'+h(k)+'</div><div class="tally-bar"><span style="width:'+(n?Math.max(6,Math.round(n/max*100)):0)+'%"></span></div><div class="tally-n">'+n+'</div></div>').join("") +
+      (rows.length ? '<p class="tally-last">Last vote '+h(niceWhen(rows[0].raw||{}))+'</p>' : '') +
+      '<div class="vote-actions"><button class="req-done" id="voteEdit">Change flavors</button>' + confirmBtn("resetvotes", "Reset votes", "Clear all votes and start over?") + '</div></div>';
+  }
+  async function saveVoteFlavors(form){
+    const fd = new FormData(form);
+    const flavors = [0,1,2].map(i => ({ name: String(fd.get("name"+i)||"").trim(), note: String(fd.get("note"+i)||"").trim(), image: String(fd.get("image"+i)||"").trim() })).filter(f => f.name);
+    if (!flavors.length) return;
+    voteSetup = { flavors, round: "" };
+    subs = subs.filter(x => x.type !== "vote");
+    editingVote = false; renderSubChips(); renderFeed();
+    try { const r = await apiPost({ action:"saveVoteSetup", flavors }); if (r && r.ok) voteSetup = { flavors: r.flavors || flavors, round: r.round }; } catch(e){}
+  }
+  async function resetVotes(){
+    subs = subs.filter(x => x.type !== "vote");
+    renderSubChips(); renderFeed();
+    try { await apiPost({ action:"resetVotes" }); } catch(e){}
+  }
+  let knownIds = null;
+  const NOUN = { cake:["cake order","cake orders"], wholesale:["wholesale request","wholesale requests"], event:["event inquiry","event inquiries"], contact:["message","messages"] };
+  function updateAlert(){
+    const open = subs.filter(s => isAction(s.type) && s.status==="new");
+    // anything that arrived since the page loaded
+    const ids = new Set(subs.map(s => String(s.id)));
+    const arrived = knownIds ? open.filter(s => !knownIds.has(String(s.id))) : [];
+    knownIds = knownIds ? new Set([...knownIds, ...ids]) : ids;
+    document.title = (open.length ? "(" + open.length + ") " : "") + "Miss Oz | Dashboard";
+    const a = $("newAlert");
+    if (!open.length){ a.hidden = true; return; }
+    const parts = Object.keys(NOUN).map(k => { const n = open.filter(s=>s.type===k).length; return n ? n + " " + NOUN[k][n===1?0:1] : ""; }).filter(Boolean);
+    if (arrived.length){
+      const x = arrived[arrived.length-1];
+      $("alertHead").textContent = "New " + NOUN[x.type][0] + (x.who && x.who!=="Someone" ? " from " + x.who : "") + " just came in";
+    } else {
+      $("alertHead").textContent = open.length === 1 ? "1 thing is waiting for you" : open.length + " things are waiting for you";
+    }
+    $("alertSub").textContent = parts.join(", ");
+    a.dataset.go = (arrived.length ? arrived[arrived.length-1] : open[open.length-1]).type;
+    a.hidden = false;
+    if (arrived.length){ a.classList.remove("fresh"); void a.offsetWidth; a.classList.add("fresh"); }
+  }
+  $("alertGo").addEventListener("click", () => {
+    subFilter = $("newAlert").dataset.go || subFilter; showHandled = false;
+    const t = document.querySelector('.tab[data-view="subs"]'); if (t) t.click();
+    renderSubChips(); renderFeed(); window.scrollTo({ top: 0, behavior: "smooth" });
+  });
   function updateBadge(){
+    updateAlert();
     const n = subs.filter(s => isAction(s.type) && s.status==="new").length;
     const b = $("subsBadge"); b.textContent = n; b.style.visibility = n ? "visible" : "hidden";
   }
@@ -612,12 +833,13 @@
         nextId = dishes.reduce((m,d)=>Math.max(m, parseInt((""+d.id).replace(/\D/g,""),10)||0), 0) + 1;
       }
       subs = mapSubs(Array.isArray(s.submissions) ? s.submissions : []);
+      if (s.voteSetup) voteSetup = s.voteSetup;
       if(first){ const firstNew = SUB_TYPES.find(t => isAction(t.key) && subs.some(z=>z.type===t.key && z.status==="new")); if(firstNew) subFilter = firstNew.key; }
     }catch(e){
       syncFailed = true;
       showSync("Can't reach your Google Sheet right now, so nothing is shown. Check your connection and refresh.");
     }
-    if(first){ renderAll(); }
+    if(first){ renderAll(); swapIn(grid); requestAnimationFrame(moveInk); }
     else { updateBadge(); renderSubChips(); renderFeed(); }
   }
   function askPassword(msg){
