@@ -120,6 +120,25 @@
   .sync-note { margin: 14px 0 0; padding: 11px 14px; border-radius: 12px; background: #fbe8e4; color: #8a3b2e; font-size: 13.5px; display: none; }
   .sync-note.show { display: block; }
   /* submissions */
+
+  .link { background: none; border: 0; padding: 4px 0; font: inherit; font-size: 13.5px; font-weight: 600; color: var(--wine); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(99,15,57,.3); }
+  .link.danger { color: #a0352a; text-decoration-color: rgba(160,53,42,.3); }
+  .sure { font-size: 13.5px; color: var(--ink-soft); display: inline-flex; gap: 8px; align-items: center; }
+  .req-actions { display: flex; align-items: center; gap: 18px; margin-left: auto; }
+  .note-actions { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line-soft); }
+  .note-flag { font-size: 12.5px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+  .note-flag.off { color: var(--ink-soft); }
+  .hidden-note { background: transparent; }
+  .hidden-note blockquote { color: var(--ink-soft); }
+  .gb-hint { margin: 14px 0 0; }
+  .vote-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+  .vote-form fieldset { border: 0; padding: 0; margin: 18px 0 0; display: grid; gap: 8px; }
+  .vote-form legend { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .vote-form label { display: grid; gap: 4px; font-size: 12.5px; color: var(--ink-soft); }
+  .vote-form label span { font-weight: 400; }
+  .vote-form input { font: inherit; font-size: 15px; color: var(--ink); padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .vote-form-foot { display: flex; justify-content: flex-end; align-items: center; gap: 18px; margin-top: 20px; }
+  @media (max-width: 560px){ .req-actions { width: 100%; justify-content: space-between; } }
   .chip .n.new { color: var(--amber); font-weight: 700; }
   .chip.active .n.new { color: #f6d9a8; }
   .req { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; padding: 18px 20px; margin-top: 12px; }
@@ -464,6 +483,22 @@
   const ACTION_TYPES = ["cake","wholesale","event","contact"];
   const isAction = t => ACTION_TYPES.includes(t);
   let showHandled = false;
+  let voteSetup = { flavors: [], round: "" };
+  let editingVote = false, confirmKey = "";
+  function setSubStatus(s, status){
+    if (s.raw) s.raw.status = status;
+    s.status = status === "new" ? "new" : "done";
+    if (status === "deleted") subs = subs.filter(x => x !== s);
+    confirmKey = "";
+    renderSubChips(); renderFeed(); updateBadge();
+    if (live() && s.id) apiPost({ action:"setStatus", id:s.id, status }).catch(()=>{});
+  }
+  // two taps to delete or reset, no pop-up
+  function confirmBtn(key, label, sure){
+    return confirmKey === key
+      ? '<span class="sure">'+sure+' <button class="link danger" data-act="'+key+'">Yes</button> <button class="link" data-act="cancel">No</button></span>'
+      : '<button class="link danger" data-ask="'+key+'">'+label+'</button>';
+  }
   function renderSubChips(){
     subChips.innerHTML = "";
     SUB_TYPES.forEach(t => {
@@ -515,14 +550,15 @@
           (email ? '<a href="mailto:'+h(email)+'">'+h(email)+'</a>' : '') +
           (phone ? '<a href="tel:'+h(phone.replace(/[^\d+]/g,""))+'">'+h(phone)+'</a>' : '') +
         '</div>' +
+        '<div class="req-actions">' + confirmBtn("del:"+s.n, "Delete", "Delete for good?") +
         (done ? '<button class="req-undo" data-n="'+s.n+'">Handled &#10003; <span>Undo</span></button>'
-              : '<button class="req-done" data-n="'+s.n+'">Mark as handled</button>') +
+              : '<button class="req-done" data-n="'+s.n+'">Mark as handled</button>') + '</div>' +
       '</footer></article>';
   }
   function renderFeed(){
     const rows = subs.filter(s => s.type===subFilter).slice().reverse();
     const label = (SUB_TYPES.find(t=>t.key===subFilter)||{}).label || "";
-    if (!rows.length){ feed.innerHTML = '<p class="empty">'+(syncFailed ? "" : (subs.length ? "No "+label.toLowerCase()+" yet." : "Nothing yet. Anything sent through your website shows up here."))+'</p>'; return; }
+    if (!rows.length && subFilter !== "vote"){ feed.innerHTML = '<p class="empty">'+(syncFailed ? "" : (subs.length ? "No "+label.toLowerCase()+" yet." : "Nothing yet. Anything sent through your website shows up here."))+'</p>'; return; }
     let html = "";
     if (isAction(subFilter)){
       const open = rows.filter(s=>s.status==="new"), done = rows.filter(s=>s.status!=="new");
@@ -532,24 +568,77 @@
         if (showHandled) html += done.map(reqCard).join("");
       }
     } else if (subFilter === "vote"){
-      const tally = {};
-      rows.forEach(s => { const k = String((s.raw&&s.raw.note) || String(s.title).replace(/^Voted for /,"")).trim() || "Other"; tally[k]=(tally[k]||0)+1; });
-      const list = Object.entries(tally).sort((a,b)=>b[1]-a[1]), max = list[0][1];
-      html += '<div class="tally"><p class="tally-total">'+rows.length+(rows.length===1?" vote":" votes")+' so far</p>' +
-        list.map(([k,n],i)=>'<div class="tally-row'+(i===0?' lead':'')+'"><div class="tally-name">'+h(k)+'</div><div class="tally-bar"><span style="width:'+Math.max(6,Math.round(n/max*100))+'%"></span></div><div class="tally-n">'+n+'</div></div>').join("") +
-        '<p class="tally-last">Last vote '+h(niceWhen(rows[0].raw||{}))+'</p></div>';
+      html += voteView(rows);
     } else {
-      html += rows.map(s => '<figure class="note"><blockquote>'+h((s.raw&&s.raw.note)||s.title)+'</blockquote><figcaption>'+h(s.who)+(niceWhen(s.raw||{}) ? '<span>'+h(niceWhen(s.raw||{}))+'</span>' : '')+'</figcaption></figure>').join("");
+      const st = x => String((x.raw && x.raw.status) || "new");
+      const ordered = rows.filter(x => st(x)==="pinned").concat(rows.filter(x => st(x)!=="pinned"));
+      html += '<p class="hint gb-hint">Pinned notes show first on your website. Hidden notes stay here but leave the website.</p>';
+      html += ordered.map(x => {
+        const status = st(x), hidden = status==="hidden", pinned = status==="pinned";
+        return '<figure class="note'+(hidden?' hidden-note':'')+'">' +
+          (pinned ? '<div class="note-flag">Pinned to top</div>' : hidden ? '<div class="note-flag off">Hidden from website</div>' : '') +
+          '<blockquote>'+h((x.raw&&x.raw.note)||x.title)+'</blockquote>' +
+          '<figcaption>'+h(x.who)+(niceWhen(x.raw||{}) ? '<span>'+h(niceWhen(x.raw||{}))+'</span>' : '')+'</figcaption>' +
+          '<div class="note-actions">' +
+            '<button class="link" data-gb="'+(pinned?'new':'pinned')+'" data-n="'+x.n+'">'+(pinned?'Unpin':'Pin to top')+'</button>' +
+            '<button class="link" data-gb="'+(hidden?'new':'hidden')+'" data-n="'+x.n+'">'+(hidden?'Show on website':'Hide')+'</button>' +
+            confirmBtn("del:"+x.n, "Delete", "Delete for good?") +
+          '</div></figure>';
+      }).join("");
     }
     feed.innerHTML = html;
-    feed.querySelectorAll(".req-done,.req-undo").forEach(b => b.addEventListener("click", () => {
+    feed.querySelectorAll(".req-done[data-n],.req-undo").forEach(b => b.addEventListener("click", () => {
       const s = subs.find(x => String(x.n) === b.dataset.n); if(!s) return;
-      s.status = s.status === "new" ? "done" : "new";
-      if(s.raw) s.raw.status = s.status === "new" ? "new" : "handled";
-      renderSubChips(); renderFeed(); updateBadge();
-      if(live() && s.id) apiPost({ action:"setStatus", id:s.id, status: s.status === "new" ? "new" : "handled" }).catch(()=>{});
+      setSubStatus(s, s.status === "new" ? "handled" : "new");
     }));
     const sm = $("smBtn"); if(sm) sm.addEventListener("click", ()=>{ showHandled = !showHandled; renderFeed(); });
+    const byN = n => subs.find(x => String(x.n) === String(n));
+    feed.querySelectorAll("[data-ask]").forEach(b => b.addEventListener("click", () => { confirmKey = b.dataset.ask; renderFeed(); }));
+    feed.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => {
+      const k = b.dataset.act;
+      if (k === "cancel"){ confirmKey = ""; renderFeed(); return; }
+      if (k.startsWith("del:")){ const x = byN(k.slice(4)); if (x) setSubStatus(x, "deleted"); return; }
+      if (k === "resetvotes"){ confirmKey = ""; resetVotes(); }
+    }));
+    feed.querySelectorAll("[data-gb]").forEach(b => b.addEventListener("click", () => { const x = byN(b.dataset.n); if (x) setSubStatus(x, b.dataset.gb); }));
+    const ev = $("voteEdit"); if (ev) ev.addEventListener("click", () => { editingVote = true; renderFeed(); });
+    const vc = $("voteCancel"); if (vc) vc.addEventListener("click", () => { editingVote = false; renderFeed(); });
+    const vf = $("voteForm"); if (vf) vf.addEventListener("submit", e => { e.preventDefault(); saveVoteFlavors(vf); });
+  }
+  function voteView(rows){
+    const flavors = (voteSetup.flavors && voteSetup.flavors.length) ? voteSetup.flavors : [];
+    if (editingVote){
+      const f = [0,1,2].map(i => flavors[i] || { name:"", note:"", image:"" });
+      return '<form class="tally vote-form" id="voteForm"><p class="tally-total">Pick the 3 flavors for the next vote</p>' +
+        '<p class="hint">Saving starts a fresh vote. Current votes are kept in the Sheet under "Flavor Votes (past)".</p>' +
+        f.map((x,i) => '<fieldset><legend>Flavor '+(i+1)+'</legend>' +
+          '<label>Name<input name="name'+i+'" value="'+h(x.name)+'" placeholder="e.g. Black Sesame"></label>' +
+          '<label>Short description<input name="note'+i+'" value="'+h(x.note)+'" placeholder="e.g. toasted sesame, nutty and smooth"></label>' +
+          '<label>Photo link (optional)<input name="image'+i+'" value="'+h(x.image)+'" placeholder="https://..."></label></fieldset>').join("") +
+        '<div class="vote-form-foot"><button type="button" class="link" id="voteCancel">Cancel</button><button type="submit" class="req-done">Save and start new vote</button></div></form>';
+    }
+    const tally = {};
+    flavors.forEach(f => tally[f.name] = 0);
+    rows.forEach(s => { const k = String((s.raw&&s.raw.note) || String(s.title).replace(/^Voted for /,"")).trim() || "Other"; tally[k]=(tally[k]||0)+1; });
+    const list = Object.entries(tally).sort((a,b)=>b[1]-a[1]), max = Math.max(1, ...list.map(x=>x[1]));
+    return '<div class="tally"><p class="tally-total">'+(rows.length ? rows.length+(rows.length===1?" vote":" votes")+' so far' : 'No votes yet this round')+'</p>' +
+      list.map(([k,n],i)=>'<div class="tally-row'+(i===0&&n?' lead':'')+'"><div class="tally-name">'+h(k)+'</div><div class="tally-bar"><span style="width:'+(n?Math.max(6,Math.round(n/max*100)):0)+'%"></span></div><div class="tally-n">'+n+'</div></div>').join("") +
+      (rows.length ? '<p class="tally-last">Last vote '+h(niceWhen(rows[0].raw||{}))+'</p>' : '') +
+      '<div class="vote-actions"><button class="req-done" id="voteEdit">Change flavors</button>' + confirmBtn("resetvotes", "Reset votes", "Clear all votes and start over?") + '</div></div>';
+  }
+  async function saveVoteFlavors(form){
+    const fd = new FormData(form);
+    const flavors = [0,1,2].map(i => ({ name: String(fd.get("name"+i)||"").trim(), note: String(fd.get("note"+i)||"").trim(), image: String(fd.get("image"+i)||"").trim() })).filter(f => f.name);
+    if (!flavors.length) return;
+    voteSetup = { flavors, round: "" };
+    subs = subs.filter(x => x.type !== "vote");
+    editingVote = false; renderSubChips(); renderFeed();
+    try { const r = await apiPost({ action:"saveVoteSetup", flavors }); if (r && r.ok) voteSetup = { flavors: r.flavors || flavors, round: r.round }; } catch(e){}
+  }
+  async function resetVotes(){
+    subs = subs.filter(x => x.type !== "vote");
+    renderSubChips(); renderFeed();
+    try { await apiPost({ action:"resetVotes" }); } catch(e){}
   }
   function updateBadge(){
     const n = subs.filter(s => isAction(s.type) && s.status==="new").length;
@@ -612,6 +701,7 @@
         nextId = dishes.reduce((m,d)=>Math.max(m, parseInt((""+d.id).replace(/\D/g,""),10)||0), 0) + 1;
       }
       subs = mapSubs(Array.isArray(s.submissions) ? s.submissions : []);
+      if (s.voteSetup) voteSetup = s.voteSetup;
       if(first){ const firstNew = SUB_TYPES.find(t => isAction(t.key) && subs.some(z=>z.type===t.key && z.status==="new")); if(firstNew) subFilter = firstNew.key; }
     }catch(e){
       syncFailed = true;
