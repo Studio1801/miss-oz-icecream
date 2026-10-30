@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, animate, motion, useReducedMotion } from 'framer-motion';
-import { sendToSheet } from '../lib/sheetSync';
+import { SHEET_URL } from '../lib/sheetSync';
 
 type FlavorCard = {
   name: string;
@@ -30,21 +30,26 @@ function CountUp({ to, reduce, suffix = '' }: { to: number; reduce: boolean; suf
   return <>{val}{suffix}</>;
 }
 
+/** Votes live in the Miss Oz Google Sheet (Submissions tab, type "vote"). */
 async function fetchResults() {
-  const res = await fetch('/api/results');
+  const res = await fetch(`${SHEET_URL}?action=voteResults`);
   if (!res.ok) throw new Error();
-  const data = (await res.json()) as { votes: Record<string, number> };
+  const data = (await res.json()) as { ok?: boolean; votes?: Record<string, number> };
+  if (!data.ok) throw new Error('Vote totals unavailable');
   return CARDS.map(card => {
-    const count = data.votes?.[card.name];
-    if (!Number.isSafeInteger(count) || count < 0) throw new Error('Invalid vote totals');
-    return count;
+    const count = Number(data.votes?.[card.name] ?? 0);
+    return Number.isSafeInteger(count) && count >= 0 ? count : 0;
   });
 }
 
 async function postVote(flavor: string) {
-  sendToSheet({ type: 'vote', detail: `Voted for ${flavor}` });
-  const res = await fetch('/api/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ flavor }) });
-  if (!res.ok) throw new Error('Vote not recorded');
+  // no-cors: Apps Script cannot be read cross-origin on POST, but the request completes before this resolves.
+  await fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: 'addSubmission', submission: { type: 'vote', detail: `Voted for ${flavor}`, note: flavor, source: 'website' } }),
+  });
 }
 
 export default function FlavorVoting() {
