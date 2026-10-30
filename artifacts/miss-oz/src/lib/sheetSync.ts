@@ -66,24 +66,26 @@ export function syncCategory<T extends Named>(
 
 export type SubmissionType = 'cake' | 'wholesale' | 'event' | 'contact' | 'vote';
 
-/** Fire-and-forget copy of a form submission into the Sheet. Never blocks or breaks the form. */
-export function sendToSheet(sub: {
+/** Save a form submission to the Sheet. Resolves true once the request has completed
+ * (no-cors: the response can't be read, but the write is done when this resolves). */
+export async function sendToSheet(sub: {
   type: SubmissionType;
   name?: string;
   email?: string;
   phone?: string;
   detail: string;
   note?: string;
-}) {
+}): Promise<boolean> {
   try {
-    void fetch(SHEET_URL, {
+    await fetch(SHEET_URL, {
       method: 'POST',
       mode: 'no-cors',
       keepalive: true,
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action: 'addSubmission', submission: { ...sub, source: 'website' } }),
-    }).catch(() => {});
+    });
+    return true;
   } catch {
-    /* ignore */
+    return false;
   }
 }

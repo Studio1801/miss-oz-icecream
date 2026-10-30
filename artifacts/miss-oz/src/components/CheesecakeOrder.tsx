@@ -48,7 +48,7 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
       `Order notes: ${values.get('notes') || 'None'}`,
     ].join('\n');
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-    sendToSheet({
+    const saving = sendToSheet({
       type: 'cake',
       name: String(values.get('name') ?? ''),
       email: String(values.get('email') ?? ''),
@@ -57,6 +57,8 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
       note: String(values.get('notes') || ''),
     });
     try {
+      // saved to the Sheet = the order is in; the email is a bonus (stops re-sends and duplicates)
+      const sheetSaved = await saving;
       const response = await fetch(`${base}/api/inquire`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -67,12 +69,13 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
           type: 'general',
           message,
         }),
-      });
-      if (!response.ok) throw new Error('Order request failed');
-      if (validation.mobile) {
-        const result = await response.json();
-        if (result.ok !== true || result.note) throw new Error('Sending was not confirmed');
+      }).catch(() => null);
+      let emailOk = !!response && response.ok;
+      if (emailOk && validation.mobile) {
+        const result = await response!.json().catch(() => ({}));
+        emailOk = result.ok === true && !result.note;
       }
+      if (!sheetSaved && !emailOk) throw new Error('Order request failed');
       form.reset();
       setStatus('sent');
       setShowSuccessCheck(true);

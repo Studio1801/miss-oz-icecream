@@ -111,7 +111,9 @@ export default function InquireForm({
         `Desired Order Quantities: ${desiredOrderQuantities.trim()}`,
         `Additional Event Details: ${additionalEventDetails.trim() || 'None provided'}`,
       ].join('\n');
-      sendToSheet({
+      // The Sheet is where the owner sees every request, so a saved request counts as sent
+      // even if the notification email can't go out. This stops people re-sending (duplicates).
+      const sheetSaved = await sendToSheet({
         type: type === 'general' ? 'contact' : type,
         name: type === 'wholesale' && businessName.trim() ? `${name.trim()} (${businessName.trim()})` : name.trim(),
         email: email.trim(),
@@ -145,12 +147,13 @@ export default function InquireForm({
           desiredOrderQuantities: type === 'event' ? desiredOrderQuantities : undefined,
           additionalEventDetails: type === 'event' ? additionalEventDetails : undefined,
         }),
-      });
-      if (!res.ok) throw new Error('server error');
-      if (isMobileViewport) {
-        const result = await res.json();
-        if (result.ok !== true || result.note) throw new Error('Sending was not confirmed');
+      }).catch(() => null);
+      let emailOk = !!res && res.ok;
+      if (emailOk && isMobileViewport) {
+        const result = await res!.json().catch(() => ({}));
+        emailOk = result.ok === true && !result.note;
       }
+      if (!sheetSaved && !emailOk) throw new Error('Not sent');
       setStatus('success');
       setShowSuccessCheck(true);
       window.setTimeout(() => setShowSuccessCheck(false), 2000);
