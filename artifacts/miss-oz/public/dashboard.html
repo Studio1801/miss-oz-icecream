@@ -34,15 +34,16 @@
   .top-right a { color: var(--wine); text-decoration: none; font-weight: 600; }
   .top-right a:hover { text-decoration: underline; }
 
-  .tabs { display: flex; gap: 26px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
-  .tab { background: none; border: none; font-family: inherit; font-weight: 600; font-size: 15.5px; color: var(--ink-soft); cursor: pointer; padding: 8px 0 14px; position: relative; }
+  .tabs { display: flex; gap: 26px; border-bottom: 1px solid var(--line); margin-bottom: 24px; position: relative; }
+  .tab-ink { position: absolute; bottom: -1px; left: 0; height: 2.5px; width: 0; background: var(--wine); border-radius: 2px; transition: transform .42s var(--ease), width .42s var(--ease); }
+  .tab { transition: color .25s ease; background: none; border: none; font-family: inherit; font-weight: 600; font-size: 15.5px; color: var(--ink-soft); cursor: pointer; padding: 8px 0 14px; position: relative; }
   .tab:hover { color: var(--ink); }
   .tab.active { color: var(--wine); }
-  .tab.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2.5px; background: var(--wine); border-radius: 2px; }
+
   .tab .badge { font-size: 12px; color: var(--wine); background: var(--blush); border-radius: 999px; padding: 1px 8px; margin-left: 6px; font-weight: 700; }
 
   .view { display: none; }
-  .view.active { display: block; animation: fade .2s ease; }
+  .view.active { display: block; animation: rise .38s var(--ease) both; }
   @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
   .btn { font-family: inherit; font-weight: 600; font-size: 15px; border-radius: 12px; padding: 11px 18px; cursor: pointer; border: none; transition: background .15s, transform .05s; }
@@ -219,6 +220,28 @@
   .modal-foot .rm:hover { color: #a23b2e; }
 
   :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 8px; }
+
+  /* motion: one easing curve, short durations, nothing bouncy */
+  :root { --ease: cubic-bezier(.22,.8,.24,1); }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+  .btn, .req-done, .chip, .link, .tab, .modal-x, .edit-btn { -webkit-tap-highlight-color: transparent; }
+  .btn, .req-done { transition: background .2s ease, transform .16s var(--ease), box-shadow .2s ease; }
+  .btn:active, .req-done:active, .chip:active { transform: scale(.97); }
+  .chip { transition: background .25s ease, color .25s ease, border-color .25s ease, transform .16s var(--ease); }
+  .link { transition: color .2s ease, text-decoration-color .2s ease; }
+  .sw-track { transition: background .3s ease !important; }
+  .sw-knob { transition: transform .32s var(--ease) !important; }
+  .dish { transition: opacity .3s ease; }
+  .swap > * { animation: rise .34s var(--ease) both; }
+  .swap > *:nth-child(2) { animation-delay: .03s; } .swap > *:nth-child(3) { animation-delay: .06s; }
+  .swap > *:nth-child(4) { animation-delay: .09s; } .swap > *:nth-child(n+5) { animation-delay: .12s; }
+  .modal-backdrop.show { animation: fadeIn .22s ease both; }
+  .modal-backdrop.show .modal { animation: pop .3s var(--ease) both; }
+  .alert:not([hidden]) { animation: rise .4s var(--ease) both; }
+  .alert.fresh:not([hidden]) { animation: rise .4s var(--ease) both, nudge 1.2s ease-out .4s 2; }
+  .req, .note { transition: opacity .3s ease, background .3s ease; }
   @media (prefers-reduced-motion: reduce) { *, .view.active { transition: none !important; animation: none !important; } }
   @media (max-width: 920px) { .menu-layout { grid-template-columns: 1fr; } .rail { position: static; order: -1; } }
   @media (max-width: 520px) { .dish-grid { grid-template-columns: 1fr 1fr; } }
@@ -337,7 +360,21 @@
     document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     t.classList.add("active"); $("view-" + t.dataset.view).classList.add("active");
+    moveInk();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }));
+  const tabsEl = document.querySelector(".tabs");
+  const ink = document.createElement("span"); ink.className = "tab-ink"; tabsEl.appendChild(ink);
+  function moveInk(){
+    const a = tabsEl.querySelector(".tab.active"); if (!a) return;
+    ink.style.width = a.offsetWidth + "px";
+    ink.style.transform = "translateX(" + a.offsetLeft + "px)";
+  }
+  // place it without sliding on first paint, then let it glide
+  ink.style.transition = "none"; requestAnimationFrame(() => { moveInk(); requestAnimationFrame(() => ink.style.transition = ""); });
+  window.addEventListener("resize", moveInk);
+  // replay the entrance on a list after a user action (not on background refreshes)
+  function swapIn(el){ if (!el) return; el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); }
 
   // ---------- menu data ----------
   const CATS = ["Ice cream flavors","Sundaes","Croffles","Cookies & desserts","Drinks"];
@@ -413,7 +450,7 @@
       const b = document.createElement("button");
       b.className = "chip" + (menuFilter===key ? " active" : "");
       b.innerHTML = label + '<span class="n">' + n + '</span>';
-      b.addEventListener("click", () => { menuFilter = key; renderChips(); renderGrid(); });
+      b.addEventListener("click", () => { menuFilter = key; renderChips(); renderGrid(); swapIn(grid); });
       menuChips.appendChild(b);
     };
     mk("all","All", dishes.length);
@@ -574,7 +611,7 @@
       b.className = "chip" + (subFilter===t.key ? " active" : "");
       const count = isAction(t.key) ? (fresh ? '<span class="n new">'+fresh+' new</span>' : '<span class="n">'+all.length+'</span>') : '<span class="n">'+all.length+'</span>';
       b.innerHTML = t.label + count;
-      b.addEventListener("click", ()=>{ subFilter = t.key; showHandled = false; renderSubChips(); renderFeed(); });
+      b.addEventListener("click", ()=>{ subFilter = t.key; showHandled = false; renderSubChips(); renderFeed(); swapIn(feed); });
       subChips.appendChild(b);
     });
   }
@@ -802,7 +839,7 @@
       syncFailed = true;
       showSync("Can't reach your Google Sheet right now, so nothing is shown. Check your connection and refresh.");
     }
-    if(first){ renderAll(); }
+    if(first){ renderAll(); swapIn(grid); requestAnimationFrame(moveInk); }
     else { updateBadge(); renderSubChips(); renderFeed(); }
   }
   function askPassword(msg){
