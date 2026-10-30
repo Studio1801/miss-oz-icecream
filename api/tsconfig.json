@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "typeRoots": ["../artifacts/api-server/node_modules/@types"],
+    "types": ["node"]
+  },
+  "files": ["guestbook.ts"]
+}
