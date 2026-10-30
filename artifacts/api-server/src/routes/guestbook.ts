@@ -1,9 +1,9 @@
 import { Router, type IRouter } from "express";
 import { kv } from "@vercel/kv";
 import { Resend } from "resend";
-import { logger } from "../lib/logger";
-import { resolveContactEmail } from "../lib/contactEmail";
-import { buildEmail } from "../lib/emailTemplates";
+import { logger } from "../lib/logger.js";
+import { resolveContactEmail } from "../lib/contactEmail.js";
+import { buildEmail } from "../lib/emailTemplates.js";
 
 const router: IRouter = Router();
 

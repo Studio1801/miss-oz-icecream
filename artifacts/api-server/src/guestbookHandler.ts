@@ -1,5 +1,5 @@
 import express from "express";
-import guestbookRouter from "./routes/guestbook";
+import guestbookRouter from "./routes/guestbook.js";
 
 // Serverless adapter: reuse the existing guestbook route and storage, without
 // starting the standalone API server or importing unrelated API routes.

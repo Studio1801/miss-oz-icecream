@@ -1,1 +1,1 @@
-export { default } from "../artifacts/api-server/src/guestbookHandler";
+export { default } from "../artifacts/api-server/src/guestbookHandler.js";
