@@ -120,6 +120,11 @@
   .feed .empty { color: var(--ink-soft); font-size: 14px; padding: 18px 2px; }
   .sync-note { margin: 14px 0 0; padding: 11px 14px; border-radius: 12px; background: #fbe8e4; color: #8a3b2e; font-size: 13.5px; display: none; }
   .sync-note.show { display: block; }
+  .synced { font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; }
+  .synced::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-right: 6px; vertical-align: 1px; }
+  .synced:empty::before { display: none; }
+  .synced.saving::before { background: var(--amber); }
+  .synced.off::before { background: #a0352a; }
   .confirm-backdrop { z-index: 60; align-items: center; }
   .modal.ask { max-width: 400px; }
   .modal.ask h2 { font-family: "Fraunces", serif; font-weight: 600; font-size: 20px; margin: 0 0 8px; }
@@ -266,6 +271,7 @@
     </div>
     <div class="top-right">
       <span id="today"></span>
+      <span class="synced" id="syncedAt" aria-live="polite"></span>
       <a href="https://www.missozicecream.com/" target="_blank" rel="noopener">See website</a>
     </div>
   </header>
@@ -594,7 +600,7 @@
     if (status === "deleted") subs = subs.filter(x => x !== s);
     confirmKey = "";
     renderSubChips(); renderFeed(); updateBadge();
-    if (live() && s.id) apiPost({ action:"setStatus", id:s.id, status }).catch(()=>{});
+    if (live() && s.id) write({ action:"setStatus", id:s.id, status });
   }
   // two taps to delete or reset, no pop-up
   function confirmBtn(key, label, sure){
@@ -736,12 +742,12 @@
     voteSetup = { flavors, round: "" };
     subs = subs.filter(x => x.type !== "vote");
     editingVote = false; renderSubChips(); renderFeed();
-    try { const r = await apiPost({ action:"saveVoteSetup", flavors }); if (r && r.ok) voteSetup = { flavors: r.flavors || flavors, round: r.round }; } catch(e){}
+    const r = await write({ action:"saveVoteSetup", flavors }); if (r) voteSetup = { flavors: r.flavors || flavors, round: r.round };
   }
   async function resetVotes(){
     subs = subs.filter(x => x.type !== "vote");
     renderSubChips(); renderFeed();
-    try { await apiPost({ action:"resetVotes" }); } catch(e){}
+    await write({ action:"resetVotes" });
   }
   let knownIds = null;
   const NOUN = { cake:["cake order","cake orders"], wholesale:["wholesale request","wholesale requests"], event:["event inquiry","event inquiries"], contact:["message","messages"] };
@@ -780,19 +786,70 @@
   const SHEET_API = "https://script.google.com/macros/s/AKfycbwnYVZG5SwY9K0mBQZVsnqAGU00QXDr1m7Pqri8qlPX6GIbKZh4Ru9UsrsSSlLVgFCt/exec";                               // paste your Apps Script /exec URL here to go live
   let API_TOKEN = (() => { try { return localStorage.getItem("missoz-dash-pass") || ""; } catch(e){ return ""; } })();
   const live = () => !!SHEET_API;
-  async function apiGet(){ const r = await fetch(SHEET_API + "?action=state&token=" + encodeURIComponent(API_TOKEN)); return r.json(); }
-  async function apiPost(payload){
-    const r = await fetch(SHEET_API, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify(Object.assign({ token: API_TOKEN }, payload)) });
+  // ---------- sync ----------
+  // The Sheet is the only truth. Every change is written, checked, then re-read.
+  let menuVersion = null;     // version of the menu we last loaded from the Sheet
+  let pending = 0;            // writes still on their way
+  let saveTimer = null;
+  let lastSync = 0, lastSubsKey = "", lastMenuKey = "";
+  async function apiGet(){
+    const r = await fetch(SHEET_API + "?action=state&token=" + encodeURIComponent(API_TOKEN) + "&_=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error("http " + r.status);
     return r.json();
   }
-  let saveTimer = null;
+  async function apiPost(payload){
+    const r = await fetch(SHEET_API, { method:"POST", cache:"no-store", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify(Object.assign({ token: API_TOKEN }, payload)) });
+    if (!r.ok) throw new Error("http " + r.status);
+    return r.json();
+  }
+  // every change goes through here; on any failure we reload so the screen matches the Sheet
+  async function write(payload){
+    pending++; setSynced("saving");
+    let res = null;
+    try { res = await apiPost(payload); }
+    catch(e){ res = { ok:false, error:"network" }; }
+    finally { pending--; }
+    if (!res || !res.ok){
+      if (res && res.error === "conflict") showSync("Your menu was changed on another device, so this screen now shows the latest version. Please make your last change again.");
+      else if (res && res.error === "unauthorized") askPassword("Please log in again.");
+      else showSync("That change didn't save. The screen now shows what's actually in your Sheet. Please try again.");
+      lastMenuKey = lastSubsKey = "";   // force the screen back to exactly what the Sheet holds
+      await refresh(true);
+      return null;
+    }
+    if (pending === 0 && !saveTimer) refreshSoon(700);
+    return res;
+  }
   function persistMenu(){
     if(!live()) return;
     clearTimeout(saveTimer);
+    setSynced("saving");
     saveTimer = setTimeout(async () => {
+      saveTimer = null;
       const menu = dishes.map(d => ({ id:d.id, category:d.cat, name:d.name, description:d.desc, price:d.price, on:d.on, photo:"" }));
-      try { await apiPost({ action:"saveMenu", menu }); } catch(e){}
-    }, 600);
+      const r = await write({ action:"saveMenu", menu, baseVersion: menuVersion });
+      if (r && r.menuVersion) menuVersion = r.menuVersion;
+    }, 500);
+  }
+  let soonTimer = null;
+  function refreshSoon(ms){ clearTimeout(soonTimer); soonTimer = setTimeout(() => refresh(false), ms); }
+  function busyEditing(){
+    return pending > 0 || !!saveTimer || dishModal.classList.contains("show") || $("askModal").classList.contains("show") || editingVote || !!confirmKey;
+  }
+  function setSynced(state){
+    const el = $("syncedAt"); if (!el) return;
+    if (state === "saving") { el.textContent = "Saving..."; el.className = "synced saving"; return; }
+    if (state === "offline") { el.textContent = "Offline, retrying"; el.className = "synced off"; return; }
+    if (!lastSync) { el.textContent = ""; return; }
+    const d = new Date(lastSync), hr = d.getHours();
+    el.textContent = "Up to date " + ((hr%12)||12) + ":" + String(d.getMinutes()).padStart(2,"0") + (hr<12?" am":" pm");
+    el.className = "synced";
+  }
+  function mapMenu(list){
+    return list.map((d,i) => {
+      const cat = d.category||CATS[0], name = d.name||"";
+      return { id:d.id||(i+1), cat, name, desc:d.description||"", price:d.price||"", on:(String(d.on).toLowerCase()==="yes"||d.on===true), photo: sitePhoto(cat, name) };
+    });
   }
   function subTag(t){ return ({ cake:"Cake order", wholesale:"Wholesale", event:"Event", contact:"Contact", vote:"Flavor vote", guestbook:"Guestbook" })[t] || t; }
 
@@ -813,35 +870,54 @@
     updateBadge();
     renderSubChips(); renderFeed();
   }
-  async function loadFromSheet(first){
-    try{
-      const s = await apiGet();
-      if(s && s.error === "unauthorized"){ askPassword(API_TOKEN ? "That password didn't work. Try again." : ""); return false; }
-      if(!s || !s.ok) throw new Error(s && s.error || "bad response");
-      syncFailed = false; showSync("");
-      if(first){
-        if(Array.isArray(s.menu) && s.menu.length){
-          dishes = s.menu.map((d,i) => {
-            const cat = d.category||CATS[0], name = d.name||"";
-            const photo = sitePhoto(cat, name);
-            return { id:d.id||(i+1), cat, name, desc:d.description||"", price:d.price||"", on:(String(d.on).toLowerCase()==="yes"||d.on===true), photo };
-          });
-        } else {
-          dishes = SEED_DISHES.map(d => Object.assign({}, d));   // empty Sheet: copy the website's menu in once
-          persistMenu();
-        }
-        nextId = dishes.reduce((m,d)=>Math.max(m, parseInt((""+d.id).replace(/\D/g,""),10)||0), 0) + 1;
-      }
-      subs = mapSubs(Array.isArray(s.submissions) ? s.submissions : []);
-      if (s.voteSetup) voteSetup = s.voteSetup;
-      if(first){ const firstNew = SUB_TYPES.find(t => isAction(t.key) && subs.some(z=>z.type===t.key && z.status==="new")); if(firstNew) subFilter = firstNew.key; }
-    }catch(e){
-      syncFailed = true;
-      showSync("Can't reach your Google Sheet right now, so nothing is shown. Check your connection and refresh.");
+  let firstLoad = true;
+  async function refresh(force){
+    // never pull while a change is still saving or she is mid-edit; try again shortly
+    if (!firstLoad && !force && busyEditing()){ refreshSoon(2000); return; }
+    let st;
+    try { st = await apiGet(); }
+    catch(e){
+      syncFailed = firstLoad; setSynced("offline");
+      if (firstLoad) showSync("Can't reach your Google Sheet right now, so nothing is shown. Check your connection and refresh.");
+      refreshSoon(10000);
+      if (firstLoad) renderAll();
+      return;
     }
-    if(first){ renderAll(); swapIn(grid); requestAnimationFrame(moveInk); }
-    else { updateBadge(); renderSubChips(); renderFeed(); }
+    if (st && st.error === "unauthorized"){ askPassword(API_TOKEN ? "That password didn't work. Try again." : ""); return false; }
+    if (!st || !st.ok){ setSynced("offline"); refreshSoon(10000); return; }
+    // a write landed while we were reading: this snapshot may be old, read again
+    if (!force && (pending > 0 || saveTimer)){ refreshSoon(1500); return; }
+
+    syncFailed = false; if (!/didn't save|another device/.test($("syncNote").textContent)) showSync("");
+    lastSync = Date.now(); setSynced("ok");
+
+    // menu
+    if (Array.isArray(st.menu) && st.menu.length === 0 && firstLoad){
+      const r = await write({ action:"seedMenu", menu: SEED_DISHES.map(d => ({ id:d.id, category:d.cat, name:d.name, description:d.desc, price:d.price, on:d.on, photo:"" })) });
+      if (r && Array.isArray(r.menu)){ st.menu = r.menu; st.menuVersion = r.menuVersion; }
+    }
+    const menuKey = JSON.stringify(st.menu || []);
+    if (Array.isArray(st.menu) && (menuKey !== lastMenuKey || firstLoad)){
+      dishes = mapMenu(st.menu);
+      nextId = dishes.reduce((m,d)=>Math.max(m, parseInt((""+d.id).replace(/\D/g,""),10)||0), 0) + 1;
+      lastMenuKey = menuKey;
+      if (!firstLoad){ renderChips(); renderGrid(); updateRail(); }
+    }
+    menuVersion = st.menuVersion || menuVersion;
+
+    // submissions and vote setup
+    const subsKey = JSON.stringify([st.submissions || [], st.voteSetup || null]);
+    if (subsKey !== lastSubsKey || firstLoad){
+      subs = mapSubs(Array.isArray(st.submissions) ? st.submissions : []);
+      if (st.voteSetup) voteSetup = st.voteSetup;
+      lastSubsKey = subsKey;
+      if (firstLoad){ const firstNew = SUB_TYPES.find(t => isAction(t.key) && subs.some(z=>z.type===t.key && z.status==="new")); if(firstNew) subFilter = firstNew.key; }
+      else { updateBadge(); renderSubChips(); renderFeed(); }
+    }
+    if (firstLoad){ firstLoad = false; renderAll(); swapIn(grid); requestAnimationFrame(moveInk); }
   }
+  // kept for older call sites
+  const loadFromSheet = first => refresh(!!first);
   function askPassword(msg){
     try { localStorage.removeItem("missoz-dash-pass"); } catch(e){}
     $("gateErr").textContent = msg || "";
@@ -851,19 +927,23 @@
     e.preventDefault();
     API_TOKEN = $("gatePass").value.trim(); if(!API_TOKEN) return;
     $("gateBtn").textContent = "Opening..."; $("gateErr").textContent = "";
-    const ok = await loadFromSheet(true);
+    firstLoad = true; lastMenuKey = lastSubsKey = "";
+    const ok = await refresh(true);
     $("gateBtn").textContent = "Open dashboard";
     if(ok !== false){ try { localStorage.setItem("missoz-dash-pass", API_TOKEN); } catch(e){} $("gate").hidden = true; startSync(); }
   });
   let syncing = false;
   function startSync(){
     if(syncing) return; syncing = true;
-    setInterval(() => { if(!document.hidden) loadFromSheet(false); }, 30000);
-    document.addEventListener("visibilitychange", () => { if(!document.hidden) loadFromSheet(false); });
+    setInterval(() => { if(!document.hidden) refresh(false); }, 15000);
+    setInterval(() => setSynced(pending || saveTimer ? "saving" : "ok"), 30000);
+    document.addEventListener("visibilitychange", () => { if(!document.hidden) refresh(false); });
+    window.addEventListener("focus", () => refresh(false));
+    window.addEventListener("online", () => refresh(false));
   }
   async function boot(){
     if(!API_TOKEN){ askPassword(""); return; }
-    const ok = await loadFromSheet(true);
+    const ok = await refresh(true);
     if(ok === false) return;
     startSync();   // keep submissions in sync with the Sheet
   }
