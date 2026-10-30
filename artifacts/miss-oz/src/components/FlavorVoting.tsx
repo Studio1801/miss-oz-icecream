@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, animate, motion, useReducedMotion } from 'framer-motion';
+import { sendToSheet } from '../lib/sheetSync';
 
 type FlavorCard = {
   name: string;
@@ -41,6 +42,7 @@ async function fetchResults() {
 }
 
 async function postVote(flavor: string) {
+  sendToSheet({ type: 'vote', detail: `Voted for ${flavor}` });
   const res = await fetch('/api/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ flavor }) });
   if (!res.ok) throw new Error('Vote not recorded');
 }

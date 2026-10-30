@@ -1,20 +1,25 @@
 import MenuPhotoGrid from './MenuPhotoGrid';
 import MenuProductList from './MenuProductList';
 import { CROFFLE_PHOTOS, DESSERTS, DESSERT_PHOTOS, CROFFLES, UBEREATS_URL } from './menuCatalog';
+import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 import { MenuDivider } from './MenuPanelShared';
 
 export default function CroffleDessertsPanel() {
+  const sheetMenu = useSheetMenu();
+  const toItem = (row: { name: string; description: string }) => ({ name: String(row.name), note: String(row.description ?? '') });
+  const croffles = syncCategory(CROFFLES, sheetMenu, 'Croffles', toItem);
+  const desserts = syncCategory(DESSERTS, sheetMenu, 'Cookies & desserts', toItem);
   return (
     <div className="flex-1 flex flex-col justify-between">
       <div className="mt-[clamp(16px,2vw,24px)]">
         <div className="grid grid-cols-1 gap-x-[clamp(24px,3vw,40px)] gap-y-6 max-[430px]:gap-y-5 md:grid-cols-2">
           <section className="min-w-0">
             <h4 className="menu-subsection-label mb-3 max-[430px]:mb-[7px] text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Croffle menu</h4>
-            <MenuProductList items={CROFFLES} descriptionSize="large" />
+            <MenuProductList items={croffles} descriptionSize="large" />
           </section>
           <section className="min-w-0">
             <h4 className="menu-subsection-label mb-3 max-[430px]:mb-[7px] text-left text-[12px] font-bold tracking-[0.16em] text-[var(--marionberry)]">Other desserts</h4>
-            <MenuProductList items={DESSERTS} descriptionSize="large" />
+            <MenuProductList items={desserts} descriptionSize="large" />
           </section>
         </div>
         <div className="mt-[clamp(18px,2.2vw,28px)]">

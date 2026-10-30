@@ -1,6 +1,7 @@
 import { FLAVOR_PHOTOS, type FlavorPhoto } from './MenuPhotos';
 import { FLAVORS, UBEREATS_URL } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
+import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 
 type FlavorCard = {
   name: string;
@@ -37,10 +38,16 @@ const FLAVOR_CARDS: FlavorCard[] = [
 ];
 
 export default function FlavorPanel() {
+  const sheetMenu = useSheetMenu();
+  const cards = syncCategory(FLAVOR_CARDS, sheetMenu, 'Ice cream flavors', (row) => ({
+    name: String(row.name),
+    note: String(row.description ?? ''),
+    photo: FLAVOR_PHOTOS.find((photo) => canonicalPhotoName(photo.name) === String(row.name)),
+  }));
   return (
     <>
       <div className="flavor-grid mt-[clamp(18px,2.2vw,28px)] grid w-full grid-cols-2 gap-[clamp(10px,1.25vw,16px)] max-[430px]:gap-3 xl:grid-cols-3">
-        {FLAVOR_CARDS.map((flavor) => {
+        {cards.map((flavor) => {
           return (
             <article
               key={flavor.name}
