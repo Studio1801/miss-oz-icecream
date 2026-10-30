@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { sendToSheet } from '../lib/sheetSync';
+import { SHEET_URL } from '../lib/sheetSync';
 import { motion } from 'framer-motion';
 import { Starburst } from './Decor';
 import PawMark from './PawMark';
@@ -8,6 +8,8 @@ import { useMobileForm, MOBILE_FORM_SUCCESS } from '../hooks/useMobileForm';
 const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 'italic' as const };
 
 type Entry = { id: string; name: string; note: string; when: string };
+
+const GUESTBOOK_URL = `${SHEET_URL}?action=guestbook`;
 
 function sanitizeEntries(raw: unknown): Entry[] {
   if (!Array.isArray(raw)) throw new Error('Invalid guestbook response');
@@ -44,9 +46,8 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
   const loadGuestbook = useCallback(async () => {
     setLoading(true);
     setLoadError(false);
-    const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     try {
-      const response = await fetch(`${base}/api/guestbook`);
+      const response = await fetch(GUESTBOOK_URL);
       if (!response.ok) throw new Error('Could not load guestbook');
       const data = await response.json();
       setEntries(sanitizeEntries(data?.entries));
@@ -78,12 +79,11 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
     if (!cleanName || !cleanNote || submitting) return;
     setSubmitting(true);
     setSubmitResult('idle');
-    const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     try {
       if (validation.mobile && unconfirmedEntry.current) {
         const pending = unconfirmedEntry.current;
         if (pending.name === cleanName && pending.note === cleanNote) {
-          const confirmation = await fetch(`${base}/api/guestbook`);
+          const confirmation = await fetch(GUESTBOOK_URL);
           if (!confirmation.ok) throw new Error('Could not confirm guestbook entry');
           const stored = sanitizeEntries((await confirmation.json())?.entries);
           setEntries(stored);
@@ -102,18 +102,20 @@ export default function Guestbook({ id = 'guestbook' }: { id?: string }) {
         unconfirmedEntry.current = null;
       }
 
-      sendToSheet({ type: 'contact', name: cleanName, detail: `Guestbook note: ${cleanNote.slice(0, 120)}`, note: cleanNote });
-      const posted = await fetch(`${base}/api/guestbook`, {
+      const entryId = `gb-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
+      // Entries live in the Miss Oz Google Sheet. no-cors: the POST completes before this resolves.
+      await fetch(SHEET_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: cleanName, note: cleanNote }),
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'addSubmission',
+          submission: { id: entryId, type: 'guestbook', name: cleanName, detail: cleanNote.slice(0, 140), note: cleanNote, source: 'website' },
+        }),
       });
-      if (!posted.ok) throw new Error('Could not submit guestbook entry');
-      const data = await posted.json();
-      unconfirmedEntry.current = validation.mobile && typeof data?.entry?.id === 'string'
-        ? { id: data.entry.id, name: cleanName, note: cleanNote }
-        : null;
-      const refreshed = await fetch(`${base}/api/guestbook`);
+      const data = { entry: { id: entryId } };
+      unconfirmedEntry.current = validation.mobile ? { id: entryId, name: cleanName, note: cleanNote } : null;
+      const refreshed = await fetch(GUESTBOOK_URL);
       if (!refreshed.ok) throw new Error('Could not confirm guestbook entry');
       const stored = sanitizeEntries((await refreshed.json())?.entries);
       setEntries(stored);
