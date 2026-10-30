@@ -119,6 +119,41 @@
   .feed .empty { color: var(--ink-soft); font-size: 14px; padding: 18px 2px; }
   .sync-note { margin: 14px 0 0; padding: 11px 14px; border-radius: 12px; background: #fbe8e4; color: #8a3b2e; font-size: 13.5px; display: none; }
   .sync-note.show { display: block; }
+  /* submissions */
+  .chip .n.new { color: var(--amber); font-weight: 700; }
+  .chip.active .n.new { color: #f6d9a8; }
+  .req { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; padding: 18px 20px; margin-top: 12px; }
+  .req.done { background: transparent; }
+  .req.done .req-who, .req.done dd, .req.done .req-text { color: var(--ink-soft); }
+  .req-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .req-who { font-weight: 700; font-size: 16.5px; }
+  .req-when { color: var(--ink-soft); font-size: 13.5px; white-space: nowrap; }
+  .req-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px 22px; margin: 14px 0 0; }
+  .req-fields dt { color: var(--ink-soft); font-size: 12.5px; }
+  .req-fields dd { margin: 1px 0 0; font-size: 14.5px; font-weight: 500; }
+  .req-text { margin: 12px 0 0; font-size: 14.5px; white-space: pre-line; padding-left: 12px; border-left: 2px solid var(--blush); }
+  .req-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+  .req-contact { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; }
+  .req-contact a { color: var(--wine); font-weight: 600; text-decoration: none; }
+  .req-contact a:hover { text-decoration: underline; }
+  .req-done { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 999px; border: 0; background: var(--wine); color: #fff; cursor: pointer; }
+  .req-undo { font: inherit; font-size: 13.5px; font-weight: 600; background: none; border: 0; color: var(--green); cursor: pointer; padding: 6px 0; }
+  .req-undo span { color: var(--ink-soft); font-weight: 500; margin-left: 6px; text-decoration: underline; text-underline-offset: 3px; }
+  .tally { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; padding: 20px; margin-top: 12px; }
+  .tally-total { margin: 0 0 14px; font-weight: 700; font-size: 16px; }
+  .tally-row { display: grid; grid-template-columns: minmax(110px, 160px) 1fr 32px; align-items: center; gap: 12px; padding: 7px 0; }
+  .tally-name { font-weight: 600; font-size: 14.5px; }
+  .tally-bar { height: 10px; background: var(--photo); border-radius: 999px; overflow: hidden; }
+  .tally-bar span { display: block; height: 100%; background: #c9a7b4; border-radius: 999px; }
+  .tally-row.lead .tally-bar span { background: var(--wine); }
+  .tally-n { text-align: right; font-weight: 700; }
+  .tally-last { margin: 12px 0 0; color: var(--ink-soft); font-size: 13px; }
+  .note { margin: 12px 0 0; background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; padding: 16px 20px; }
+  .note blockquote { margin: 0; font-family: "Fraunces", Georgia, serif; font-size: 17px; line-height: 1.45; white-space: pre-line; }
+  .note figcaption { margin-top: 8px; font-size: 13.5px; font-weight: 600; color: var(--wine); }
+  .note figcaption span { color: var(--ink-soft); font-weight: 500; margin-left: 8px; }
+  @media (max-width: 560px){ .req { padding: 16px; } .req-done { width: 100%; } .tally-row { grid-template-columns: 100px 1fr 28px; } }
+
   .gate { position: fixed; inset: 0; background: var(--paper, #faf3ef); display: grid; place-items: center; z-index: 50; padding: 16px; }
   .gate[hidden] { display: none; }
   .gate-card { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 12px; }
@@ -218,7 +253,7 @@
   <section class="view" id="view-subs">
     <div class="sub-head">
       <h2>Everything from your site</h2>
-      <p class="hint">Cake orders, wholesale requests, event inquiries and contact messages.</p>
+      <p class="hint">Everything people send through your website. Reply, then mark it handled so you know it's done.</p>
     </div>
     <div class="chips" id="subChips" style="margin-top:16px"></div>
     <div class="feed" id="feed"></div>
@@ -419,41 +454,106 @@
     {key:"cake", label:"Cake orders"},
     {key:"wholesale", label:"Wholesale"},
     {key:"event", label:"Events"},
-    {key:"contact", label:"Contact"},
+    {key:"contact", label:"Messages"},
     {key:"vote", label:"Flavor votes"},
     {key:"guestbook", label:"Guestbook"},
   ];
   let subFilter = "cake", subExpanded = false;
   const subChips = $("subChips"), feed = $("feed");
 
+  const ACTION_TYPES = ["cake","wholesale","event","contact"];
+  const isAction = t => ACTION_TYPES.includes(t);
+  let showHandled = false;
   function renderSubChips(){
     subChips.innerHTML = "";
     SUB_TYPES.forEach(t => {
-      const n = subs.filter(s=>s.type===t.key).length; if(!n) return;
+      const all = subs.filter(s=>s.type===t.key);
+      const fresh = all.filter(s=>s.status==="new").length;
       const b = document.createElement("button");
       b.className = "chip" + (subFilter===t.key ? " active" : "");
-      b.innerHTML = t.label + '<span class="n">' + n + '</span>';
-      b.addEventListener("click", ()=>{ subFilter = t.key; subExpanded = false; renderSubChips(); renderFeed(); });
+      const count = isAction(t.key) ? (fresh ? '<span class="n new">'+fresh+' new</span>' : '<span class="n">'+all.length+'</span>') : '<span class="n">'+all.length+'</span>';
+      b.innerHTML = t.label + count;
+      b.addEventListener("click", ()=>{ subFilter = t.key; showHandled = false; renderSubChips(); renderFeed(); });
       subChips.appendChild(b);
     });
   }
   function h(v){ return String(v==null ? "" : v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]); }
+  const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function niceWhen(x){
+    const m = String(x.date||"").match(/(\d{4})-(\d{2})-(\d{2})/); if(!m) return "";
+    let out = MONTHS[+m[2]-1] + " " + (+m[3]);
+    const t = String(x.time||"").match(/(\d{1,2}):(\d{2})/);
+    if(t){ const hr = +t[1]; out += ", " + ((hr%12)||12) + ":" + t[2] + (hr<12 ? " am" : " pm"); }
+    return out;
+  }
+  const SKIP_KEYS = ["email address","phone number","contact person"];
+  function fieldsOf(x){
+    const lines = String(x.note||"").split("\n").map(l=>l.trim()).filter(Boolean);
+    const kv = lines.map(l => l.match(/^([^:]{2,40}):\s*(.*)$/));
+    if(lines.length && kv.every(Boolean)){
+      return { fields: kv.map(m=>[m[1],m[2]]).filter(([k,v]) => v && v!=="None provided" && !SKIP_KEYS.includes(k.toLowerCase())), text:"" };
+    }
+    if(x.type==="cake"){
+      const d = String(x.detail||"").split(",").map(z=>z.trim());
+      const f = [];
+      if(d[0]) f.push(["Cake size", d[0]]);
+      const q = (d.find(z=>/^qty/i.test(z))||"").replace(/^qty\s*/i,""); if(q) f.push(["Quantity", q]);
+      const pu = (d.find(z=>/^pickup/i.test(z))||"").replace(/^pickup\s*/i,""); if(pu) f.push(["Pickup", pu]);
+      return { fields:f, text: x.note||"" };
+    }
+    return { fields:[], text: x.note || x.detail || "" };
+  }
+  function reqCard(s){
+    const x = s.raw || {}, f = fieldsOf(x), done = s.status!=="new";
+    const email = String(x.email||"").trim(), phone = String(x.phone||"").trim();
+    return '<article class="req'+(done?' done':'')+'">' +
+      '<header class="req-top"><div class="req-who">'+h(s.who)+'</div><div class="req-when">'+h(niceWhen(x))+'</div></header>' +
+      (f.fields.length ? '<dl class="req-fields">'+f.fields.map(([k,v])=>'<div><dt>'+h(k)+'</dt><dd>'+h(v)+'</dd></div>').join("")+'</dl>' : '') +
+      (f.text ? '<p class="req-text">'+h(f.text)+'</p>' : '') +
+      '<footer class="req-foot">' +
+        '<div class="req-contact">' +
+          (email ? '<a href="mailto:'+h(email)+'">'+h(email)+'</a>' : '') +
+          (phone ? '<a href="tel:'+h(phone.replace(/[^\d+]/g,""))+'">'+h(phone)+'</a>' : '') +
+        '</div>' +
+        (done ? '<button class="req-undo" data-n="'+s.n+'">Handled &#10003; <span>Undo</span></button>'
+              : '<button class="req-done" data-n="'+s.n+'">Mark as handled</button>') +
+      '</footer></article>';
+  }
   function renderFeed(){
     const rows = subs.filter(s => s.type===subFilter).slice().reverse();
-    if (!rows.length){ feed.innerHTML = '<p class="empty">'+(subs.length ? "Nothing in this one yet." : (syncFailed ? "" : "No submissions yet. They show up here the moment someone uses a form on your site."))+'</p>'; return; }
-    const shown = subExpanded ? rows : rows.slice(0,3);
-    let html = shown.map(s =>
-      '<div class="e-row"><div class="e-main"><div class="who">'+h(s.who)+'<span class="ty">'+h(s.when)+'</span></div><div class="what">'+h(s.title)+'</div>'+(s.reach ? '<div class="reach">'+h(s.reach)+'</div>' : '')+'</div><div class="e-side"><div class="e-stat '+s.status+'">'+(s.status==="new" ? "New" : "Handled")+'</div><button class="mark" data-n="'+s.n+'">'+(s.status==="new" ? "Mark as handled" : "Move back to new")+'</button></div></div>'
-    ).join("");
-    if (rows.length > 3) html += '<button class="show-more" id="smBtn">'+(subExpanded ? "Show less" : "Show "+(rows.length-3)+" more")+'</button>';
+    const label = (SUB_TYPES.find(t=>t.key===subFilter)||{}).label || "";
+    if (!rows.length){ feed.innerHTML = '<p class="empty">'+(syncFailed ? "" : (subs.length ? "No "+label.toLowerCase()+" yet." : "Nothing yet. Anything sent through your website shows up here."))+'</p>'; return; }
+    let html = "";
+    if (isAction(subFilter)){
+      const open = rows.filter(s=>s.status==="new"), done = rows.filter(s=>s.status!=="new");
+      html += open.length ? open.map(reqCard).join("") : '<p class="empty">All caught up. Nothing waiting on you.</p>';
+      if (done.length){
+        html += '<button class="show-more" id="smBtn">'+(showHandled ? "Hide handled" : "Show "+done.length+" handled")+'</button>';
+        if (showHandled) html += done.map(reqCard).join("");
+      }
+    } else if (subFilter === "vote"){
+      const tally = {};
+      rows.forEach(s => { const k = String((s.raw&&s.raw.note) || String(s.title).replace(/^Voted for /,"")).trim() || "Other"; tally[k]=(tally[k]||0)+1; });
+      const list = Object.entries(tally).sort((a,b)=>b[1]-a[1]), max = list[0][1];
+      html += '<div class="tally"><p class="tally-total">'+rows.length+(rows.length===1?" vote":" votes")+' so far</p>' +
+        list.map(([k,n],i)=>'<div class="tally-row'+(i===0?' lead':'')+'"><div class="tally-name">'+h(k)+'</div><div class="tally-bar"><span style="width:'+Math.max(6,Math.round(n/max*100))+'%"></span></div><div class="tally-n">'+n+'</div></div>').join("") +
+        '<p class="tally-last">Last vote '+h(niceWhen(rows[0].raw||{}))+'</p></div>';
+    } else {
+      html += rows.map(s => '<figure class="note"><blockquote>'+h((s.raw&&s.raw.note)||s.title)+'</blockquote><figcaption>'+h(s.who)+(niceWhen(s.raw||{}) ? '<span>'+h(niceWhen(s.raw||{}))+'</span>' : '')+'</figcaption></figure>').join("");
+    }
     feed.innerHTML = html;
-    feed.querySelectorAll(".mark").forEach(b => b.addEventListener("click", () => {
+    feed.querySelectorAll(".req-done,.req-undo").forEach(b => b.addEventListener("click", () => {
       const s = subs.find(x => String(x.n) === b.dataset.n); if(!s) return;
       s.status = s.status === "new" ? "done" : "new";
-      renderFeed();
+      if(s.raw) s.raw.status = s.status === "new" ? "new" : "handled";
+      renderSubChips(); renderFeed(); updateBadge();
       if(live() && s.id) apiPost({ action:"setStatus", id:s.id, status: s.status === "new" ? "new" : "handled" }).catch(()=>{});
     }));
-    const sm = $("smBtn"); if(sm) sm.addEventListener("click", ()=>{ subExpanded = !subExpanded; renderFeed(); });
+    const sm = $("smBtn"); if(sm) sm.addEventListener("click", ()=>{ showHandled = !showHandled; renderFeed(); });
+  }
+  function updateBadge(){
+    const n = subs.filter(s => isAction(s.type) && s.status==="new").length;
+    const b = $("subsBadge"); b.textContent = n; b.style.visibility = n ? "visible" : "hidden";
   }
   // ---------- google sheets backend ----------
   const SHEET_API = "https://script.google.com/macros/s/AKfycbwnYVZG5SwY9K0mBQZVsnqAGU00QXDr1m7Pqri8qlPX6GIbKZh4Ru9UsrsSSlLVgFCt/exec";                               // paste your Apps Script /exec URL here to go live
@@ -481,7 +581,7 @@
       const reach = [x.email, x.phone].filter(Boolean).join("  ·  ");
       const who = x.name || (x.type==="vote" ? "A visitor" : "Someone");
       const when = [x.date, x.time].filter(Boolean).join(" ");
-      return { n:i+1, id:x.id, type:x.type, tag:subTag(x.type), who, when, reach,
+      return { n:i+1, id:x.id, type:x.type, tag:subTag(x.type), who, when, reach, raw:x,
                title: x.type==="wholesale" || x.type==="event" || x.type==="cake" ? (x.detail||"") + (x.note && x.note!==x.detail ? "\n" + x.note : "") : (x.note || x.detail || ""),
                status:(String(x.status).toLowerCase()==="new" || !x.status ? "new" : "done") };
     });
@@ -489,7 +589,7 @@
   function showSync(msg){ const n = $("syncNote"); n.textContent = msg || ""; n.classList.toggle("show", !!msg); }
   function renderAll(){
     renderChips(); renderGrid(); updateRail();
-    $("subsBadge").textContent = subs.filter(s => s.status==="new").length || subs.length;
+    updateBadge();
     renderSubChips(); renderFeed();
   }
   async function loadFromSheet(first){
@@ -512,13 +612,13 @@
         nextId = dishes.reduce((m,d)=>Math.max(m, parseInt((""+d.id).replace(/\D/g,""),10)||0), 0) + 1;
       }
       subs = mapSubs(Array.isArray(s.submissions) ? s.submissions : []);
-      if(subs.length && !subs.some(z=>z.type===subFilter)) subFilter = subs[subs.length-1].type;
+      if(first){ const firstNew = SUB_TYPES.find(t => isAction(t.key) && subs.some(z=>z.type===t.key && z.status==="new")); if(firstNew) subFilter = firstNew.key; }
     }catch(e){
       syncFailed = true;
       showSync("Can't reach your Google Sheet right now, so nothing is shown. Check your connection and refresh.");
     }
     if(first){ renderAll(); }
-    else { $("subsBadge").textContent = subs.filter(s => s.status==="new").length || subs.length; renderSubChips(); renderFeed(); }
+    else { updateBadge(); renderSubChips(); renderFeed(); }
   }
   function askPassword(msg){
     try { localStorage.removeItem("missoz-dash-pass"); } catch(e){}
