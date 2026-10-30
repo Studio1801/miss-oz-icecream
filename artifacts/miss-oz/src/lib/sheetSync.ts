@@ -11,32 +11,47 @@ export type SheetCategory = 'Ice cream flavors' | 'Sundaes' | 'Croffles' | 'Cook
 
 export type SheetMenuRow = { category: string; name: string; description: string; price: string };
 
-let menuRequest: Promise<SheetMenuRow[] | null> | null = null;
+export type SiteData = { menu: SheetMenuRow[] | null; text: Record<string, string> };
 
-function loadMenu(): Promise<SheetMenuRow[] | null> {
-  if (!menuRequest) {
+/** One fresh read of the Sheet per page load: the live menu and all website text.
+ * Never cached, so what the owner saved is what the next visitor sees. */
+let siteRequest: Promise<SiteData | null> | null = null;
+function loadSite(): Promise<SiteData | null> {
+  if (!siteRequest) {
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), 6000);
-    menuRequest = fetch(`${SHEET_URL}?action=menu`, { signal: controller.signal })
+    siteRequest = fetch(`${SHEET_URL}?action=site&_=${Date.now()}`, { signal: controller.signal, cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => (data && data.ok && Array.isArray(data.menu) && data.menu.length ? (data.menu as SheetMenuRow[]) : null))
+      .then((data) => {
+        if (!data || !data.ok) return null;
+        const menu = Array.isArray(data.menu) && data.menu.length ? (data.menu as SheetMenuRow[]) : null;
+        const text = data.text && typeof data.text === 'object' ? (data.text as Record<string, string>) : {};
+        return { menu, text };
+      })
       .catch(() => null)
       .finally(() => window.clearTimeout(timer));
   }
-  return menuRequest;
+  return siteRequest;
 }
+// start the request as soon as the app loads, not when a section scrolls into view
+if (typeof window !== 'undefined') void loadSite();
 
-/** null until the Sheet answers (or if it is unreachable/empty): callers then keep the built-in menu. */
-export function useSheetMenu(): SheetMenuRow[] | null {
-  const [rows, setRows] = useState<SheetMenuRow[] | null>(null);
+/** The Sheet's data once it arrives; null until then or if the Sheet can't be reached. */
+export function useSiteData(): SiteData | null {
+  const [data, setData] = useState<SiteData | null>(null);
   useEffect(() => {
     let alive = true;
-    loadMenu().then((r) => alive && setRows(r));
+    loadSite().then((d) => alive && setData(d));
     return () => {
       alive = false;
     };
   }, []);
-  return rows;
+  return data;
+}
+
+/** null until the Sheet answers (or if it is unreachable/empty): callers then keep the built-in menu. */
+export function useSheetMenu(): SheetMenuRow[] | null {
+  return useSiteData()?.menu ?? null;
 }
 
 const norm = (s: string) => s.replace(/[’']/g, '').trim().toLowerCase();

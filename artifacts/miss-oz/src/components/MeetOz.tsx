@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Txt } from '../lib/siteText';
 
 const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 'italic' as const };
 
@@ -111,19 +112,16 @@ export default function MeetOz() {
         {/* Copy */}
         <motion.div {...rise} transition={{ duration: 0.7, delay: 0.25 }} className="meet-oz-copy mt-8 max-w-[640px] mx-auto text-center">
           <p className="mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
-            The shop is named after Oz, our beloved dog, and the reason we do things the way we do.
-            Oregon is about as dog-friendly as a place can be, and she made every corner of it hers.
+            <Txt k="oz.p1">{"The shop is named after Oz, our beloved dog, and the reason we do things the way we do. Oregon is about as dog-friendly as a place can be, and she made every corner of it hers."}</Txt>
           </p>
           <p className="mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
-            She keeps a close eye on the kitchen, stars in her own daily vlog for our guests, and comes
-            along when we travel to hunt down new flavors. Nothing goes on the menu until it passes her
-            inspection.
+            <Txt k="oz.p2">{"She keeps a close eye on the kitchen, stars in her own daily vlog for our guests, and comes along when we travel to hunt down new flavors. Nothing goes on the menu until it passes her inspection."}</Txt>
           </p>
           <p className="mb-[16px] text-[18px] leading-[1.5] text-[#1d0e0d]">
-            My shifts: Monday–Thursday, 10:30 AM–2:30 PM or 2:30–6:00 PM. My schedule may change from week to week. If you miss me, say hello to my photo on the wall! 🐾
+            <Txt k="oz.shifts">{"My shifts: Monday–Thursday, 10:30 AM–2:30 PM or 2:30–6:00 PM. My schedule may change from week to week. If you miss me, say hello to my photo on the wall! 🐾"}</Txt>
           </p>
           <p className="oz-pull-quote mt-10 text-[clamp(22px,2vw,28px)] leading-[1.35] text-[var(--berry)] md:mt-12" style={macklin}>
-            Oz has tested every flavor before you have.
+            <Txt k="oz.quote">{"Oz has tested every flavor before you have."}</Txt>
           </p>
         </motion.div>
 

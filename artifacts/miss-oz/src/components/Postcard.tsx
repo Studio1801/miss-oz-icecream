@@ -1,4 +1,5 @@
 import PawMark from './PawMark';
+import { Txt } from '../lib/siteText';
 
 import { useEffect, useRef, useState, type FocusEvent, type MouseEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -495,7 +496,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   marginTop: 'clamp(2px,0.4vw,6px)',
                 }}
               >
-                Sweet Memories Start Here.
+                <Txt k="hero.tagline">{"Sweet Memories Start Here."}</Txt>
               </div>
               {/* Subtext — keep the same description at every viewport size. */}
               <div
@@ -612,7 +613,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               className="hero-ribbon-copy mobile-minimum-12 text-center text-[var(--cream-hi)] tracking-[1.5px] sm:tracking-[5px] uppercase font-bold max-[639px]:whitespace-nowrap"
               style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(8px,0.85vw,11px)' }}
             >
-              Portland's Homegrown Ice Cream Cafe
+              <Txt k="hero.ribbon">{"Portland's Homegrown Ice Cream Cafe"}</Txt>
             </span>
             <span className="w-6 sm:w-10 h-px bg-[var(--gold-hi)] opacity-50" />
           </div>

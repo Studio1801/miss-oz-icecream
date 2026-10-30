@@ -159,6 +159,21 @@
   .vote-form input { font: inherit; font-size: 15px; color: var(--ink); padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
   .vote-form-foot { display: flex; justify-content: flex-end; align-items: center; gap: 18px; margin-top: 20px; }
   @media (max-width: 560px){ .req-actions { width: 100%; justify-content: space-between; } }
+
+  /* website text */
+  .txt-jump { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 6px; }
+  .txt-group { margin-top: 26px; }
+  .txt-group h3 { font-family: "Fraunces", serif; font-weight: 600; font-size: 19px; margin: 0 0 4px; scroll-margin-top: 20px; }
+  .txt-field { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 14px; padding: 14px 16px; margin-top: 10px; transition: border-color .25s ease, background .25s ease; }
+  .txt-field.dirty { border-color: #e8c98a; background: #fffaf0; }
+  .txt-field label { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 7px; }
+  .txt-field label span { font-weight: 600; color: var(--amber); }
+  .txt-field textarea { min-height: 1.5em; width: 100%; font: inherit; font-size: 15px; line-height: 1.5; color: var(--ink); background: transparent; border: 0; padding: 0; resize: none; outline: none; overflow: hidden; }
+  .publish-bar { position: sticky; bottom: 14px; margin-top: 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px 12px 18px; border-radius: 16px; background: var(--ink); color: #fff; box-shadow: 0 14px 34px rgba(43,26,34,.25); animation: rise .35s var(--ease) both; }
+  .publish-bar[hidden] { display: none; }
+  .publish-bar .link { color: #f3dfe6; text-decoration-color: rgba(255,255,255,.35); }
+  .publish-actions { display: flex; align-items: center; gap: 16px; }
+  @media (max-width: 560px){ .publish-bar { flex-direction: column; align-items: stretch; } .publish-actions { justify-content: space-between; } }
   .chip .n.new { color: var(--amber); font-weight: 700; }
   .chip.active .n.new { color: #f6d9a8; }
   .req { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; padding: 18px 20px; margin-top: 12px; }
@@ -279,6 +294,7 @@
   <div class="tabs" role="tablist">
     <button class="tab active" data-view="menu" role="tab">Menu</button>
     <button class="tab" data-view="subs" role="tab">Submissions<span class="badge" id="subsBadge">0</span></button>
+    <button class="tab" data-view="text" role="tab">Website text</button>
   </div>
   <div class="sync-note" id="syncNote"></div>
   <div class="alert" id="newAlert" role="status" aria-live="polite" hidden>
@@ -325,6 +341,20 @@
     <div class="feed" id="feed"></div>
   </section>
 
+  <!-- ============ WEBSITE TEXT ============ -->
+  <section class="view" id="view-text">
+    <div class="sub-head">
+      <h2>Words on your website</h2>
+      <p class="hint">Change any line, then publish. Your website shows the new wording to the next person who opens it. Leave a box empty to go back to the original wording.</p>
+    </div>
+    <div class="txt-jump" id="txtJump"></div>
+    <div id="txtGroups"></div>
+    <div class="publish-bar" id="publishBar" hidden>
+      <span id="publishCount"></span>
+      <div class="publish-actions"><button class="link" id="txtUndo">Undo all</button><button class="btn btn-wine btn-sm" id="txtPublish">Review and publish</button></div>
+    </div>
+  </section>
+
   <footer style="text-align:center;color:var(--ink-soft);font-size:13px;margin-top:34px">Pearl District, Portland. Small batch since 2007.</footer>
 </div>
 
@@ -367,6 +397,7 @@
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     t.classList.add("active"); $("view-" + t.dataset.view).classList.add("active");
     moveInk();
+    if (t.dataset.view === "text") document.querySelectorAll("#txtGroups textarea").forEach(fit);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }));
   const tabsEl = document.querySelector(".tabs");
@@ -786,6 +817,78 @@
   const SHEET_API = "https://script.google.com/macros/s/AKfycbwnYVZG5SwY9K0mBQZVsnqAGU00QXDr1m7Pqri8qlPX6GIbKZh4Ru9UsrsSSlLVgFCt/exec";                               // paste your Apps Script /exec URL here to go live
   let API_TOKEN = (() => { try { return localStorage.getItem("missoz-dash-pass") || ""; } catch(e){ return ""; } })();
   const live = () => !!SHEET_API;
+
+  // ---------- website text ----------
+  // Built-in wording, matching what the website shows when the Sheet has nothing for a line.
+  const TEXT_FIELDS = [{"key": "hero.tagline", "section": "Top of the homepage", "label": "Tagline under the logo", "text": "Sweet Memories Start Here."}, {"key": "hero.ribbon", "section": "Top of the homepage", "label": "Ribbon text", "text": "Portland's Homegrown Ice Cream Cafe"}, {"key": "band.pill", "section": "Scrolling band", "label": "Badge above the band", "text": "Small Batch, Big Heart"}, {"key": "band.one", "section": "Scrolling band", "label": "Band words 1", "text": "Portland's Own"}, {"key": "band.two", "section": "Scrolling band", "label": "Band words 2", "text": "Ice Cream Cafe"}, {"key": "band.three", "section": "Scrolling band", "label": "Band words 3", "text": "Est. 2007"}, {"key": "story.title", "section": "About us", "label": "Heading", "text": "About Miss Oz Ice Cream & Dessert"}, {"key": "story.p1", "section": "About us", "label": "Opening paragraph", "text": "Our story began in 2007 as Cool Moon Ice Cream, a neighborhood ice cream shop in Portland's Pearl District. When I took over in 2022, I wanted to honor what people already loved while bringing my own vision to life: a welcoming place to enjoy something sweet in every season."}, {"key": "story.p2", "section": "About us", "label": "Paragraph 2", "text": "Over time, that vision became Miss Oz Ice Cream & Dessert. Alongside our ice cream, made in small batches, we added coffee and homemade desserts, giving people more reasons to stop in, settle down, and enjoy a little time together."}, {"key": "story.p3", "section": "About us", "label": "Paragraph 3 (about Oz)", "text": "The name comes from my dog, Oz. This shop is the first business I've owned on my own, and Oz is the first dog I've raised as my own. Both hold a special place in my heart, and naming the shop after her felt like a natural way to bring that love into everything we do."}, {"key": "story.p4", "section": "About us", "label": "Paragraph 4", "text": "Today, we carry on the tradition of making ice cream that began here in 2007, crafting our ice cream from scratch in small batches. Our flavors range from familiar favorites to Kulfi, Thai Iced Tea, and Horchata, offering a taste of home for some and a little discovery for others."}, {"key": "story.p5", "section": "About us", "label": "Paragraph 5", "text": "At the heart of Miss Oz are the people who make it what it is: our customers, our team, and our neighbors. Whether you've been visiting since the Cool Moon days or are walking in for the first time, we're glad you're here. We hope you'll find a favorite flavor, a warm welcome, and a place that feels like part of your neighborhood."}, {"key": "story.lead", "section": "About us", "label": "Line before the motto", "text": "Our philosophy is simple:"}, {"key": "story.motto", "section": "About us", "label": "Motto", "text": "Small Batch. Big Heart."}, {"key": "story.p6", "section": "About us", "label": "Paragraph 6", "text": "We make our ice cream in small batches and our sauces from scratch, giving each the time and care it deserves. To us, that extra effort is part of the pleasure: a familiar flavor that makes you smile, or a new favorite you can't wait to share."}, {"key": "story.p7", "section": "About us", "label": "Paragraph 7", "text": "Inspired by the charm of 1950s ice cream parlors, we've created a place where you can slow down and enjoy the moment. The music, the atmosphere, and a scoop served with care are all invitations to stay a little longer."}, {"key": "story.p8", "section": "About us", "label": "Last paragraph", "text": "And the heart of it all is the people who walk through our door. Whether you're catching up with a friend, making memories with family, or simply treating yourself, we want you to feel welcome. At Miss Oz, we hope a little sweetness becomes a lovely part of your day."}, {"key": "oz.p1", "section": "Meet Oz", "label": "Paragraph 1", "text": "The shop is named after Oz, our beloved dog, and the reason we do things the way we do. Oregon is about as dog-friendly as a place can be, and she made every corner of it hers."}, {"key": "oz.p2", "section": "Meet Oz", "label": "Paragraph 2", "text": "She keeps a close eye on the kitchen, stars in her own daily vlog for our guests, and comes along when we travel to hunt down new flavors. Nothing goes on the menu until it passes her inspection."}, {"key": "oz.shifts", "section": "Meet Oz", "label": "Oz's shifts", "text": "My shifts: Monday–Thursday, 10:30 AM–2:30 PM or 2:30–6:00 PM. My schedule may change from week to week. If you miss me, say hello to my photo on the wall! 🐾"}, {"key": "oz.quote", "section": "Meet Oz", "label": "Pull quote", "text": "Oz has tested every flavor before you have."}, {"key": "cakes.title", "section": "Cheesecake", "label": "Name", "text": "Original Basque Cheesecake"}, {"key": "cakes.badge", "section": "Cheesecake", "label": "Small line", "text": "Made fresh weekly · by pre-order"}, {"key": "cakes.batch", "section": "Cheesecake", "label": "Heading", "text": "Handcrafted in Limited Weekly Batches"}, {"key": "cakes.body", "section": "Cheesecake", "label": "Description", "text": "Our whole Basque cheesecakes are made from scratch using 100% premium cream cheese and zero flour. Each cake is slow-baked, cooled at room temperature, and refrigerated overnight to develop its signature rich and creamy texture."}, {"key": "cakes.button", "section": "Cheesecake", "label": "Order button", "text": "Order a Whole Cheesecake →"}, {"key": "cakes.orders", "section": "Cheesecake", "label": "Orders box heading", "text": "Basque Cheesecake Orders"}, {"key": "cakes.ordersNote", "section": "Cheesecake", "label": "Orders box note", "text": "Made fresh to order in limited weekly batches."}, {"key": "events.title", "section": "Events page", "label": "Heading", "text": "Event Catering"}, {"key": "events.sub", "section": "Events page", "label": "Subheading", "text": "Private parties and weddings"}, {"key": "events.launch", "section": "Events page", "label": "Launch note", "text": "Event Catering will launch in Summer 2027."}, {"key": "events.body", "section": "Events page", "label": "Intro", "text": "We're preparing a new way to bring Miss Oz treats to your celebrations. In the meantime, tell us about your event so we can start planning."}, {"key": "events.form", "section": "Events page", "label": "Form heading", "text": "Tell us about your event"}, {"key": "wholesale.eyebrow", "section": "Wholesale page", "label": "Small label above heading", "text": "Wholesale program · Est. 2007"}, {"key": "wholesale.title", "section": "Wholesale page", "label": "Heading", "text": "Become our Wholesale Partner"}, {"key": "wholesale.sub", "section": "Wholesale page", "label": "Subheading", "text": "The same small-batch case, in sizes built for your menu."}, {"key": "wholesale.pitch", "section": "Wholesale page", "label": "Pitch next to photos", "text": "Small batches, churned fresh in the Pearl District. Let’s bring Miss Oz to your menu."}, {"key": "wholesale.offer", "section": "Wholesale page", "label": "Offerings heading", "text": "Wholesale Offerings"}, {"key": "wholesale.minimums", "section": "Wholesale page", "label": "Minimums and pickup schedule", "text": "Wholesale Order Minimums\n• Orders that include ice cream: $300 minimum total order. Cookies may count toward this minimum.\n• Cookie-only orders: Minimum 12 cookies per flavor. The $300 minimum does not apply.\n• All cookies must be ordered in quantities of 12 per flavor.\n\nWeekly Order & Pickup Schedule\nOrders close every Friday for pickup the following Wednesday after 2 PM. If you need a different pickup schedule, let us know when placing your order—we’ll do our best to accommodate you."}, {"key": "footer.sub", "section": "Footer", "label": "Line under the big heading", "text": "Miss Oz & the whole parlor."}, {"key": "footer.photo", "section": "Footer", "label": "Photo caption", "text": "off to find the next flavor"}, {"key": "footer.dogs", "section": "Footer", "label": "Dog-friendly note", "text": "Well-behaved pups welcome inside!"}, {"key": "footer.hours", "section": "Footer", "label": "Opening hours", "text": "OPEN DAILY\n11AM–10PM"}];
+  let textRows = {};          // key -> text, exactly as the Sheet holds it
+  let textEdits = {};         // key -> what she typed, not yet published
+  let textKey = "";           // last Sheet snapshot, to skip re-rendering when nothing changed
+  const SECTIONS = [...new Set(TEXT_FIELDS.map(f => f.section))];
+  const sid = sec => "tx-" + sec.toLowerCase().replace(/[^a-z]+/g, "-");
+  function fit(t){ if (!t.offsetParent) return; t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; }
+  function shown(f){ const v = textRows[f.key]; return (v == null || String(v).trim() === "") ? "" : String(v); }
+  function renderText(){
+    $("txtJump").innerHTML = SECTIONS.map(sec => '<button class="chip" data-jump="'+sid(sec)+'">'+h(sec)+'</button>').join("");
+    $("txtGroups").innerHTML = SECTIONS.map(sec =>
+      '<div class="txt-group"><h3 id="'+sid(sec)+'">'+h(sec)+'</h3>' +
+      TEXT_FIELDS.filter(f => f.section === sec).map(f => {
+        const val = f.key in textEdits ? textEdits[f.key] : (shown(f) || f.text);
+        const dirty = f.key in textEdits;
+        return '<div class="txt-field'+(dirty?' dirty':'')+'" data-key="'+f.key+'"><label for="tx_'+f.key+'">'+h(f.label)+(dirty?'<span>Not published yet</span>':'')+'</label>' +
+          '<textarea id="tx_'+f.key+'" rows="1">'+h(val)+'</textarea></div>';
+      }).join("") + '</div>').join("");
+    $("txtGroups").querySelectorAll("textarea").forEach(t => {
+      requestAnimationFrame(() => fit(t));
+      t.addEventListener("input", () => {
+        const key = t.closest(".txt-field").dataset.key, f = TEXT_FIELDS.find(x => x.key === key);
+        const live = shown(f) || f.text;
+        if (t.value === live) delete textEdits[key]; else textEdits[key] = t.value;
+        const box = t.closest(".txt-field"), dirty = key in textEdits;
+        box.classList.toggle("dirty", dirty);
+        const lab = box.querySelector("label"), tag = lab.querySelector("span");
+        if (dirty && !tag) lab.insertAdjacentHTML("beforeend", "<span>Not published yet</span>");
+        if (!dirty && tag) tag.remove();
+        fit(t); updatePublishBar();
+      });
+    });
+    $("txtJump").querySelectorAll("[data-jump]").forEach(b => b.addEventListener("click", () => $(b.dataset.jump).scrollIntoView({ behavior: "smooth", block: "start" })));
+    updatePublishBar();
+  }
+  function updatePublishBar(){
+    const n = Object.keys(textEdits).length;
+    $("publishBar").hidden = !n;
+    $("publishCount").textContent = n === 1 ? "1 change ready" : n + " changes ready";
+  }
+  // apply a fresh Sheet snapshot; lines she is editing keep her typing
+  function applyText(rows){
+    const key = JSON.stringify(rows || []);
+    if (key === textKey) return;
+    textKey = key;
+    textRows = {}; (rows || []).forEach(r => { if (r && r.key) textRows[String(r.key)] = r.text == null ? "" : String(r.text); });
+    renderText();
+  }
+  $("txtUndo").addEventListener("click", () => { textEdits = {}; renderText(); });
+  $("txtPublish").addEventListener("click", async () => {
+    const keys = Object.keys(textEdits); if (!keys.length) return;
+    const list = keys.map(k => { const f = TEXT_FIELDS.find(x => x.key === k); return "• " + f.section + ": " + f.label; }).join("\n");
+    const ok = await askConfirm(keys.length === 1 ? "Publish 1 change?" : "Publish " + keys.length + " changes?", list + "\n\nYour website shows the new wording to the next person who opens it.", "Yes, publish");
+    if (!ok) return;
+    const items = keys.map(k => {
+      const f = TEXT_FIELDS.find(x => x.key === k), typed = textEdits[k];
+      // clearing a box, or typing the original back, stores "" which means: use the original wording
+      const text = (typed.trim() === "" || typed === f.text) ? "" : typed;
+      return { key: k, text, before: textRows[k] == null ? "" : textRows[k] };
+    });
+    $("txtPublish").textContent = "Publishing...";
+    publishing = true;
+    const r = await write({ action: "saveText", items });
+    publishing = false;
+    $("txtPublish").textContent = "Review and publish";
+    if (r){ textEdits = {}; textKey = ""; applyText(r.text); }
+  });
+  let publishing = false;
+
   // ---------- sync ----------
   // The Sheet is the only truth. Every change is written, checked, then re-read.
   let menuVersion = null;     // version of the menu we last loaded from the Sheet
@@ -810,10 +913,11 @@
     catch(e){ res = { ok:false, error:"network" }; }
     finally { pending--; }
     if (!res || !res.ok){
-      if (res && res.error === "conflict") showSync("Your menu was changed on another device, so this screen now shows the latest version. Please make your last change again.");
+      if (res && res.error === "conflict" && res.keys) showSync("Some of that wording was changed on another device. The latest version is showing now and your edits are kept, so check them and publish again.");
+      else if (res && res.error === "conflict") showSync("Your menu was changed on another device, so this screen now shows the latest version. Please make your last change again.");
       else if (res && res.error === "unauthorized") askPassword("Please log in again.");
       else showSync("That change didn't save. The screen now shows what's actually in your Sheet. Please try again.");
-      lastMenuKey = lastSubsKey = "";   // force the screen back to exactly what the Sheet holds
+      lastMenuKey = lastSubsKey = textKey = "";   // force the screen back to exactly what the Sheet holds
       await refresh(true);
       return null;
     }
@@ -834,7 +938,8 @@
   let soonTimer = null;
   function refreshSoon(ms){ clearTimeout(soonTimer); soonTimer = setTimeout(() => refresh(false), ms); }
   function busyEditing(){
-    return pending > 0 || !!saveTimer || dishModal.classList.contains("show") || $("askModal").classList.contains("show") || editingVote || !!confirmKey;
+    const typing = document.activeElement && document.activeElement.closest && document.activeElement.closest("#txtGroups");
+    return pending > 0 || !!saveTimer || publishing || !!typing || dishModal.classList.contains("show") || $("askModal").classList.contains("show") || editingVote || !!confirmKey;
   }
   function setSynced(state){
     const el = $("syncedAt"); if (!el) return;
@@ -904,6 +1009,16 @@
       if (!firstLoad){ renderChips(); renderGrid(); updateRail(); }
     }
     menuVersion = st.menuVersion || menuVersion;
+
+    // website text: add any missing fields once, then show the Sheet's wording
+    if (Array.isArray(st.text)){
+      const have = new Set(st.text.map(r => String(r.key)));
+      if (firstLoad && TEXT_FIELDS.some(f => !have.has(f.key))){
+        const r = await write({ action:"seedText", fields: TEXT_FIELDS });
+        if (r && Array.isArray(r.text)) st.text = r.text;
+      }
+      applyText(st.text);
+    }
 
     // submissions and vote setup
     const subsKey = JSON.stringify([st.submissions || [], st.voteSetup || null]);

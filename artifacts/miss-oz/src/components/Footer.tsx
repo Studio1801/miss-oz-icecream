@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Txt } from '../lib/siteText';
 import { Bunting } from './Decor';
 import PawMark from './PawMark';
 import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE } from '../hooks/useMobileForm';
@@ -59,7 +60,7 @@ export default function Footer() {
             className="footer-subtitle text-[var(--pink)] mb-[60px] max-[639px]:mb-0 inline-block"
             style={{ fontFamily: 'var(--font-script)', fontSize: 30 }}
           >
-            Miss Oz &amp; the whole parlor.
+            <Txt k="footer.sub">{"Miss Oz & the whole parlor."}</Txt>
           </span>
         </div>
 
@@ -69,7 +70,7 @@ export default function Footer() {
         >
           <span aria-hidden="true" className="absolute -top-[11px] left-1/2 -translate-x-1/2 w-[64px] h-[20px] rotate-[3deg]" style={{ background: 'rgba(214,193,150,0.75)', boxShadow: '0 1px 3px rgba(28,13,12,0.2)' }} />
           <img loading="lazy" decoding="async" src="/images/oz-goggles.webp" alt="Oz the dog wearing driving goggles in the front seat of a car" width={388} height={486} className="w-full aspect-[4/5] object-cover rounded-[2px] sepia-[10%] saturate-[0.94]" />
-          <figcaption className="font-script-alt text-[16px] text-[var(--berry-deep)] text-center mt-[6px] leading-tight">off to find the next flavor</figcaption>
+          <figcaption className="font-script-alt text-[16px] text-[var(--berry-deep)] text-center mt-[6px] leading-tight"><Txt k="footer.photo">{"off to find the next flavor"}</Txt></figcaption>
         </figure>
       </div>
 
@@ -81,7 +82,7 @@ export default function Footer() {
           <p className="leading-[1.8] text-[#EFE2CE]"><a className="footer-text-link" href="https://www.google.com/maps/dir/?api=1&destination=1105+NW+Johnson+St%2C+Portland%2C+OR+97209" target="_blank" rel="noopener noreferrer">1105 NW Johnson St.<br />Portland, OR 97209</a></p>
           <p className="footer-dog-line mt-[10px] flex max-w-[230px] items-center gap-[7px] text-[13px] leading-snug text-[#EFE2CE]">
             <PawMark size={18} className="shrink-0 text-[var(--gold-hi)]" />
-            <span>Well-behaved pups welcome inside!</span>
+            <span><Txt k="footer.dogs">{"Well-behaved pups welcome inside!"}</Txt></span>
           </p>
         </div>
 
@@ -97,7 +98,7 @@ export default function Footer() {
         {/* Hours */}
         <div className="max-[639px]:min-w-0">
           <h2 className="footer-label text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Hours</h2>
-          <p className="leading-[1.8] text-[#EFE2CE]">OPEN DAILY<br />11AM–10PM</p>
+          <p className="leading-[1.8] text-[#EFE2CE]"><Txt k="footer.hours">{"OPEN DAILY\n11AM–10PM"}</Txt></p>
         </div>
 
         {/* Mailing List */}

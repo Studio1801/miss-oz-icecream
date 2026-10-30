@@ -1,15 +1,16 @@
+import { Txt } from '../lib/siteText';
 export default function Marquee() {
   // Scrolling brand ribbon — Portland roots, handmade, est. 2007.
   const segment = (
     <>
       <span className="font-script text-[var(--berry)] font-normal text-[28px] md:text-[38px] whitespace-nowrap">
-        Portland's Own
+        <Txt k="band.one">{"Portland's Own"}</Txt>
       </span>
       <span className="font-display font-normal uppercase text-[22px] md:text-[30px] text-[var(--cocoa)] tracking-[3px] whitespace-nowrap">
-        Ice Cream Cafe
+        <Txt k="band.two">{"Ice Cream Cafe"}</Txt>
       </span>
       <span className="font-display font-normal uppercase text-[18px] md:text-[24px] text-[var(--cocoa)] tracking-[4px] whitespace-nowrap">
-        Est. 2007
+        <Txt k="band.three">{"Est. 2007"}</Txt>
       </span>
     </>
   );
@@ -21,7 +22,7 @@ export default function Marquee() {
           <div
             className="mobile-marquee-pill inline-flex items-center gap-[10px] md:gap-3 rounded-full border border-[rgba(113,37,65,0.22)] bg-[rgba(244,169,199,0.16)] px-4 md:px-6 py-2 text-center font-display font-bold uppercase text-[var(--berry-deep)] tracking-[2px] md:tracking-[3px] text-[16px] md:text-[30px] whitespace-nowrap"
           >
-            Small Batch, Big Heart
+            <Txt k="band.pill">{"Small Batch, Big Heart"}</Txt>
           </div>
         </div>
         <div className="mq-track flex gap-10 w-max items-center animate-[mq_22s_linear_infinite]">

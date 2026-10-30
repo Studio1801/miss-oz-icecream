@@ -1,4 +1,5 @@
 import MenuPhotoGrid from './MenuPhotoGrid';
+import { Txt } from '../lib/siteText';
 import { CAKE_PHOTOS } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 
@@ -18,7 +19,7 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
         >
           <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full" style={{ background: 'rgba(227,180,76,0.25)' }} />
           <div className="relative text-[var(--berry-deep)] text-[clamp(25px,2.6vw,36px)] max-[430px]:text-[22.75px]" style={{ fontFamily: 'var(--font-script)', lineHeight: 1 }}>
-            Original Basque Cheesecake
+            <Txt k="cakes.title">{"Original Basque Cheesecake"}</Txt>
           </div>
           <p className="relative mt-[12px] rounded-[7px] px-3 py-2.5 text-[15px] max-[639px]:text-[14px] text-[#4D3538]" style={{ background: 'rgba(255,255,255,0.38)' }}>
             <strong className="text-[var(--berry-deep)]">Crafted fresh for every order.</strong> To ensure the highest quality and texture, our Basque Cheesecakes are available by pre-order only.
@@ -71,15 +72,13 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           }}
         >
           <div className="relative text-[var(--berry-deep)]" style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(18px,1.7vw,24px)', lineHeight: 1 }}>
-            Made fresh weekly · by pre-order
+            <Txt k="cakes.badge">{"Made fresh weekly · by pre-order"}</Txt>
           </div>
           <div className="relative mt-[9px] font-bold text-[var(--berry-deep)]" style={{ fontFamily: "'DM Serif Display', serif", fontStyle: 'italic', fontSize: 'clamp(20px,2vw,28px)', lineHeight: 1.12 }}>
-            Handcrafted in Limited Weekly Batches
+            <Txt k="cakes.batch">{"Handcrafted in Limited Weekly Batches"}</Txt>
           </div>
           <p className="relative mt-[11px] text-[15px] max-[639px]:text-[14px] text-[#4D3538]">
-            Our whole Basque cheesecakes are made from scratch using 100% premium cream cheese and
-            zero flour. Each cake is slow-baked, cooled at room temperature, and refrigerated
-            overnight to develop its signature rich and creamy texture.
+            <Txt k="cakes.body">{"Our whole Basque cheesecakes are made from scratch using 100% premium cream cheese and zero flour. Each cake is slow-baked, cooled at room temperature, and refrigerated overnight to develop its signature rich and creamy texture."}</Txt>
           </p>
         </div>
         <MenuPhotoGrid photos={CAKE_PHOTOS} />
@@ -93,7 +92,7 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           "
           style={{ fontFamily: 'var(--font-sans)', fontSize: '12px' }}
         >
-          Order a Whole Cheesecake →
+          <Txt k="cakes.button">{"Order a Whole Cheesecake →"}</Txt>
         </button>
       </div>
       <div>
@@ -103,10 +102,10 @@ export default function WholeCakesPanel({ onOrder }: { onOrder: () => void }) {
           style={{ background: 'rgba(94,23,53,0.05)', border: '1px dashed rgba(94,23,53,0.2)' }}
         >
           <div className="text-[var(--marionberry)]" style={{ fontFamily: 'var(--font-script)', fontSize: 'clamp(20px,1.8vw,26px)', lineHeight: 1.1 }}>
-            Basque Cheesecake Orders
+            <Txt k="cakes.orders">{"Basque Cheesecake Orders"}</Txt>
           </div>
           <p className="mt-[8px] text-[#6E5A54] leading-relaxed mobile-body-14" style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(10.5px,0.9vw,12.5px)' }}>
-            Made fresh to order in limited weekly batches.
+            <Txt k="cakes.ordersNote">{"Made fresh to order in limited weekly batches."}</Txt>
           </p>
         </div>
       </div>
