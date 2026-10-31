@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Txt } from '../lib/siteText';
 import InquireForm from './InquireForm';
 import { Starburst } from './Decor';
 
@@ -164,16 +165,16 @@ export default function Wholesale() {
       <div className="relative z-10 mx-auto max-w-[980px]">
         <motion.div {...rise} transition={{ duration: 0.65 }} className="mb-6 text-center">
           <span className="mobile-wholesale-eyebrow mb-4 block text-[11px] max-[639px]:text-[12px] font-bold tracking-[3px] text-[var(--berry-deep)]">
-            Wholesale program · Est. 2007
+            <Txt k="wholesale.eyebrow">{"Wholesale program · Est. 2007"}</Txt>
           </span>
           <h2
             className="wholesale-heading mb-4 text-[clamp(42px,6vw,70px)] leading-[0.98] text-[var(--berry-deep)]"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            Become our Wholesale Partner
+<Txt k="wholesale.title">{"Become our Wholesale Partner"}</Txt>
           </h2>
           <p className="wholesale-intro-copy mx-auto max-w-[500px] text-[18px] leading-relaxed text-[var(--cocoa)] md:text-[19px]">
-            The same small-batch case, in sizes built for your menu.
+            <Txt k="wholesale.sub">{"The same small-batch case, in sizes built for your menu."}</Txt>
           </p>
         </motion.div>
 
@@ -190,7 +191,7 @@ export default function Wholesale() {
                 For shops &amp; restaurants
               </span>
               <p className="mx-auto mt-5 max-w-[330px] text-[18px] leading-relaxed text-[var(--cream-hi)] md:text-[19px]">
-                Small batches, churned fresh in the Pearl District. Let’s bring Miss Oz to your menu.
+                <Txt k="wholesale.pitch">{"Small batches, churned fresh in the Pearl District. Let’s bring Miss Oz to your menu."}</Txt>
               </p>
             </div>
 
@@ -199,7 +200,7 @@ export default function Wholesale() {
                 className="text-center text-[25px] text-[var(--berry-deep)] md:text-[29px]"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                Wholesale Offerings
+                <Txt k="wholesale.offer">{"Wholesale Offerings"}</Txt>
               </h3>
 
               <div className="mt-5 space-y-4">
@@ -248,17 +249,7 @@ export default function Wholesale() {
               </div>
 
               <p className="wholesale-minimums mt-4 text-[13px] leading-relaxed max-[639px]:text-[13px] max-[639px]:leading-[1.5] text-[var(--cocoa)]/65" style={{ fontFamily: 'var(--font-sans)' }}>
-                Wholesale Order Minimums
-                <br />
-                • Orders that include ice cream: $300 minimum total order. Cookies may count toward this minimum.
-                <br />
-                • Cookie-only orders: Minimum 12 cookies per flavor. The $300 minimum does not apply.
-                <br />
-                • All cookies must be ordered in quantities of 12 per flavor.
-                <br /><br />
-                Weekly Order &amp; Pickup Schedule
-                <br />
-                Orders close every Friday for pickup the following Wednesday after 2 PM. If you need a different pickup schedule, let us know when placing your order—we’ll do our best to accommodate you.
+                <Txt k="wholesale.minimums">{"Wholesale Order Minimums\n• Orders that include ice cream: $300 minimum total order. Cookies may count toward this minimum.\n• Cookie-only orders: Minimum 12 cookies per flavor. The $300 minimum does not apply.\n• All cookies must be ordered in quantities of 12 per flavor.\n\nWeekly Order & Pickup Schedule\nOrders close every Friday for pickup the following Wednesday after 2 PM. If you need a different pickup schedule, let us know when placing your order—we’ll do our best to accommodate you."}</Txt>
               </p>
 
               <div className="mt-2 text-center">

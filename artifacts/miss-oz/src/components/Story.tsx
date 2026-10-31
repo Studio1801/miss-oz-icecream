@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Txt, useSiteText } from '../lib/siteText';
 import { Bunting } from './Decor';
 
 const macklin = { fontFamily: 'var(--font-groovy)', fontWeight: 400, fontStyle: 'italic' as const };
@@ -10,6 +11,7 @@ const rise = {
 };
 
 export default function Story() {
+  const storyOpen = useSiteText()('story.p1', "Our story began in 2007 as Cool Moon Ice Cream, a neighborhood ice cream shop in Portland's Pearl District. When I took over in 2022, I wanted to honor what people already loved while bringing my own vision to life: a welcoming place to enjoy something sweet in every season.");
   return (
     <section className="story-section parlour-paper relative py-[56px] md:py-[112px] px-[var(--edge)] md:px-[6vw] bg-[var(--cream)] overflow-hidden">
       <Bunting className="absolute top-0 left-0 right-0" />
@@ -58,7 +60,7 @@ export default function Story() {
         <div className="text-center">
           <motion.h2 {...rise} transition={{ duration: 0.7, delay: 0.15 }}
             className="text-[clamp(36px,5.4vw,72px)] leading-[1.02] text-[var(--cocoa)]" style={macklin}>
-            About Miss Oz Ice Cream &amp; Dessert
+            <Txt k="story.title">{"About Miss Oz Ice Cream & Dessert"}</Txt>
           </motion.h2>
         </div>
 
@@ -77,45 +79,45 @@ export default function Story() {
             className="story-drop-cap float-left mr-3 mt-1 leading-[0.72] text-[var(--berry)]"
             style={{ ...macklin, fontSize: '68px', textShadow: '1px 2px 0 rgba(28,13,12,0.15), -1px -1px 0 rgba(255,255,255,0.4)' }}
           >
-            O
+            {storyOpen.charAt(0)}
           </span>
-          ur story began in 2007 as Cool Moon Ice Cream, a neighborhood ice cream shop in Portland's Pearl District. When I took over in 2022, I wanted to honor what people already loved while bringing my own vision to life: a welcoming place to enjoy something sweet in every season.
+          {storyOpen.slice(1)}
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.3 }}
           className="mb-[18px] max-[639px]:mb-[14px] leading-[1.9] max-[639px]:leading-[1.6] text-[18px] max-[639px]:text-[16px] md:text-[19px] text-[#1d0e0d] text-left">
-          Over time, that vision became Miss Oz Ice Cream &amp; Dessert. Alongside our ice cream, made in small batches, we added coffee and homemade desserts, giving people more reasons to stop in, settle down, and enjoy a little time together.
+          <Txt k="story.p2">{"Over time, that vision became Miss Oz Ice Cream & Dessert. Alongside our ice cream, made in small batches, we added coffee and homemade desserts, giving people more reasons to stop in, settle down, and enjoy a little time together."}</Txt>
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.35 }}
           className="mb-[18px] max-[639px]:mb-[14px] leading-[1.9] max-[639px]:leading-[1.6] text-[18px] max-[639px]:text-[16px] md:text-[19px] text-[#1d0e0d] text-left">
-          The name comes from my dog, Oz. This shop is the first business I've owned on my own, and Oz is the first dog I've raised as my own. Both hold a special place in my heart, and naming the shop after her felt like a natural way to bring that love into everything we do.
+          <Txt k="story.p3">{"The name comes from my dog, Oz. This shop is the first business I've owned on my own, and Oz is the first dog I've raised as my own. Both hold a special place in my heart, and naming the shop after her felt like a natural way to bring that love into everything we do."}</Txt>
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.4 }}
           className="mb-[18px] max-[639px]:mb-[14px] leading-[1.9] max-[639px]:leading-[1.6] text-[18px] max-[639px]:text-[16px] md:text-[19px] text-[#1d0e0d] text-left">
-          Today, we carry on the tradition of making ice cream that began here in 2007, crafting our ice cream from scratch in small batches. Our flavors range from familiar favorites to Kulfi, Thai Iced Tea, and Horchata, offering a taste of home for some and a little discovery for others.
+          <Txt k="story.p4">{"Today, we carry on the tradition of making ice cream that began here in 2007, crafting our ice cream from scratch in small batches. Our flavors range from familiar favorites to Kulfi, Thai Iced Tea, and Horchata, offering a taste of home for some and a little discovery for others."}</Txt>
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.45 }}
           className="mb-[18px] max-[639px]:mb-[14px] leading-[1.9] max-[639px]:leading-[1.6] text-[18px] max-[639px]:text-[16px] md:text-[19px] text-[#1d0e0d] text-left">
-          At the heart of Miss Oz are the people who make it what it is: our customers, our team, and our neighbors. Whether you've been visiting since the Cool Moon days or are walking in for the first time, we're glad you're here. We hope you'll find a favorite flavor, a warm welcome, and a place that feels like part of your neighborhood.
+          <Txt k="story.p5">{"At the heart of Miss Oz are the people who make it what it is: our customers, our team, and our neighbors. Whether you've been visiting since the Cool Moon days or are walking in for the first time, we're glad you're here. We hope you'll find a favorite flavor, a warm welcome, and a place that feels like part of your neighborhood."}</Txt>
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.5 }}
           className="mb-1 leading-[1.9] max-[639px]:leading-[1.6] text-[18px] max-[639px]:text-[16px] md:text-[19px] text-[#1d0e0d] text-left">
-          Our philosophy is simple:
+          <Txt k="story.lead">{"Our philosophy is simple:"}</Txt>
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.55 }}
           className="mb-[18px] text-center font-script text-[clamp(26px,3.2vw,38px)] text-[var(--berry)] leading-snug">
-          Small Batch. Big Heart.
+          <Txt k="story.motto">{"Small Batch. Big Heart."}</Txt>
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.6 }}
           className="mb-[18px] max-[639px]:mb-[14px] leading-[1.9] max-[639px]:leading-[1.6] text-[18px] max-[639px]:text-[16px] md:text-[19px] text-[#1d0e0d] text-left">
-          We make our ice cream in small batches and our sauces from scratch, giving each the time and care it deserves. To us, that extra effort is part of the pleasure: a familiar flavor that makes you smile, or a new favorite you can't wait to share.
+          <Txt k="story.p6">{"We make our ice cream in small batches and our sauces from scratch, giving each the time and care it deserves. To us, that extra effort is part of the pleasure: a familiar flavor that makes you smile, or a new favorite you can't wait to share."}</Txt>
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.65 }}
           className="mb-[18px] max-[639px]:mb-[14px] leading-[1.9] max-[639px]:leading-[1.6] text-[18px] max-[639px]:text-[16px] md:text-[19px] text-[#1d0e0d] text-left">
-          Inspired by the charm of 1950s ice cream parlors, we've created a place where you can slow down and enjoy the moment. The music, the atmosphere, and a scoop served with care are all invitations to stay a little longer.
+          <Txt k="story.p7">{"Inspired by the charm of 1950s ice cream parlors, we've created a place where you can slow down and enjoy the moment. The music, the atmosphere, and a scoop served with care are all invitations to stay a little longer."}</Txt>
         </motion.p>
         <motion.p {...rise} transition={{ duration: 0.7, delay: 0.7 }}
           className="mb-[18px] max-[639px]:mb-[14px] leading-[1.9] max-[639px]:leading-[1.6] text-[18px] max-[639px]:text-[16px] md:text-[19px] text-[#1d0e0d] text-left">
-          And the heart of it all is the people who walk through our door. Whether you're catching up with a friend, making memories with family, or simply treating yourself, we want you to feel welcome. At Miss Oz, we hope a little sweetness becomes a lovely part of your day.
+          <Txt k="story.p8">{"And the heart of it all is the people who walk through our door. Whether you're catching up with a friend, making memories with family, or simply treating yourself, we want you to feel welcome. At Miss Oz, we hope a little sweetness becomes a lovely part of your day."}</Txt>
         </motion.p>
       </motion.div>
     </section>

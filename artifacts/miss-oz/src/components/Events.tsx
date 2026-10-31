@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Txt } from '../lib/siteText';
 import { Bunting, Starburst } from './Decor';
 import InquireForm from './InquireForm';
 
@@ -79,26 +80,26 @@ export default function Events() {
               className="mb-[14px] max-w-full break-words text-[clamp(46px,5.6vw,76px)] leading-[0.98] text-[var(--cocoa)]"
               style={macklin}
             >
-              Event Catering
+<Txt k="events.title">{"Event Catering"}</Txt>
             </motion.h2>
 
             <motion.p
               initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-0 max-w-full break-words text-[18px] font-semibold text-[var(--cocoa)] md:text-[20px]"
             >
-              Private parties and weddings
+              <Txt k="events.sub">{"Private parties and weddings"}</Txt>
             </motion.p>
             <motion.p
               initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.23 }}
               className="mt-[14px] max-w-[600px] break-words text-[20px] leading-relaxed text-[var(--cocoa)] md:text-[22px]"
             >
-              Event Catering will launch in Summer 2027.
+              <Txt k="events.launch">{"Event Catering will launch in Summer 2027."}</Txt>
             </motion.p>
             <motion.p
               initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.6, delay: 0.25 }}
               className="mt-[18px] w-full min-w-0 max-w-[600px] break-words text-[18px] italic leading-[1.55] text-[var(--cocoa)] opacity-75 md:text-[20px]"
             >
-              We're preparing a new way to bring Miss Oz treats to your celebrations. In the meantime, tell us about your event so we can start planning.
+              <Txt k="events.body">{"We're preparing a new way to bring Miss Oz treats to your celebrations. In the meantime, tell us about your event so we can start planning."}</Txt>
             </motion.p>
           </div>
 
@@ -126,7 +127,7 @@ export default function Events() {
             className="mb-[10px] text-[clamp(26px,2.4vw,32px)] leading-tight text-[var(--berry-deep)]"
             style={{ fontFamily: 'var(--font-script)', fontStyle: 'italic', fontWeight: 400 }}
           >
-            Tell us about your event
+            <Txt k="events.form">{"Tell us about your event"}</Txt>
           </h3>
           <InquireForm
             type="event"
