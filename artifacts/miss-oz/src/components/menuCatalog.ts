@@ -5,6 +5,8 @@ export type MenuItem = {
   price?: string;
   note?: string;
   seasonalLabel?: string;
+  /** photo framing from the dashboard, "x y zoom" */
+  crop?: string;
 };
 
 export const MENU_CATEGORIES = ['Flavors', 'Sundaes', 'Croffles & Desserts', 'Drinks', 'Whole Cakes'] as const;

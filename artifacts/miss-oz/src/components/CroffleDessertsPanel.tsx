@@ -2,6 +2,7 @@ import MenuPhotoGrid from './MenuPhotoGrid';
 import MenuProductList from './MenuProductList';
 import { CROFFLE_PHOTOS, DESSERTS, DESSERT_PHOTOS, CROFFLES, UBEREATS_URL } from './menuCatalog';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
+import { cropFor } from '../lib/crop';
 import { MenuDivider } from './MenuPanelShared';
 
 export default function CroffleDessertsPanel() {
@@ -23,7 +24,7 @@ export default function CroffleDessertsPanel() {
           </section>
         </div>
         <div className="mt-[clamp(18px,2.2vw,28px)]">
-          <MenuPhotoGrid photos={CROFFLE_PHOTOS} showCaptions={false} />
+          <MenuPhotoGrid photos={CROFFLE_PHOTOS.map((p) => ({ ...p, crop: cropFor(croffles, p.caption) }))} showCaptions={false} />
         </div>
         <div className="mt-[clamp(20px,2.4vw,30px)] text-center">
           <div
@@ -39,7 +40,7 @@ export default function CroffleDessertsPanel() {
             A few of the housemade sweets you may find at Miss Oz.
           </p>
           <div className="mt-[14px]">
-            <MenuPhotoGrid photos={DESSERT_PHOTOS} />
+            <MenuPhotoGrid photos={DESSERT_PHOTOS.map((p) => ({ ...p, crop: cropFor(desserts, p.caption) }))} />
           </div>
         </div>
       </div>

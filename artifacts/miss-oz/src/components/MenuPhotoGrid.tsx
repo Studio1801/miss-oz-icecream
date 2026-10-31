@@ -1,8 +1,10 @@
+import { cropStyle } from '../lib/crop';
 export type MenuPhotoGridItem = {
   src: string;
   alt: string;
   caption: string;
   objectPosition?: string;
+  crop?: string;
 };
 
 type MenuPhotoGridProps = {
@@ -48,7 +50,7 @@ export default function MenuPhotoGrid({
               loading="lazy"
               decoding="async"
               className={`block ${imageAspect} w-full object-cover`}
-              style={{ objectPosition: photo.objectPosition }}
+              style={cropStyle(photo.crop) ?? { objectPosition: photo.objectPosition }}
             />
             {showCaptions && (
               <figcaption
