@@ -68,6 +68,15 @@
   /* menu layout */
   .menu-layout { display: grid; grid-template-columns: 1fr 304px; gap: 26px; align-items: start; }
 
+  #menuChips { position: sticky; top: 0; z-index: 6; background: var(--paper); padding: 10px 0; margin-top: -10px; }
+  .menu-sec { margin-bottom: 34px; scroll-margin-top: 70px; }
+  .menu-sec:last-child { margin-bottom: 0; }
+  .menu-sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .menu-sec-head h3 { font-family: "Fraunces", serif; font-weight: 600; font-size: 21px; margin: 0; }
+  .menu-sec-head .meta { font-size: 13.5px; color: var(--ink-soft); margin-left: 10px; font-weight: 500; }
+  .menu-sec-head .meta .off { color: var(--amber); font-weight: 600; }
+  .menu-sec-head .add { white-space: nowrap; }
+  .menu-empty { color: var(--ink-soft); font-size: 14px; padding: 10px 2px; }
   .dish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(188px, 1fr)); gap: 16px; }
   .dish { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
   .dish.off { opacity: .5; }
@@ -349,7 +358,7 @@
     <div class="chips" id="menuChips"></div>
 
     <div class="menu-layout">
-      <div class="dish-grid" id="dishGrid"></div>
+      <div class="menu-secs" id="dishGrid"></div>
       <aside class="rail">
         <h3>Your menu</h3>
         <div class="big"><span id="railTotal">0</span><span>dishes on your website</span></div>
@@ -533,7 +542,11 @@
       const b = document.createElement("button");
       b.className = "chip" + (menuFilter===key ? " active" : "");
       b.innerHTML = label + '<span class="n">' + n + '</span>';
-      b.addEventListener("click", () => { menuFilter = key; renderChips(); renderGrid(); swapIn(grid); });
+      b.addEventListener("click", () => {
+        menuFilter = key; renderChips();
+        if (key === "all") window.scrollTo({ top: 0, behavior: "smooth" });
+        else { const el = document.getElementById(secId(key)); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }
+      });
       menuChips.appendChild(b);
     };
     mk("all","All", dishes.length);
@@ -542,8 +555,25 @@
 
   function renderGrid(){
     const q = $("dishSearch").value.trim().toLowerCase();
-    const rows = dishes.filter(d => (menuFilter==="all" || d.cat===menuFilter) && (!q || d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q)));
+    const rows = dishes.filter(d => !q || d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q));
     grid.innerHTML = "";
+    // one block per menu section, in menu order, all on this page
+    const cats = CATS.concat([...new Set(dishes.map(d => d.cat))].filter(c => !CATS.includes(c)));
+    const holders = {};
+    cats.forEach(cat => {
+      const inCat = rows.filter(d => d.cat === cat);
+      if (!inCat.length && q) return;
+      const all = dishes.filter(d => d.cat === cat), off = all.filter(d => !d.on).length;
+      const sec = document.createElement("section");
+      sec.className = "menu-sec"; sec.id = secId(cat);
+      sec.innerHTML = '<div class="menu-sec-head"><div><h3 style="display:inline">'+h(cat)+'</h3><span class="meta">'+all.length+(all.length===1?" item":" items")+(off ? ' &middot; <span class="off">'+off+' hidden</span>' : '')+'</span></div>' +
+        '<button class="link add" data-add="'+h(cat)+'">+ Add to '+h(cat)+'</button></div>' +
+        (inCat.length ? '<div class="dish-grid"></div>' : '<p class="menu-empty">Nothing here yet.</p>');
+      sec.querySelector("[data-add]").addEventListener("click", () => { openDish(null); $("dmCat").value = cat; });
+      grid.appendChild(sec);
+      holders[cat] = sec.querySelector(".dish-grid");
+    });
+    if (!grid.children.length) grid.innerHTML = '<p class="menu-empty">No dish matches that search.</p>';
     rows.forEach(d => {
       const card = document.createElement("div");
       card.className = "dish" + (d.on ? "" : " off");
@@ -554,7 +584,6 @@
           '<button class="edit-btn" type="button" aria-label="Edit dish">'+PENCIL+'</button>' +
         '</div>' +
         '<div class="dish-body">' +
-          '<div class="dish-cat">'+d.cat+'</div>' +
           '<div class="dish-name">'+d.name+'</div>' +
           (d.desc ? '<div class="dish-desc">'+d.desc+'</div>' : '') +
           '<div class="dish-foot"><label class="switch"><input type="checkbox"'+(d.on?' checked':'')+'><span class="sw-track"><span class="sw-knob"></span></span><span class="sw-label">On the menu</span></label></div>' +
@@ -572,9 +601,10 @@
         if (!ok) return;
         d.on = want; e.target.checked = want; card.classList.toggle("off", !d.on); updateRail(); persistMenu();
       });
-      grid.appendChild(card);
+      (holders[d.cat] || grid).appendChild(card);
     });
   }
+  function secId(cat){ return "sec-" + String(cat).toLowerCase().replace(/[^a-z]+/g, "-"); }
 
   function updateRail(){
     const total = dishes.length, off = dishes.filter(d=>!d.on).length, noPhoto = dishes.filter(d=>!d.photo).length;
