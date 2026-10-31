@@ -40,7 +40,9 @@
   .tab:hover { color: var(--ink); }
   .tab.active { color: var(--wine); }
 
-  .tab .badge { font-size: 12px; color: var(--wine); background: var(--blush); border-radius: 999px; padding: 1px 8px; margin-left: 6px; font-weight: 700; }
+  .tab .badge[hidden] { display: none; }
+  .tab { display: inline-flex; align-items: center; }
+  .tab .badge { line-height: 18px; font-size: 12px; color: var(--wine); background: var(--blush); border-radius: 999px; padding: 1px 8px; margin-left: 6px; font-weight: 700; }
 
   .view { display: none; }
   .view.active { display: block; animation: rise .38s var(--ease) both; }
@@ -130,7 +132,7 @@
   .modal.ask h2 { font-family: "Fraunces", serif; font-weight: 600; font-size: 20px; margin: 0 0 8px; }
   .modal.ask p { margin: 0; color: var(--ink-soft); font-size: 15px; white-space: pre-line; }
   .modal.ask .modal-foot { margin-top: 20px; }
-  .alert { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 14px 0 0; padding: 14px 16px; border-radius: 14px; background: #fdf1d9; border: 1px solid #efd9a6; }
+  .alert { margin-bottom: 22px !important; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 14px 0 0; padding: 14px 16px; border-radius: 14px; background: #fdf1d9; border: 1px solid #efd9a6; }
   .alert[hidden] { display: none; }
   .alert-text { display: flex; flex-direction: column; gap: 2px; }
   .alert-text strong { font-size: 15.5px; color: #6b4a0f; }
@@ -161,19 +163,55 @@
   @media (max-width: 560px){ .req-actions { width: 100%; justify-content: space-between; } }
 
   /* website text */
-  .txt-jump { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 6px; }
-  .txt-group { margin-top: 26px; }
-  .txt-group h3 { font-family: "Fraunces", serif; font-weight: 600; font-size: 19px; margin: 0 0 4px; scroll-margin-top: 20px; }
-  .txt-field { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 14px; padding: 14px 16px; margin-top: 10px; transition: border-color .25s ease, background .25s ease; }
-  .txt-field.dirty { border-color: #e8c98a; background: #fffaf0; }
-  .txt-field label { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 7px; }
-  .txt-field label span { font-weight: 600; color: var(--amber); }
-  .txt-field textarea { min-height: 1.5em; width: 100%; font: inherit; font-size: 15px; line-height: 1.5; color: var(--ink); background: transparent; border: 0; padding: 0; resize: none; outline: none; overflow: hidden; }
+  .txt-layout > * { min-width: 0; }
+  .txt-layout { display: grid; grid-template-columns: 220px 1fr; gap: 28px; margin-top: 22px; align-items: start; }
+  .txt-side { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .txt-search { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink-soft); transition: border-color .2s ease, box-shadow .2s ease; }
+  .txt-search:focus-within { border-color: var(--wine); box-shadow: 0 0 0 3px rgba(99,15,57,.08); }
+  .txt-search input { border: 0; outline: none; font: inherit; font-size: 14.5px; color: var(--ink); background: transparent; width: 100%; }
+  .txt-nav { display: flex; flex-direction: column; gap: 2px; }
+  .txt-nav button { display: flex; justify-content: space-between; align-items: center; text-align: left; font: inherit; font-size: 14.5px; font-weight: 500; color: var(--ink-soft); background: none; border: 0; border-radius: 10px; padding: 9px 12px; cursor: pointer; transition: background .2s ease, color .2s ease; }
+  .txt-nav button:hover { background: var(--surface); color: var(--ink); }
+  .txt-nav button.on { background: var(--surface); color: var(--wine); font-weight: 600; box-shadow: 0 1px 0 var(--line-soft); }
+  .txt-nav .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+  .txt-card { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 18px; padding: 6px 22px; margin-bottom: 18px; scroll-margin-top: 16px; }
+  .txt-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 16px 0 6px; }
+  .txt-card-head h3 { font-family: "Fraunces", serif; font-weight: 600; font-size: 19px; margin: 0; }
+  .txt-card-head a { font-size: 13px; font-weight: 600; color: var(--wine); text-decoration: none; white-space: nowrap; }
+  .txt-card-head a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .txt-row { display: grid; grid-template-columns: 190px 1fr; gap: 18px; padding: 14px 0; border-top: 1px solid var(--line-soft); }
+  .txt-card-head + .txt-row { border-top: 0; }
+  .txt-row[hidden] { display: none; }
+  .txt-meta { padding-top: 10px; }
+  .txt-meta .lab { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .txt-meta .state { display: block; margin-top: 3px; font-size: 12.5px; color: var(--ink-soft); }
+  .txt-meta .state.pending { color: var(--amber); font-weight: 600; }
+  .txt-meta .state.custom { color: var(--green); }
+  .txt-meta .reset { margin-top: 4px; font-size: 12.5px; }
+  .txt-row textarea { width: 100%; min-height: 1.5em; font: inherit; font-size: 15.5px; line-height: 1.55; color: var(--ink); background: var(--paper); border: 1px solid transparent; border-radius: 12px; padding: 9px 12px; resize: none; outline: none; overflow: hidden; transition: border-color .2s ease, background .2s ease, box-shadow .2s ease; }
+  .txt-row textarea:hover { border-color: var(--line); }
+  .txt-row textarea:focus { background: #fff; border-color: var(--wine); box-shadow: 0 0 0 3px rgba(99,15,57,.08); }
+  .txt-row.dirty textarea { background: #fffaf0; border-color: #e8c98a; }
+  .txt-empty { color: var(--ink-soft); font-size: 14px; padding: 8px 2px; }
+  @media (max-width: 820px){
+    .txt-layout { grid-template-columns: 1fr; gap: 14px; }
+    .txt-side { position: static; }
+    .txt-nav { flex-direction: row; overflow-x: auto; gap: 6px; padding-bottom: 2px; }
+    .txt-nav button { white-space: nowrap; border: 1px solid var(--line); background: var(--surface); padding: 7px 13px; border-radius: 999px; gap: 6px; }
+    .txt-row { grid-template-columns: 1fr; gap: 6px; }
+    .txt-meta { padding-top: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+    .txt-meta .state { display: inline; margin: 0; }
+    .txt-card { padding: 4px 16px; }
+  }
   .publish-bar { position: sticky; bottom: 14px; margin-top: 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px 12px 18px; border-radius: 16px; background: var(--ink); color: #fff; box-shadow: 0 14px 34px rgba(43,26,34,.25); animation: rise .35s var(--ease) both; }
   .publish-bar[hidden] { display: none; }
   .publish-bar .link { color: #f3dfe6; text-decoration-color: rgba(255,255,255,.35); }
   .publish-actions { display: flex; align-items: center; gap: 16px; }
   @media (max-width: 560px){ .publish-bar { flex-direction: column; align-items: stretch; } .publish-actions { justify-content: space-between; } }
+  .period { display: inline-flex; gap: 2px; padding: 3px; margin-top: 16px; background: var(--line-soft); border-radius: 12px; }
+  .period button { font: inherit; font-size: 13.5px; font-weight: 600; color: var(--ink-soft); background: none; border: 0; border-radius: 9px; padding: 7px 14px; cursor: pointer; transition: background .25s ease, color .25s ease, box-shadow .25s ease; }
+  .period button.on { background: var(--surface); color: var(--wine); box-shadow: 0 1px 3px rgba(43,26,34,.1); }
+  .period-note { color: var(--ink-soft); font-size: 13.5px; margin: 14px 2px 0; }
   .chip .n.new { color: var(--amber); font-weight: 700; }
   .chip.active .n.new { color: #f6d9a8; }
   .req { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 16px; padding: 18px 20px; margin-top: 12px; }
@@ -337,7 +375,10 @@
       <h2>Everything from your site</h2>
       <p class="hint">Everything people send through your website. Reply, then mark it handled so you know it's done.</p>
     </div>
-    <div class="chips" id="subChips" style="margin-top:16px"></div>
+    <div class="period" id="period" role="tablist" aria-label="Time period">
+      <button data-p="week" role="tab">This week</button><button data-p="month" role="tab" class="on">This month</button><button data-p="all" role="tab">All time</button>
+    </div>
+    <div class="chips" id="subChips" style="margin-top:14px"></div>
     <div class="feed" id="feed"></div>
   </section>
 
@@ -347,8 +388,13 @@
       <h2>Words on your website</h2>
       <p class="hint">Change any line, then publish. Your website shows the new wording to the next person who opens it. Leave a box empty to go back to the original wording.</p>
     </div>
-    <div class="txt-jump" id="txtJump"></div>
-    <div id="txtGroups"></div>
+    <div class="txt-layout">
+      <aside class="txt-side">
+        <label class="txt-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="txtSearch" placeholder="Find a line" autocomplete="off"></label>
+        <nav class="txt-nav" id="txtJump" aria-label="Pages"></nav>
+      </aside>
+      <div id="txtGroups"></div>
+    </div>
     <div class="publish-bar" id="publishBar" hidden>
       <span id="publishCount"></span>
       <div class="publish-actions"><button class="link" id="txtUndo">Undo all</button><button class="btn btn-wine btn-sm" id="txtPublish">Review and publish</button></div>
@@ -639,10 +685,30 @@
       ? '<span class="sure">'+sure+' <button class="link danger" data-act="'+key+'">Yes</button> <button class="link" data-act="cancel">No</button></span>'
       : '<button class="link danger" data-ask="'+key+'">'+label+'</button>';
   }
+  let period = "month";
+  function dayOf(x){
+    const m = String((x && x.date) || "").match(/(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return new Date(+m[1], +m[2]-1, +m[3]);
+    const d = new Date(x && x.date); return isNaN(d) ? null : new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+  function inPeriod(s){
+    if (period === "all") return true;
+    const d = dayOf(s.raw); if (!d) return true;
+    const now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    if (period === "month") return d.getFullYear() === today.getFullYear() && d.getMonth() === today.getMonth();
+    const start = new Date(today); start.setDate(today.getDate() - ((today.getDay() + 6) % 7));   // Monday
+    return d >= start;
+  }
+  const visibleSubs = () => subs.filter(inPeriod);
+  $("period").querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    period = b.dataset.p; showHandled = false;
+    $("period").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
+    renderSubChips(); renderFeed(); swapIn(feed);
+  }));
   function renderSubChips(){
     subChips.innerHTML = "";
     SUB_TYPES.forEach(t => {
-      const all = subs.filter(s=>s.type===t.key);
+      const all = visibleSubs().filter(s=>s.type===t.key);
       const fresh = all.filter(s=>s.status==="new").length;
       const b = document.createElement("button");
       b.className = "chip" + (subFilter===t.key ? " active" : "");
@@ -696,13 +762,15 @@
       '</footer></article>';
   }
   function renderFeed(){
-    const rows = subs.filter(s => s.type===subFilter).slice().reverse();
+    const rows = visibleSubs().filter(s => s.type===subFilter).slice().reverse();
+    const older = subs.filter(s => s.type===subFilter && !inPeriod(s) && isAction(s.type) && s.status==="new").length;
     const label = (SUB_TYPES.find(t=>t.key===subFilter)||{}).label || "";
-    if (!rows.length && subFilter !== "vote"){ feed.innerHTML = '<p class="empty">'+(syncFailed ? "" : (subs.length ? "No "+label.toLowerCase()+" yet." : "Nothing yet. Anything sent through your website shows up here."))+'</p>'; return; }
+    if (!rows.length && subFilter !== "vote" && !older){ feed.innerHTML = '<p class="empty">'+(syncFailed ? "" : (subs.length ? "No "+label.toLowerCase()+(period==="all" ? " yet." : period==="week" ? " this week." : " this month.") : "Nothing yet. Anything sent through your website shows up here."))+'</p>'; return; }
     let html = "";
     if (isAction(subFilter)){
       const open = rows.filter(s=>s.status==="new"), done = rows.filter(s=>s.status!=="new");
-      html += open.length ? open.map(reqCard).join("") : '<p class="empty">All caught up. Nothing waiting on you.</p>';
+      html += open.length ? open.map(reqCard).join("") : '<p class="empty">'+(older ? 'Nothing new '+(period==="week"?"this week":"this month")+'.' : 'All caught up. Nothing waiting on you.')+'</p>';
+      if (older) html += '<p class="period-note">'+older+' older '+(older===1?"one is":"ones are")+' still waiting. <button class="link" data-p-all>Show all time</button></p>';
       if (done.length){
         html += '<button class="show-more" id="smBtn">'+(showHandled ? "Hide handled" : "Show "+done.length+" handled")+'</button>';
         if (showHandled) html += done.map(reqCard).join("");
@@ -732,6 +800,7 @@
       setSubStatus(s, s.status === "new" ? "handled" : "new");
     }));
     const sm = $("smBtn"); if(sm) sm.addEventListener("click", ()=>{ showHandled = !showHandled; renderFeed(); });
+    const pa = feed.querySelector("[data-p-all]"); if (pa) pa.addEventListener("click", () => $("period").querySelector('[data-p="all"]').click());
     const byN = n => subs.find(x => String(x.n) === String(n));
     feed.querySelectorAll("[data-ask]").forEach(b => b.addEventListener("click", () => { confirmKey = b.dataset.ask; renderFeed(); }));
     feed.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => {
@@ -805,13 +874,14 @@
   }
   $("alertGo").addEventListener("click", () => {
     subFilter = $("newAlert").dataset.go || subFilter; showHandled = false;
+    period = "all"; $("period").querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.p === "all"));
     const t = document.querySelector('.tab[data-view="subs"]'); if (t) t.click();
     renderSubChips(); renderFeed(); window.scrollTo({ top: 0, behavior: "smooth" });
   });
   function updateBadge(){
     updateAlert();
     const n = subs.filter(s => isAction(s.type) && s.status==="new").length;
-    const b = $("subsBadge"); b.textContent = n; b.style.visibility = n ? "visible" : "hidden";
+    const b = $("subsBadge"); b.textContent = n; b.hidden = !n; requestAnimationFrame(moveInk);
   }
   // ---------- google sheets backend ----------
   const SHEET_API = "https://script.google.com/macros/s/AKfycbwnYVZG5SwY9K0mBQZVsnqAGU00QXDr1m7Pqri8qlPX6GIbKZh4Ru9UsrsSSlLVgFCt/exec";                               // paste your Apps Script /exec URL here to go live
@@ -828,33 +898,61 @@
   const sid = sec => "tx-" + sec.toLowerCase().replace(/[^a-z]+/g, "-");
   function fit(t){ if (!t.offsetParent) return; t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; }
   function shown(f){ const v = textRows[f.key]; return (v == null || String(v).trim() === "") ? "" : String(v); }
+  const PAGE_LINK = { "Top of the homepage":"/", "Scrolling band":"/", "About us":"/about", "Meet Oz":"/about#oz", "Cheesecake":"/#menu", "Events page":"/events", "Wholesale page":"/wholesale", "Footer":"/" };
+  let txtQuery = "";
+  function rowState(f){
+    if (f.key in textEdits) return '<span class="state pending">Not published yet</span>';
+    if (shown(f) && shown(f) !== f.text) return '<span class="state custom">Your wording</span><button class="link reset" data-reset="'+f.key+'">Use original</button>';
+    return '<span class="state">Original wording</span>';
+  }
   function renderText(){
-    $("txtJump").innerHTML = SECTIONS.map(sec => '<button class="chip" data-jump="'+sid(sec)+'">'+h(sec)+'</button>').join("");
-    $("txtGroups").innerHTML = SECTIONS.map(sec =>
-      '<div class="txt-group"><h3 id="'+sid(sec)+'">'+h(sec)+'</h3>' +
-      TEXT_FIELDS.filter(f => f.section === sec).map(f => {
-        const val = f.key in textEdits ? textEdits[f.key] : (shown(f) || f.text);
-        const dirty = f.key in textEdits;
-        return '<div class="txt-field'+(dirty?' dirty':'')+'" data-key="'+f.key+'"><label for="tx_'+f.key+'">'+h(f.label)+(dirty?'<span>Not published yet</span>':'')+'</label>' +
-          '<textarea id="tx_'+f.key+'" rows="1">'+h(val)+'</textarea></div>';
-      }).join("") + '</div>').join("");
+    const q = txtQuery.trim().toLowerCase();
+    const match = f => !q || (f.label + " " + f.section + " " + (f.key in textEdits ? textEdits[f.key] : (shown(f) || f.text))).toLowerCase().includes(q);
+    $("txtJump").innerHTML = SECTIONS.map(sec => {
+      const edits = TEXT_FIELDS.some(f => f.section === sec && f.key in textEdits);
+      return '<button data-jump="'+sid(sec)+'"><span>'+h(sec)+'</span>'+(edits ? '<span class="dot" aria-label="unpublished changes"></span>' : '')+'</button>';
+    }).join("");
+    const html = SECTIONS.map(sec => {
+      const rows = TEXT_FIELDS.filter(f => f.section === sec && match(f));
+      if (!rows.length) return "";
+      return '<section class="txt-card" id="'+sid(sec)+'"><div class="txt-card-head"><h3>'+h(sec)+'</h3><a href="https://www.missozicecream.com'+(PAGE_LINK[sec]||"/")+'" target="_blank" rel="noopener">See it on the site</a></div>' +
+        rows.map(f => {
+          const dirty = f.key in textEdits;
+          const val = dirty ? textEdits[f.key] : (shown(f) || f.text);
+          return '<div class="txt-row'+(dirty?' dirty':'')+'" data-key="'+f.key+'"><div class="txt-meta"><label class="lab" for="tx_'+f.key+'">'+h(f.label)+'</label>'+rowState(f)+'</div>' +
+            '<textarea id="tx_'+f.key+'" rows="1" spellcheck="true">'+h(val)+'</textarea></div>';
+        }).join("") + '</section>';
+    }).join("");
+    $("txtGroups").innerHTML = html || '<p class="txt-empty">No line matches "'+h(txtQuery)+'".</p>';
     $("txtGroups").querySelectorAll("textarea").forEach(t => {
-      requestAnimationFrame(() => fit(t));
+      requestAnimationFrame(() => requestAnimationFrame(() => fit(t)));
       t.addEventListener("input", () => {
-        const key = t.closest(".txt-field").dataset.key, f = TEXT_FIELDS.find(x => x.key === key);
-        const live = shown(f) || f.text;
-        if (t.value === live) delete textEdits[key]; else textEdits[key] = t.value;
-        const box = t.closest(".txt-field"), dirty = key in textEdits;
-        box.classList.toggle("dirty", dirty);
-        const lab = box.querySelector("label"), tag = lab.querySelector("span");
-        if (dirty && !tag) lab.insertAdjacentHTML("beforeend", "<span>Not published yet</span>");
-        if (!dirty && tag) tag.remove();
+        const row = t.closest(".txt-row"), key = row.dataset.key, f = TEXT_FIELDS.find(x => x.key === key);
+        if (t.value === (shown(f) || f.text)) delete textEdits[key]; else textEdits[key] = t.value;
+        row.classList.toggle("dirty", key in textEdits);
+        const meta = row.querySelector(".txt-meta"); meta.querySelectorAll(".state,.reset").forEach(x => x.remove());
+        meta.insertAdjacentHTML("beforeend", rowState(f)); wireResets(meta);
+        const navBtn = $("txtJump").querySelector('[data-jump="'+sid(f.section)+'"]');
+        const edits = TEXT_FIELDS.some(x => x.section === f.section && x.key in textEdits), dot = navBtn.querySelector(".dot");
+        if (edits && !dot) navBtn.insertAdjacentHTML("beforeend", '<span class="dot"></span>'); if (!edits && dot) dot.remove();
         fit(t); updatePublishBar();
       });
     });
-    $("txtJump").querySelectorAll("[data-jump]").forEach(b => b.addEventListener("click", () => $(b.dataset.jump).scrollIntoView({ behavior: "smooth", block: "start" })));
+    wireResets($("txtGroups"));
+    $("txtJump").querySelectorAll("[data-jump]").forEach(b => b.addEventListener("click", () => {
+      const el = $(b.dataset.jump); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      $("txtJump").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
+    }));
     updatePublishBar();
   }
+  function wireResets(root){
+    root.querySelectorAll("[data-reset]").forEach(b => b.addEventListener("click", () => {
+      const f = TEXT_FIELDS.find(x => x.key === b.dataset.reset);
+      textEdits[f.key] = f.text; renderText();
+    }));
+  }
+  window.addEventListener("resize", () => document.querySelectorAll("#txtGroups textarea").forEach(fit));
+  $("txtSearch").addEventListener("input", e => { txtQuery = e.target.value; renderText(); });
   function updatePublishBar(){
     const n = Object.keys(textEdits).length;
     $("publishBar").hidden = !n;
