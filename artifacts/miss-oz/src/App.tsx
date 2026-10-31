@@ -9,6 +9,7 @@ import SiteLayout from '@/components/SiteLayout';
 import { Redirect, Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { NOT_FOUND_META, PAGE_META, PUBLIC_ORIGIN } from './pageMeta';
 import { AboutPage, ContactPage, EventsPage, WholesalePage } from './pageChunks';
+import { trackPageView } from './lib/analytics';
 
 const queryClient = new QueryClient();
 const localBusinessSchema = document.querySelector<HTMLScriptElement>('#local-business-schema')?.textContent ?? '';
@@ -112,6 +113,13 @@ function Router() {
     } else if (location !== '/') {
       schema?.remove();
     }
+  }, [location]);
+
+  // Run after the title/meta effect above so GA4 sees the correct page title.
+  useEffect(() => {
+    // These routes immediately redirect to homepage anchors, not distinct pages.
+    if (location === '/menu' || location === '/new-flavor') return;
+    trackPageView(location);
   }, [location]);
 
   return (
