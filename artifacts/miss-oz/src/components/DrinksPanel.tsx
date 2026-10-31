@@ -1,6 +1,7 @@
 import MenuProductList from './MenuProductList';
 import { DRINKS } from './menuCatalog';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
+import { cropFor, cropStyle } from '../lib/crop';
 
 const MILKSHAKE_PHOTOS = [
   {
@@ -58,7 +59,7 @@ export default function DrinksPanel() {
                     loading="lazy"
                     decoding="async"
                     className="block aspect-[4/5] w-full object-cover"
-                    style={{ objectPosition: 'center 55%' }}
+                    style={cropStyle(cropFor(drinks, photo.caption === 'Peanut Butter Fudge' ? 'Milkshakes' : photo.caption)) ?? { objectPosition: 'center 55%' }}
                   />
                   <figcaption
                     className="w-full whitespace-nowrap px-2 py-[10px] text-center text-[13px] leading-tight text-[var(--berry-deep)] max-[639px]:min-h-[58px] max-[639px]:whitespace-normal max-[639px]:flex max-[639px]:items-center max-[639px]:justify-center"

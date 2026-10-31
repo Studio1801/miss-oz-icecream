@@ -9,7 +9,7 @@ export const SHEET_URL =
 /** Category names exactly as the dashboard writes them. */
 export type SheetCategory = 'Ice cream flavors' | 'Sundaes' | 'Croffles' | 'Cookies & desserts' | 'Drinks';
 
-export type SheetMenuRow = { category: string; name: string; description: string; price: string };
+export type SheetMenuRow = { category: string; name: string; description: string; price: string; crop?: string };
 
 export type SiteData = { menu: SheetMenuRow[] | null; text: Record<string, string> };
 
@@ -56,7 +56,7 @@ export function useSheetMenu(): SheetMenuRow[] | null {
 
 const norm = (s: string) => s.replace(/[’']/g, '').trim().toLowerCase();
 
-type Named = { name: string; note?: string; price?: string; seasonalLabel?: string };
+type Named = { name: string; note?: string; price?: string; seasonalLabel?: string; crop?: string };
 
 /** Apply the Sheet to one category: only dishes the owner has on the menu, in her order,
  * with her descriptions and prices. Dishes she added in the dashboard appear as new items. */
@@ -73,9 +73,10 @@ export function syncCategory<T extends Named>(
       const match = base.find((item) => norm(item.name) === norm(String(row.name)));
       const description = String(row.description ?? '').trim();
       const price = String(row.price ?? '').trim() || undefined;
-      if (!match) return makeNew(row);
-      if (match.seasonalLabel && (!description || description === match.seasonalLabel)) return { ...match, price };
-      return { ...match, note: description || match.note, price };
+      const crop = String(row.crop ?? '').trim() || undefined;
+      if (!match) return { ...makeNew(row), crop };
+      if (match.seasonalLabel && (!description || description === match.seasonalLabel)) return { ...match, price, crop };
+      return { ...match, note: description || match.note, price, crop };
     });
 }
 

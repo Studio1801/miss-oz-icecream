@@ -2,6 +2,7 @@ import { FLAVOR_PHOTOS, type FlavorPhoto } from './MenuPhotos';
 import { FLAVORS, UBEREATS_URL } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
+import { cropStyle } from '../lib/crop';
 
 type FlavorCard = {
   name: string;
@@ -69,7 +70,7 @@ export default function FlavorPanel() {
                   loading="lazy"
                   decoding="async"
                   className="block h-full w-full object-cover"
-                  style={{
+                  style={cropStyle((flavor as { crop?: string }).crop) ?? {
                     objectPosition: flavor.name === 'Mexican Vanilla'
                       ? '50% 75%'
                       : flavor.photo.objectPosition ?? '50% 62%',

@@ -2,6 +2,7 @@ import MenuProductList from './MenuProductList';
 import { SUNDAES, SUNDAE_PHOTOS } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
+import { cropStyle } from '../lib/crop';
 
 function normalizeName(name: string) {
   return name.replace(/[’']/g, '').toLowerCase();
@@ -42,16 +43,21 @@ export default function SundaesPanel() {
               key={photo.src}
               className="menu-sundae-item grid grid-cols-1 items-center gap-[clamp(14px,2vw,24px)] max-[430px]:gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]"
             >
-              <img
-                src={`${import.meta.env.BASE_URL}${photo.src}`}
-                alt={photo.alt}
-                width={960}
-                height={1200}
-                loading="lazy"
-                decoding="async"
-                className={`block aspect-[4/5] w-full rounded-[10px] object-cover ${photoOrder}`}
-                style={{ objectPosition: photo.objectPosition, boxShadow: '0 12px 28px rgba(28,13,12,0.17)' }}
-              />
+              <div
+                className={`aspect-[4/5] w-full overflow-hidden rounded-[10px] ${photoOrder}`}
+                style={{ boxShadow: '0 12px 28px rgba(28,13,12,0.17)' }}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}${photo.src}`}
+                  alt={photo.alt}
+                  width={960}
+                  height={1200}
+                  loading="lazy"
+                  decoding="async"
+                  className="block h-full w-full object-cover"
+                  style={cropStyle(item.crop) ?? { objectPosition: photo.objectPosition }}
+                />
+              </div>
               <div className={`min-w-0 ${descriptionOrder}`}>
                 <div className="menu-product-heading">
                 <h3 className="menu-product-name text-[13px] sm:text-[14px] max-[430px]:text-[12px] font-bold uppercase tracking-[0.08em] leading-snug text-[var(--berry-deep)]">
