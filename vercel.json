@@ -4,5 +4,34 @@
   "buildCommand": "pnpm --filter @workspace/miss-oz build",
   "outputDirectory": "artifacts/miss-oz/dist/public",
   "framework": null,
-  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/dashboard.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "(www\\.)?missozicecream\\.com"
+        }
+      ],
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/dashboard",
+      "has": [
+        {
+          "type": "host",
+          "value": "(www\\.)?missozicecream\\.com"
+        }
+      ],
+      "destination": "/",
+      "permanent": false
+    }
+  ]
 }

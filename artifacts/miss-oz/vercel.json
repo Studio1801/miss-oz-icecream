@@ -19,14 +19,59 @@
     }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/about", "destination": "/about/index.html" },
-    { "source": "/wholesale", "destination": "/wholesale/index.html" },
-    { "source": "/events", "destination": "/events/index.html" },
-    { "source": "/contact", "destination": "/contact/index.html" }
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about/index.html"
+    },
+    {
+      "source": "/wholesale",
+      "destination": "/wholesale/index.html"
+    },
+    {
+      "source": "/events",
+      "destination": "/events/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    }
   ],
   "redirects": [
-    { "source": "/menu", "destination": "/#menu", "permanent": true },
-    { "source": "/new-flavor", "destination": "/#new-flavor", "permanent": true }
+    {
+      "source": "/dashboard.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "(www\\.)?missozicecream\\.com"
+        }
+      ],
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/dashboard",
+      "has": [
+        {
+          "type": "host",
+          "value": "(www\\.)?missozicecream\\.com"
+        }
+      ],
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/menu",
+      "destination": "/#menu",
+      "permanent": true
+    },
+    {
+      "source": "/new-flavor",
+      "destination": "/#new-flavor",
+      "permanent": true
+    }
   ]
 }
