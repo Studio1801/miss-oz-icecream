@@ -43,6 +43,21 @@
     <link rel="preload" href="/fonts/Higante-Black.otf" as="font" type="font/otf" crossorigin />
     <link rel="preload" href="/images/slide-cones.webp" as="image" type="image/webp" />
 
+    <!-- GA4 loads only on the public Miss Oz domains, never on previews or localhost.
+         SPA page views are tracked separately in src/lib/analytics.ts. -->
+    <script>
+      if (['www.missozicecream.com', 'missozicecream.com'].includes(window.location.hostname)) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', 'G-GLK35N4XKD', { send_page_view: false });
+        const gaScript = document.createElement('script');
+        gaScript.async = true;
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-GLK35N4XKD';
+        document.head.appendChild(gaScript);
+      }
+    </script>
+
     <!-- Structured data: local business -->
     <script id="local-business-schema" type="application/ld+json">
     {
