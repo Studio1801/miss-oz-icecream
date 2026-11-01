@@ -1,5 +1,5 @@
 import { FLAVOR_PHOTOS, type FlavorPhoto } from './MenuPhotos';
-import { FLAVORS, UBEREATS_URL } from './menuCatalog';
+import { badgeFor, FLAVORS, UBEREATS_URL } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 import { cropStyle } from '../lib/crop';
@@ -52,7 +52,7 @@ export default function FlavorPanel() {
           return (
             <article
               key={flavor.name}
-              className="flavor-card min-w-0 overflow-hidden rounded-[10px]"
+              className="flavor-card relative min-w-0 overflow-hidden rounded-[10px]"
               style={{
                 background: 'var(--cream-hi)',
                 boxShadow: '0 9px 22px rgba(28,13,12,0.12)',
@@ -92,6 +92,11 @@ export default function FlavorPanel() {
                   {flavor.name}
                 </h3>
               </div>
+            )}
+            {badgeFor(flavor.name) && (
+              <span className="menu-sticker menu-sticker--card">
+                {badgeFor(flavor.name)}
+              </span>
             )}
             <div className="flavor-card-copy px-[clamp(9px,1vw,14px)] py-[clamp(10px,1vw,14px)]">
               {flavor.photo && (

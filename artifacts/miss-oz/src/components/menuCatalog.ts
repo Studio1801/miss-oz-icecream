@@ -5,9 +5,35 @@ export type MenuItem = {
   price?: string;
   note?: string;
   seasonalLabel?: string;
+  /** Short highlight shown beside the name, such as "Best Seller".
+   * Set in BADGES below, matched on the dish name. */
+  badge?: string;
   /** photo framing from the dashboard, "x y zoom" */
   crop?: string;
 };
+
+/** Highlights Millie picks for a handful of dishes.
+ *
+ * These are matched on the dish name, the same way photos are, so renaming a
+ * dish in the dashboard removes its badge until the name here is updated too.
+ * Changing a dish description is safe. */
+export const BADGES: Record<string, string> = {
+  'Thai Iced Tea': "Oz's Favorite",
+  // Millie asked for "Staff Pick: Horchata Cookie". There is no Horchata
+  // cookie on the menu, so this sits on the Horchata ice cream until she
+  // confirms whether she meant a new cookie.
+  Horchata: 'Staff Pick',
+  'Cookies & Cream': 'Best Seller',
+  Kulfi: 'Beyond the Classic',
+};
+
+const canonical = (name: string) => name.replace(/[’']/g, '').trim().toLowerCase();
+const BADGES_BY_NAME = new Map(Object.entries(BADGES).map(([name, badge]) => [canonical(name), badge]));
+
+/** The badge for a dish, if it has one. */
+export function badgeFor(name: string): string | undefined {
+  return BADGES_BY_NAME.get(canonical(name));
+}
 
 export const MENU_CATEGORIES = ['Flavors', 'Sundaes', 'Croffles & Desserts', 'Drinks', 'Whole Cakes'] as const;
 

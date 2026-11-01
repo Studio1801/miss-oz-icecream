@@ -1697,3 +1697,97 @@ select:focus-visible {
     right: 0;
   }
 }
+
+/* ---------------------------------------------------------------
+   Flavor badge: a little marquee plaque, ringed with the same cream
+   bulbs that run around the edge of the page and glow in the hero
+   photo. Two forms, one pinned to a flavour photo and one that sits
+   inline beside a name in the text menus. */
+
+.menu-sticker {
+  background: var(--berry-deep);
+  color: var(--cream-hi);
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.25;
+  letter-spacing: 0.12em;
+  text-align: center;
+  /* Wrap between words when a narrow card needs it, but never split a
+     word: "OZ'S FAVORI / TE" is the failure this guards against. The
+     mobile stylesheets force overflow-wrap on content elements, so
+     these win explicitly. */
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  hyphens: none !important;
+  /* Fill the available width before wrapping, so a long label falls to
+     two lines rather than three. "balance" evens the lines out and makes
+     that worse, so it is deliberately not used here. */
+  width: max-content;
+  text-wrap: nowrap;
+}
+
+/* the ring of bulbs */
+.menu-sticker::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle 2.1px at 50% 0, var(--cream-hi) 96%, transparent 100%) 1px 0 / 9px 9px repeat-x,
+    radial-gradient(circle 2.1px at 50% 100%, var(--cream-hi) 96%, transparent 100%) 1px 100% / 9px 9px repeat-x,
+    radial-gradient(circle 2.1px at 0 50%, var(--cream-hi) 96%, transparent 100%) 0 1px / 9px 9px repeat-y,
+    radial-gradient(circle 2.1px at 100% 50%, var(--cream-hi) 96%, transparent 100%) 100% 1px / 9px 9px repeat-y;
+}
+
+/* on a flavour card, pinned across the top of the photo */
+.menu-sticker--card {
+  position: absolute;
+  z-index: 5;
+  top: clamp(10px, 1vw, 16px);
+  left: 50%;
+  transform: translateX(-50%) rotate(-2.5deg);
+  max-width: calc(100% - 24px);
+  padding: 6px 12px;
+  font-size: clamp(7.5px, 0.66vw, 9.5px);
+  pointer-events: none;
+}
+
+/* Narrow phones: the card is about 140px wide, so trim the plaque to
+   match rather than letting it crowd the photo. */
+@media (max-width: 480px) {
+  .menu-sticker--card {
+    padding: 5px 8px;
+    font-size: 7px;
+    letter-spacing: 0.06em;
+    max-width: calc(100% - 14px);
+  }
+  .menu-sticker--card::before { inset: -5px; border-radius: 5px; }
+}
+
+/* beside a name in the text menus */
+.menu-sticker--inline {
+  position: relative;
+  display: inline-block;
+  margin-left: 2px;
+  padding: 4px 9px;
+  font-size: 8px;
+  transform: rotate(-1.5deg);
+  vertical-align: middle;
+}
+.menu-sticker--inline::before {
+  inset: -4px;
+  border-radius: 5px;
+  background:
+    radial-gradient(circle 1.7px at 50% 0, var(--cream-hi) 96%, transparent 100%) 1px 0 / 7px 7px repeat-x,
+    radial-gradient(circle 1.7px at 50% 100%, var(--cream-hi) 96%, transparent 100%) 1px 100% / 7px 7px repeat-x,
+    radial-gradient(circle 1.7px at 0 50%, var(--cream-hi) 96%, transparent 100%) 0 1px / 7px 7px repeat-y,
+    radial-gradient(circle 1.7px at 100% 50%, var(--cream-hi) 96%, transparent 100%) 100% 1px / 7px 7px repeat-y;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .menu-sticker--card { will-change: auto; }
+}

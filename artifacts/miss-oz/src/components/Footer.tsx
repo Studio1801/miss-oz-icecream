@@ -90,7 +90,7 @@ export default function Footer() {
         <div className="max-[639px]:min-w-0">
           <h2 className="footer-label text-[var(--gold-hi)] tracking-[3px] font-semibold uppercase text-[13px] mb-[12px]">Contact</h2>
           <p className="leading-[1.8] max-[639px]:break-words text-[#EFE2CE]">
-            <a className="footer-text-link" href="tel:+15032242021">Tel: (503) 224-2021</a><br /><a className="footer-text-link" href="https://www.instagram.com/missozicecreamcafe/" target="_blank" rel="noopener noreferrer">@missozicecreamcafe</a>
+            <a className="footer-text-link" href="tel:+15032242021">Tel: (503) 224-2021</a><br /><a className="footer-text-link footer-instagram-link inline-flex items-center gap-[7px]" href="https://www.instagram.com/missozicecreamcafe/" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>@missozicecreamcafe</a>
             <br /><a className="footer-text-link" href="mailto:behappy@missozicecream.com">behappy@missozicecream.com</a>
           </p>
         </div>
@@ -137,13 +137,7 @@ export default function Footer() {
             </form>
           )}
 
-          {/* Social icons */}
-          <div className="footer-socials flex gap-[14px] mt-[24px] max-[639px]:mt-4">
-            {/* Instagram */}
-            <a href="https://www.instagram.com/missozicecreamcafe/" target="_blank" rel="noopener noreferrer" aria-label="Instagram: @missozicecreamcafe" className="w-[36px] h-[36px] max-[639px]:w-11 max-[639px]:h-11 shrink-0 rounded-full border border-[rgba(242,225,194,0.4)] flex items-center justify-center text-[#EFE2CE] hover:border-[var(--gold-hi)] hover:text-[var(--gold-hi)] transition-colors">
-              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            </a>
-          </div>
+          {/* The Instagram icon now sits in front of the handle in the Contact column. */}
         </div>
       </div>
     </footer>
