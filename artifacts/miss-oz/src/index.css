@@ -1768,23 +1768,31 @@ select:focus-visible {
   word-break: keep-all !important;
 }
 
-/* Phones and small tablets. The mobile stylesheet clips the flavour card
-   (home-mobile.css, "#menu .flavor-card { overflow: hidden }"), which is
-   deliberate, so instead of overriding it the seal sits inside the photo
-   here rather than hanging off the corner. */
+/* The seal hangs off the card corner at every size, the way the New Flavor
+   seal does. home-mobile.css clips the flavour card below 768px, so this
+   lifts that clip for the handful of cards that carry a seal, and only
+   those. The photo inside keeps its own rounded clip, so nothing else
+   about the card changes. */
 @media (max-width: 767px) {
-  .flavor-seal {
-    top: 7px;
-    right: 7px;
+  .page-content-gutter #menu .flavor-card:has(.flavor-seal) {
+    overflow: visible !important;
   }
 }
 
-/* Narrow phones: the card is about 140px wide, so keep the seal from
-   swallowing the photo. */
+/* Between 481px and 767px the right-hand card sits hard against the
+   section edge, so the seal pulls in a little to stay inside it. */
+@media (min-width: 481px) and (max-width: 767px) {
+  .flavor-seal {
+    top: -8px;
+    right: -2px;
+  }
+}
+
+/* Narrow phones: a smaller seal so it does not swallow a 140px card. */
 @media (max-width: 480px) {
   .flavor-seal {
-    top: 5px;
-    right: 5px;
+    top: -7px;
+    right: -5px;
     --seal-top: 10px;
     --seal-bottom: 4.4px;
   }
