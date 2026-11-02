@@ -1,5 +1,5 @@
 import { FLAVOR_PHOTOS, type FlavorPhoto } from './MenuPhotos';
-import { badgeFor, FLAVORS, UBEREATS_URL } from './menuCatalog';
+import { badgeFor, BURST, FLAVORS, UBEREATS_URL } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 import { cropStyle } from '../lib/crop';
@@ -52,7 +52,7 @@ export default function FlavorPanel() {
           return (
             <article
               key={flavor.name}
-              className="flavor-card relative min-w-0 overflow-hidden rounded-[10px]"
+              className="flavor-card relative min-w-0 overflow-visible rounded-[10px]"
               style={{
                 background: 'var(--cream-hi)',
                 boxShadow: '0 9px 22px rgba(28,13,12,0.12)',
@@ -93,11 +93,37 @@ export default function FlavorPanel() {
                 </h3>
               </div>
             )}
-            {badgeFor(flavor.name) && (
-              <span className="menu-sticker menu-sticker--card">
-                {badgeFor(flavor.name)}
-              </span>
-            )}
+            {(() => {
+              const badge = badgeFor(flavor.name);
+              if (!badge) return null;
+              return (
+                <div className="flavor-seal" aria-hidden="true">
+                  <div
+                    className="flavor-seal-burst"
+                    style={{
+                      background: 'radial-gradient(circle at 38% 32%, #d47f98 0%, var(--berry-deep) 100%)',
+                      clipPath: BURST,
+                    }}
+                  >
+                    <div className="flavor-seal-inner">
+                      <span className="flavor-seal-star">★</span>
+                      <span
+                        className="flavor-seal-top"
+                        style={{ fontSize: `calc(var(--seal-top) * ${badge.top.length <= 4 ? 1 : badge.top.length <= 5 ? 0.86 : 0.72})` }}
+                      >
+                        {badge.top}
+                      </span>
+                      <span
+                        className="flavor-seal-bottom"
+                        style={{ fontSize: `calc(var(--seal-bottom) * ${badge.bottom.length <= 8 ? 1 : 0.84})` }}
+                      >
+                        {badge.bottom}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
             <div className="flavor-card-copy px-[clamp(9px,1vw,14px)] py-[clamp(10px,1vw,14px)]">
               {flavor.photo && (
                 <h3

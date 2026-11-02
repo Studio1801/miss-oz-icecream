@@ -26,8 +26,8 @@ export default function MenuProductList({
               </span>
               {item.price && <span className="menu-product-price hidden">{item.price}</span>}
               {badgeFor(item.name) && (
-                <span className="menu-sticker menu-sticker--inline">
-                  {badgeFor(item.name)}
+                <span className="menu-product-seal">
+                  {badgeFor(item.name)!.top} {badgeFor(item.name)!.bottom}
                 </span>
               )}
               {item.seasonalLabel && (

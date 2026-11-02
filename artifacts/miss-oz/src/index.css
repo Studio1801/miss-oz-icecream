@@ -1699,95 +1699,101 @@ select:focus-visible {
 }
 
 /* ---------------------------------------------------------------
-   Flavor badge: a little marquee plaque, ringed with the same cream
-   bulbs that run around the edge of the page and glow in the hero
-   photo. Two forms, one pinned to a flavour photo and one that sits
-   inline beside a name in the text menus. */
+   Flavour seal. The same 16-point starburst as the New Flavor badge,
+   so a highlighted dish wears the parlour's own stamp rather than a
+   lookalike: berry burst, dashed cream ring, a little star. */
 
-.menu-sticker {
-  background: var(--berry-deep);
-  color: var(--cream-hi);
-  border: 1px solid var(--gold);
-  border-radius: 3px;
-  font-family: var(--font-sans);
-  font-weight: 700;
-  text-transform: uppercase;
-  line-height: 1.25;
-  letter-spacing: 0.12em;
+.flavor-seal {
+  --seal-top: clamp(11px, 0.95vw, 14px);
+  --seal-bottom: clamp(4.6px, 0.42vw, 6px);
+  position: absolute;
+  z-index: 6;
+  top: clamp(-10px, -0.7vw, -7px);
+  right: clamp(-8px, -0.6vw, -5px);
+  transform: rotate(-12deg);
+  pointer-events: none;
+  filter: drop-shadow(0 5px 11px rgba(0, 0, 0, 0.38));
+}
+
+.flavor-seal-burst {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(62px, 5.4vw, 80px);
+  height: clamp(62px, 5.4vw, 80px);
+}
+
+.flavor-seal-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 78%;
+  height: 78%;
+  border: 1.5px dashed var(--cream-hi);
+  border-radius: 999px;
   text-align: center;
-  /* Wrap between words when a narrow card needs it, but never split a
-     word: "OZ'S FAVORI / TE" is the failure this guards against. The
-     mobile stylesheets force overflow-wrap on content elements, so
-     these win explicitly. */
-  white-space: normal !important;
+  line-height: 1;
+  padding: 0 3px;
+}
+
+.flavor-seal-star {
+  color: var(--pink);
+  font-size: clamp(6px, 0.5vw, 8px);
+  line-height: 1;
+}
+
+.flavor-seal-top {
+  font-family: var(--font-display);
+  color: var(--cream-hi);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  /* never split a word, however narrow the card */
+  white-space: nowrap !important;
   overflow-wrap: normal !important;
   word-break: keep-all !important;
-  hyphens: none !important;
-  /* Fill the available width before wrapping, so a long label falls to
-     two lines rather than three. "balance" evens the lines out and makes
-     that worse, so it is deliberately not used here. */
-  width: max-content;
-  text-wrap: nowrap;
 }
 
-/* the ring of bulbs */
-.menu-sticker::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 6px;
-  background:
-    radial-gradient(circle 2.1px at 50% 0, var(--cream-hi) 96%, transparent 100%) 1px 0 / 9px 9px repeat-x,
-    radial-gradient(circle 2.1px at 50% 100%, var(--cream-hi) 96%, transparent 100%) 1px 100% / 9px 9px repeat-x,
-    radial-gradient(circle 2.1px at 0 50%, var(--cream-hi) 96%, transparent 100%) 0 1px / 9px 9px repeat-y,
-    radial-gradient(circle 2.1px at 100% 50%, var(--cream-hi) 96%, transparent 100%) 100% 1px / 9px 9px repeat-y;
+.flavor-seal-bottom {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--cream-hi);
+  opacity: 0.85;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2px;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
 }
 
-/* on a flavour card, pinned across the top of the photo */
-.menu-sticker--card {
-  position: absolute;
-  z-index: 5;
-  top: clamp(10px, 1vw, 16px);
-  left: 50%;
-  transform: translateX(-50%) rotate(-2.5deg);
-  max-width: calc(100% - 24px);
-  padding: 6px 12px;
-  font-size: clamp(7.5px, 0.66vw, 9.5px);
-  pointer-events: none;
-}
-
-/* Narrow phones: the card is about 140px wide, so trim the plaque to
-   match rather than letting it crowd the photo. */
+/* Narrow phones: the card is about 140px wide, so keep the seal from
+   swallowing the photo. */
 @media (max-width: 480px) {
-  .menu-sticker--card {
-    padding: 5px 8px;
-    font-size: 7px;
-    letter-spacing: 0.06em;
-    max-width: calc(100% - 14px);
-  }
-  .menu-sticker--card::before { inset: -5px; border-radius: 5px; }
+  .flavor-seal { top: -8px; right: -6px; }
+  .flavor-seal { --seal-top: 10px; --seal-bottom: 4.4px; }
+  .flavor-seal-burst { width: 58px; height: 58px; }
+  .flavor-seal-bottom { letter-spacing: 0.06em; }
 }
 
-/* beside a name in the text menus */
-.menu-sticker--inline {
-  position: relative;
+/* In the text menus a starburst would be unreadable at line height, so a
+   badged dish there gets a small berry label in the same colours. No
+   badged dish sits in a text list today; this is here for when one does. */
+.menu-product-seal {
   display: inline-block;
-  margin-left: 2px;
-  padding: 4px 9px;
+  margin-left: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--berry-deep);
+  color: var(--cream-hi);
+  font-family: var(--font-sans);
+  font-weight: 700;
   font-size: 8px;
-  transform: rotate(-1.5deg);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   vertical-align: middle;
-}
-.menu-sticker--inline::before {
-  inset: -4px;
-  border-radius: 5px;
-  background:
-    radial-gradient(circle 1.7px at 50% 0, var(--cream-hi) 96%, transparent 100%) 1px 0 / 7px 7px repeat-x,
-    radial-gradient(circle 1.7px at 50% 100%, var(--cream-hi) 96%, transparent 100%) 1px 100% / 7px 7px repeat-x,
-    radial-gradient(circle 1.7px at 0 50%, var(--cream-hi) 96%, transparent 100%) 0 1px / 7px 7px repeat-y,
-    radial-gradient(circle 1.7px at 100% 50%, var(--cream-hi) 96%, transparent 100%) 100% 1px / 7px 7px repeat-y;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .menu-sticker--card { will-change: auto; }
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
 }

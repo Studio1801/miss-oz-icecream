@@ -1,5 +1,7 @@
 /** Menu copy for the homepage menu. Keep these entries separate from its presentation
  * so the same real menu can be reused when the site eventually gains pages. */
+export type Badge = { top: string; bottom: string };
+
 export type MenuItem = {
   name: string;
   price?: string;
@@ -7,7 +9,7 @@ export type MenuItem = {
   seasonalLabel?: string;
   /** Short highlight shown beside the name, such as "Best Seller".
    * Set in BADGES below, matched on the dish name. */
-  badge?: string;
+  badge?: Badge;
   /** photo framing from the dashboard, "x y zoom" */
   crop?: string;
 };
@@ -17,21 +19,29 @@ export type MenuItem = {
  * These are matched on the dish name, the same way photos are, so renaming a
  * dish in the dashboard removes its badge until the name here is updated too.
  * Changing a dish description is safe. */
-export const BADGES: Record<string, string> = {
-  'Thai Iced Tea': "Oz's Favorite",
+export const BADGES: Record<string, Badge> = {
+  'Thai Iced Tea': { top: "Oz's", bottom: 'Favorite' },
   // Millie asked for "Staff Pick: Horchata Cookie". There is no Horchata
   // cookie on the menu, so this sits on the Horchata ice cream until she
   // confirms whether she meant a new cookie.
-  Horchata: 'Staff Pick',
-  'Cookies & Cream': 'Best Seller',
-  Kulfi: 'Beyond the Classic',
+  Horchata: { top: 'Staff', bottom: 'Pick' },
+  'Cookies & Cream': { top: 'Best', bottom: 'Seller' },
+  Kulfi: { top: 'Beyond', bottom: 'the Classic' },
 };
+
+/** The 16-point starburst used by the New Flavor seal, reused here so the
+ * flavour badges are the same object rather than a lookalike. */
+export const BURST = `polygon(${Array.from({ length: 32 }, (_, i) => {
+  const a = (Math.PI * 2 * i) / 32;
+  const r = i % 2 === 0 ? 50 : 41;
+  return `${(50 + r * Math.cos(a)).toFixed(2)}% ${(50 + r * Math.sin(a)).toFixed(2)}%`;
+}).join(',')})`;
 
 const canonical = (name: string) => name.replace(/[’']/g, '').trim().toLowerCase();
 const BADGES_BY_NAME = new Map(Object.entries(BADGES).map(([name, badge]) => [canonical(name), badge]));
 
 /** The badge for a dish, if it has one. */
-export function badgeFor(name: string): string | undefined {
+export function badgeFor(name: string): Badge | undefined {
   return BADGES_BY_NAME.get(canonical(name));
 }
 
