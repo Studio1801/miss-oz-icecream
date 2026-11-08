@@ -29,13 +29,10 @@ export const BADGES: Record<string, Badge> = {
   Kulfi: { top: 'Beyond', bottom: 'the Classic' },
 };
 
-/** The 16-point starburst used by the New Flavor seal, reused here so the
- * flavour badges are the same object rather than a lookalike. */
-export const BURST = `polygon(${Array.from({ length: 32 }, (_, i) => {
-  const a = (Math.PI * 2 * i) / 32;
-  const r = i % 2 === 0 ? 50 : 41;
-  return `${(50 + r * Math.cos(a)).toFixed(2)}% ${(50 + r * Math.sin(a)).toFixed(2)}%`;
-}).join(',')})`;
+/** Scalloped seal edge, the rounded bottle-cap scallop from the reference
+ * Millie sent. Drawn as real arcs rather than a polygon, because a
+ * polygon can only make straight lines and reads as spikes. */
+export const SCALLOP_PATH = "M94.00 50.00 A5.30 5.30 0 0 1 92.72 60.53 A5.30 5.30 0 0 1 88.96 70.45 A5.30 5.30 0 0 1 82.93 79.18 A5.30 5.30 0 0 1 74.99 86.21 A5.30 5.30 0 0 1 65.60 91.14 A5.30 5.30 0 0 1 55.30 93.68 A5.30 5.30 0 0 1 44.70 93.68 A5.30 5.30 0 0 1 34.40 91.14 A5.30 5.30 0 0 1 25.01 86.21 A5.30 5.30 0 0 1 17.07 79.18 A5.30 5.30 0 0 1 11.04 70.45 A5.30 5.30 0 0 1 7.28 60.53 A5.30 5.30 0 0 1 6.00 50.00 A5.30 5.30 0 0 1 7.28 39.47 A5.30 5.30 0 0 1 11.04 29.55 A5.30 5.30 0 0 1 17.07 20.82 A5.30 5.30 0 0 1 25.01 13.79 A5.30 5.30 0 0 1 34.40 8.86 A5.30 5.30 0 0 1 44.70 6.32 A5.30 5.30 0 0 1 55.30 6.32 A5.30 5.30 0 0 1 65.60 8.86 A5.30 5.30 0 0 1 74.99 13.79 A5.30 5.30 0 0 1 82.93 20.82 A5.30 5.30 0 0 1 88.96 29.55 A5.30 5.30 0 0 1 92.72 39.47 A5.30 5.30 0 0 1 94.00 50.00 Z";
 
 const canonical = (name: string) => name.replace(/[’']/g, '').trim().toLowerCase();
 const BADGES_BY_NAME = new Map(Object.entries(BADGES).map(([name, badge]) => [canonical(name), badge]));
