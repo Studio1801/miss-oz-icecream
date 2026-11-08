@@ -1704,8 +1704,8 @@ select:focus-visible {
    sparks, the label in two lines, and a small flourish underneath. */
 
 .flavor-seal {
-  --seal-top: clamp(9.5px, 0.8vw, 12px);
-  --seal-bottom: clamp(4.2px, 0.38vw, 5.4px);
+  --seal-top: clamp(11.5px, 0.97vw, 14.5px);
+  --seal-bottom: clamp(5.4px, 0.47vw, 6.8px);
   position: absolute;
   z-index: 6;
   top: clamp(-9px, -0.6vw, -6px);
@@ -1728,31 +1728,31 @@ select:focus-visible {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 80%;
-  height: 80%;
+  width: 86%;
+  height: 86%;
   border: 1px solid var(--cream-hi);
   border-radius: 999px;
   text-align: center;
   line-height: 1;
-  padding: 0 3px;
+  padding: 0 2px;
 }
 
 .flavor-seal-crest {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2.5px;
+  gap: 3px;
   line-height: 1;
 }
 .flavor-seal-heart {
   font-style: normal;
   color: var(--cream-hi);
-  font-size: clamp(6px, 0.5vw, 7.5px);
+  font-size: clamp(7.4px, 0.62vw, 9.2px);
 }
 .flavor-seal-spark {
   font-style: normal;
   color: var(--pink);
-  font-size: clamp(3.6px, 0.3vw, 4.6px);
+  font-size: clamp(4.5px, 0.38vw, 5.8px);
 }
 
 .flavor-seal-top {
@@ -1764,6 +1764,12 @@ select:focus-visible {
   white-space: nowrap !important;
   overflow-wrap: normal !important;
   word-break: keep-all !important;
+}
+
+/* Millie asked for a smaller S in OZ'S. */
+.flavor-seal-possessive {
+  font-size: 0.68em;
+  letter-spacing: 0;
 }
 
 .flavor-seal-bottom {

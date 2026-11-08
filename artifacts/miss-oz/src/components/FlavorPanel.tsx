@@ -146,13 +146,21 @@ export default function FlavorPanel() {
                       </span>
                       <span
                         className="flavor-seal-top"
-                        style={{ fontSize: `calc(var(--seal-top) * ${badge.top.length <= 4 ? 1 : badge.top.length <= 5 ? 0.88 : 0.74})` }}
+                        style={{ fontSize: `calc(var(--seal-top) * ${badge.top.length <= 4 ? 1 : badge.top.length <= 5 ? 0.86 : 0.70})` }}
                       >
-                        {badge.top}
+                        {/* Millie asked for a smaller S in OZ'S, so the
+                            possessive is set a size down. Any other label
+                            renders whole. */}
+                        {/'s$/i.test(badge.top) ? (
+                          <>
+                            {badge.top.slice(0, -2)}
+                            <span className="flavor-seal-possessive">{badge.top.slice(-2)}</span>
+                          </>
+                        ) : badge.top}
                       </span>
                       <span
                         className="flavor-seal-bottom"
-                        style={{ fontSize: `calc(var(--seal-bottom) * ${badge.bottom.length <= 8 ? 1 : 0.86})` }}
+                        style={{ fontSize: `calc(var(--seal-bottom) * ${badge.bottom.length <= 8 ? 1 : 0.82})` }}
                       >
                         {badge.bottom}
                       </span>

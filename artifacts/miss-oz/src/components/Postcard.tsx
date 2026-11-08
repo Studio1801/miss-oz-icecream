@@ -298,7 +298,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   key={n.label}
                   to={n.target}
                   className="mobile-minimum-12 whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
-                  style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
+                  style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(11px,0.95vw,13px)', letterSpacing: 'clamp(0.4px,0.08vw,1.2px)' }}
                 >
                   {n.label}
                 </SiteNavigationLink>
@@ -343,7 +343,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   key={n.label}
                   to={n.target}
                   className="mobile-minimum-12 whitespace-nowrap uppercase font-bold text-[var(--cocoa)] hover:text-[var(--berry)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-sm"
-                  style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(9px,0.8vw,11px)', letterSpacing: 'clamp(0.5px,0.1vw,1.5px)' }}
+                  style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(11px,0.95vw,13px)', letterSpacing: 'clamp(0.4px,0.08vw,1.2px)' }}
                 >
                   {n.label}
                 </SiteNavigationLink>

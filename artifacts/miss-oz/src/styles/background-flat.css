@@ -1,74 +1,60 @@
-/* Millie's background revision, November 2026.
+/* Millie's background revision, November 2026. Approved 8 November.
  *
- * She asked for three things: the navigation bar colour used as the page
- * background throughout, the flavour cards a slightly lighter shade so they
- * lift off it, and the rough paper texture removed.
+ * She asked for the navigation bar colour used as the page background
+ * throughout, the flavour cards a slightly lighter shade so they lift off it,
+ * and the rough paper texture removed. She has now seen it and asked us to
+ * keep it, so these rules are no longer behind a switch.
  *
- * Both card treatments she offered, a hairline border and a soft shadow, are
- * built here behind data attributes so she can see them side by side before we
- * commit. Once she picks, the winning rules fold into index.css and this file
- * and its attributes come out. Nothing here is live until data-bg="flat" is set
- * on the html element.
+ * Sampling the page gutter from top to bottom had found twelve different
+ * creams in what was meant to be one colour. Four of the rules below exist
+ * only because of that: two texture layers, the aged corner stains, a dark
+ * vignette over the guestbook, and a vertical gradient filling the menu
+ * board. The last two are inline styles, so they need !important.
  *
- *   data-bg="flat"                     one flat cream, no texture
- *   data-cards="shadow"                cards lift on a soft shadow
- *   data-cards="border"                cards lift on a fine berry hairline
+ * The cards keep the soft shadow they already carry, which is what she meant
+ * by "the subtle shading". The hairline alternative stays behind
+ * data-cards="border" in case she changes her mind.
  */
 
-:root[data-bg='flat'] {
+:root {
   /* #F2E1C2, sampled from the navigation bar, now the colour of everything. */
   --background: 38.8 65% 85.5%;
   --cream: #f2e1c2;
   --paper: #f2e1c2;
 }
 
-:root[data-bg='flat'] body {
+body {
   background-color: #f2e1c2;
 }
 
 /* The two texture layers that sat over the whole page: a photographic paper
  * grain and a finer fractal noise. Both come off together. */
-:root[data-bg='flat'] .paper-overlay,
-:root[data-bg='flat'] .grain-overlay {
+.paper-overlay,
+.grain-overlay {
   display: none;
 }
 
 /* The aged corner stains and edge vignette are part of the same treatment, so
  * they go too. Without this the "one colour" reads as four patches. */
-:root[data-bg='flat'] .parlour-paper {
+.parlour-paper {
   background-image: none;
 }
 
-/* Cards keep the lighter cream they already carry, #FBF2DF. */
-
-/* Option 1: the soft shadow the cards already use, over the flat background. */
-:root[data-bg='flat'][data-cards='shadow'] .flavor-card {
-  border: 0;
-}
-
-/* Option 2: a fine berry hairline instead of the shadow. The shadow is set
- * inline on the card, so it needs overriding rather than simply unsetting. */
-:root[data-bg='flat'][data-cards='border'] .flavor-card {
-  border: 1px solid rgba(94, 23, 53, 0.18);
-  box-shadow: none !important;
-}
-
-/* ---------------------------------------------------------------
-   Two surfaces the first pass missed. Both only show up on a view
-   of the whole page, which is why the menu screenshots looked right.
-
-   1. The guestbook section carries a dark radial vignette, painted
-      by a bare overlay div inside it. It is the same aged shading
-      as the paper texture and it was still darkening that whole
-      band from #F0DFC0 down to #E3D2B5.
-   2. The menu board is filled with a vertical gradient rather than
-      a flat colour, so it drifts across its own height instead of
-      sitting at one lighter shade. */
-
-:root[data-bg='flat'] .guestbook-section > .absolute.inset-0 {
+/* A dark radial vignette, painted by a bare overlay div inside the guestbook
+ * section. It was dragging that whole band from #F0DFC0 down to #E3D2B5. */
+.guestbook-section > .absolute.inset-0 {
   background: none !important;
 }
 
-:root[data-bg='flat'] #menu .menu-content-grid > div[class*='rounded-t-'] {
+/* The menu board was filled with a vertical gradient rather than a flat
+ * colour, so it drifted across its own height instead of sitting at the one
+ * lighter shade she asked for. */
+#menu .menu-content-grid > div[class*='rounded-t-'] {
   background: var(--cream-hi) !important;
+}
+
+/* The alternative card edge, kept available but not in use. */
+:root[data-cards='border'] .flavor-card {
+  border: 1px solid rgba(94, 23, 53, 0.18);
+  box-shadow: none !important;
 }
