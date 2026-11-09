@@ -1784,8 +1784,13 @@ select:focus-visible {
   word-break: keep-all !important;
 }
 
+/* Millie asked for the heart, the stars, the line and the text to all read
+   larger. The line is sized as a share of the inner ring, so widening the
+   ring alone only grew it by about 7 percent while the type went up 21.
+   This brings it up with the rest. The stroke and end dots scale with it,
+   since they are drawn in the SVG's own coordinates. */
 .flavor-seal-swoosh {
-  width: 56%;
+  width: 68%;
   height: auto;
   margin-top: 2.5px;
   stroke: var(--cream-hi);
