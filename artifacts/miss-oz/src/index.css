@@ -1812,13 +1812,17 @@ select:focus-visible {
   }
 }
 
-/* Narrow phones: a smaller seal so it does not swallow a 140px card. */
+/* Narrow phones: a smaller seal so it does not swallow a 140px card. The
+   seal itself stays 50px, which Millie approved. Only the type inside grows,
+   by the same proportion as the desktop sizes, so the words keep their
+   footing against the heart and stars, which grow on their own because they
+   are set in clamps that bottom out at this width. */
 @media (max-width: 480px) {
   .flavor-seal {
     top: -6px;
     right: -5px;
-    --seal-top: 8.6px;
-    --seal-bottom: 4px;
+    --seal-top: 10.4px;
+    --seal-bottom: 5px;
   }
   .flavor-seal-burst { width: 50px; height: 50px; }
   .flavor-seal-bottom { letter-spacing: 0.04em; }
