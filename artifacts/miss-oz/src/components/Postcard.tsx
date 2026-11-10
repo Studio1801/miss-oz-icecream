@@ -1,4 +1,3 @@
-import PawMark from './PawMark';
 import { Txt } from '../lib/siteText';
 
 import { useEffect, useRef, useState, type FocusEvent, type MouseEvent } from 'react';
@@ -234,12 +233,18 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         <span className="block h-[2px] w-6 rounded-full bg-[var(--berry-deep)] transition-opacity duration-150" style={{ opacity: menuOpen ? 0 : 1 }} />
         <span className="block h-[2px] w-6 rounded-full bg-[var(--berry-deep)] transition-transform duration-150" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
-      <img
-        src="/images/logo-official.webp"
-        alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
-        className="absolute left-1/2 top-1/2 h-[52px] w-[52px] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
+      <SiteNavigationLink
+        to="/"
+        aria-label="Miss Oz, back to Home"
+        className="site-logo-link absolute left-1/2 top-1/2 h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
         style={{ left: 'calc(50% - 6px)' }}
-      />
+      >
+        <img
+          src="/images/logo-official.webp"
+          alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
+          className="block h-[52px] w-[52px] max-w-none object-contain"
+        />
+      </SiteNavigationLink>
       <OrderChooser variant="light" label="Order" className="mobile-order-pill" />
     </header>
     <section
@@ -359,15 +364,21 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
               overflow: 'visible',
             }}
           >
-            <img
-              src="/images/logo-official.webp"
-              alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
-              className="h-auto transition-[width] duration-300 ease-out"
-              style={{
-                width: compactHeader ? 'clamp(64px,6.2vw,78px)' : 'clamp(240px,22.5vw,285px)',
-                filter: 'drop-shadow(0 2px 10px rgba(93,26,58,0.18))',
-              }}
-            />
+            <SiteNavigationLink
+              to="/"
+              aria-label="Miss Oz, back to Home"
+              className="site-logo-link block rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+            >
+              <img
+                src="/images/logo-official.webp"
+                alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
+                className="block h-auto transition-[width] duration-300 ease-out"
+                style={{
+                  width: compactHeader ? 'clamp(64px,6.2vw,78px)' : 'clamp(240px,22.5vw,285px)',
+                  filter: 'drop-shadow(0 2px 10px rgba(93,26,58,0.18))',
+                }}
+              />
+            </SiteNavigationLink>
           </div>
         </motion.div>
         <div
@@ -464,15 +475,16 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 transform: 'translateY(-50%)',
               }}
             >
-              {/* Miss Oz — Higante display, gold, matching the logo lettering */}
+              {/* Miss Oz lettering. Its fill and the tagline colour come from the
+                  hero option in hero-tidy.css, so Millie can compare A and B. */}
               <div className="hero-entrance hero-enter-title relative inline-block">
                 <div
                   className="hero-title-text"
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(56px,8.8vw,126px)',
+                    fontSize: 'clamp(48px,7.5vw,107px)',
                     lineHeight: 1,
-                    color: '#EBC77F',
+                    color: 'var(--hero-title-fill)',
                     WebkitTextStroke: 'clamp(3px,0.45vw,7px) var(--berry)',
                     paintOrder: 'stroke fill',
                     filter: 'drop-shadow(0 4px 5px rgba(20,8,12,0.45))',
@@ -485,15 +497,15 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   <span style={{ position: 'relative', zIndex: 1, display: 'inline-block' }}>z</span>
                 </div>
               </div>
-              {/* Tagline — cream script */}
+              {/* Tagline, the second most important line */}
               <div
                 className="hero-entrance hero-enter-tagline hero-tagline"
                 style={{
                   fontFamily: 'var(--font-script)',
-                  fontSize: 'clamp(17px,2.3vw,32px)',
-                  color: 'var(--cream-hi)',
+                  fontSize: 'clamp(20px,2.6vw,36px)',
+                  color: 'var(--hero-tagline)',
                   textShadow: '0 1px 10px rgba(20,8,12,0.65)',
-                  marginTop: 'clamp(2px,0.4vw,6px)',
+                  marginTop: 'clamp(6px,0.8vw,12px)',
                 }}
               >
                 <Txt k="hero.tagline">{"Sweet Memories Start Here."}</Txt>
@@ -503,54 +515,37 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                 className="hero-entrance hero-enter-subtext"
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(12px,1.15vw,17px)',
-                  letterSpacing: '2px',
+                  fontSize: 'clamp(11px,0.95vw,14px)',
+                  letterSpacing: '2.5px',
                   textTransform: 'uppercase',
                   fontWeight: 700,
-                  color: '#EBC77F',
+                  color: 'var(--hero-info)',
                   textShadow: '0 1px 6px rgba(20,8,12,0.75)',
-                  marginTop: 'clamp(8px,1vw,14px)',
+                  marginTop: 'clamp(16px,1.8vw,26px)',
                 }}
               >
-                Ice Cream &amp; Handmade Desserts · Portland, Oregon
+                Ice Cream &amp; Handmade Desserts<span className="hero-info-dot"> · </span>
+                <span className="hero-info-place">Portland, Oregon</span>
               </div>
               <div
                 className="hero-since-line mobile-minimum-12 flex items-center justify-center gap-[clamp(10px,1vw,16px)]"
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(11px,1vw,15px)',
+                  fontSize: 'clamp(11px,0.95vw,14px)',
                   letterSpacing: '2.5px',
                   textTransform: 'uppercase',
                   fontWeight: 700,
-                  color: 'rgba(251,242,223,0.95)',
+                  color: 'var(--hero-info)',
                   textShadow: '0 1px 6px rgba(20,8,12,0.75)',
-                  marginTop: 'clamp(6px,0.7vw,10px)',
+                  marginTop: 'clamp(6px,0.6vw,9px)',
                 }}
               >
-                <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'rgba(251,242,223,0.6)' }} />
+                <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'var(--hero-info)', opacity: 0.6 }} />
                 Since 2007
-                <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'rgba(251,242,223,0.6)' }} />
-              </div>
-              <div
-                className="hero-pet-line flex items-center justify-center gap-[7px]"
-                style={{ color: '#F4A9C7', marginTop: 'clamp(6px,0.7vw,10px)', textShadow: '0 1px 6px rgba(20,8,12,0.6)' }}
-              >
-                <span aria-hidden="true" style={{ fontSize: 'clamp(11px,1vw,15px)' }}>♥</span>
-                <PawMark size={14} className="text-[#F4A9C7]" />
-                <span className="mobile-minimum-12"
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 'clamp(7px,0.65vw,9px)',
-                    fontWeight: 700,
-                    letterSpacing: '1px',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  Dogs welcome
-                </span>
+                <span aria-hidden="true" className="inline-block h-px w-[clamp(24px,3vw,48px)]" style={{ background: 'var(--hero-info)', opacity: 0.6 }} />
               </div>
               {/* CTA button */}
-              <div className="hero-entrance hero-enter-button hero-cta-wrap relative flex justify-center mt-[clamp(12px,1.6vw,20px)] pointer-events-auto">
+              <div className="hero-entrance hero-enter-button hero-cta-wrap relative flex justify-center mt-[clamp(20px,2.2vw,30px)] pointer-events-auto">
                 <SiteNavigationLink
                   to={sectionTarget('menu', showHero)}
                   className="hero-menu-button mobile-view-menu interaction-primary mobile-minimum-12 group relative inline-flex min-h-[44px] items-center justify-center gap-[clamp(6px,0.6vw,9px)] rounded-full overflow-hidden font-bold uppercase tracking-[2.5px] text-[#FBF2DF] transition-all duration-300 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
@@ -573,7 +568,7 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
                   <span
                     aria-hidden="true"
                     className="hero-menu-arrow inline-block not-italic"
-                    style={{ color: 'var(--gold-hi)', fontSize: '0.88em', marginLeft: '-2px' }}
+                    style={{ color: 'var(--hero-tagline)', fontSize: '0.88em', marginLeft: '-2px' }}
                   >→</span>
                 </SiteNavigationLink>
               </div>
@@ -635,13 +630,21 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-opacity duration-150 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ opacity: menuOpen ? 0 : 1 }} />
         <span className="block h-[2px] w-[18px] bg-[var(--cocoa)] rounded-full transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] origin-center" style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
       </button>
-      <div aria-hidden={isHeaderScrolled} className={`tablet-menu-logo lg:hidden max-[639px]:hidden fixed top-3 left-1/2 -translate-x-1/2 z-[970] pointer-events-none transition-opacity duration-200 ${isHeaderScrolled ? 'opacity-0' : 'opacity-100'}`}>
-        <img
-          src="/images/logo-official.webp"
-          alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
-          className="h-auto"
-          style={{ width: '88px', filter: 'drop-shadow(0 2px 10px rgba(20,8,12,0.35))' }}
-        />
+      {/* On tablets the logo used to fade away on scroll. It now stays,
+          shrinks into a small cream disc, and takes visitors back to Home. */}
+      <div className={`tablet-menu-logo lg:hidden max-[639px]:hidden fixed left-1/2 -translate-x-1/2 z-[970] rounded-full transition-[top,padding,background-color] duration-300 ease-out ${isHeaderScrolled ? 'top-4 p-[3px] bg-[rgba(242,225,194,0.92)]' : 'top-3 p-0 bg-transparent'}`}>
+        <SiteNavigationLink
+          to="/"
+          aria-label="Miss Oz, back to Home"
+          className="site-logo-link block rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+        >
+          <img
+            src="/images/logo-official.webp"
+            alt="Miss Oz, Ice Cream Cafe, Portland Oregon"
+            className="block h-auto transition-[width] duration-300 ease-out"
+            style={{ width: isHeaderScrolled ? '52px' : '88px', filter: isHeaderScrolled ? 'none' : 'drop-shadow(0 2px 10px rgba(20,8,12,0.35))' }}
+          />
+        </SiteNavigationLink>
       </div>
 
     </section>

@@ -123,20 +123,20 @@
   }
 
   .page-content-gutter #home .hero-title-text {
-    font-size: clamp(48px, 15.5vw, 64px) !important;
+    font-size: clamp(41px, 13.2vw, 54px) !important;
   }
 
   .page-content-gutter #home .hero-enter-subtext {
     display: block !important;
     max-width: 32ch;
-    margin: 8px auto 0 !important;
+    margin: 14px auto 0 !important;
     font-size: 12px !important;
     line-height: 1.4;
     text-align: center;
   }
 
   .page-content-gutter #home .hero-tagline {
-    font-size: 20px !important;
+    font-size: 23px !important;
     line-height: 1.2;
   }
 

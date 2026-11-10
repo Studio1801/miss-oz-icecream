@@ -3,6 +3,8 @@ import { badgeFor, FLAVORS, SCALLOP_PATH, UBEREATS_URL } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 import { cropStyle } from '../lib/crop';
+import { useState } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
 
 type FlavorCard = {
   name: string;
@@ -45,6 +47,11 @@ export default function FlavorPanel() {
     note: String(row.description ?? ''),
     photo: FLAVOR_PHOTOS.find((photo) => canonicalPhotoName(photo.name) === String(row.name)),
   }));
+  // The flavour whose photo is open in the close-up, if any.
+  const [zoomed, setZoomed] = useState<FlavorCard | null>(null);
+  const photoAlt = (photo: FlavorPhoto) => photo.alt ?? (photo.name === 'Thai Iced Tea'
+    ? 'A pale golden scoop of ice cream in a silver dessert dish'
+    : `A scoop of ${photo.name} ice cream in a dessert dish`);
   return (
     <>
       {/* The scalloped seal edge, defined once and shared by every seal. */}
@@ -68,11 +75,16 @@ export default function FlavorPanel() {
             >
             {flavor.photo ? (
               <div className="flavor-card-photo aspect-[4/5] w-full overflow-hidden rounded-t-[10px]">
+                {/* Millie asked for a larger close-up when a photo is tapped. */}
+                <button
+                  type="button"
+                  className="flavor-photo-button"
+                  aria-label={`See a larger photo of ${flavor.name}`}
+                  onClick={() => setZoomed(flavor)}
+                >
                 <img
                   src={`${import.meta.env.BASE_URL}${flavor.photo.src}`}
-                  alt={flavor.photo.alt ?? (flavor.photo.name === 'Thai Iced Tea'
-                    ? 'A pale golden scoop of ice cream in a silver dessert dish'
-                    : `A scoop of ${flavor.photo.name} ice cream in a dessert dish`)}
+                  alt={photoAlt(flavor.photo)}
                   width={450}
                   height={600}
                   loading="lazy"
@@ -87,6 +99,7 @@ export default function FlavorPanel() {
                       : flavor.name === 'Mexican Vanilla' ? 'translateY(-5%) scale(1.32)' : undefined,
                   }}
                 />
+                </button>
               </div>
             ) : (
               <div
@@ -194,6 +207,34 @@ export default function FlavorPanel() {
           );
         })}
       </div>
+      <Dialog.Root open={zoomed !== null} onOpenChange={(open) => { if (!open) setZoomed(null); }}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="flavor-zoom-overlay" />
+          <Dialog.Content className="flavor-zoom-content" aria-describedby={undefined}>
+            {zoomed?.photo && (
+              <>
+                <img
+                  src={`${import.meta.env.BASE_URL}${zoomed.photo.src}`}
+                  alt={photoAlt(zoomed.photo)}
+                  decoding="async"
+                />
+                <div className="flavor-zoom-caption">
+                  <Dialog.Title
+                    className="leading-tight text-[var(--berry-deep)] text-[22px]"
+                    style={{ fontFamily: 'var(--font-groovy)', fontStyle: 'italic' }}
+                  >
+                    {zoomed.name}
+                  </Dialog.Title>
+                  <p className="mt-1 text-[14px] leading-[1.45] text-[#604C4F]" style={{ fontFamily: 'var(--font-sans)' }}>
+                    {zoomed.note}
+                  </p>
+                </div>
+              </>
+            )}
+            <Dialog.Close className="flavor-zoom-close" aria-label="Close">×</Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
       <MenuDivider className="mt-[clamp(16px,2vw,24px)]" />
       <p
         className="flavor-rotation-note menu-closing-copy mt-[clamp(10px,1.2vw,16px)] text-center text-[#6E5A54] mobile-body-14"
