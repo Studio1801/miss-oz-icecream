@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 // Keep the current artwork in one obvious place for a future real asset swap.
-const FLAVOR_POSTER_ASSET = '/images/licorice-client.png';
+const FLAVOR_POSTER_ASSET = '/images/licorice-client.webp';
 
 const FLAVOR = {
   name: 'Licorice',
@@ -81,8 +81,10 @@ export default function NewFlavor() {
         className="relative mb-[28px] w-full max-w-[320px]"
       >
         {/* Neutral warmth keeps the existing poster artwork in focus. */}
+        {/* Its own layer, so the browser paints the blur once instead of on
+            every scroll frame. Looks identical. */}
         <div className="absolute -inset-8 rounded-[40px] blur-3xl -z-0"
-          style={{ background: 'radial-gradient(55% 55% at 50% 46%, rgba(195,128,145,0.2), transparent 70%)' }}
+          style={{ background: 'radial-gradient(55% 55% at 50% 46%, rgba(195,128,145,0.2), transparent 70%)', willChange: 'transform', transform: 'translateZ(0)' }}
           aria-hidden="true" />
 
         {/* Berry frame */}

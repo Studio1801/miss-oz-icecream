@@ -23,7 +23,7 @@ const itemGroups = [
 
 const polaroidPhotos = [
   {
-    src: 'images/wholesale-tubs-client.png',
+    src: 'images/wholesale-tubs-client.webp',
     alt: 'A scoop of Oregon Marionberry ice cream in a silver dessert dish, with the full dish visible.',
     caption: 'Ice cream',
     products: items.slice(0, 2),

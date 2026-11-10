@@ -274,8 +274,6 @@ export default function Postcard({ showHero = true }: { showHero?: boolean }) {
           paddingTop: compactHeader ? '7px' : '12px',
           paddingBottom: compactHeader ? '7px' : '16px',
           background: 'var(--cream)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
           boxShadow: compactHeader ? '0 6px 22px rgba(20,8,12,0.2)' : '0 5px 18px rgba(20,8,12,0.12)',
         }}
       >

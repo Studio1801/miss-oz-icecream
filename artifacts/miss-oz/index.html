@@ -41,7 +41,11 @@
 
     <!-- Preload critical fonts & hero image -->
     <link rel="preload" href="/fonts/Higante-Black.otf" as="font" type="font/otf" crossorigin />
-    <link rel="preload" href="/images/slide-cones.webp" as="image" type="image/webp" />
+    <!-- The first hero photo, fetched straight away at high priority. Phones
+         and computers get their own size, so neither downloads the other's. -->
+    <link rel="preload" href="/images/slide-cones.webp" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high"
+      imagesrcset="/images/mobile/slide-cones-640.webp 640w, /images/mobile/slide-cones-960.webp 960w" imagesizes="100vw" />
 
     <!-- GA4 loads only on the public Miss Oz domains, never on previews or localhost.
          SPA page views are tracked separately in src/lib/analytics.ts. -->
