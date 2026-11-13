@@ -17,6 +17,7 @@
   "files": [
     "guestbook.ts",
     "inquire.ts",
-    "subscribe.ts"
+    "subscribe.ts",
+    "_lib/mail.ts"
   ]
 }
