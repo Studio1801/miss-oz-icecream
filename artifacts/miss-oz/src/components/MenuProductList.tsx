@@ -1,4 +1,4 @@
-import { badgeFor, type MenuItem } from './menuCatalog';
+import { resolveBadge, type MenuItem } from './menuCatalog';
 
 /** Accessible, reusable text-only menu rows. */
 export default function MenuProductList({
@@ -25,9 +25,9 @@ export default function MenuProductList({
                 {item.name}
               </span>
               {item.price && <span className="menu-product-price hidden">{item.price}</span>}
-              {badgeFor(item.name) && (
+              {resolveBadge(item.name, item.badgeKey) && (
                 <span className="menu-product-seal">
-                  {badgeFor(item.name)!.top} {badgeFor(item.name)!.bottom}
+                  {resolveBadge(item.name, item.badgeKey)!.top} {resolveBadge(item.name, item.badgeKey)!.bottom}
                 </span>
               )}
               {item.seasonalLabel && (

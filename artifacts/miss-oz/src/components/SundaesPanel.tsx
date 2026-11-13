@@ -1,5 +1,5 @@
 import MenuProductList from './MenuProductList';
-import { SUNDAES, SUNDAE_PHOTOS } from './menuCatalog';
+import { SUNDAES, SUNDAE_PHOTOS, resolveBadge } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 import { cropStyle } from '../lib/crop';
@@ -64,6 +64,11 @@ export default function SundaesPanel() {
                   {item.name}
                 </h3>
                 {item.price && <span className="menu-product-price hidden">{item.price}</span>}
+                {resolveBadge(item.name, item.badgeKey) && (
+                  <span className="menu-product-seal">
+                    {resolveBadge(item.name, item.badgeKey)!.top} {resolveBadge(item.name, item.badgeKey)!.bottom}
+                  </span>
+                )}
                 </div>
                 {item.seasonalLabel && (
                   <p className="mt-1 text-[10px] max-[639px]:text-[12px] font-semibold text-[var(--marionberry)]">
