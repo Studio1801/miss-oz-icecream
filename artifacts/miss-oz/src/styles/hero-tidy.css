@@ -1,0 +1,132 @@
+/* Millie's 10 November homepage notes, approved 10 November.
+ *
+ * The text over the hero photo now uses only logo colours (the logo is deep
+ * berry, pink and peach on cream, so the old gold is gone), with clearer
+ * hierarchy and more space: cream Miss Oz with the berry outline, pink tagline.
+ */
+
+:root {
+  --hero-title-fill: #fbf2df;
+  --hero-tagline: #f4a9c7;
+  --hero-info: rgba(251, 242, 223, 0.92);
+}
+
+/* A pink tagline needs a firmer shadow to hold on the lighter photos. */
+.hero-tagline {
+  text-shadow: 0 1px 3px rgba(20, 8, 12, 0.7), 0 1px 12px rgba(20, 8, 12, 0.6) !important;
+}
+
+/* On phones the place name drops to its own line instead of breaking
+ * mid-phrase across three lines. */
+@media (max-width: 767px) {
+  .page-content-gutter #home .hero-enter-subtext {
+    max-width: none !important;
+  }
+  .hero-info-dot {
+    display: none;
+  }
+  .hero-info-place {
+    display: block;
+  }
+}
+
+/* The logo in every header is now a link home. No hover motion. */
+.site-logo-link {
+  cursor: pointer;
+}
+
+/* Text links grow an underline on hover. The logo should not. */
+.site-logo-link::before {
+  display: none !important;
+}
+
+/* The shared link style sets position: relative, which would knock the
+ * phone logo out of the centre of its bar. */
+.mobile-site-header .site-logo-link {
+  position: absolute;
+}
+
+/* Flavour photo close-up */
+.flavor-photo-button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.flavor-photo-button:focus-visible {
+  outline: 2px solid var(--berry-deep);
+  outline-offset: -4px;
+}
+
+.flavor-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(28, 13, 12, 0.78);
+  animation: flavor-zoom-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flavor-zoom-content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 2001;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 560px, calc((88svh - 120px) * 0.75));
+  background: var(--cream-hi);
+  border-radius: 10px;
+  overflow: hidden;
+  animation: flavor-zoom-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flavor-zoom-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(88svh - 120px);
+  object-fit: contain;
+  background: var(--cream-hi);
+}
+
+.flavor-zoom-caption {
+  padding: 14px 18px 18px;
+}
+
+.flavor-zoom-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(251, 242, 223, 0.92);
+  color: var(--berry-deep);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.flavor-zoom-close:focus-visible {
+  outline: 2px solid var(--berry-deep);
+  outline-offset: 2px;
+}
+
+@keyframes flavor-zoom-fade {
+  from { opacity: 0; }
+}
+
+@keyframes flavor-zoom-in {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.97); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flavor-zoom-overlay,
+  .flavor-zoom-content {
+    animation: none;
+  }
+}

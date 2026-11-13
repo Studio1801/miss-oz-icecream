@@ -1,13 +1,46 @@
 /** Menu copy for the homepage menu. Keep these entries separate from its presentation
  * so the same real menu can be reused when the site eventually gains pages. */
+export type Badge = { top: string; bottom: string };
+
 export type MenuItem = {
   name: string;
   price?: string;
   note?: string;
   seasonalLabel?: string;
+  /** Short highlight shown beside the name, such as "Best Seller".
+   * Set in BADGES below, matched on the dish name. */
+  badge?: Badge;
   /** photo framing from the dashboard, "x y zoom" */
   crop?: string;
 };
+
+/** Highlights Millie picks for a handful of dishes.
+ *
+ * These are matched on the dish name, the same way photos are, so renaming a
+ * dish in the dashboard removes its badge until the name here is updated too.
+ * Changing a dish description is safe. */
+export const BADGES: Record<string, Badge> = {
+  'Thai Iced Tea': { top: "Oz's", bottom: 'Favorite' },
+  // Millie asked for "Staff Pick: Horchata Cookie". There is no Horchata
+  // cookie on the menu, so this sits on the Horchata ice cream until she
+  // confirms whether she meant a new cookie.
+  Horchata: { top: 'Staff', bottom: 'Pick' },
+  'Cookies & Cream': { top: 'Best', bottom: 'Seller' },
+  Kulfi: { top: 'Beyond', bottom: 'the Classic' },
+};
+
+/** Scalloped seal edge, the rounded bottle-cap scallop from the reference
+ * Millie sent. Drawn as real arcs rather than a polygon, because a
+ * polygon can only make straight lines and reads as spikes. */
+export const SCALLOP_PATH = "M94.00 50.00 A5.30 5.30 0 0 1 92.72 60.53 A5.30 5.30 0 0 1 88.96 70.45 A5.30 5.30 0 0 1 82.93 79.18 A5.30 5.30 0 0 1 74.99 86.21 A5.30 5.30 0 0 1 65.60 91.14 A5.30 5.30 0 0 1 55.30 93.68 A5.30 5.30 0 0 1 44.70 93.68 A5.30 5.30 0 0 1 34.40 91.14 A5.30 5.30 0 0 1 25.01 86.21 A5.30 5.30 0 0 1 17.07 79.18 A5.30 5.30 0 0 1 11.04 70.45 A5.30 5.30 0 0 1 7.28 60.53 A5.30 5.30 0 0 1 6.00 50.00 A5.30 5.30 0 0 1 7.28 39.47 A5.30 5.30 0 0 1 11.04 29.55 A5.30 5.30 0 0 1 17.07 20.82 A5.30 5.30 0 0 1 25.01 13.79 A5.30 5.30 0 0 1 34.40 8.86 A5.30 5.30 0 0 1 44.70 6.32 A5.30 5.30 0 0 1 55.30 6.32 A5.30 5.30 0 0 1 65.60 8.86 A5.30 5.30 0 0 1 74.99 13.79 A5.30 5.30 0 0 1 82.93 20.82 A5.30 5.30 0 0 1 88.96 29.55 A5.30 5.30 0 0 1 92.72 39.47 A5.30 5.30 0 0 1 94.00 50.00 Z";
+
+const canonical = (name: string) => name.replace(/[’']/g, '').trim().toLowerCase();
+const BADGES_BY_NAME = new Map(Object.entries(BADGES).map(([name, badge]) => [canonical(name), badge]));
+
+/** The badge for a dish, if it has one. */
+export function badgeFor(name: string): Badge | undefined {
+  return BADGES_BY_NAME.get(canonical(name));
+}
 
 export const MENU_CATEGORIES = ['Flavors', 'Sundaes', 'Croffles & Desserts', 'Drinks', 'Whole Cakes'] as const;
 
@@ -48,13 +81,13 @@ export const SUNDAE_PHOTOS: MenuPhoto[] = [
 
 export const DESSERT_PHOTOS: MenuPhoto[] = [
   {
-    src: 'images/walnut-chocolate-chip-cookie-client.png',
+    src: 'images/walnut-chocolate-chip-cookie-client.webp',
     alt: 'Walnut chocolate chip cookies, thick and chunky, stacked on a green checkered paper-lined plate',
     caption: 'Walnut Chocolate Chip Cookie',
     objectPosition: 'center 56%',
   },
   {
-    src: 'images/butter-pecan-cookie-client.png',
+    src: 'images/butter-pecan-cookie-client.webp',
     alt: 'A butter pecan cookie, thick and chunky with pecan pieces and chocolate chips, on a green checkered paper-lined plate',
     caption: 'Butter Pecan Cookie',
   },

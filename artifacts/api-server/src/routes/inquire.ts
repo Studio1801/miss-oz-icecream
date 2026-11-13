@@ -1,8 +1,8 @@
 import { Router, type IRouter } from "express";
 import { Resend } from "resend";
-import { logger } from "../lib/logger";
-import { resolveContactEmail } from "../lib/contactEmail";
-import { buildEmail, type FieldRow } from "../lib/emailTemplates";
+import { logger } from "../lib/logger.js";
+import { resolveContactEmail } from "../lib/contactEmail.js";
+import { buildEmail, type FieldRow } from "../lib/emailTemplates.js";
 
 const router: IRouter = Router();
 
@@ -20,9 +20,9 @@ if (process.env.RESEND_API_KEY) {
 type InquiryType = "wholesale" | "event" | "general";
 
 const SUBJECT_MAP: Record<InquiryType, string> = {
-  wholesale: "🥛 New Wholesale Inquiry — Miss Oz Website",
-  event:     "🎉 New Parties & Weddings Inquiry — Miss Oz Website",
-  general:   "New Inquiry — Miss Oz Website",
+  wholesale: "🥛 New Wholesale Inquiry, Miss Oz Website",
+  event:     "🎉 New Parties & Weddings Inquiry, Miss Oz Website",
+  general:   "New Inquiry, Miss Oz Website",
 };
 
 /* ── POST /api/inquire ────────────────────────────────────────────────────── */
@@ -44,6 +44,7 @@ router.post("/inquire", async (req, res) => {
     numberOfServings,
     desiredOrderQuantities,
     additionalEventDetails,
+    orderType,
   } = req.body ?? {};
 
   if (typeof name !== "string" || !name.trim()) {
@@ -63,6 +64,9 @@ router.post("/inquire", async (req, res) => {
     ? (type as InquiryType)
     : "general";
   const isWholesale = inquiryType === "wholesale";
+  // The whole-cake order form posts here as a general message, flagged so it
+  // gets its own subject line and a confirmation email to the customer.
+  const isCakeOrder = inquiryType === "general" && orderType === "cake";
   const productChoices = Array.isArray(productsOfInterest)
     ? productsOfInterest.filter((product): product is string => typeof product === "string" && Boolean(product.trim()))
     : [];
@@ -173,8 +177,8 @@ router.post("/inquire", async (req, res) => {
       from: FROM_EMAIL,
       to: [isWholesale ? WHOLESALE_TO_EMAIL : TO_EMAIL],
       replyTo: payload.email,
-      subject: SUBJECT_MAP[inquiryType],
-      html: buildEmail({ purpose: inquiryType, rows }),
+      subject: isCakeOrder ? `🎂 New Cake Order from ${payload.name}, Miss Oz Website` : SUBJECT_MAP[inquiryType],
+      html: buildEmail({ purpose: isCakeOrder ? "order" : inquiryType, rows }),
     });
 
     if (notification.error) {
@@ -183,32 +187,54 @@ router.post("/inquire", async (req, res) => {
       return;
     }
 
+    // A copy for the customer. Millie's notification has already gone out at
+    // this point, so a problem here is logged but never shown as a failure,
+    // otherwise the customer would think their order or inquiry was lost.
     let confirmationId: string | undefined;
-    if (isWholesale) {
-      const confirmation = await resend.emails.send({
-        from: FROM_EMAIL,
-        to: [payload.email],
-        subject: "Thank you for your wholesale inquiry — Miss Oz Ice Cream Cafe",
-        html: buildEmail({
-          purpose: "wholesaleConfirmation",
-          replyHint: false,
-          rows: [
-            {
-              label: "Message",
-              value:
-                "Thank you for your interest in becoming a wholesale partner with Miss Oz Ice Cream Cafe!\n\nWe've received your inquiry and will review it carefully. We'll contact you within 1–2 business days to discuss pricing, product availability, and the next steps.",
-              multiline: true,
-            },
-          ],
-        }),
-      });
-
-      if (confirmation.error) {
-        logger.error({ resendError: confirmation.error }, "Resend rejected the customer confirmation");
-        res.status(502).json({ error: "Customer confirmation email could not be sent" });
-        return;
+    if (isWholesale || isCakeOrder) {
+      try {
+        const confirmation = await resend.emails.send({
+          from: FROM_EMAIL,
+          to: [payload.email],
+          replyTo: isWholesale ? WHOLESALE_TO_EMAIL : TO_EMAIL,
+          subject: isWholesale
+            ? "Thank you for your wholesale inquiry, Miss Oz Ice Cream Cafe"
+            : "We got your cake order, Miss Oz Ice Cream Cafe",
+          html: isWholesale
+            ? buildEmail({
+                purpose: "wholesaleConfirmation",
+                replyHint: false,
+                rows: [
+                  {
+                    label: "Message",
+                    value:
+                      "Thank you for your interest in becoming a wholesale partner with Miss Oz Ice Cream Cafe!\n\nWe've received your inquiry and will review it carefully. We'll contact you within 1 to 2 business days to discuss pricing, product availability, and the next steps.",
+                    multiline: true,
+                  },
+                ],
+              })
+            : buildEmail({
+                purpose: "orderConfirmation",
+                replyHint: false,
+                rows: [
+                  {
+                    label: "Message",
+                    value:
+                      `Hi ${payload.name}, thank you for your order!\n\nWe've received it and will be in touch to confirm the details and your pickup. If anything changes in the meantime, just reply to this email.`,
+                    multiline: true,
+                  },
+                  { label: "Your order", value: payload.message, multiline: true },
+                ],
+              }),
+        });
+        if (confirmation.error) {
+          logger.error({ resendError: confirmation.error }, "Resend rejected the customer confirmation");
+        } else {
+          confirmationId = confirmation.data?.id;
+        }
+      } catch (err) {
+        logger.error({ err }, "Failed to send the customer confirmation");
       }
-      confirmationId = confirmation.data?.id;
     }
 
     logger.info({ emailId: notification.data?.id, confirmationId }, "Inquiry emails sent");

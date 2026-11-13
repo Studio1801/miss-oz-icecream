@@ -1,4 +1,4 @@
-import type { MenuItem } from './menuCatalog';
+import { badgeFor, type MenuItem } from './menuCatalog';
 
 /** Accessible, reusable text-only menu rows. */
 export default function MenuProductList({
@@ -25,6 +25,11 @@ export default function MenuProductList({
                 {item.name}
               </span>
               {item.price && <span className="menu-product-price hidden">{item.price}</span>}
+              {badgeFor(item.name) && (
+                <span className="menu-product-seal">
+                  {badgeFor(item.name)!.top} {badgeFor(item.name)!.bottom}
+                </span>
+              )}
               {item.seasonalLabel && (
                 <span className="text-[10px] max-[639px]:text-[12px] font-semibold text-[var(--marionberry)]">
                   {item.seasonalLabel}

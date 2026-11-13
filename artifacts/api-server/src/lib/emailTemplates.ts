@@ -4,7 +4,7 @@
  * one vintage soda-fountain layout (Georgia serif, cream paper, ticket footer).
  */
 
-export type EmailPurpose = "wholesale" | "wholesaleConfirmation" | "event" | "general" | "guestbook" | "mailing";
+export type EmailPurpose = "wholesale" | "wholesaleConfirmation" | "event" | "general" | "order" | "orderConfirmation" | "guestbook" | "mailing";
 
 type Theme = {
   accent: string;      // header background
@@ -47,6 +47,22 @@ const THEMES: Record<EmailPurpose, Theme> = {
     badge: "🍨",
     title: "General Inquiry",
     subtitle: "A message from the website",
+  },
+  order: {
+    accent: "#630F39",
+    accentSoft: "rgba(247,236,210,0.75)",
+    ribbon: "#F4A9C7",
+    badge: "🎂",
+    title: "New Cake Order",
+    subtitle: "Someone ordered a whole cake",
+  },
+  orderConfirmation: {
+    accent: "#630F39",
+    accentSoft: "rgba(247,236,210,0.75)",
+    ribbon: "#F4A9C7",
+    badge: "🎂",
+    title: "We Got Your Order",
+    subtitle: "Thank you for ordering from Miss Oz",
   },
   guestbook: {
     accent: "#C9862A",

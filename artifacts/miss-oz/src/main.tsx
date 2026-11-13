@@ -7,5 +7,7 @@ import './styles/postcard-mobile.css';
 import './styles/home-mobile.css';
 import './styles/forms-mobile.css';
 import './styles/interactions-mobile.css';
+import './styles/background-flat.css';
+import './styles/hero-tidy.css';
 
 createRoot(document.getElementById('root')!).render(<App />);

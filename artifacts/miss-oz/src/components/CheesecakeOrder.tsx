@@ -67,6 +67,7 @@ export default function CheesecakeOrder({ open, onClose }: { open: boolean; onCl
           email: values.get('email'),
           phone: values.get('phone'),
           type: 'general',
+          orderType: 'cake',
           message,
         }),
       }).catch(() => null);

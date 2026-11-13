@@ -934,7 +934,7 @@ select:focus-visible {
   }
 
   .hero-title-text {
-    font-size: clamp(58px, 14.9vw, 64px) !important;
+    font-size: clamp(49px, 12.7vw, 54px) !important;
     white-space: nowrap;
   }
 
@@ -944,8 +944,8 @@ select:focus-visible {
 
   .hero-tagline {
     margin-top: 10px !important;
-    color: var(--cream-hi) !important;
-    font-size: 20px !important;
+    color: var(--hero-tagline) !important;
+    font-size: 23px !important;
   }
 
   .hero-cta-wrap {
@@ -1306,7 +1306,7 @@ select:focus-visible {
   }
 
   .page-content-gutter .hero-title-text {
-    font-size: clamp(28px, 9vw, 48px) !important;
+    font-size: clamp(24px, 7.65vw, 41px) !important;
   }
 
   .page-content-gutter .stitch-border-light {
@@ -1658,7 +1658,7 @@ select:focus-visible {
   }
 
   .hero-title-text {
-    font-size: clamp(32px, 12vw, 44px) !important;
+    font-size: clamp(27px, 10.2vw, 37px) !important;
   }
 }
 
@@ -1696,4 +1696,258 @@ select:focus-visible {
   .page-content-gutter .guestbook-oz-photo {
     right: 0;
   }
+}
+
+/* ---------------------------------------------------------------
+   Flavour seal. A scalloped stamp in the parlour's colours, following
+   the reference Millie sent: solid inner ring, a heart flanked by two
+   sparks, the label in two lines, and a small flourish underneath. */
+
+.flavor-seal {
+  --seal-top: clamp(11.5px, 0.97vw, 14.5px);
+  --seal-bottom: clamp(5.4px, 0.47vw, 6.8px);
+  position: absolute;
+  z-index: 6;
+  top: clamp(-9px, -0.6vw, -6px);
+  right: clamp(-7px, -0.5vw, -4px);
+  transform: rotate(-12deg);
+  pointer-events: none;
+  filter: drop-shadow(0 5px 11px rgba(0, 0, 0, 0.36));
+}
+
+.flavor-seal-burst {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(56px, 4.7vw, 70px);
+  height: clamp(56px, 4.7vw, 70px);
+}
+
+.flavor-seal-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 86%;
+  height: 86%;
+  border: 1px solid var(--cream-hi);
+  border-radius: 999px;
+  text-align: center;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.flavor-seal-crest {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  line-height: 1;
+}
+.flavor-seal-heart {
+  font-style: normal;
+  color: var(--cream-hi);
+  font-size: clamp(7.4px, 0.62vw, 9.2px);
+}
+.flavor-seal-spark {
+  font-style: normal;
+  color: var(--pink);
+  font-size: clamp(4.5px, 0.38vw, 5.8px);
+}
+
+.flavor-seal-top {
+  font-family: var(--font-display);
+  color: var(--cream-hi);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  margin-top: 1.5px;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+
+/* Millie asked for a smaller S in OZ'S. */
+.flavor-seal-possessive {
+  font-size: 0.68em;
+  letter-spacing: 0;
+}
+
+.flavor-seal-bottom {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--cream-hi);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 1.5px;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+
+/* Millie asked for the heart, the stars, the line and the text to all read
+   larger. The line is sized as a share of the inner ring, so widening the
+   ring alone only grew it by about 7 percent while the type went up 21.
+   This brings it up with the rest. The stroke and end dots scale with it,
+   since they are drawn in the SVG's own coordinates. */
+.flavor-seal-swoosh {
+  width: 68%;
+  height: auto;
+  margin-top: 2.5px;
+  stroke: var(--cream-hi);
+  fill: var(--cream-hi);
+  opacity: 0.9;
+}
+
+/* The seal hangs off the card corner at every size, the way the New Flavor
+   seal does. home-mobile.css clips the flavour card below 768px, so this
+   lifts that clip for the handful of cards that carry a seal, and only
+   those. The photo inside keeps its own rounded clip. */
+@media (max-width: 767px) {
+  .page-content-gutter #menu .flavor-card:has(.flavor-seal) {
+    overflow: visible !important;
+  }
+}
+
+/* Between 481px and 767px the right-hand card sits hard against the
+   section edge, so the seal pulls in a little to stay inside it. */
+@media (min-width: 481px) and (max-width: 767px) {
+  .flavor-seal {
+    top: -8px;
+    right: -2px;
+  }
+}
+
+/* Narrow phones: a smaller seal so it does not swallow a 140px card. The
+   seal itself stays 50px, which Millie approved. Only the type inside grows,
+   by the same proportion as the desktop sizes, so the words keep their
+   footing against the heart and stars, which grow on their own because they
+   are set in clamps that bottom out at this width. */
+@media (max-width: 480px) {
+  .flavor-seal {
+    top: -6px;
+    right: -5px;
+    --seal-top: 10.4px;
+    --seal-bottom: 5px;
+  }
+  .flavor-seal-burst { width: 50px; height: 50px; }
+  .flavor-seal-bottom { letter-spacing: 0.04em; }
+  .flavor-seal-swoosh { margin-top: 1.5px; }
+}
+
+/* In the text menus a starburst would be unreadable at line height, so a
+   badged dish there gets a small berry label in the same colours. No
+   badged dish sits in a text list today; this is here for when one does. */
+.menu-product-seal {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--berry-deep);
+  color: var(--cream-hi);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+
+/* ---------------------------------------------------------------
+   Bunting pennant, the triangular shape Millie asked to explore.
+   Switched on with data-seal="pennant" on <html> while the shapes are
+   under review.
+
+   A plain downward triangle gives the words no room: the usable width
+   collapses exactly where the second line needs it. So the flag keeps a
+   square shoulder for the type and only the tail tapers to a point, and
+   it hangs from a cord the way the shop's own bunting does in the hero
+   and the footer. That cord is the whole idea. It makes the badge a
+   piece of the parlour rather than a sticker dropped on top of it.
+
+   Colour jobs here: gold is the cord and its beads, cream is the inner
+   rule and the type, berry is the flag itself. Nothing else. */
+
+[data-seal="pennant"] .flavor-seal {
+  --seal-top: clamp(9.5px, 0.8vw, 11.5px);
+  --seal-bottom: clamp(5.4px, 0.46vw, 6.6px);
+  transform: rotate(-4deg);
+  top: clamp(-13px, -0.9vw, -9px);
+  right: clamp(-14px, -1vw, -9px);
+}
+
+/* The gradient and the scalloped clip belong to the round seal. The flag
+   draws its own shape in SVG so the cord and the inset rule can exist. */
+[data-seal="pennant"] .flavor-seal-burst {
+  position: relative;
+  clip-path: none !important;
+  background: none !important;
+  border-radius: 0;
+  width: clamp(88px, 7.2vw, 108px);
+  height: auto;
+  aspect-ratio: 132 / 96;
+  display: block;
+}
+
+[data-seal="pennant"] .flavor-seal-pennant {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The words sit in the top third, where the triangle is still wide. */
+[data-seal="pennant"] .flavor-seal-inner {
+  position: absolute;
+  left: 13%;
+  right: 13%;
+  top: 17%;
+  width: auto;
+  height: 30%;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  justify-content: flex-start;
+  z-index: 1;
+}
+
+/* The heart drops below the words, into the taper, where the width is
+   too narrow for type but exactly right for one small mark. */
+/* The crest sits inside the text block, so its offset is measured against
+   that block rather than the triangle. 132% drops it clear of the second
+   line and into the taper below. */
+[data-seal="pennant"] .flavor-seal-crest {
+  position: absolute;
+  left: 50%;
+  top: 132%;
+  transform: translateX(-50%);
+  z-index: 1;
+  gap: 3.5px;
+}
+[data-seal="pennant"] .flavor-seal-heart { font-size: clamp(6px, 0.5vw, 7.5px); }
+[data-seal="pennant"] .flavor-seal-spark { font-size: clamp(3.4px, 0.29vw, 4.2px); }
+
+[data-seal="pennant"] .flavor-seal-top { margin-top: 0; }
+[data-seal="pennant"] .flavor-seal-bottom { letter-spacing: 0.05em; margin-top: 2px; }
+
+/* the point is the flourish, so the drawn swoosh comes off */
+[data-seal="pennant"] .flavor-seal-swoosh { display: none; }
+
+/* The SVG frame is only ever drawn in pennant mode. */
+.flavor-seal-pennant { display: none; }
+.pennant-cord {
+  fill: none;
+  stroke: var(--gold-hi);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.pennant-bead { fill: var(--gold-hi); }
+.pennant-rule {
+  fill: none;
+  stroke: var(--cream-hi);
+  stroke-width: 1;
+  opacity: 0.55;
 }
