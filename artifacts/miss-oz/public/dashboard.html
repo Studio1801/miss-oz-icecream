@@ -262,7 +262,20 @@
   .gate-card p { margin: 0; color: var(--ink-soft); font-size: 14.5px; }
   .gate-card input { font: inherit; font-size: 16px; padding: 13px 14px; border-radius: 12px; border: 1px solid #e3cfc7; background: #fff; }
   .gate-card button { font: inherit; font-weight: 600; font-size: 15px; padding: 13px; border: 0; border-radius: 12px; background: var(--wine); color: #fff; cursor: pointer; }
-  .gate-err { color: #a0352a !important; font-size: 13.5px !important; min-height: 1em; }
+  .gate-err { color: #a0352a !important; font-size: 13.5px !important; min-height: 1.3em; }
+  .gate-card { align-items: stretch; }
+  .gate-logo { height: 64px; width: auto; align-self: center; margin-bottom: 6px; }
+  .gate-card h1 { text-align: center; }
+  .gate-card .gate-lead { text-align: center; }
+  .gate-card input:focus { outline: 2px solid var(--wine); outline-offset: 1px; border-color: transparent; }
+  .pass-row { position: relative; }
+  .pass-row input { width: 100%; padding-right: 74px; }
+  .pass-show { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none !important; color: var(--wine) !important; font-size: 13.5px !important; font-weight: 600; padding: 8px 10px !important; border-radius: 8px !important; }
+  .keep { display: flex; align-items: center; gap: 9px; font-size: 14px; color: var(--ink-soft); cursor: pointer; }
+  .keep input { width: 18px; height: 18px; padding: 0; accent-color: var(--wine); }
+  .gate-card button:disabled { opacity: .6; cursor: default; }
+  .signout { background: none; border: 0; font: inherit; font-weight: 600; color: var(--wine); cursor: pointer; padding: 0; font-size: 13.5px; }
+  .signout:hover { text-decoration: underline; }
   .e-stat { font-size: 12.5px; font-weight: 600; white-space: nowrap; flex: none; }
   .e-stat.new { color: var(--amber); } .e-stat.done { color: var(--green); }
   .e-side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: none; }
@@ -326,11 +339,16 @@
 <body>
 <div class="gate" id="gate" hidden>
   <form class="gate-card" id="gateForm">
+    <img class="gate-logo" id="gateLogo" alt="Miss Oz Ice Cream Cafe">
     <h1>Miss Oz dashboard</h1>
-    <p>Demo login. The password is <strong>admin</strong>.</p>
-    <input type="password" id="gatePass" autocomplete="current-password" placeholder="Password" value="admin" required>
-    <p class="gate-err" id="gateErr"></p>
-    <button type="submit" id="gateBtn">Open dashboard</button>
+    <p class="gate-lead">Sign in to manage your menu, orders and website.</p>
+    <div class="pass-row">
+      <input type="password" id="gatePass" autocomplete="current-password" placeholder="Password" aria-label="Password" required>
+      <button type="button" class="pass-show" id="passShow" aria-pressed="false">Show</button>
+    </div>
+    <label class="keep"><input type="checkbox" id="gateKeep" checked> Keep me signed in on this device</label>
+    <p class="gate-err" id="gateErr" role="alert"></p>
+    <button type="submit" id="gateBtn">Sign in</button>
   </form>
 </div>
 <div class="wrap">
@@ -344,6 +362,7 @@
       <span id="today"></span>
       <span class="synced" id="syncedAt" aria-live="polite"></span>
       <a href="https://www.missozicecream.com/" target="_blank" rel="noopener">See website</a>
+      <button type="button" class="signout" id="signOut">Sign out</button>
     </div>
   </header>
 
@@ -974,7 +993,10 @@
   }
   // ---------- google sheets backend ----------
   const SHEET_API = "https://script.google.com/macros/s/AKfycbwnYVZG5SwY9K0mBQZVsnqAGU00QXDr1m7Pqri8qlPX6GIbKZh4Ru9UsrsSSlLVgFCt/exec";                               // paste your Apps Script /exec URL here to go live
-  let API_TOKEN = (() => { try { return localStorage.getItem("missoz-dash-pass") || ""; } catch(e){ return ""; } })();
+  const PASS_KEY = "missoz-dash-pass";
+  let API_TOKEN = (() => { try { return localStorage.getItem(PASS_KEY) || sessionStorage.getItem(PASS_KEY) || ""; } catch(e){ return ""; } })();
+  function forgetPass(){ try { localStorage.removeItem(PASS_KEY); } catch(e){} try { sessionStorage.removeItem(PASS_KEY); } catch(e){} }
+  function rememberPass(tok, keep){ forgetPass(); try { (keep ? localStorage : sessionStorage).setItem(PASS_KEY, tok); } catch(e){} }
   const live = () => !!SHEET_API;
 
   // ---------- website text ----------
@@ -1173,10 +1195,10 @@
       if (firstLoad) showSync("Can't reach your Google Sheet right now, so nothing is shown. Check your connection and refresh.");
       refreshSoon(10000);
       if (firstLoad) renderAll();
-      return;
+      return "offline";
     }
     if (st && st.error === "unauthorized"){ askPassword(API_TOKEN ? "That password didn't work. Try again." : ""); return false; }
-    if (!st || !st.ok){ setSynced("offline"); refreshSoon(10000); return; }
+    if (!st || !st.ok){ setSynced("offline"); refreshSoon(10000); return firstLoad ? "offline" : undefined; }
     // a write landed while we were reading: this snapshot may be old, read again
     if (!force && (pending > 0 || saveTimer)){ refreshSoon(1500); return; }
 
@@ -1221,19 +1243,52 @@
   // kept for older call sites
   const loadFromSheet = first => refresh(!!first);
   function askPassword(msg){
-    try { localStorage.removeItem("missoz-dash-pass"); } catch(e){}
+    forgetPass();
     $("gateErr").textContent = msg || "";
     $("gate").hidden = false; $("gatePass").focus();
   }
+  // reuse the logo already in the header
+  (function(){ const l = document.querySelector("header.top .logo"); if (l) $("gateLogo").src = l.src; })();
+  $("passShow").addEventListener("click", () => {
+    const i = $("gatePass"), show = i.type === "password";
+    i.type = show ? "text" : "password";
+    $("passShow").textContent = show ? "Hide" : "Show";
+    $("passShow").setAttribute("aria-pressed", String(show));
+  });
+  let failures = 0;
   $("gateForm").addEventListener("submit", async e => {
     e.preventDefault();
-    API_TOKEN = $("gatePass").value.trim(); if(!API_TOKEN) return;
-    $("gateBtn").textContent = "Opening..."; $("gateErr").textContent = "";
+    const typed = $("gatePass").value.trim(); if (!typed) return;
+    API_TOKEN = typed;
+    const btn = $("gateBtn"); btn.disabled = true; btn.textContent = "Signing in...";
+    $("gateErr").textContent = "";
     firstLoad = true; lastMenuKey = lastSubsKey = "";
     const ok = await refresh(true);
-    $("gateBtn").textContent = "Open dashboard";
-    if(ok !== false){ try { localStorage.setItem("missoz-dash-pass", API_TOKEN); } catch(e){} $("gate").hidden = true; startSync(); }
+    if (ok === false){
+      // wrong password: refresh() already cleared it and showed the message
+      failures++;
+      $("gatePass").value = ""; 
+      const wait = failures >= 3 ? Math.min(30, (failures - 2) * 5) : 0;
+      if (wait){
+        let left = wait;
+        const tick = () => { btn.textContent = "Try again in " + left + "s"; if (left-- > 0) setTimeout(tick, 1000); else { btn.disabled = false; btn.textContent = "Sign in"; } };
+        tick();
+      } else { btn.disabled = false; btn.textContent = "Sign in"; }
+      return;
+    }
+    btn.disabled = false; btn.textContent = "Sign in";
+    if (ok === "offline"){
+      API_TOKEN = ""; forgetPass();
+      $("gateErr").textContent = "Can't reach the dashboard right now. Check your connection and try again.";
+      $("gate").hidden = false;
+      return;
+    }
+    failures = 0;
+    rememberPass(typed, $("gateKeep").checked);
+    $("gatePass").value = "";
+    $("gate").hidden = true; startSync();
   });
+  $("signOut").addEventListener("click", () => { forgetPass(); location.reload(); });
   let syncing = false;
   function startSync(){
     if(syncing) return; syncing = true;
@@ -1246,8 +1301,8 @@
   async function boot(){
     if(!API_TOKEN){ askPassword(""); return; }
     const ok = await refresh(true);
-    if(ok === false) return;
-    startSync();   // keep submissions in sync with the Sheet
+    if(ok === false) return;     // wrong or changed password: the gate is showing
+    startSync();   // keep submissions in sync with the Sheet (retries on its own if offline)
   }
   boot();
 </script>
