@@ -98,6 +98,16 @@
       ]
     }
     </script>
+    <style>
+      html { background: hsl(39 60% 85%); }
+      #root { transition: opacity .3s ease; }
+      html.sheet-loading #root { opacity: 0; }
+    </style>
+    <script>
+      // hold the page for a moment so the Sheet's wording is in place on first paint; never longer than 1.8s
+      document.documentElement.classList.add('sheet-loading');
+      setTimeout(function () { document.documentElement.classList.remove('sheet-loading'); }, 1800);
+    </script>
   </head>
   <body>
     <div id="root"></div>

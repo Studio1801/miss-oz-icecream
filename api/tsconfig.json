@@ -18,6 +18,7 @@
     "guestbook.ts",
     "inquire.ts",
     "subscribe.ts",
+    "site.ts",
     "_lib/mail.ts"
   ]
 }
