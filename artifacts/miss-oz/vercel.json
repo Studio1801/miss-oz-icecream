@@ -42,28 +42,6 @@
   ],
   "redirects": [
     {
-      "source": "/dashboard.html",
-      "has": [
-        {
-          "type": "host",
-          "value": "(www\\.)?missozicecream\\.com"
-        }
-      ],
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/dashboard",
-      "has": [
-        {
-          "type": "host",
-          "value": "(www\\.)?missozicecream\\.com"
-        }
-      ],
-      "destination": "/",
-      "permanent": false
-    },
-    {
       "source": "/menu",
       "destination": "/#menu",
       "permanent": true

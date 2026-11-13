@@ -9,29 +9,5 @@
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
-  ],
-  "redirects": [
-    {
-      "source": "/dashboard.html",
-      "has": [
-        {
-          "type": "host",
-          "value": "(www\\.)?missozicecream\\.com"
-        }
-      ],
-      "destination": "/",
-      "permanent": false
-    },
-    {
-      "source": "/dashboard",
-      "has": [
-        {
-          "type": "host",
-          "value": "(www\\.)?missozicecream\\.com"
-        }
-      ],
-      "destination": "/",
-      "permanent": false
-    }
   ]
 }
