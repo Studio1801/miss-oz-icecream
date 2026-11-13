@@ -266,6 +266,7 @@
   .gate-input:focus-within { border-color: var(--wine); box-shadow: 0 0 0 3px rgba(99,15,57,.1); }
   .gate-input input { flex: 1; min-width: 0; font: inherit; font-size: 16px; padding: 13px 14px; border: 0; background: transparent; outline: none; }
   .gate-eye { font: inherit; font-size: 13px; font-weight: 600; color: var(--wine); background: none; border: 0; padding: 0 14px; cursor: pointer; }
+  .dish-badge { font-size: 12px; font-weight: 600; color: var(--wine); margin: 2px 0 4px; }
   .gate-field[hidden] { display: none; }
   .gate-keep { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink-soft); }
   .gate-keep input { accent-color: var(--wine); width: 16px; height: 16px; }
@@ -466,6 +467,8 @@
     <input class="txt" id="dmPrice" placeholder="Leave blank for no price">
     <label class="f-label" for="dmDesc">Description <span style="font-weight:400">(optional)</span></label>
     <textarea class="txt" id="dmDesc" rows="2" placeholder="Short description"></textarea>
+    <label class="f-label" for="dmBadge">Highlight on the website <span style="font-weight:400">(optional)</span></label>
+    <select class="txt" id="dmBadge"></select>
     <div class="frame" id="dmFrame" hidden>
       <div class="f-label">Photo framing <span style="font-weight:400">(drag the photo, zoom with the slider)</span></div>
       <div class="frame-row">
@@ -579,6 +582,11 @@
   function parseCrop(c){ const m = String(c||"").trim().split(/\s+/).map(Number); return { x: isFinite(m[0]) ? m[0] : 50, y: isFinite(m[1]) ? m[1] : 50, z: isFinite(m[2]) && m[2] >= 1 ? m[2] : 1 }; }
   function cropCss(c){ const k = parseCrop(c); return "object-position:"+k.x+"% "+k.y+"%;transform-origin:"+k.x+"% "+k.y+"%;"+(k.z > 1 ? "transform:scale("+k.z+");" : ""); }
   const effCrop = d => d.crop || siteCrop(d.cat, d.name);
+  // highlight on the website: choices, and the ones the website already had before this existed
+  const BADGE_OPTS = [["","None"],["fav","Oz's Favorite"],["staff","Staff Pick"],["best","Best Seller"],["classic","Beyond the Classic"]];
+  const BADGE_NAME = { fav:"Oz's Favorite", staff:"Staff Pick", best:"Best Seller", classic:"Beyond the Classic" };
+  const BUILTIN_BADGE = { "thai iced tea":"fav", "horchata":"staff", "cookies & cream":"best", "kulfi":"classic" };
+  const effBadge = d => d.badge === "none" ? "" : (d.badge || BUILTIN_BADGE[String(d.name||"").replace(/[\u2019']/g,"").trim().toLowerCase()] || "");
   function sitePhoto(cat, name){ const f = SITE_PHOTOS[cat + "|" + String(name).toLowerCase().replace(/[\u2019']/g,"").trim()]; return f ? SITE + f : ""; }
   SEED_DISHES.forEach((d,i) => { d.id = i+1; d.price = ""; d.photo = sitePhoto(d.cat, d.name); });   // display only, never saved
   let dishes = [];   // filled from the Google Sheet only
@@ -641,6 +649,7 @@
         '</div>' +
         '<div class="dish-body">' +
           '<div class="dish-name">'+d.name+'</div>' +
+          (effBadge(d) ? '<div class="dish-badge">'+BADGE_NAME[effBadge(d)]+'</div>' : '') +
           (d.desc ? '<div class="dish-desc">'+d.desc+'</div>' : '') +
           '<div class="dish-foot"><label class="switch"><input type="checkbox"'+(d.on?' checked':'')+'><span class="sw-track"><span class="sw-knob"></span></span><span class="sw-label">On the menu</span></label></div>' +
         '</div>';
@@ -707,6 +716,8 @@
     $("dmCat").value = d ? d.cat : CATS[0];
     $("dmPrice").value = d ? d.price : "";
     $("dmDesc").value = d ? d.desc : "";
+    if (!$("dmBadge").options.length) BADGE_OPTS.forEach(o => $("dmBadge").add(new Option(o[1], o[0])));
+    $("dmBadge").value = d ? effBadge(d) : "";
     $("dmRemove").style.display = d ? "" : "none";
     if (d && d.photo){ $("dmFrame").hidden = false; $("frameImg").src = d.photo; frame = parseCrop(effCrop(d)); drawFrame(); }
     else { $("dmFrame").hidden = true; frame = null; }
@@ -735,6 +746,8 @@
   $("dmSave").addEventListener("click", async ()=>{
     const name = $("dmName").value.trim(); if(!name){ $("dmName").focus(); return; }
     const data = { name, cat: $("dmCat").value, price: $("dmPrice").value.trim(), desc: $("dmDesc").value.trim() };
+    const pickedBadge = $("dmBadge").value;
+    data.badge = pickedBadge || (BUILTIN_BADGE[name.replace(/[\u2019']/g,"").trim().toLowerCase()] ? "none" : "");
     if (editing && frame){
       const c = frame.x+" "+frame.y+" "+frame.z, base = parseCrop(siteCrop(data.cat, data.name));
       data.crop = (frame.x === base.x && frame.y === base.y && frame.z === base.z) ? "" : c;   // "" = website's own framing
@@ -746,6 +759,7 @@
       if (editing.cat !== data.cat) lines.push("Category: " + editing.cat + " to " + data.cat);
       if ((editing.price||"") !== data.price) lines.push("Price: " + (editing.price || "none") + " to " + (data.price || "none"));
       if ((editing.desc||"") !== data.desc) lines.push("Description updated");
+      if (effBadge(editing) !== pickedBadge) lines.push("Highlight: " + (BADGE_NAME[effBadge(editing)] || "none") + " to " + (BADGE_NAME[pickedBadge] || "none"));
       if ("crop" in data && (editing.crop||"") !== data.crop) lines.push("Photo framing updated");
       if (!lines.length){ closeDish(); return; }
       summary = lines.join("\n") + "\n\nThis goes live on your website within a minute.";
@@ -1141,7 +1155,7 @@
     setSynced("saving");
     saveTimer = setTimeout(async () => {
       saveTimer = null;
-      const menu = dishes.map(d => ({ id:d.id, category:d.cat, name:d.name, description:d.desc, price:d.price, on:d.on, photo:"", crop:d.crop||"" }));
+      const menu = dishes.map(d => ({ id:d.id, category:d.cat, name:d.name, description:d.desc, price:d.price, on:d.on, photo:"", crop:d.crop||"", badge:d.badge||"" }));
       const r = await write({ action:"saveMenu", menu, baseVersion: menuVersion });
       if (r && r.menuVersion) menuVersion = r.menuVersion;
     }, 500);
@@ -1164,7 +1178,7 @@
   function mapMenu(list){
     return list.map((d,i) => {
       const cat = d.category||CATS[0], name = d.name||"";
-      return { id:d.id||(i+1), cat, name, desc:d.description||"", price:d.price||"", on:(String(d.on).toLowerCase()==="yes"||d.on===true), photo: sitePhoto(cat, name), crop: String(d.crop||"").trim() };
+      return { id:d.id||(i+1), cat, name, desc:d.description||"", price:d.price||"", on:(String(d.on).toLowerCase()==="yes"||d.on===true), photo: sitePhoto(cat, name), crop: String(d.crop||"").trim(), badge: String(d.badge||"").trim() };
     });
   }
   function subTag(t){ return ({ cake:"Cake order", wholesale:"Wholesale", event:"Event", contact:"Contact", vote:"Flavor vote", guestbook:"Guestbook" })[t] || t; }

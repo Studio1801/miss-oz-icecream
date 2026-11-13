@@ -1,5 +1,5 @@
 import { FLAVOR_PHOTOS, type FlavorPhoto } from './MenuPhotos';
-import { badgeFor, FLAVORS, SCALLOP_PATH, UBEREATS_URL } from './menuCatalog';
+import { resolveBadge, FLAVORS, SCALLOP_PATH, UBEREATS_URL } from './menuCatalog';
 import { MenuDivider } from './MenuPanelShared';
 import { syncCategory, useSheetMenu } from '../lib/sheetSync';
 import { cropStyle } from '../lib/crop';
@@ -10,6 +10,7 @@ type FlavorCard = {
   name: string;
   note: string;
   photo?: FlavorPhoto;
+  badgeKey?: string;
 };
 
 const EXTRA_FLAVOR_TASTE_NOTES: Record<string, string> = {
@@ -115,7 +116,7 @@ export default function FlavorPanel() {
               </div>
             )}
             {(() => {
-              const badge = badgeFor(flavor.name);
+              const badge = resolveBadge(flavor.name, flavor.badgeKey);
               if (!badge) return null;
               return (
                 <div className="flavor-seal" aria-hidden="true">

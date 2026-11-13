@@ -12,6 +12,8 @@ export type MenuItem = {
   badge?: Badge;
   /** photo framing from the dashboard, "x y zoom" */
   crop?: string;
+  /** highlight picked in the dashboard: fav | staff | best | classic | none */
+  badgeKey?: string;
 };
 
 /** Highlights Millie picks for a handful of dishes.
@@ -36,6 +38,21 @@ export const SCALLOP_PATH = "M94.00 50.00 A5.30 5.30 0 0 1 92.72 60.53 A5.30 5.3
 
 const canonical = (name: string) => name.replace(/[’']/g, '').trim().toLowerCase();
 const BADGES_BY_NAME = new Map(Object.entries(BADGES).map(([name, badge]) => [canonical(name), badge]));
+
+/** The highlights Millie can pick for any dish in the dashboard. */
+const BADGE_KINDS: Record<string, Badge> = {
+  fav: { top: "Oz's", bottom: 'Favorite' },
+  staff: { top: 'Staff', bottom: 'Pick' },
+  best: { top: 'Best', bottom: 'Seller' },
+  classic: { top: 'Beyond', bottom: 'the Classic' },
+};
+
+/** What the dashboard picked wins ("none" removes it); with no pick, the built-in badge for that name. */
+export function resolveBadge(name: string, key?: string): Badge | undefined {
+  if (key === 'none') return undefined;
+  if (key && BADGE_KINDS[key]) return BADGE_KINDS[key];
+  return badgeFor(name);
+}
 
 /** The badge for a dish, if it has one. */
 export function badgeFor(name: string): Badge | undefined {
