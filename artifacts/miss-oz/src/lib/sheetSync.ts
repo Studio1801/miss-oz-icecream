@@ -16,20 +16,31 @@ export type SiteData = { menu: SheetMenuRow[] | null; text: Record<string, strin
 /** One fresh read of the Sheet per page load: the live menu and all website text.
  * Never cached, so what the owner saved is what the next visitor sees. */
 let siteRequest: Promise<SiteData | null> | null = null;
+
+function readSite(url: string, ms: number): Promise<SiteData | null> {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), ms);
+  return fetch(url, { signal: controller.signal, cache: 'no-store' })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((data) => {
+      if (!data || !data.ok) return null;
+      const menu = Array.isArray(data.menu) && data.menu.length ? (data.menu as SheetMenuRow[]) : null;
+      const text = data.text && typeof data.text === 'object' ? (data.text as Record<string, string>) : {};
+      return { menu, text };
+    })
+    .catch(() => null)
+    .finally(() => window.clearTimeout(timer));
+}
+
+/** The page stays hidden (see index.html) until this settles, so nobody sees the built-in
+ * wording swap to the owner's. Tries our fast edge copy first, then the Sheet directly. */
 function loadSite(): Promise<SiteData | null> {
   if (!siteRequest) {
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 6000);
-    siteRequest = fetch(`${SHEET_URL}?action=site&_=${Date.now()}`, { signal: controller.signal, cache: 'no-store' })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!data || !data.ok) return null;
-        const menu = Array.isArray(data.menu) && data.menu.length ? (data.menu as SheetMenuRow[]) : null;
-        const text = data.text && typeof data.text === 'object' ? (data.text as Record<string, string>) : {};
-        return { menu, text };
-      })
-      .catch(() => null)
-      .finally(() => window.clearTimeout(timer));
+    siteRequest = readSite('/api/site', 3500)
+      .then((d) => d ?? readSite(`${SHEET_URL}?action=site&_=${Date.now()}`, 5000))
+      .finally(() => {
+        document.documentElement.classList.remove('sheet-loading');
+      });
   }
   return siteRequest;
 }
