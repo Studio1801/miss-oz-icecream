@@ -1,25 +1,14 @@
-/* Millie's 10 November homepage notes.
+/* Millie's 10 November homepage notes, approved 10 November.
  *
- * She asked for the text over the hero photo to use fewer fonts and colours,
- * built from the logo, with clearer hierarchy and more space. The logo is
- * deep berry, pink and peach on cream. Gold is not in it, so it leaves.
- *
- * Two options, both using only logo colours, so she can choose:
- *   A (default): cream Miss Oz with the berry outline, pink tagline.
- *   B: logo pink Miss Oz with the berry outline, cream tagline.
- * Add ?hero=b to the address to see B. Whichever she picks becomes the only
- * one and the switch comes out.
+ * The text over the hero photo now uses only logo colours (the logo is deep
+ * berry, pink and peach on cream, so the old gold is gone), with clearer
+ * hierarchy and more space: cream Miss Oz with the berry outline, pink tagline.
  */
 
 :root {
   --hero-title-fill: #fbf2df;
   --hero-tagline: #f4a9c7;
   --hero-info: rgba(251, 242, 223, 0.92);
-}
-
-:root[data-hero='b'] {
-  --hero-title-fill: #f48fb8;
-  --hero-tagline: #fbf2df;
 }
 
 /* A pink tagline needs a firmer shadow to hold on the lighter photos. */
