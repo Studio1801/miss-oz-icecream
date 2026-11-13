@@ -7,8 +7,16 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "typeRoots": ["../artifacts/api-server/node_modules/@types"],
-    "types": ["node"]
+    "typeRoots": [
+      "../artifacts/api-server/node_modules/@types"
+    ],
+    "types": [
+      "node"
+    ]
   },
-  "files": ["guestbook.ts"]
+  "files": [
+    "guestbook.ts",
+    "inquire.ts",
+    "subscribe.ts"
+  ]
 }

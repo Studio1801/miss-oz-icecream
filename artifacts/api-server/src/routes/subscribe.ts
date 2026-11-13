@@ -1,8 +1,8 @@
 import { Router, type IRouter } from "express";
 import { Resend } from "resend";
-import { logger } from "../lib/logger";
-import { resolveContactEmail } from "../lib/contactEmail";
-import { buildEmail } from "../lib/emailTemplates";
+import { logger } from "../lib/logger.js";
+import { resolveContactEmail } from "../lib/contactEmail.js";
+import { buildEmail } from "../lib/emailTemplates.js";
 
 const router: IRouter = Router();
 
@@ -39,7 +39,7 @@ router.post("/subscribe", async (req, res) => {
       from: FROM_EMAIL,
       to: [TO_EMAIL],
       replyTo: safeEmail,
-      subject: "💌 New Mailing List Signup — Miss Oz Website",
+      subject: "💌 New Mailing List Signup, Miss Oz Website",
       html: buildEmail({
         purpose: "mailing",
         rows: [
