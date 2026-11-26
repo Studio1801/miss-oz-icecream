@@ -6,18 +6,29 @@ import { useMobileForm, MOBILE_FORM_SUCCESS, MOBILE_FORM_FAILURE } from '../hook
 
 type OrderStatus = 'idle' | 'sending' | 'sent' | 'error';
 
-function getFollowingWednesday() {
-  const date = new Date();
-  const daysUntilWednesday = (3 - date.getDay() + 7) % 7 || 7;
-  date.setDate(date.getDate() + daysUntilWednesday);
-  return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+// Pickup follows the shop's weekly schedule, on Portland time:
+// orders Monday 11:00 AM to Friday 8:00 PM, made the following Monday, picked up that Wednesday by noon.
+// Orders placed outside that window (Friday night to Monday morning) join the next week's batch.
+export function getPickupWednesday(now: Date = new Date()) {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' })
+      .formatToParts(now).map((p) => [p.type, p.value]),
+  );
+  const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.weekday);
+  const minutes = Number(parts.hour) * 60 + Number(parts.minute);
+  const inWindow = (day === 1 && minutes >= 11 * 60) || (day >= 2 && day <= 4) || (day === 5 && minutes < 20 * 60);
+  const daysToNextMonday = (8 - day) % 7 || 7;
+  const daysToOpening = day === 1 ? 0 : daysToNextMonday;
+  const daysToMaking = inWindow ? daysToNextMonday : daysToOpening + 7;
+  const pickup = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day) + daysToMaking + 2));
+  return pickup.toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 }
 
 export default function CheesecakeOrder({ open, onClose }: { open: boolean; onClose: () => void }) {
   const validation = useMobileForm();
   const [status, setStatus] = useState<OrderStatus>('idle');
   const [showSuccessCheck, setShowSuccessCheck] = useState(false);
-  const followingWednesday = getFollowingWednesday();
+  const followingWednesday = getPickupWednesday();
 
   useEffect(() => {
     if (!open) return;
